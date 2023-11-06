@@ -8,7 +8,7 @@ configurations
   "Dist"
 }
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{architecture}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Blazr"
 location "Blazr"
@@ -43,11 +43,11 @@ defines
 
 postbuildcommands
 {
-  ("{COPY} %{cfg.buildtarget.relpatht} ../bin/" .. outputdir .. "/Sandbox")
+  ("{COPY} %{cfg.buildtarget.relpatht}" .. "/bin/" .. outputdir .. "/Blazr")
 }
 
 filter "configurations:Debug"
-defines "HZ_DEBUG"
+defines "BLZR_DEBUG"
 symbols "On"
 
 filter "configurations:Release"
@@ -95,13 +95,8 @@ defines
   "BLZR_PLATFORM_WINDOWS",
 }
 
-postbuildcommands
-{
-  ("{COPY} %{cfg.buildtarget.relpatht} ../bin/" .. outputdir .. "/Sandbox")
-}
-
 filter "configurations:Debug"
-defines "HZ_DEBUG"
+defines "BLZR_DEBUG"
 symbols "On"
 
 filter "configurations:Release"

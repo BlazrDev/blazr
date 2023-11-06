@@ -55,22 +55,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-function: 0x560000dbbd50\Blazr\</OutDir>
-    <IntDir>..\obj\Debug-windows-function: 0x560000dbbd50\Blazr\</IntDir>
+    <OutDir>..\bin\Debug-windows-x86_64\Blazr\</OutDir>
+    <IntDir>..\obj\Debug-windows-x86_64\Blazr\</IntDir>
     <TargetName>Blazr</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Release-windows-function: 0x560000dbbd50\Blazr\</OutDir>
-    <IntDir>..\obj\Release-windows-function: 0x560000dbbd50\Blazr\</IntDir>
+    <OutDir>..\bin\Release-windows-x86_64\Blazr\</OutDir>
+    <IntDir>..\obj\Release-windows-x86_64\Blazr\</IntDir>
     <TargetName>Blazr</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Dist-windows-function: 0x560000dbbd50\Blazr\</OutDir>
-    <IntDir>..\obj\Dist-windows-function: 0x560000dbbd50\Blazr\</IntDir>
+    <OutDir>..\bin\Dist-windows-x86_64\Blazr\</OutDir>
+    <IntDir>..\obj\Dist-windows-x86_64\Blazr\</IntDir>
     <TargetName>Blazr</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;HZ_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -89,10 +89,10 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>..\bin\Debug-windows-function: 0x560000dbbd50\Blazr\Blazr.lib</ImportLibrary>
+      <ImportLibrary>..\bin\Debug-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-function:\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-function: 0x560000dbbd50\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-function: 0x560000dbbd50\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST \bin\Debug-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Debug-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Debug-windows-x86_64\Blazr &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,10 +115,10 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ImportLibrary>..\bin\Release-windows-function: 0x560000dbbd50\Blazr\Blazr.lib</ImportLibrary>
+      <ImportLibrary>..\bin\Release-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-function:\ (xcopy /Q /E /Y /I ..\bin\Release-windows-function: 0x560000dbbd50\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-function: 0x560000dbbd50\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST \bin\Release-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Release-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Release-windows-x86_64\Blazr &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -140,12 +140,18 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ImportLibrary>..\bin\Dist-windows-function: 0x560000dbbd50\Blazr\Blazr.lib</ImportLibrary>
+      <ImportLibrary>..\bin\Dist-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-function:\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-function: 0x560000dbbd50\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-function: 0x560000dbbd50\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST \bin\Dist-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Dist-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Dist-windows-x86_64\Blazr &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Test.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
