@@ -14,6 +14,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Blazr.h" />
+    <ClInclude Include="src\Blazr\Application.h" />
+    <ClInclude Include="src\Blazr\Core.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Blazr\Application.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2037E60C-8C4B-0EBE-55CD-B11DC1A00AEF}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -92,7 +100,7 @@
       <ImportLibrary>..\bin\Debug-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST \bin\Debug-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Debug-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Debug-windows-x86_64\Blazr &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -118,7 +126,7 @@
       <ImportLibrary>..\bin\Release-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST \bin\Release-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Release-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Release-windows-x86_64\Blazr &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -143,15 +151,9 @@
       <ImportLibrary>..\bin\Dist-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST \bin\Dist-windows-x86_64\Blazr\ (xcopy /Q /E /Y /I \bin\Dist-windows-x86_64\Blazr &gt; nul) ELSE (xcopy /Q /Y /I \bin\Dist-windows-x86_64\Blazr &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Test.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Test.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,5 +1,6 @@
 workspace "Blazr"
 architecture "x64"
+startproject "Sandbox"
 
 configurations
 {
@@ -38,13 +39,28 @@ systemversion "latest"
 defines
 {
   "BLZR_PLATFORM_WINDOWS",
-  "BLZR_BUILD_DLL",
+  "BLZR_BUILD_DLL"
 }
 
-postbuildcommands
-{
-  ("{COPY} %{cfg.buildtarget.relpatht}" .. "/bin/" .. outputdir .. "/Blazr")
+postbuildcommands{
+  ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 }
+
+filter "system:linux"
+cppdialect "C++17"
+staticruntime "On"
+systemversion "latest"
+
+defines
+{
+  "BLZR_PLATFORM_LINUX",
+  "BLZR_BUILD_SO"
+}
+
+postbuildcommands{
+  ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+}
+
 
 filter "configurations:Debug"
 defines "BLZR_DEBUG"
@@ -93,6 +109,16 @@ systemversion "latest"
 defines
 {
   "BLZR_PLATFORM_WINDOWS",
+}
+
+filter "system:linux"
+cppdialect "C++17"
+staticruntime "On"
+systemversion "latest"
+
+defines
+{
+  "BLZR_PLATFORM_LINUX",
 }
 
 filter "configurations:Debug"

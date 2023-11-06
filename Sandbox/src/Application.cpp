@@ -1,7 +1,8 @@
-namespace Blazr {
-	__declspec(dllimport)void print();
-}
+#include <Blazr.h>
+#include <iostream>
 
 void main() {
-	Blazr::print();
+	Blazr::Application* app = new Blazr::Application();
+	std::cout << "Hello";
+	app->Run();
 }
