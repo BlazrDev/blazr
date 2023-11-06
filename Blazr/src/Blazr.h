@@ -1,5 +1,7 @@
 #pragma once
 
 // API Library
-#include "Blazr/Core.h"
 #include "Blazr/Application.h"
+
+// ENTRY POINT
+#include "Blazr/EntryPoint.h"

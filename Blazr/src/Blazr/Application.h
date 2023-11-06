@@ -2,6 +2,8 @@
 #include "Core.h"
 
 namespace Blazr {
+	
+
 	class BLZR_API Application
 	{
 	public:
@@ -9,4 +11,7 @@ namespace Blazr {
 		virtual ~Application();
 		void Run();
 	};
+
+	// To be defined in CLIENT
+	Application* CreateApplication();
 }

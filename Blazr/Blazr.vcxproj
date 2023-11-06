@@ -18,6 +18,7 @@
     <ClInclude Include="src\Blazr.h" />
     <ClInclude Include="src\Blazr\Application.h" />
     <ClInclude Include="src\Blazr\Core.h" />
+    <ClInclude Include="src\Blazr\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blazr\Application.cpp" />

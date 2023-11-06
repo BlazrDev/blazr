@@ -24,6 +24,9 @@
     <ClInclude Include="src\Blazr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\EntryPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blazr\Application.cpp">
