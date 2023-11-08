@@ -1,0 +1,12 @@
+[
+  {
+    "directory": ".",
+    "command": "g++   -MD -MP -DBLZR_PLATFORM_LINUX -DBLZR_BUILD_SO -DBLZR_DEBUG -Ivendor/spdlog/include -Isrc -m64 -fPIC -g -std=c++17  -o \"../obj/Debug-linux-x86_64/Blazr/Application.o\" -MF \"../obj/Debug-linux-x86_64/Blazr/Application.d\" -c \"src/Blazr/Application.cpp\"",
+    "file": "\"src/Blazr/Application.cpp\""
+  },
+  {
+    "directory": ".",
+    "command": "g++   -MD -MP -DBLZR_PLATFORM_LINUX -DBLZR_DEBUG -I../Blazr/vendor/spdlog/include -I../Blazr/src -m64 -g -std=c++17  -o \"../obj/Debug-linux-x86_64/Sandbox/SandboxApp.o\" -MF \"../obj/Debug-linux-x86_64/Sandbox/SandboxApp.d\" -c \"src/SandboxApp.cpp\"",
+    "file": "\"src/SandboxApp.cpp\""
+  }
+]
