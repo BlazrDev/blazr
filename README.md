@@ -11,7 +11,7 @@ If you are on Linux, run the following commands:
 ```bash
 git clone https://github.com/Chameleeon/blazr.git
 cd blazr
-rm -rf $(pwd)/bin/Debug-linux-x86_64/Sandbox && mkdir $(pwd)/bin/Debug-linux-x86_64/Sandbox
+mkdir $(pwd)/bin/Debug-linux-x86_64/Sandbox
 premake5 gmake
 make
 ```
