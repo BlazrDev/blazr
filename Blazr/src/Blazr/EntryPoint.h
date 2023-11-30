@@ -1,9 +1,10 @@
 #pragma once
+#include "Application.h"
 
-extern Blazr::Application* Blazr::CreateApplication();
+extern Blazr::Application *Blazr::CreateApplication();
 
-int main(int argc, char** argv) {
-	auto app = Blazr::CreateApplication();
-	app->Run();
-	delete app;
+int main(int argc, char **argv) {
+  auto app = Blazr::CreateApplication();
+  app->Run();
+  delete app;
 }
