@@ -32,7 +32,7 @@ includedirs
 }
 
 filter "system:windows"
-cppdialect "C++17"
+cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
 
@@ -47,7 +47,7 @@ postbuildcommands{
 }
 
 filter "system:linux"
-cppdialect "C++17"
+cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
 
@@ -102,7 +102,7 @@ links {
 }
 
 filter "system:windows"
-cppdialect "C++17"
+cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
 
@@ -112,7 +112,7 @@ defines
 }
 
 filter "system:linux"
-cppdialect "C++17"
+cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
 
