@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+#include <string>
 
 #ifdef BLZR_PLATFORM_WINDOWS
 #ifdef BLZR_BUILD_DLL
@@ -11,3 +13,5 @@
 #else
 #error Blazer only supports Linux and Windows
 #endif
+
+#define BIT(x) (1 << x)
