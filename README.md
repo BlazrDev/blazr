@@ -13,12 +13,10 @@ If you are on Linux, run the following commands:
 ```bash
 git clone https://github.com/Chameleeon/blazr.git
 cd blazr
-mkdir $(pwd)/bin/Debug-linux-x86_64/Sandbox
-premake5 gmake
-make
+./install.sh
 ```
 
 To run the Sandbox application, type:
 ```bash
-./bin/Debug-linux-64/Sandbox/Sandbox
+./run.sh
 ```
