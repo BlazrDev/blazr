@@ -1,5 +1,7 @@
 # blazr
 
+## NOTE: Blazr is still early in developement and it can not yet be considered a game engine. We are still working on the basics.
+
 Blazr is an open source 2D game engine with the goal of eventually being able to create complex 2D games with complex mechanics and features. In the future, our goal is to expand it to 3D as well.
 
 ## Building
@@ -11,12 +13,10 @@ If you are on Linux, run the following commands:
 ```bash
 git clone https://github.com/Chameleeon/blazr.git
 cd blazr
-mkdir $(pwd)/bin/Debug-linux-x86_64/Sandbox
-premake5 gmake
-make
+./install.sh
 ```
 
 To run the Sandbox application, type:
 ```bash
-./bin/Debug-linux-64/Sandbox/Sandbox
+./run.sh
 ```
