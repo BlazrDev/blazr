@@ -11,6 +11,11 @@ configurations
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
+
+include "Blazr/vendor/GLFW"
+
 project "Blazr"
 location "Blazr"
 kind "SharedLib"
@@ -18,6 +23,9 @@ language "C++"
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("obj/" .. outputdir .. "/%{prj.name}")
+
+pchheader "blzrpch.h"
+pchsource "Blazr/src/blzrpch.cpp"
 
 files
 {
@@ -28,13 +36,21 @@ files
 includedirs
 {
   "%{prj.name}/vendor/spdlog/include",
-  "Blazr/src"
+  "%{prj.name}/src",
+  "%{IncludeDir.GLFW}"
 }
+
 
 filter "system:windows"
 cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
+
+links{
+  "OpenGL32",
+  "GLFW"
+  -- "dwmapi.lib"
+}
 
 defines
 {
@@ -50,6 +66,11 @@ filter "system:linux"
 cppdialect "C++20"
 staticruntime "On"
 systemversion "latest"
+
+links{
+  "GL",
+  "glfw"
+}
 
 defines
 {

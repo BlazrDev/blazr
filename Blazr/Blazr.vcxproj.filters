@@ -1,36 +1,72 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Blazr">
+      <UniqueIdentifier>{2037E60C-8C4B-0EBE-55CD-B11DC1A00AEF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Blazr\Core">
+      <UniqueIdentifier>{78CF7EA6-6487-C0F3-CD8E-994FB9655BE4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Blazr\Events">
+      <UniqueIdentifier>{049F9246-F001-22EB-9987-5AA185C9ED6D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Platform">
+      <UniqueIdentifier>{7477D451-6045-C857-49D9-387E3546A4BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Platform\Linux">
+      <UniqueIdentifier>{9371B207-7F00-3CD1-281F-50CC148D4C77}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Blazr\Core.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Blazr.h" />
+    <ClInclude Include="src\Blazr\Core\Application.h">
+      <Filter>Blazr\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Application.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Blazr\Core\Core.h">
+      <Filter>Blazr\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Blazr\Core\EntryPoint.h">
+      <Filter>Blazr\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\EntryPoint.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Blazr\Core\KeyCodes.h">
+      <Filter>Blazr\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Core\Log.h">
+      <Filter>Blazr\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Core\MouseCodes.h">
+      <Filter>Blazr\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Core\Window.h">
+      <Filter>Blazr\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Events\ApplicationEvent.h">
+      <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Events\Event.h">
+      <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Events\KeyEvent.h">
+      <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Events\MouseEvent.h">
+      <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
+      <Filter>Blazr\Platform\Linux</Filter>
+    </ClInclude>
+    <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Blazr\Application.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Blazr\Core\Application.cpp">
+      <Filter>Blazr\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Core\Log.cpp">
+      <Filter>Blazr\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
+      <Filter>Blazr\Platform\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="src\blzrpch.cpp" />
   </ItemGroup>
 </Project>

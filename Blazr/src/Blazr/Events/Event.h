@@ -1,5 +1,6 @@
 #pragma once
 #include "../Core/Core.h"
+#include <iostream>
 
 namespace Blazr {
 // TODO implement message queue system
@@ -74,6 +75,6 @@ private:
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Event &e) {
-  return os << e.toString();
+  return os << e.toString() << std::endl;
 }
 } // namespace Blazr

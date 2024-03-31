@@ -1,8 +1,8 @@
 #pragma once
 #include "Application.h"
 
-#include "Events/Event.h"
-#include "Events/KeyEvent.h"
+#include "../Events/Event.h"
+#include "../Events/KeyEvent.h"
 #include "Log.h"
 
 extern Blazr::Application *Blazr::CreateApplication();

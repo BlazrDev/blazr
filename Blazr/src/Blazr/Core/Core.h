@@ -1,6 +1,5 @@
 #pragma once
-#include <functional>
-#include <string>
+#include "../../blzrpch.h"
 
 #ifdef BLZR_PLATFORM_WINDOWS
 #ifdef BLZR_BUILD_DLL

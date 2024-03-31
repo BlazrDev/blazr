@@ -1,10 +1,10 @@
 #pragma once
 
 // API Library
-#include "Blazr/Application.h"
+#include "Blazr/Core/Application.h"
 
 // Logging
-#include "Blazr/Log.h"
+#include "Blazr/Core/Log.h"
 
 // ENTRY POINT
-#include "Blazr/EntryPoint.h"
+#include "Blazr/Core/EntryPoint.h"
