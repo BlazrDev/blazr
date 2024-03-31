@@ -20,3 +20,6 @@ To run the Sandbox application, type:
 ```bash
 ./run.sh
 ```
+
+# How To Use
+For a detailed tutorial on how to use the Blazr engine, and on inforation how certain things are implemented, please refer to our [Wiki](https://github.com/BlazrDev/blazr/wiki).
