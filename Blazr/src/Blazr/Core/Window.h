@@ -2,7 +2,7 @@
 #include "../../blzrpch.h"
 #include "../Events/Event.h"
 #include "Core.h"
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 namespace Blazr {
 struct WindowProperties {

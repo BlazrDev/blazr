@@ -29,36 +29,34 @@ void LinuxWindow::init(const WindowProperties &properties) {
     int success = glfwInit();
     if (!success) {
       BLZR_CORE_ERROR("Could not initialize GLFW!");
-      // glfwTerminate();
+      glfwTerminate();
     }
     s_GLFWInitialized = success;
   }
   m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height,
                               properties.Title.c_str(), NULL, NULL);
-  // glfwMakeContextCurrent(m_Window);
-  // glfwSetWindowUserPointer(m_Window, &m_Data);
-  glfwShowWindow(m_Window);
+  glfwMakeContextCurrent(m_Window);
+  glfwSetWindowUserPointer(m_Window, &m_Data);
   setVSync(true);
 }
 
-void LinuxWindow::shutdown() {
-  // glfwDestroyWindow(m_Window);
-}
+void LinuxWindow::shutdown() { glfwDestroyWindow(m_Window); }
 
 void LinuxWindow::onUpdate() {
-  // glfwPollEvents();
-  // glfwSwapBuffers(m_Window);
+  glfwPollEvents();
+  glfwSwapBuffers(m_Window);
 }
 
 void LinuxWindow::setVSync(bool enabled) {
-  // if (enabled)
-  //   glfwSwapInterval(1);
-  // else
-  //   glfwSwapInterval(0);
+  if (enabled)
+    glfwSwapInterval(1);
+  else
+    glfwSwapInterval(0);
   m_Data.vsync = enabled;
 }
 
 bool LinuxWindow::isVSync() const { return m_Data.vsync; }
 
-void setEventCallback(const LinuxWindow::EventCallbackFn &callback) { return; }
+void LinuxWindow::setEventCallback(
+    const LinuxWindow::EventCallbackFn &callback) {}
 } // namespace Blazr

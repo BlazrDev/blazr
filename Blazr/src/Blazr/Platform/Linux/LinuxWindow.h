@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../../vendor/GLFW/include/GLFW/glfw3.h"
 #include "../../../blzrpch.h"
 #include "../../Core/Window.h"
+#include "GLFW/glfw3.h"
 
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {

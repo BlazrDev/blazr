@@ -37,7 +37,8 @@ includedirs
 {
   "%{prj.name}/vendor/spdlog/include",
   "%{prj.name}/src",
-  "%{IncludeDir.GLFW}"
+  "%{prj.name}/vendor/GLFW/include",
+  -- "%{IncludeDir.GLFW}"
 }
 
 
@@ -96,7 +97,7 @@ defines "BLZR_DIST"
 optimize "On"
 
 filter { "system:windows", "configurations:Release" }
-buildoptions "/MT"
+buildoptions "/MD"
 
 project "Sandbox"
 location "Sandbox"
@@ -155,4 +156,4 @@ defines "BLZR_DIST"
 optimize "On"
 
 filter { "system:windows", "configurations:Release" }
-buildoptions "/MT"
+buildoptions "/MD"
