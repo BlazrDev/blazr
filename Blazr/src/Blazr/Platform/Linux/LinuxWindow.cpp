@@ -2,9 +2,16 @@
 #include "../../../blzrpch.h"
 #include "../../Core/Core.h"
 #include "../../Core/Log.h"
+#include "../../Events/ApplicationEvent.h"
+#include "../../Events/KeyEvent.h"
+#include "../../Events/MouseEvent.h"
 
 namespace Blazr {
 static bool s_GLFWInitialized = false;
+
+static void GLFWErorCallback(int error, const char *description) {
+  BLZR_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+}
 Window *Window::create(const WindowProperties &properties) {
   return new LinuxWindow(properties);
 }
@@ -29,6 +36,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
     int success = glfwInit();
     if (!success) {
       BLZR_CORE_ERROR("Could not initialize GLFW!");
+      glfwSetErrorCallback(GLFWErorCallback);
       glfwTerminate();
     }
     s_GLFWInitialized = success;
@@ -38,6 +46,79 @@ void LinuxWindow::init(const WindowProperties &properties) {
   glfwMakeContextCurrent(m_Window);
   glfwSetWindowUserPointer(m_Window, &m_Data);
   setVSync(true);
+
+  // Set GLFW callbacks
+  glfwSetWindowSizeCallback(
+      m_Window, [](GLFWwindow *window, int width, int height) {
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        data.width = width;
+        data.height = height;
+
+        WindowResizeEvent event(width, height);
+        data.eventCallback(event);
+      });
+
+  glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+    WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+    WindowCloseEvent event;
+    data.eventCallback(event);
+  });
+
+  glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode,
+                                  int action, int mods) {
+    WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+
+    switch (action) {
+    case GLFW_PRESS: {
+      KeyPressedEvent event(key, 0);
+      data.eventCallback(event);
+      break;
+    }
+    case GLFW_RELEASE: {
+      KeyReleasedEvent event(key);
+      data.eventCallback(event);
+      break;
+    }
+    case GLFW_REPEAT: {
+      KeyPressedEvent event(key, 1);
+      data.eventCallback(event);
+      break;
+    }
+    }
+  });
+  //
+  glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
+                                          int action, int mods) {
+    WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+
+    switch (action) {
+    case GLFW_PRESS: {
+      MouseButtonPressedEvent event(button);
+      data.eventCallback(event);
+      break;
+    }
+    case GLFW_RELEASE: {
+      MouseButtonReleasedEvent event(button);
+      data.eventCallback(event);
+      break;
+    }
+    }
+
+  });
+  //
+  glfwSetScrollCallback(
+      m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        MouseScrolledEvent event((float)xOffset, (float)yOffset);
+        data.eventCallback(event);
+      });
+
+  glfwSetCursorPosCallback(
+      m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        MouseMovedEvent event((float)xPos, (float)yPos);
+        data.eventCallback(event);
+      });
 }
 
 void LinuxWindow::shutdown() { glfwDestroyWindow(m_Window); }
@@ -58,5 +139,7 @@ void LinuxWindow::setVSync(bool enabled) {
 bool LinuxWindow::isVSync() const { return m_Data.vsync; }
 
 void LinuxWindow::setEventCallback(
-    const LinuxWindow::EventCallbackFn &callback) {}
+    const LinuxWindow::EventCallbackFn &callback) {
+    m_Data.eventCallback = callback;
+}
 } // namespace Blazr

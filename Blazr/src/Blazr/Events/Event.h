@@ -1,7 +1,7 @@
 #pragma once
 #include "../Core/Core.h"
+#include "../Core/Log.h"
 #include <iostream>
-
 namespace Blazr {
 // TODO implement message queue system
 enum class EventType {
@@ -63,7 +63,7 @@ public:
   EventDispatcher(Event &event) : m_Event(event) {}
 
   template <typename T> bool Dispatch(EventFn<T> func) {
-    if (m_Event.getEventType() == T::GetStaticType()) {
+    if (m_Event.getEventType() == T::getStaticType()) {
       m_Event.m_Handled = func(*(T *)&m_Event);
       return true;
     }
