@@ -28,7 +28,7 @@ public:
   std::string toString() const override {
     std::stringstream ss;
     ss << "KeyPressedEvent: " << m_KeyCode << " is "
-       << (m_RepeatCount == 0 ? "pressed" : " repeating");
+       << (m_RepeatCount == 0 ? "pressed" : "repeating");
     return ss.str();
   }
 
