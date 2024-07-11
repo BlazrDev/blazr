@@ -87,24 +87,23 @@ void LinuxWindow::init(const WindowProperties &properties) {
     }
   });
   //
-  glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
-                                          int action, int mods) {
-    WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+  glfwSetMouseButtonCallback(
+      m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-    switch (action) {
-    case GLFW_PRESS: {
-      MouseButtonPressedEvent event(button);
-      data.eventCallback(event);
-      break;
-    }
-    case GLFW_RELEASE: {
-      MouseButtonReleasedEvent event(button);
-      data.eventCallback(event);
-      break;
-    }
-    }
-
-  });
+        switch (action) {
+        case GLFW_PRESS: {
+          MouseButtonPressedEvent event(button);
+          data.eventCallback(event);
+          break;
+        }
+        case GLFW_RELEASE: {
+          MouseButtonReleasedEvent event(button);
+          data.eventCallback(event);
+          break;
+        }
+        }
+      });
   //
   glfwSetScrollCallback(
       m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
@@ -140,6 +139,6 @@ bool LinuxWindow::isVSync() const { return m_Data.vsync; }
 
 void LinuxWindow::setEventCallback(
     const LinuxWindow::EventCallbackFn &callback) {
-    m_Data.eventCallback = callback;
+  m_Data.eventCallback = callback;
 }
 } // namespace Blazr
