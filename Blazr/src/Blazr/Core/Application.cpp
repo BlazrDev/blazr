@@ -1,6 +1,9 @@
+// clang-format off
 #include "Application.h"
 #include "../Events/ApplicationEvent.h"
 #include "Log.h"
+// clang-format on
+
 namespace Blazr {
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)

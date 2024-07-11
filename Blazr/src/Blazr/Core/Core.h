@@ -1,5 +1,4 @@
 #pragma once
-#include "../../blzrpch.h"
 
 #ifdef BLZR_PLATFORM_WINDOWS
 #ifdef BLZR_BUILD_DLL

@@ -1,5 +1,4 @@
 #pragma once
-#include "../../blzrpch.h"
 #include "Core.h"
 #include "Window.h"
 
