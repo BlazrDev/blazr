@@ -1,4 +1,5 @@
 #pragma once
+#include "GL/glew.h"
 #include "../../../vendor/GLFW/include/GLFW/glfw3.h"
 #include "../../blzrpch.h"
 #include "../Events/Event.h"

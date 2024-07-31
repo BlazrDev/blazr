@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../../../vendor/GLFW/include/GLFW/glfw3.h"
 #include "../../../blzrpch.h"
 #include "../../Core/Window.h"
-
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {
 public:
@@ -23,6 +21,8 @@ private:
 
 private:
   GLFWwindow *m_Window;
+  unsigned int VAO;
+  unsigned int shaderProgram;
 
   // Need window data to pass into GLFW for events
   struct WindowData {

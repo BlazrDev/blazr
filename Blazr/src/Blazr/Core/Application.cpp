@@ -25,6 +25,7 @@ bool Application::onWindowClose(WindowCloseEvent &e) {
 }
 void Application::Run() {
 
+  // Render loop
   while (m_Running) {
     m_Window->onUpdate();
   }
