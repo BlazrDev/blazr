@@ -1,10 +1,5 @@
 #!/bin/bash
-
-file_path=".gitmodules"
-
-if [ ! -e "$file_path" ]; then
-  git submodule init
-fi
+git submodule init
 
 dir_path="bin/Debug-linux-x86_64/Sandbox"
 if [ ! -e "$dir_path" ]; then
