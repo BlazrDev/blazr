@@ -21,8 +21,6 @@ private:
 
 private:
   GLFWwindow *m_Window;
-  unsigned int VAO;
-  unsigned int shaderProgram;
 
   // Need window data to pass into GLFW for events
   struct WindowData {
