@@ -21,7 +21,6 @@ private:
 };
 } // namespace Blazr
 
-// CORE LOG MACROS
 #define BLZR_CORE_TRACE(...) ::Blazr::Log::getCoreLogger()->trace(__VA_ARGS__)
 #define BLZR_CORE_INFO(...) ::Blazr::Log::getCoreLogger()->info(__VA_ARGS__)
 #define BLZR_CORE_WARN(...) ::Blazr::Log::getCoreLogger()->warn(__VA_ARGS__)
@@ -30,7 +29,6 @@ private:
 #define BLZR_CORE_CRITICAL(...)                                                \
   ::Blazr::Log::getCoreLogger()->critical(__VA_ARGS__)
 
-// CLIENT LOG MCROS
 #define BLZR_CLIENT_TRACE(...)                                                 \
   ::Blazr::Log::getClientLogger()->trace(__VA_ARGS__)
 #define BLZR_CLIENT_INFO(...) ::Blazr::Log::getClientLogger()->info(__VA_ARGS__)

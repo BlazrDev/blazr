@@ -13,6 +13,26 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
+IncludeDir["GLEW"] = "Blazr/vendor/glew/include"
+
+LibDir = {}
+LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
+
+function build_glew()
+    if os.host() == "windows" then
+        os.execute("cd Blazr/vendor/glew/auto && mingw32-make")
+        os.execute("cd Blazr/vendor/glew && mingw32-make")
+        os.execute("cd Blazr/vendor/glew && mingw32-make install")
+        os.execute("cd Blazr/vendor/glew && mingw32-make install.all")
+    else
+        os.execute("cd Blazr/vendor/glew/auto && make")
+        os.execute("cd Blazr/vendor/glew && make")
+        os.execute("cd Blazr/vendor/glew && sudo make install")
+        os.execute("cd Blazr/vendor/glew && make clean")
+    end
+end
+
+build_glew()
 
 include "Blazr/vendor/GLFW"
 
@@ -37,7 +57,14 @@ includedirs
 {
   "%{prj.name}/vendor/spdlog/include",
   "%{prj.name}/src",
-  "%{IncludeDir.GLFW}"
+  "%{prj.name}/vendor/GLFW/include",
+  "%{IncludeDir.GLFW}",
+    "%{IncludeDir.GLEW}"
+}
+
+libdirs
+{
+    "%{LibDir.GLFW}"
 }
 
 
@@ -48,7 +75,8 @@ systemversion "latest"
 
 links{
   "OpenGL32",
-  "GLFW"
+  "glfw3",
+    "GLEW"
   -- "dwmapi.lib"
 }
 
@@ -69,7 +97,8 @@ systemversion "latest"
 
 links{
   "GL",
-  "glfw"
+  "GLFW",
+    "GLEW"
 }
 
 defines

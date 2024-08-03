@@ -1,7 +1,7 @@
 // clang-format off
 #include "../../blzrpch.h"
 #include "Application.h"
-#include "../Events/ApplicationEvent.h"
+#include "Blazr/Events/ApplicationEvent.h"
 #include "Log.h"
 // clang-format on
 
@@ -29,6 +29,7 @@ bool Application::onWindowClose(WindowCloseEvent &e) {
 }
 void Application::Run() {
 
+  // Render loop
   while (m_Running) {
     m_Window->onUpdate();
   }

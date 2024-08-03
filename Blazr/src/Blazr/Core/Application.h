@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "Window.h"
+#include "blzrpch.h"
 
 #include "../Events/ApplicationEvent.h"
 namespace Blazr {

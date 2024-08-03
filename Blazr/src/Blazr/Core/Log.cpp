@@ -1,7 +1,5 @@
-// clang-format off
-#include "../../blzrpch.h"
 #include "Log.h"
-// clang-format on
+#include "blzrpch.h"
 
 namespace Blazr {
 std::shared_ptr<spdlog::logger> Log::s_CoreLogger;

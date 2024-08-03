@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/MouseCodes.h"
+#include "Blazr/Core/MouseCodes.h"
 #include "Event.h"
 #include <sstream>
 
