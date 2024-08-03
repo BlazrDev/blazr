@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../blzrpch.h"
-#include "../../Core/Window.h"
+#include "Blazr/Core/Window.h"
+#include "blzrpch.h"
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {
 public:

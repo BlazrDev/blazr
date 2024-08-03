@@ -1,10 +1,10 @@
 #include "LinuxWindow.h"
-#include "../../../blzrpch.h"
-#include "../../Core/Core.h"
-#include "../../Core/Log.h"
-#include "../../Events/ApplicationEvent.h"
-#include "../../Events/KeyEvent.h"
-#include "../../Events/MouseEvent.h"
+#include "Blazr/Core/Core.h"
+#include "Blazr/Core/Log.h"
+#include "Blazr/Events/ApplicationEvent.h"
+#include "Blazr/Events/KeyEvent.h"
+#include "Blazr/Events/MouseEvent.h"
+#include "blzrpch.h"
 
 const char *vertexShaderSource =
     "#version 330 core\n"
@@ -14,13 +14,13 @@ const char *vertexShaderSource =
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-const char *fragmentShaderSource =
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+                                   "out vec4 FragColor;\n"
+                                   "uniform vec4 ourColor;\n"
+                                   "void main()\n"
+                                   "{\n"
+                                   "   FragColor = ourColor;\n"
+                                   "}\0";
 
 namespace Blazr {
 static bool s_GLFWInitialized = false;
@@ -165,7 +165,16 @@ void LinuxWindow::init(const WindowProperties &properties) {
   glDeleteShader(fragmentShader);
 
   // Setup VAO and VBO
-  float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+  float vertices[] = {
+      // first triangle
+      0.5f, 0.5f, 0.0f,   // top right
+      0.5f, -0.5f, 0.0f,  // bottom right
+      -0.5f, 0.5f, 0.0f,  // top left
+                          // second triangle
+      0.5f, -0.5f, 0.0f,  // bottom right
+      -0.5f, -0.5f, 0.0f, // bottom left
+      -0.5f, 0.5f, 0.0f   // top left
+  };
 
   unsigned int VBO;
   glGenBuffers(1, &VBO);
@@ -181,6 +190,9 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
+  glUseProgram(shaderProgram); // Use the shader program
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_ONE, GL_ZERO);
 
   // Store VAO and shaderProgram in your class
   this->VAO = VAO;
@@ -193,14 +205,18 @@ void LinuxWindow::onUpdate() {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glUseProgram(shaderProgram);      // Use the shader program
+  float timeValue = glfwGetTime();
+  float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+  float redValue = (sin(timeValue) / 2.0f) + 0.75f;
+  float blue = (sin(timeValue) / 2.0f) + 0.25f;
+  int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+  glUniform4f(vertexColorLocation, redValue, greenValue, blue, 1.0f);
   glBindVertexArray(VAO);           // Bind the VAO
-  glDrawArrays(GL_TRIANGLES, 0, 3); // Draw the triangle
+  glDrawArrays(GL_TRIANGLES, 0, 6); // Draw the triangle
 
   glfwSwapBuffers(m_Window);
   glfwPollEvents();
 }
-
 void LinuxWindow::setVSync(bool enabled) {
   if (enabled)
     glfwSwapInterval(1);

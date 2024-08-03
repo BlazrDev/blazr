@@ -58,7 +58,7 @@
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Renderer\Renderer.h">
+    <ClInclude Include="src\Blazr\Renderer\Renderer2D.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\blzrpch.h" />

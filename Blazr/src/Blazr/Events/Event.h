@@ -1,6 +1,6 @@
 #pragma once
-#include "../Core/Core.h"
-#include "../Core/Log.h"
+#include "Blazr/Core/Core.h"
+#include "Blazr/Core/Log.h"
 #include <iostream>
 namespace Blazr {
 // TODO implement message queue system

@@ -1,13 +1,13 @@
 workspace "Blazr"
-    architecture "x64"
-    startproject "Sandbox"
+architecture "x64"
+startproject "Sandbox"
 
-    configurations
-    {
-        "Debug",
-        "Release",
-        "Dist"
-    }
+configurations
+{
+  "Debug",
+  "Release",
+  "Dist"
+}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -15,7 +15,9 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
 IncludeDir["GLEW"] = "Blazr/vendor/glew/include"
 
--- Function to run make commands for GLEW
+LibDir = {}
+LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
+
 function build_glew()
     if os.host() == "windows" then
         os.execute("cd Blazr/vendor/glew/auto && mingw32-make")
@@ -25,160 +27,161 @@ function build_glew()
     else
         os.execute("cd Blazr/vendor/glew/auto && make")
         os.execute("cd Blazr/vendor/glew && make")
-        -- os.execute("cd Blazr/vendor/glew && sudo make install")
+        os.execute("cd Blazr/vendor/glew && sudo make install")
         os.execute("cd Blazr/vendor/glew && make clean")
     end
 end
 
 build_glew()
 
--- Include GLFW project
 include "Blazr/vendor/GLFW"
 
--- Blazr project
 project "Blazr"
-    location "Blazr"
-    kind "SharedLib"
-    language "C++"
+location "Blazr"
+kind "SharedLib"
+language "C++"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("obj/" .. outputdir .. "/%{prj.name}")
+targetdir("bin/" .. outputdir .. "/%{prj.name}")
+objdir("obj/" .. outputdir .. "/%{prj.name}")
 
-    pchheader "blzrpch.h"
-    pchsource "Blazr/src/blzrpch.cpp"
+pchheader "blzrpch.h"
+pchsource "Blazr/src/blzrpch.cpp"
 
-    files
-    {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
-    }
+files
+{
+  "%{prj.name}/src/**.h",
+  "%{prj.name}/src/**.cpp"
+}
 
-    includedirs
-    {
-        "%{prj.name}/vendor/spdlog/include",
-        "%{prj.name}/src",
-        "%{IncludeDir.GLFW}",
-        "%{IncludeDir.GLEW}"
-    }
+includedirs
+{
+  "%{prj.name}/vendor/spdlog/include",
+  "%{prj.name}/src",
+  "%{prj.name}/vendor/GLFW/include",
+  "%{IncludeDir.GLFW}",
+    "%{IncludeDir.GLEW}"
+}
 
-    filter "system:windows"
-        cppdialect "C++20"
-        staticruntime "On"
-        systemversion "latest"
+libdirs
+{
+    "%{LibDir.GLFW}"
+}
 
-        defines
-        {
-            "BLZR_PLATFORM_WINDOWS",
-            "BLZR_BUILD_DLL"
-        }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-        }
+filter "system:windows"
+cppdialect "C++20"
+staticruntime "On"
+systemversion "latest"
 
-        links
-        {
-            "OpenGL32",
-            "GLFW",
-            "GLEW"
-        }
+links{
+  "OpenGL32",
+  "glfw3",
+    "GLEW"
+  -- "dwmapi.lib"
+}
 
-    filter "system:linux"
-        cppdialect "C++20"
-        staticruntime "On"
-        systemversion "latest"
+defines
+{
+  "BLZR_PLATFORM_WINDOWS",
+  "BLZR_BUILD_DLL"
+}
 
-        links
-        {
-            "GL",
-            "glfw",
-            "GLEW"
-        }
+postbuildcommands{
+  ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+}
 
-        defines
-        {
-            "BLZR_PLATFORM_LINUX",
-            "BLZR_BUILD_SO"
-        }
+filter "system:linux"
+cppdialect "C++20"
+staticruntime "On"
+systemversion "latest"
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-        }
+links{
+  "GL",
+  "GLFW",
+    "GLEW"
+}
 
-    filter "configurations:Debug"
-        defines "BLZR_DEBUG"
-        symbols "On"
+defines
+{
+  "BLZR_PLATFORM_LINUX",
+  "BLZR_BUILD_SO"
+}
 
-    filter "configurations:Release"
-        defines "BLZR_RELEASE"
-        optimize "On"
+postbuildcommands{
+  ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+}
 
-    filter "configurations:Dist"
-        defines "BLZR_DIST"
-        optimize "On"
 
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MD"
+filter "configurations:Debug"
+defines "BLZR_DEBUG"
+symbols "On"
 
--- Sandbox project
+filter "configurations:Release"
+defines "BLZR_RELEASE"
+optimize "On"
+
+filter "configurations:Dist"
+defines "BLZR_DIST"
+optimize "On"
+
+filter { "system:windows", "configurations:Release" }
+buildoptions "/MD"
+
 project "Sandbox"
-    location "Sandbox"
-    kind "ConsoleApp"
-    language "C++"
+location "Sandbox"
+kind "ConsoleApp"
+language "C++"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("obj/" .. outputdir .. "/%{prj.name}")
+targetdir("bin/" .. outputdir .. "/%{prj.name}")
+objdir("obj/" .. outputdir .. "/%{prj.name}")
 
-    files
-    {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
-    }
+files
+{
+  "%{prj.name}/src/**.h",
+  "%{prj.name}/src/**.cpp"
+}
 
-    includedirs
-    {
-        "Blazr/vendor/spdlog/include",
-        "Blazr/src"
-    }
+includedirs
+{
+  "Blazr/vendor/spdlog/include",
+  "Blazr/src"
+}
 
-    links
-    {
-        "Blazr"
-    }
+links {
+  "Blazr"
+}
 
-    filter "system:windows"
-        cppdialect "C++20"
-        staticruntime "On"
-        systemversion "latest"
+filter "system:windows"
+cppdialect "C++20"
+staticruntime "On"
+systemversion "latest"
 
-        defines
-        {
-            "BLZR_PLATFORM_WINDOWS",
-        }
+defines
+{
+  "BLZR_PLATFORM_WINDOWS",
+}
 
-    filter "system:linux"
-        cppdialect "C++20"
-        staticruntime "On"
-        systemversion "latest"
+filter "system:linux"
+cppdialect "C++20"
+staticruntime "On"
+systemversion "latest"
 
-        defines
-        {
-            "BLZR_PLATFORM_LINUX",
-        }
+defines
+{
+  "BLZR_PLATFORM_LINUX",
+}
 
-    filter "configurations:Debug"
-        defines "BLZR_DEBUG"
-        symbols "On"
+filter "configurations:Debug"
+defines "BLZR_DEBUG"
+symbols "On"
 
-    filter "configurations:Release"
-        defines "BLZR_RELEASE"
-        optimize "On"
+filter "configurations:Release"
+defines "BLZR_RELEASE"
+optimize "On"
 
-    filter "configurations:Dist"
-        defines "BLZR_DIST"
-        optimize "On"
+filter "configurations:Dist"
+defines "BLZR_DIST"
+optimize "On"
 
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MD"
+filter { "system:windows", "configurations:Release" }
+buildoptions "/MD"
