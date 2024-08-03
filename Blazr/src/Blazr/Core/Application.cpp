@@ -1,4 +1,5 @@
 // clang-format off
+#include "../../blzrpch.h"
 #include "Application.h"
 #include "../Events/ApplicationEvent.h"
 #include "Log.h"
