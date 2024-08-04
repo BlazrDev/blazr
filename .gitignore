@@ -1,4 +1,5 @@
 **/bin/
-obj/
+**/obj/
 *.log
 **/Makefile
+.clangd

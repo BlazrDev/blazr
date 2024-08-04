@@ -1,5 +1,5 @@
 #include "Log.h"
-#include "../../blzrpch.h"
+#include "blzrpch.h"
 
 namespace Blazr {
 std::shared_ptr<spdlog::logger> Log::s_CoreLogger;

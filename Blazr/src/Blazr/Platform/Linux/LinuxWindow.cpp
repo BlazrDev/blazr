@@ -1,10 +1,10 @@
 #include "LinuxWindow.h"
-#include "../../../blzrpch.h"
-#include "../../Core/Core.h"
-#include "../../Core/Log.h"
-#include "../../Events/ApplicationEvent.h"
-#include "../../Events/KeyEvent.h"
-#include "../../Events/MouseEvent.h"
+#include "Blazr/Core/Core.h"
+#include "Blazr/Core/Log.h"
+#include "Blazr/Events/ApplicationEvent.h"
+#include "Blazr/Events/KeyEvent.h"
+#include "Blazr/Events/MouseEvent.h"
+#include "blzrpch.h"
 
 namespace Blazr {
 static bool s_GLFWInitialized = false;
@@ -41,10 +41,15 @@ void LinuxWindow::init(const WindowProperties &properties) {
     }
     s_GLFWInitialized = success;
   }
+
   m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height,
                               properties.Title.c_str(), NULL, NULL);
   glfwMakeContextCurrent(m_Window);
   glfwSetWindowUserPointer(m_Window, &m_Data);
+  if (glewInit() != GLEW_OK) {
+    std::cerr << "Failed to initialize GLEW" << std::endl;
+    return;
+  }
   setVSync(true);
 
   // Set GLFW callbacks
@@ -87,24 +92,23 @@ void LinuxWindow::init(const WindowProperties &properties) {
     }
   });
   //
-  glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
-                                          int action, int mods) {
-    WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+  glfwSetMouseButtonCallback(
+      m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-    switch (action) {
-    case GLFW_PRESS: {
-      MouseButtonPressedEvent event(button);
-      data.eventCallback(event);
-      break;
-    }
-    case GLFW_RELEASE: {
-      MouseButtonReleasedEvent event(button);
-      data.eventCallback(event);
-      break;
-    }
-    }
-
-  });
+        switch (action) {
+        case GLFW_PRESS: {
+          MouseButtonPressedEvent event(button);
+          data.eventCallback(event);
+          break;
+        }
+        case GLFW_RELEASE: {
+          MouseButtonReleasedEvent event(button);
+          data.eventCallback(event);
+          break;
+        }
+        }
+      });
   //
   glfwSetScrollCallback(
       m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
@@ -124,10 +128,11 @@ void LinuxWindow::init(const WindowProperties &properties) {
 void LinuxWindow::shutdown() { glfwDestroyWindow(m_Window); }
 
 void LinuxWindow::onUpdate() {
-  glfwPollEvents();
+  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
   glfwSwapBuffers(m_Window);
+  glfwPollEvents();
 }
-
 void LinuxWindow::setVSync(bool enabled) {
   if (enabled)
     glfwSwapInterval(1);
@@ -140,6 +145,6 @@ bool LinuxWindow::isVSync() const { return m_Data.vsync; }
 
 void LinuxWindow::setEventCallback(
     const LinuxWindow::EventCallbackFn &callback) {
-    m_Data.eventCallback = callback;
+  m_Data.eventCallback = callback;
 }
 } // namespace Blazr

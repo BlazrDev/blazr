@@ -1,4 +1,4 @@
-#include "../../Blazr/src/Blazr.h"
+#include "Blazr.h"
 #include <iostream>
 
 class Sandbox : public Blazr::Application {

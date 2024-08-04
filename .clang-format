@@ -1,0 +1,13 @@
+IncludeCategories:
+  - Regex: '^"(GL/glew.h)"'
+    Priority: 1
+  - Regex: '^"../../../vendor/GLFW/include/GLFW/glfw3.h"'
+    Priority: 2
+  - Regex: '^"../../blzrpch.h"'
+    Priority: 3
+  - Regex: '^"../Events/Event.h"'
+    Priority: 4
+  - Regex: '^"Core.h"'
+    Priority: 5
+  - Regex: '.*'
+    Priority: 6
