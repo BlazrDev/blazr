@@ -3,7 +3,6 @@
 #include "../../../vendor/GLFW/include/GLFW/glfw3.h"
 #include "Core.h"
 #include "Blazr/Events/Event.h"
-// #include "GLFW/glfw3.h"
 #include "blzrpch.h"
 
 namespace Blazr {

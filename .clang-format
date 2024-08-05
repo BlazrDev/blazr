@@ -1,13 +1,10 @@
 IncludeCategories:
-  - Regex: '^"(GL/glew.h)"'
+  - Regex: '.*blzrpch.h'
     Priority: 1
-  - Regex: '^"../../../vendor/GLFW/include/GLFW/glfw3.h"'
+  - Regex: '.*"GL/glew.h"'
     Priority: 2
-  - Regex: '^"../../blzrpch.h"'
+  - Regex: '.*GLFW/glfw3.h"'
     Priority: 3
-  - Regex: '^"../Events/Event.h"'
-    Priority: 4
-  - Regex: '^"Core.h"'
-    Priority: 5
   - Regex: '.*'
-    Priority: 6
+    Priority: 8
+IncludeIsMainRegex: '(blzrpch|GL/glew|GLFW/glfw3)\.h'
