@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Blazr/Core/Window.h"
 #include "blzrpch.h"
+#include "Blazr/Core/Window.h"
+#include "Blazr/Renderer/RenderContext.h"
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {
 public:
@@ -21,6 +22,7 @@ private:
 
 private:
   GLFWwindow *m_Window;
+  Scope<RenderContext> m_RenderContext;
   unsigned int VAO;
   unsigned int shaderProgram;
 

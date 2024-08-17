@@ -1,10 +1,10 @@
-#include "LinuxWindow.h"
+#include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
-#include "blzrpch.h"
+#include "LinuxWindow.h"
 
 const char *vertexShaderSource =
     "#version 330 core\n"
@@ -60,7 +60,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
   m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height,
                               properties.Title.c_str(), NULL, NULL);
-  glfwMakeContextCurrent(m_Window);
+  m_RenderContext = RenderContext::Create(m_Window);
+  m_RenderContext->Init();
   glfwSetWindowUserPointer(m_Window, &m_Data);
   if (glewInit() != GLEW_OK) {
     std::cerr << "Failed to initialize GLEW" << std::endl;
@@ -139,83 +140,13 @@ void LinuxWindow::init(const WindowProperties &properties) {
         MouseMovedEvent event((float)xPos, (float)yPos);
         data.eventCallback(event);
       });
-
-  unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glCompileShader(vertexShader);
-  int success;
-  char infoLog[512];
-  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-              << infoLog << std::endl;
-  }
-  unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  glCompileShader(fragmentShader);
-
-  unsigned int shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-  glLinkProgram(shaderProgram);
-  glUseProgram(shaderProgram);
-
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-
-  // Setup VAO and VBO
-  float vertices[] = {
-      // first triangle
-      0.5f, 0.5f, 0.0f,   // top right
-      0.5f, -0.5f, 0.0f,  // bottom right
-      -0.5f, 0.5f, 0.0f,  // top left
-                          // second triangle
-      0.5f, -0.5f, 0.0f,  // bottom right
-      -0.5f, -0.5f, 0.0f, // bottom left
-      -0.5f, 0.5f, 0.0f   // top left
-  };
-
-  unsigned int VBO;
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-  unsigned int VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
-  glUseProgram(shaderProgram); // Use the shader program
-  // glEnable(GL_BLEND);
-  // glBlendFunc(GL_ONE, GL_ZERO);
-
-  // Store VAO and shaderProgram in your class
-  this->VAO = VAO;
-  this->shaderProgram = shaderProgram;
 }
 
 void LinuxWindow::shutdown() { glfwDestroyWindow(m_Window); }
 
 void LinuxWindow::onUpdate() {
-  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  float timeValue = glfwGetTime();
-  float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-  float redValue = (sin(timeValue) / 2.0f) + 0.75f;
-  float blue = (sin(timeValue) / 2.0f) + 0.25f;
-  int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-  glUniform4f(vertexColorLocation, redValue, greenValue, blue, 1.0f);
-  glBindVertexArray(VAO);           // Bind the VAO
-  glDrawArrays(GL_TRIANGLES, 0, 6); // Draw the triangle
-
-  glfwSwapBuffers(m_Window);
   glfwPollEvents();
+  m_RenderContext->SwapBuffers();
 }
 void LinuxWindow::setVSync(bool enabled) {
   if (enabled)
