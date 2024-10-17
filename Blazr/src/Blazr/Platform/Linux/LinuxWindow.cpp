@@ -1,10 +1,10 @@
-#include "LinuxWindow.h"
+#include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
-#include "blzrpch.h"
+#include "LinuxWindow.h"
 
 namespace Blazr {
 static bool s_GLFWInitialized = false;
@@ -44,7 +44,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
   m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height,
                               properties.Title.c_str(), NULL, NULL);
-  glfwMakeContextCurrent(m_Window);
+  m_RenderContext = RenderContext::Create(m_Window);
+  m_RenderContext->Init();
   glfwSetWindowUserPointer(m_Window, &m_Data);
   if (glewInit() != GLEW_OK) {
     std::cerr << "Failed to initialize GLEW" << std::endl;
@@ -132,6 +133,7 @@ void LinuxWindow::onUpdate() {
   glClear(GL_COLOR_BUFFER_BIT);
   glfwSwapBuffers(m_Window);
   glfwPollEvents();
+  m_RenderContext->SwapBuffers();
 }
 void LinuxWindow::setVSync(bool enabled) {
   if (enabled)

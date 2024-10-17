@@ -58,7 +58,28 @@
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\Buffer.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\RenderContext.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\Shader.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\Texture.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\VertexArray.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\stb_image.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\blzrpch.h" />
@@ -73,7 +94,28 @@
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\Buffer.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\Shader.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\Texture.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\stb_image.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\blzrpch.cpp" />

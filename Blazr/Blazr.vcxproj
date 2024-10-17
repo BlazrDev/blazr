@@ -169,14 +169,28 @@
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
+    <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
+    <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Blazr\Renderer\RenderContext.h" />
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\Blazr\Renderer\Shader.h" />
+    <ClInclude Include="src\Blazr\Renderer\Texture.h" />
+    <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blazr\Core\Application.cpp" />
     <ClCompile Include="src\Blazr\Core\Log.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
