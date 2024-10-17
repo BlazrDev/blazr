@@ -58,6 +58,7 @@ includedirs
   "%{prj.name}/vendor/spdlog/include",
   "%{prj.name}/src",
   "%{prj.name}/vendor/GLFW/include",
+  "%{prj.name}/vendor/glm/include",
   "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW}"
 }

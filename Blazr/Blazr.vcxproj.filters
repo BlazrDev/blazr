@@ -73,6 +73,9 @@
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\RendererAPI.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Shader.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -110,6 +113,9 @@
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\RendererAPI.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp">

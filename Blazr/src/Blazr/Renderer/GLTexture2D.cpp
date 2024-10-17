@@ -98,4 +98,7 @@ void GLTexture2D::SetData(void *data, uint32_t size) {
 void GLTexture2D::Bind(uint32_t slot) const {
   glBindTextureUnit(slot, m_RendererID);
 }
+const TextureSpecification &GLTexture2D::GetSpecification() const {
+  return m_Specification;
+}
 } // namespace Blazr

@@ -2,6 +2,7 @@
 
 #include "Blazr/Core/Window.h"
 #include "Blazr/Renderer/RenderContext.h"
+#include "Blazr/Renderer/RendererAPI.h"
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {
 public:
@@ -20,8 +21,9 @@ private:
   virtual void shutdown();
 
 private:
-  GLFWwindow *m_Window;
+  // GLFWwindow *m_Window;
   Scope<RenderContext> m_RenderContext;
+  RendererAPI *m_Renderer;
   unsigned int VAO;
   unsigned int shaderProgram;
 
