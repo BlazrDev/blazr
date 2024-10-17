@@ -171,6 +171,7 @@
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h" />
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h" />
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Blazr\Renderer\Shader.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp" />

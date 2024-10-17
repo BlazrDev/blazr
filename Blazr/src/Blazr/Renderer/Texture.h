@@ -17,6 +17,7 @@ struct TextureSpecification {
 
 class Texture {
 public:
+  Texture();
   Texture(const TextureSpecification &specification);
   Texture(const std::string &path);
   virtual ~Texture() = default;

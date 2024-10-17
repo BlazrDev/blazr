@@ -64,6 +64,9 @@
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -98,6 +101,9 @@
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp">
