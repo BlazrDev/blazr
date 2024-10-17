@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -104,7 +104,7 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -133,7 +133,7 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -164,6 +164,11 @@
     <ClInclude Include="src\Blazr\Core\Log.h" />
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />
     <ClInclude Include="src\Blazr\Core\Window.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h" />
+    <ClInclude Include="src\Blazr\Ecs\Entity.h" />
+    <ClInclude Include="src\Blazr\Ecs\Registry.h" />
     <ClInclude Include="src\Blazr\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Blazr\Events\Event.h" />
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
@@ -171,8 +176,10 @@
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h" />
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h" />
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\Blazr\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Blazr\Renderer\Shader.h" />
     <ClInclude Include="src\Blazr\Renderer\Texture.h" />
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
@@ -182,11 +189,15 @@
   <ItemGroup>
     <ClCompile Include="src\Blazr\Core\Application.cpp" />
     <ClCompile Include="src\Blazr\Core\Log.cpp" />
+    <ClCompile Include="src\Blazr\Ecs\Entity.cpp" />
+    <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Texture.cpp" />
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Blazr">
@@ -6,6 +6,12 @@
     </Filter>
     <Filter Include="Blazr\Core">
       <UniqueIdentifier>{78CF7EA6-6487-C0F3-CD8E-994FB9655BE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Ecs">
+      <UniqueIdentifier>{AABF87F5-162A-3C6C-5F68-ED11CB111AC1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Ecs\Components">
+      <UniqueIdentifier>{7F469B84-6BD5-244E-14F4-3849006235F4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Events">
       <UniqueIdentifier>{049F9246-F001-22EB-9987-5AA185C9ED6D}</UniqueIdentifier>
@@ -43,6 +49,21 @@
     <ClInclude Include="src\Blazr\Core\Window.h">
       <Filter>Blazr\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Entity.h">
+      <Filter>Blazr\Ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Registry.h">
+      <Filter>Blazr\Ecs</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Events\ApplicationEvent.h">
       <Filter>Blazr\Events</Filter>
     </ClInclude>
@@ -64,10 +85,16 @@
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\RendererAPI.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Shader.h">
@@ -91,6 +118,12 @@
     <ClCompile Include="src\Blazr\Core\Log.cpp">
       <Filter>Blazr\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Entity.cpp">
+      <Filter>Blazr\Ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Registry.cpp">
+      <Filter>Blazr\Ecs</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClCompile>
@@ -100,10 +133,16 @@
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\RendererAPI.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp">

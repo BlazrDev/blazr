@@ -11,4 +11,5 @@ Ref<Texture2D> Texture2D::Create(const TextureSpecification &specification) {
 Ref<Texture2D> Texture2D::Create(const std::string &path) {
   return CreateRef<GLTexture2D>(path);
 }
+
 } // namespace Blazr
