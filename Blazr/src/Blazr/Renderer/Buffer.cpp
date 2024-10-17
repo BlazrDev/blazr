@@ -5,8 +5,6 @@
 
 namespace Blazr {
 
-// VertexBuffer
-
 VertexBuffer::VertexBuffer(uint32_t size) {
 
   glCreateBuffers(1, &m_RendererID);
@@ -39,8 +37,6 @@ Ref<VertexBuffer> VertexBuffer::Create(uint32_t size) {
 Ref<VertexBuffer> VertexBuffer::Create(float *vertices, uint32_t size) {
   return CreateRef<VertexBuffer>(vertices, size);
 }
-
-// IndexBuffer
 
 IndexBuffer::IndexBuffer(uint32_t *indices, uint32_t count) : m_Count(count) {
 

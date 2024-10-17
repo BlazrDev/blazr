@@ -1,6 +1,5 @@
 #pragma once
 
-#include "blzrpch.h"
 #include "Blazr/Core/Window.h"
 #include "Blazr/Renderer/RenderContext.h"
 namespace Blazr {
