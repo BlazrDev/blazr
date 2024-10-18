@@ -15,10 +15,11 @@ bool RendererAPI::Init() {
 
 	// TODO remove shader test code
 
-	std::string vertexShaderPath = "shaders/vertex/TextureTestShader.vert";
-	std::string fragmentShaderPath = "shaders/fragment/TextureTestShader.frag";
+	std::string vertexShaderPath = "shaders/vertex/ColorVertexShader.vert";
+	std::string fragmentShaderPath =
+		"shaders/fragment/ColorFragmentShader.frag";
 
-	window = glfwCreateWindow(800, 600, "OpenGL Renderer", nullptr, nullptr);
+	window = glfwCreateWindow(1280, 720, "OpenGL Renderer", nullptr, nullptr);
 	if (!window) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -108,7 +109,7 @@ void RendererAPI::AddRectangleToBatch(float x, float y, float width,
 }
 
 void RendererAPI::DrawRectangle(float x, float y, float width, float height,
-								const glm::vec4 color, const Camera2D &camera) {
+								const glm::vec4 color) {
 	AddRectangleToBatch(x, y, width, height, color);
 }
 
@@ -124,5 +125,11 @@ void RendererAPI::Shutdown() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
+
+void RendererAPI::CreateCamera(int width, int height) {
+	m_Camera = Camera2D(width, height);
+}
+
+Camera2D &RendererAPI::GetCamera() { return m_Camera; }
 
 } // namespace Blazr

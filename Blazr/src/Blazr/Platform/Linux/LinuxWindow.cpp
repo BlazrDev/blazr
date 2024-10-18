@@ -44,23 +44,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	m_Data.title = properties.Title;
 	m_Data.width = width;
 	m_Data.height = height;
+	m_Data.m_Renderer->CreateCamera(800.0f, 600.0f);
 
 	BLZR_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title,
 				   properties.Width, properties.Height);
-	if (!s_GLFWInitialized) {
-		int success = glfwInit();
-		if (!success) {
-			BLZR_CORE_ERROR("Could not initialize GLFW!");
-			glfwSetErrorCallback(GLFWErorCallback);
-			glfwTerminate();
-		}
-		s_GLFWInitialized = success;
-	}
-
-	if (glewInit() != GLEW_OK) {
-		std::cerr << "Failed to initialize GLEW" << std::endl;
-		return;
-	}
 
 	setVSync(true);
 
@@ -145,9 +132,14 @@ void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
 
 void LinuxWindow::onUpdate() {
 
-	Camera2D camera(800.0f, 600.0f);
+	Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	camera.SetPosition(glm::vec2(0.0f, 0.0f));
-	camera.SetScale(1.0f);
+	camera.SetScale(10.0f);
+	auto projection = camera.GetCameraMatrix();
+	GLuint location = glGetUniformLocation(
+		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
+
+	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
 
 	m_Data.m_Renderer->BeginBatch();
 
@@ -155,72 +147,104 @@ void LinuxWindow::onUpdate() {
 	Entity entity2 = Entity(*registry, "Ent1", "G1");
 
 	auto &transform2 = entity2.AddComponent<TransformComponent>(
-		TransformComponent{.position = glm::vec2(-1.0f, -1.0f),
+		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
 						   .scale = glm::vec2(1.0f, 1.0f),
 						   .rotation = 0.0f});
 
 	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = 0.2f, .height = 0.2f, .startX = 0, .startY = 0});
+		.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
 
-	// m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width /
-	// 2, 								 transform2.position.y - sprite2.height
-	// / 2, 								 sprite2.width, sprite2.height,
-	// {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+									 transform2.position.y - sprite2.height / 2,
+									 sprite2.width, sprite2.height,
+									 {1.0f, 1.0f, 0.0f, 1.0f});
+
+	// float vertices[] = {
+	// 	40.0f,	40.0f,	0.0f, // Vertex 1 (x, y, z)
+	// 	260.0f, 40.0f,	0.0f, // Vertex 2 (x, y, z)
+	// 	260.0f, 260.0f, 0.0f, // Vertex 3 (x, y, z)
+	// };
+	// GLuint VAO, VBO;
+	// glGenVertexArrays(1, &VAO);
+	// glBindVertexArray(VAO);
+	//
+	// // 2. Generate and bind the Vertex Buffer Object
+	// glGenBuffers(1, &VBO);
+	// glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+	// GL_STATIC_DRAW);
+	//
+	// // 3. Specify vertex attributes (position in this case)
+	// // Enable the attribute (location 0 here corresponds to position)
+	// glEnableVertexAttribArray(0);
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+	// 					  (void *)0);
+	//
+	// // 4. Unbind the VBO and VAO to reset state (optional, but good practice)
+	// glBindBuffer(GL_ARRAY_BUFFER, 0);
+	// glBindVertexArray(0);
+	//
+	// // 5. In the render loop, bind the VAO and draw the triangle
+	// glBindVertexArray(VAO);
+	// glDrawArrays(GL_TRIANGLES, 0, 3); // Draw the triangle
+	// glBindVertexArray(0);			  // Unbind the VAO after drawing
 
 	// TODO remove tmp test code
-	float vertices[] = {
-		// Positions          // Texture Coords
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
-		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
-		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
-		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2, // First triangle
-		2, 3, 0	 // Second triangle
-	};
-
-	// Create buffers and array objects
-	GLuint VAO, VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	// Bind VAO and VBO/EBO
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-				 GL_STATIC_DRAW);
-
-	// Set vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-						  (void *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-						  (void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-
-	Texture2D texture = Texture2D("assets/chammy.png");
-	glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
-									 "texture"),
-				0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.GetID());
+	// float vertices[] = {
+	// 	// Positions          // Texture Coords
+	// 	40.0f,	40.0f,	0.0f, 0.0f, 0.0f, // Bottom-left
+	// 	260.0f, 40.0f,	0.0f, 1.0f, 0.0f, // Bottom-right
+	// 	260.0f, 260.0f, 0.0f, 1.0f, 1.0f, // Top-right
+	// 	40.0f,	260.0f, 0.0f, 0.0f, 1.0f  // Top-left
+	// };
+	//
+	// unsigned int indices[] = {
+	// 	0, 1, 2, // First triangle
+	// 	2, 3, 0	 // Second triangle
+	// };
+	//
+	// // Create buffers and array objects
+	// GLuint VAO, VBO, EBO;
+	// glGenVertexArrays(1, &VAO);
+	// glGenBuffers(1, &VBO);
+	// glGenBuffers(1, &EBO);
+	//
+	// // Bind VAO and VBO/EBO
+	// glBindVertexArray(VAO);
+	//
+	// glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+	// GL_STATIC_DRAW);
+	//
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+	// 			 GL_STATIC_DRAW);
+	//
+	// // Set vertex attributes
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+	// 					  (void *)0);
+	// glEnableVertexAttribArray(0);
+	// glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+	// 					  (void *)(3 * sizeof(float)));
+	// glEnableVertexAttribArray(1);
+	//
+	// glBindVertexArray(0);
+	//
+	// Texture2D texture = Texture2D("assets/chammy.png");
+	// glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
+	// 								 "texture"),
+	// 			0);
+	// glActiveTexture(GL_TEXTURE0);
+	// glBindTexture(GL_TEXTURE_2D, texture.GetID());
 
 	m_Data.m_Renderer->EndBatch();
 	m_Data.m_Renderer->Flush();
+	camera.Update();
 
 	m_Data.m_Renderer->PollEvents();
 	// glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	// glBindVertexArray(VAO);
+	// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	m_Data.m_Renderer->SwapBuffers();
 }
 

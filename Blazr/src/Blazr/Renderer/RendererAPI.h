@@ -27,7 +27,7 @@ class RendererAPI {
 	void PollEvents();
 
 	void DrawRectangle(float x, float y, float width, float height,
-					   const glm::vec4 color, const Camera2D &camera);
+					   const glm::vec4 color);
 
 	bool WindowShouldClose() const;
 
@@ -35,6 +35,10 @@ class RendererAPI {
 
 	GLFWwindow *getWindow() const { return window; }
 	void Shutdown();
+
+	void CreateCamera(int width, int height);
+
+	Camera2D &GetCamera();
 
   private:
 	void AddRectangleToBatch(float x, float y, float width, float height,
@@ -54,6 +58,7 @@ class RendererAPI {
 
 	GLFWwindow *window = nullptr;
 	std::shared_ptr<Shader> m_ShaderProgram;
+	Camera2D m_Camera;
 };
 
 } // namespace Blazr

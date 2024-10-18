@@ -55,7 +55,7 @@ class BLZR_API LinuxWindow : public Window {
 			m_Renderer->DrawRectangle(transform.position.x - sprite.width / 2,
 									  transform.position.y - sprite.height / 2,
 									  sprite.width, sprite.height,
-									  {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+									  {1.0f, 0.0f, 0.0f, 1.0f});
 			m_Renderer->EndBatch();
 			m_Renderer->Flush();
 			m_Renderer->SwapBuffers();
