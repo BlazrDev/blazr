@@ -3,85 +3,45 @@
 #include "Shader.h"
 #include "stb_image.h"
 
-Blazr::Shader::Shader(const char *vertexPath, const char *fragmentPath) {
-  std::string vertexCode;
-  std::string fragmentCode;
-  std::ifstream vShaderFile;
-  std::ifstream fShaderFile;
-  vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-  fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+namespace Blazr {
+Shader::Shader(GLuint program, const std::string &vertexPath,
+			   const std::string &fragmentPath)
+	: m_ShaderProgramID(program), m_sVertexPath(vertexPath),
+	  m_sFragmentPath(fragmentPath) {}
 
-  try {
-    // opening the files
-    vShaderFile.open(vertexPath);
-    fShaderFile.open(fragmentPath);
-    std::stringstream vShaderStream, fShaderStream;
+GLuint Shader::GetUniformLocation(const std::string &name) {
+	auto uniformItr = m_UniformLocationMap.find(name);
+	if (uniformItr != m_UniformLocationMap.end()) {
+		return uniformItr->second;
+	}
 
-    // reading files into streams
-    vShaderStream << vShaderFile.rdbuf();
-    fShaderStream << fShaderFile.rdbuf();
+	GLuint location = glGetUniformLocation(m_ShaderProgramID, name.c_str());
+	if (location == GL_INVALID_INDEX) {
+		BLZR_CORE_ERROR("Uniform {0} not found in shader.", name);
+		return -1;
+	}
 
-    vShaderFile.close();
-    fShaderFile.close();
-
-    vertexCode = vShaderStream.str();
-    fragmentCode = fShaderStream.str();
-  } catch (std::ifstream::failure e) {
-    BLZR_CORE_ERROR("Error while reading shader file: {0}", e.what());
-  }
-
-  const char *vShaderCode = vertexCode.c_str();
-  const char *fShaderCode = fragmentCode.c_str();
-
-  // compile the shaders
-  unsigned int vShader, fShader;
-  int success;
-  char infoLog[512];
-
-  vShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vShader, 1, &vShaderCode, NULL);
-  glCompileShader(vShader);
-  glGetShaderiv(vShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(vShader, 512, NULL, infoLog);
-    BLZR_CORE_ERROR("Error while compiling vertex shader: {0}", infoLog);
-  }
-
-  fShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fShader, 1, &fShaderCode, NULL);
-  glCompileShader(fShader);
-  glGetShaderiv(fShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(fShader, 512, NULL, infoLog);
-    BLZR_CORE_ERROR("Error while compiling fragment shader: {0}", infoLog);
-  }
-
-  ID = glCreateProgram();
-  glAttachShader(ID, vShader);
-  glAttachShader(ID, fShader);
-  glLinkProgram(ID);
-
-  glGetProgramiv(ID, GL_LINK_STATUS, &success);
-
-  if (!success) {
-    glGetProgramInfoLog(ID, 512, NULL, infoLog);
-    BLZR_CORE_ERROR("Error while creating shader: {0}", infoLog);
-  }
-
-  glDeleteShader(vShader);
-  glDeleteShader(fShader);
+	m_UniformLocationMap.emplace(name, location);
+	return location;
 }
 
-void Blazr::Shader::use() { glUseProgram(ID); }
-
-void Blazr::Shader::setBool(const std::string &name, bool value) const {
-  glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+Shader::~Shader() {
+	if (m_ShaderProgramID > 0) {
+		glDeleteProgram(m_ShaderProgramID);
+	}
 }
 
-void Blazr::Shader::setInt(const std::string &name, int value) const {
-  glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+void Shader::SetUniformInt(const std::string &name, int value) {
+	glUniform1i(GetUniformLocation(name), value);
 }
 
-void Blazr::Shader::setFloat(const std::string &name, float value) const {
-  glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+void Shader::SetUniformMat4(const std::string &name, glm::mat4 mat) {
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
+
+void Shader::Enable() { glUseProgram(m_ShaderProgramID); }
+
+void Shader::Disable() { glUseProgram(0); }
+
+GLuint Shader::GetProgramID() const { return m_ShaderProgramID; }
+} // namespace Blazr

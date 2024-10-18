@@ -1,6 +1,7 @@
 #pragma once
 #include "Buffer.h"
 #include "Camera2D.h"
+#include "Shader.h"
 #include "Vertex.h"
 #include "VertexArray.h"
 #include <GL/glew.h>
@@ -30,6 +31,8 @@ class RendererAPI {
 
 	bool WindowShouldClose() const;
 
+	GLuint GetShaderProgramID() const;
+
 	GLFWwindow *getWindow() const { return window; }
 	void Shutdown();
 
@@ -50,6 +53,7 @@ class RendererAPI {
 	Ref<IndexBuffer> m_IndexBuffer;
 
 	GLFWwindow *window = nullptr;
+	std::shared_ptr<Shader> m_ShaderProgram;
 };
 
 } // namespace Blazr

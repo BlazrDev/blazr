@@ -5,6 +5,7 @@
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
 #include "Blazr/Renderer/RendererAPI.h"
+#include "Blazr/Renderer/Texture2D.h"
 #include "LinuxWindow.h"
 
 namespace Blazr {
@@ -146,7 +147,7 @@ void LinuxWindow::onUpdate() {
 
 	Camera2D camera(800.0f, 600.0f);
 	camera.SetPosition(glm::vec2(0.0f, 0.0f));
-	camera.SetZoom(1.0f);
+	camera.SetScale(1.0f);
 
 	m_Data.m_Renderer->BeginBatch();
 
@@ -161,16 +162,66 @@ void LinuxWindow::onUpdate() {
 	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
 		.width = 0.2f, .height = 0.2f, .startX = 0, .startY = 0});
 
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
-									 transform2.position.y - sprite2.height / 2,
-									 sprite2.width, sprite2.height,
-									 {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+	// m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width /
+	// 2, 								 transform2.position.y - sprite2.height
+	// / 2, 								 sprite2.width, sprite2.height,
+	// {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+
+	// TODO remove tmp test code
+	float vertices[] = {
+		// Positions          // Texture Coords
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
+		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
+		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
+		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, // First triangle
+		2, 3, 0	 // Second triangle
+	};
+
+	// Create buffers and array objects
+	GLuint VAO, VBO, EBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+
+	// Bind VAO and VBO/EBO
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+				 GL_STATIC_DRAW);
+
+	// Set vertex attributes
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+						  (void *)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+						  (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+
+	Texture2D texture = Texture2D("assets/chammy.png");
+	glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
+									 "texture"),
+				0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.GetID());
 
 	m_Data.m_Renderer->EndBatch();
 	m_Data.m_Renderer->Flush();
 
-	m_Data.m_Renderer->SwapBuffers();
 	m_Data.m_Renderer->PollEvents();
+	// glUseProgram(shaderProgram);
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	m_Data.m_Renderer->SwapBuffers();
 }
 
 void LinuxWindow::setVSync(bool enabled) {

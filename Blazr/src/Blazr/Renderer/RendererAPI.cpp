@@ -1,4 +1,7 @@
 #include "RendererAPI.h"
+#include "Shader.h"
+#include "ShaderLoader.h"
+#include "Texture2D.h"
 #include "ext/vector_float3.hpp"
 #include <iostream>
 
@@ -9,6 +12,11 @@ bool RendererAPI::Init() {
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		return false;
 	}
+
+	// TODO remove shader test code
+
+	std::string vertexShaderPath = "shaders/TextureTestShader.vert";
+	std::string fragmentShaderPath = "shaders/TextureTestShader.frag";
 
 	window = glfwCreateWindow(800, 600, "OpenGL Renderer", nullptr, nullptr);
 	if (!window) {
@@ -26,6 +34,8 @@ bool RendererAPI::Init() {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	m_ShaderProgram =
+		ShaderLoader::Create(vertexShaderPath, fragmentShaderPath);
 
 	m_VertexArray = VertexArray::Create();
 
@@ -50,6 +60,8 @@ bool RendererAPI::Init() {
 	m_IndexBuffer = IndexBuffer::Create(indices, MaxIndices);
 	m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
+	// TODO remove test code for texture
+	m_ShaderProgram->Enable();
 	return true;
 }
 
@@ -67,6 +79,10 @@ void RendererAPI::BeginBatch() {
 void RendererAPI::EndBatch() {
 	uint32_t dataSize = (uint32_t)m_VertexBufferData.size() * sizeof(Vertex);
 	m_VertexBuffer->SetData(m_VertexBufferData.data(), dataSize);
+}
+
+GLuint RendererAPI::GetShaderProgramID() const {
+	return m_ShaderProgram->GetProgramID();
 }
 
 void RendererAPI::Flush() {

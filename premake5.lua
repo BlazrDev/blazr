@@ -31,7 +31,6 @@ function build_glew()
     end
 end
 
-build_glew()
 
 include("Blazr/vendor/GLFW")
 

@@ -3,24 +3,46 @@
 
 namespace Blazr {
 
-Camera2D::Camera2D(float width, float height)
-	: width(width), height(height), position(0.0f, 0.0f), zoom(1.0f) {}
-
-void Camera2D::SetPosition(const glm::vec2 &pos) { position = pos; }
-
-glm::vec2 Camera2D::GetPosition() const { return position; }
-
-void Camera2D::SetZoom(float z) { zoom = z; }
-
-float Camera2D::GetZoom() const { return zoom; }
-
-glm::mat4 Camera2D::GetViewMatrix() const {
-	return glm::translate(glm::mat4(1.0f), glm::vec3(-position, 0.0f)) *
-		   glm::scale(glm::mat4(1.0f), glm::vec3(zoom, zoom, 1.0f));
+Camera2D::Camera2D() : Camera2D(640, 480){};
+Camera2D::Camera2D(int width, int height)
+	: m_Width(width), m_Height(height), m_Scale(1.f), m_Position(glm::vec2{0}),
+	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {
+	m_OrthoProjection = glm::ortho(0.f,							// Left
+								   static_cast<float>(m_Width), // Right
+								   0.f,							// Bottom
+								   static_cast<float>(m_Height, // Top
+													  -1.f,		// Near
+													  1.f)		// Far
+	);
 }
 
-glm::mat4 Camera2D::GetProjectionMatrix() const {
-	return glm::ortho(0.0f, width, height, 0.0f);
+void Camera2D::SetPosition(const glm::vec2 &pos) {
+	m_Position = pos;
+	m_bNeedsUpdate = true;
+}
+void Camera2D::SetScale(const float &scale) {
+	m_Scale = scale;
+	m_bNeedsUpdate = true;
+}
+
+glm::vec2 Camera2D::GetPosition() const { return m_Position; }
+
+glm::mat4 Camera2D::GetCameraMatrix() const { return m_CameraMatrix; }
+
+void Camera2D::Update() {
+	if (!m_bNeedsUpdate) {
+		return;
+	}
+
+	// Translate
+	glm::vec3 translate(-m_Position.x, -m_Position.y, 0.f);
+	m_CameraMatrix = glm::translate(m_OrthoProjection, translate);
+
+	// Scale
+	glm::vec3 scale(m_Scale, m_Scale, 0.f);
+	m_CameraMatrix *= glm::scale(glm::mat4(1.f), scale);
+
+	m_bNeedsUpdate = false;
 }
 
 } // namespace Blazr

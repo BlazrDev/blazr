@@ -88,9 +88,6 @@
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h">
-      <Filter>Blazr\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -100,7 +97,10 @@
     <ClInclude Include="src\Blazr\Renderer\Shader.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Renderer\Texture.h">
+    <ClInclude Include="src\Blazr\Renderer\ShaderLoader.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\Texture2D.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Vertex.h">
@@ -139,9 +139,6 @@
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp">
-      <Filter>Blazr\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
@@ -151,7 +148,10 @@
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blazr\Renderer\Texture.cpp">
+    <ClCompile Include="src\Blazr\Renderer\ShaderLoader.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\Texture2D.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Vertex.cpp">

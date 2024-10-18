@@ -40,9 +40,10 @@ class BLZR_API LinuxWindow : public Window {
 		void createRect(float x, float y) {
 			Camera2D camera(800.0f, 600.0f);
 			camera.SetPosition(glm::vec2(0.0f, 0.0f));
-			camera.SetZoom(1.0f);
+			camera.SetScale(1.0f);
 			auto registry = std::make_unique<Blazr::Registry>();
 			Entity entity = Entity(*registry, "Ent1", "G1");
+			m_Renderer->BeginBatch();
 			auto &transform =
 				entity.AddComponent<TransformComponent>(TransformComponent{
 					.position = glm::vec2(2.0f * (x / width) - 1.0f,
@@ -55,6 +56,8 @@ class BLZR_API LinuxWindow : public Window {
 									  transform.position.y - sprite.height / 2,
 									  sprite.width, sprite.height,
 									  {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+			m_Renderer->EndBatch();
+			m_Renderer->Flush();
 			m_Renderer->SwapBuffers();
 			m_Renderer->PollEvents();
 		}

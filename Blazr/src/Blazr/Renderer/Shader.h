@@ -1,22 +1,38 @@
 #pragma once
 #include <GL/glew.h>
+#include <glm.hpp>
 #include <string>
+#include <unordered_map>
 
 namespace Blazr {
 class Shader {
-public:
-  // program ID
-  unsigned int ID;
+  public:
+	Shader(GLuint program, const std::string &vertexPath,
+		   const std::string &fragmentPath);
+	~Shader();
 
-  // constructor which reads and builds the shader
-  Shader(const char *vertexPath, const char *fragmentPath);
+	void SetUniformInt(const std::string &name, int value);
 
-  // use/activate shader
-  void use();
+	void SetUniformMat4(const std::string &name, glm::mat4 mat);
 
-  // utility uniform functions
-  void setBool(const std::string &name, bool value) const;
-  void setInt(const std::string &name, int value) const;
-  void setFloat(const std::string &name, float value) const;
+	GLuint GetProgramID() const;
+
+	std::string GetVertexPath();
+	std::string GetFragmentPath();
+
+	int GetUniformInt(const std::string &name) const;
+	glm::mat4 GetUniformMat4(const std::string &name) const;
+
+	// use/activate shader
+	void Enable();
+	void Disable();
+
+  private:
+	GLuint m_ShaderProgramID;
+	std::string m_sVertexPath, m_sFragmentPath;
+
+	std::unordered_map<std::string, GLuint> m_UniformLocationMap;
+
+	GLuint GetUniformLocation(const std::string &uniformName);
 };
 } // namespace Blazr

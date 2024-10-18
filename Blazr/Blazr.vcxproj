@@ -177,11 +177,11 @@
     <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
     <ClInclude Include="src\Blazr\Renderer\Camera2D.h" />
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Blazr\Renderer\GLTexture2D.h" />
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h" />
     <ClInclude Include="src\Blazr\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Blazr\Renderer\Shader.h" />
-    <ClInclude Include="src\Blazr\Renderer\Texture.h" />
+    <ClInclude Include="src\Blazr\Renderer\ShaderLoader.h" />
+    <ClInclude Include="src\Blazr\Renderer\Texture2D.h" />
     <ClInclude Include="src\Blazr\Renderer\Vertex.h" />
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
@@ -196,11 +196,11 @@
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Blazr\Renderer\GLTexture2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Blazr\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\ShaderLoader.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\Texture2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Vertex.cpp" />
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
