@@ -15,8 +15,8 @@ bool RendererAPI::Init() {
 
 	// TODO remove shader test code
 
-	std::string vertexShaderPath = "shaders/TextureTestShader.vert";
-	std::string fragmentShaderPath = "shaders/TextureTestShader.frag";
+	std::string vertexShaderPath = "shaders/vertex/TextureTestShader.vert";
+	std::string fragmentShaderPath = "shaders/fragment/TextureTestShader.frag";
 
 	window = glfwCreateWindow(800, 600, "OpenGL Renderer", nullptr, nullptr);
 	if (!window) {
