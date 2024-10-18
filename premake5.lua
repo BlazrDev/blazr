@@ -175,3 +175,4 @@ optimize("On")
 
 filter({ "system:windows", "configurations:Release" })
 buildoptions("/MD")
+

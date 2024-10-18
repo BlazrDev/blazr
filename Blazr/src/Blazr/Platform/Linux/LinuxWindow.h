@@ -30,7 +30,6 @@ class BLZR_API LinuxWindow : public Window {
 	unsigned int VAO;
 	unsigned int shaderProgram;
 
-	// Need window data to pass into GLFW for events
 	struct WindowData {
 		std::string title;
 		unsigned int width, height;
@@ -39,6 +38,9 @@ class BLZR_API LinuxWindow : public Window {
 
 		EventCallbackFn eventCallback;
 		void createRect(float x, float y) {
+			Camera2D camera(800.0f, 600.0f);
+			camera.SetPosition(glm::vec2(0.0f, 0.0f));
+			camera.SetZoom(1.0f);
 			auto registry = std::make_unique<Blazr::Registry>();
 			Entity entity = Entity(*registry, "Ent1", "G1");
 			auto &transform =
@@ -52,7 +54,7 @@ class BLZR_API LinuxWindow : public Window {
 			m_Renderer->DrawRectangle(transform.position.x - sprite.width / 2,
 									  transform.position.y - sprite.height / 2,
 									  sprite.width, sprite.height,
-									  {1.0f, 0.0f, 0.0f, 1.0f});
+									  {1.0f, 0.0f, 0.0f, 1.0f}, camera);
 			m_Renderer->SwapBuffers();
 			m_Renderer->PollEvents();
 		}

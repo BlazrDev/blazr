@@ -7,28 +7,14 @@
 #include "Blazr/Renderer/RendererAPI.h"
 #include "LinuxWindow.h"
 
-const char *vertexShaderSource =
-	"#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n"
-	"void main()\n"
-	"{\n"
-	"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-	"}\0";
-
-const char *fragmentShaderSource = "#version 330 core\n"
-								   "out vec4 FragColor;\n"
-								   "uniform vec4 ourColor;\n"
-								   "void main()\n"
-								   "{\n"
-								   "   FragColor = ourColor;\n"
-								   "}\0";
-
 namespace Blazr {
+
 static bool s_GLFWInitialized = false;
 
 static void GLFWErorCallback(int error, const char *description) {
 	BLZR_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 }
+
 Window *Window::create(const WindowProperties &properties) {
 	return new LinuxWindow(properties);
 }
@@ -44,7 +30,12 @@ unsigned int LinuxWindow::getWidth() const { return m_Data.width; }
 
 void LinuxWindow::init(const WindowProperties &properties) {
 	m_Data.m_Renderer = new RendererAPI();
-	m_Data.m_Renderer->Init();
+
+	if (!m_Data.m_Renderer->Init()) {
+		BLZR_CORE_ERROR("Failed to initialize RendererAPI");
+		return;
+	}
+
 	m_Window = m_Data.m_Renderer->getWindow();
 	int width, height;
 	glfwGetWindowSize(m_Window, &width, &height);
@@ -65,18 +56,15 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		s_GLFWInitialized = success;
 	}
 
-	// m_Window = glfwCreateWindow((int)properties.Width,
-	// (int)properties.Height, properties.Title.c_str(), NULL, NULL);
-	m_RenderContext = RenderContext::Create(m_Window);
-	m_RenderContext->Init();
-	glfwSetWindowUserPointer(m_Window, &m_Data);
 	if (glewInit() != GLEW_OK) {
 		std::cerr << "Failed to initialize GLEW" << std::endl;
 		return;
 	}
+
 	setVSync(true);
 
-	// Set GLFW callbacks
+	glfwSetWindowUserPointer(m_Window, &m_Data);
+
 	glfwSetWindowSizeCallback(
 		m_Window, [](GLFWwindow *window, int width, int height) {
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
@@ -115,13 +103,12 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 		}
 	});
-	//
+
 	glfwSetMouseButtonCallback(
 		m_Window, [](GLFWwindow *window, int button, int action, int mods) {
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 			double xpos, ypos;
 
-			// Dobavi koordinate kursora
 			glfwGetCursorPos(window, &xpos, &ypos);
 			switch (action) {
 			case GLFW_PRESS: {
@@ -137,7 +124,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			}
 			}
 		});
-	//
+
 	glfwSetScrollCallback(
 		m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
@@ -153,9 +140,15 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		});
 }
 
-void LinuxWindow::shutdown() { /* glfwDestroyWindow(m_Window); */ }
+void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
 
 void LinuxWindow::onUpdate() {
+
+	Camera2D camera(800.0f, 600.0f);
+	camera.SetPosition(glm::vec2(0.0f, 0.0f));
+	camera.SetZoom(1.0f);
+
+	m_Data.m_Renderer->BeginBatch();
 
 	auto registry = std::make_unique<Blazr::Registry>();
 	Entity entity2 = Entity(*registry, "Ent1", "G1");
@@ -164,19 +157,20 @@ void LinuxWindow::onUpdate() {
 		TransformComponent{.position = glm::vec2(-1.0f, -1.0f),
 						   .scale = glm::vec2(1.0f, 1.0f),
 						   .rotation = 0.0f});
+
 	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
 		.width = 0.2f, .height = 0.2f, .startX = 0, .startY = 0});
 
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x,
-									 transform2.position.y, sprite2.width,
-									 sprite2.height, {0.0f, 1.0f, 0.0f, 1.0f});
+	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+									 transform2.position.y - sprite2.height / 2,
+									 sprite2.width, sprite2.height,
+									 {1.0f, 0.0f, 0.0f, 1.0f}, camera);
+
+	m_Data.m_Renderer->EndBatch();
+	m_Data.m_Renderer->Flush();
+
 	m_Data.m_Renderer->SwapBuffers();
 	m_Data.m_Renderer->PollEvents();
-	glfwPollEvents();
-	glfwSwapBuffers(m_Window);
-	// m_Data.m_Renderer
-	// glfwPollEvents();
-	// m_RenderContext->SwapBuffers();
 }
 
 void LinuxWindow::setVSync(bool enabled) {
@@ -193,4 +187,5 @@ void LinuxWindow::setEventCallback(
 	const LinuxWindow::EventCallbackFn &callback) {
 	m_Data.eventCallback = callback;
 }
+
 } // namespace Blazr
