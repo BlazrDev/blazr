@@ -15,9 +15,15 @@ bool RendererAPI::Init() {
 
 	// TODO remove shader test code
 
+<<<<<<< HEAD
 	std::string vertexShaderPath = "shaders/vertex/ColorVertexShader.vert";
 	std::string fragmentShaderPath =
 		"shaders/fragment/ColorFragmentShader.frag";
+=======
+	std::string vertexShaderPath = "shaders/vertex/TextureTestShader.vert";
+	std::string fragmentShaderPath =
+		"shaders/fragment/TextureTestShader.frag";
+>>>>>>> cc11259 (Scroll and moving objects)
 
 	window = glfwCreateWindow(1280, 720, "OpenGL Renderer", nullptr, nullptr);
 	if (!window) {

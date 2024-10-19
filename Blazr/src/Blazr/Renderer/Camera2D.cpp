@@ -24,6 +24,8 @@ void Camera2D::SetScale(const float &scale) {
 	m_bNeedsUpdate = true;
 }
 
+float Camera2D::GetScale() const { return m_Scale; }
+
 glm::vec2 Camera2D::GetPosition() const { return m_Position; }
 
 glm::mat4 Camera2D::GetCameraMatrix() const { return m_CameraMatrix; }
