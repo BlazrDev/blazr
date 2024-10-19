@@ -191,63 +191,57 @@ void LinuxWindow::init(const WindowProperties &properties) {
 				}
 			}
 		});
-	m_Data.m_Renderer->GetCamera().SetScale(5.f);
-	Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	auto projection = camera.GetCameraMatrix();
-	GLuint location = glGetUniformLocation(
-		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
-
-	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
-
-	m_Data.m_Renderer->BeginBatch();
-
-	Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
-
-	auto &transform2 = entity2.AddComponent<TransformComponent>(
-		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
-						   .scale = glm::vec2(1.0f, 1.0f),
-						   .rotation = 0.0f});
-
-	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
-
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
-									 transform2.position.y - sprite2.height / 2,
-									 sprite2.width, sprite2.height,
-									 {1.0f, 1.0f, 0.0f, 1.0f});
-
-	Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
-
-	auto &transform = entity.AddComponent<TransformComponent>(
-		TransformComponent{.position = glm::vec2(10.0f, 50.0f),
-						   .scale = glm::vec2(1.0f, 1.0f),
-						   .rotation = 0.0f});
-
-	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
-
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
-									 transform2.position.y - sprite2.height / 2,
-									 sprite2.width, sprite2.height,
-									 {1.0f, 0.0f, 1.f, 1.0f});
-
-	m_Data.m_Renderer->EndBatch();
-	m_Data.m_Renderer->Flush();
-	camera.Update();
-	m_Data.m_Renderer->PollEvents();
-	m_Data.m_Renderer->SwapBuffers();
-	m_Data.m_Renderer->Clear();
-}
-
-void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
-bool created = false;
-void LinuxWindow::onUpdate() {
+	m_Data.m_Renderer->GetCamera().SetScale(1.f);
 	// Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	// auto projection = camera.GetCameraMatrix();
 	// GLuint location = glGetUniformLocation(
 	// 	m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
 	//
 	// glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
+	//
+	// m_Data.m_Renderer->BeginBatch();
+	//
+	// Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
+	//
+	// auto &transform2 = entity2.AddComponent<TransformComponent>(
+	// 	TransformComponent{.position = glm::vec2(10.0f, 30.0f),
+	// 					   .scale = glm::vec2(1.0f, 1.0f),
+	// 					   .rotation = 0.0f});
+	//
+	// auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
+	// 	.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
+	//
+	// m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width /
+	// 2, 								 transform2.position.y - sprite2.height
+	// / 2, 								 sprite2.width, sprite2.height,
+	// {1.0f, 1.0f, 0.0f, 1.0f});
+	//
+	// Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
+	//
+	// auto &transform = entity.AddComponent<TransformComponent>(
+	// 	TransformComponent{.position = glm::vec2(10.0f, 50.0f),
+	// 					   .scale = glm::vec2(1.0f, 1.0f),
+	// 					   .rotation = 0.0f});
+	//
+	// auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+	// 	.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
+	//
+	// m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width /
+	// 2, 								 transform2.position.y - sprite2.height
+	// / 2, 								 sprite2.width, sprite2.height,
+	// {1.0f, 0.0f, 0.f, 1.0f});
+	//
+	// m_Data.m_Renderer->EndBatch();
+	// m_Data.m_Renderer->Flush();
+	// camera.Update();
+	// m_Data.m_Renderer->PollEvents();
+	// m_Data.m_Renderer->SwapBuffers();
+	// m_Data.m_Renderer->Clear();
+}
+
+void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
+
+void LinuxWindow::onUpdate() {
 	//
 	// auto view = m_Data.m_Registry->GetRegistry()
 	// 				.view<TransformComponent, SpriteComponent>();
@@ -267,29 +261,77 @@ void LinuxWindow::onUpdate() {
 	// m_Data.m_Renderer->PollEvents();
 	// m_Data.m_Renderer->SwapBuffers();
 	// m_Data.m_Renderer->Clear();
+	// TODO remove tmp test code
 
-	Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	camera.SetScale(5.0f);
-	auto shader =
+	loadTexture("assets/chammy.png");
+	m_Data.m_Renderer->EndBatch();
+	m_Data.m_Renderer->Flush();
+
+	m_Data.m_Renderer->PollEvents();
+	// glUseProgram(shaderProgram);
+	m_Data.m_Renderer->SwapBuffers();
+	// m_Data.m_Renderer->Clear();
+}
+
+void LinuxWindow::loadTexture(const std::string &path) {
+	float vertices[] = {
+		// Positions          // Texture Coords
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
+		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
+		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
+		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
+	};
+	unsigned int indices[] = {
+		0, 1, 2, // First triangle
+		2, 3, 0	 // Second triangle
+	};
+	// Create buffers and array objects
+	m_Shader =
 		Blazr::ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
 									"shaders/fragment/TextureTestShader.frag");
 
-	if (!shader) {
-		BLZR_CORE_INFO("Error creating texture");
-		return;
+	if (!m_Shader) {
+		BLZR_CORE_ERROR("Failed to load shader");
 	}
-	shader->Enable();
 
-	auto projection = m_Data.m_Renderer->GetCamera().GetCameraMatrix();
-	GLuint location =
-		glGetUniformLocation(shader->GetProgramID(), "uProjection");
+	m_Shader->Enable();
+	GLuint VAO, VBO, EBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+	// Bind VAO and VBO/EBO
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+				 GL_STATIC_DRAW);
+	// Set vertex attributes
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+						  (void *)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+						  (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+	Texture2D texture = Texture2D(path);
+	glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
+									 "texture"),
+				0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.GetID());
+	glBindVertexArray(VAO);
+
+	Camera2D &camera = m_Data.m_Renderer->GetCamera();
+	auto projection = camera.GetCameraMatrix();
+	GLuint location = glGetUniformLocation(
+		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
+	//
 	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
 
-	shader->SetUniformMat4("uProjection", projection);
-	camera.Update();
-	shader->Disable();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	m_Shader->Disable();
 }
-
 void LinuxWindow::setVSync(bool enabled) {
 	if (enabled)
 		glfwSwapInterval(1);

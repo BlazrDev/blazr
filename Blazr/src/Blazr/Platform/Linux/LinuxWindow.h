@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Renderer/RenderContext.h"
 #include "Blazr/Renderer/RendererAPI.h"
+#include <memory>
 
 namespace Blazr {
 class BLZR_API LinuxWindow : public Window {
@@ -19,6 +20,7 @@ class BLZR_API LinuxWindow : public Window {
 	void setEventCallback(const EventCallbackFn &callback) override;
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
+	void loadTexture(const std::string &path);
 
   private:
 	virtual void init(const WindowProperties &properties);
@@ -27,8 +29,9 @@ class BLZR_API LinuxWindow : public Window {
   private:
 	GLFWwindow *m_Window;
 	Scope<RenderContext> m_RenderContext;
-	unsigned int VAO;
+	unsigned int VAO, VBO, EBO;
 	unsigned int shaderProgram;
+	std::shared_ptr<Shader> m_Shader;
 
 	struct WindowData {
 		std::string title;
