@@ -15,7 +15,7 @@ class Camera2D {
 
 	void SetScale(const float &);
 
-	float GetZoom() const;
+	float GetScale() const;
 
 	void Update();
 

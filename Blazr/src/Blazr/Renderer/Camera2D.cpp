@@ -9,8 +9,8 @@ Camera2D::Camera2D(int width, int height)
 	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {
 	m_OrthoProjection = glm::ortho(0.f,							 // Left
 								   static_cast<float>(m_Width),	 // Right
-								   0.f,							 // Bottom
 								   static_cast<float>(m_Height), // Top
+								   0.f,							 // Bottom
 								   -1.f,						 // Near
 								   1.f);
 }
@@ -23,6 +23,8 @@ void Camera2D::SetScale(const float &scale) {
 	m_Scale = scale;
 	m_bNeedsUpdate = true;
 }
+
+float Camera2D::GetScale() const { return m_Scale; }
 
 glm::vec2 Camera2D::GetPosition() const { return m_Position; }
 

@@ -5,12 +5,15 @@
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
 #include "Blazr/Renderer/RendererAPI.h"
+#include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "LinuxWindow.h"
 
 namespace Blazr {
 
 static bool s_GLFWInitialized = false;
+bool mousePressed = false;
+double lastMouseX, lastMouseY;
 
 static void GLFWErorCallback(int error, const char *description) {
 	BLZR_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -113,28 +116,83 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			}
 		});
 
-	glfwSetScrollCallback(
-		m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
+	// TODO: napraviti da na scroll prati kursor
+	glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
+									   double yOffset) {
+		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+		MouseScrolledEvent event((float)xOffset, (float)yOffset);
+		data.eventCallback(event);
+		Camera2D &camera = data.m_Renderer->GetCamera();
+		double mouseX, mouseY;
+		glfwGetCursorPos(window, &mouseX, &mouseY);
+		glm::vec2 mousePosNormalized = glm::vec2(
+			2.0f * (mouseX / data.width) - 1.0f, // Normalizacija X koordinate
+			1.0f - 2.0f * (mouseY / data.height) // Normalizacija Y koordinate
+		);
+
+		if (yOffset > 0) {
+			camera.SetScale(camera.GetScale() + 0.1f);
+		} else {
+			camera.SetScale(camera.GetScale() - 0.1f);
+		}
+		camera.SetPosition(
+			mousePosNormalized *
+			camera.GetScale()); // Pomeranje kamere prema poziciji miša
+	});
+
+	// glfwSetCursorPosCallback(
+	// 	m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		MouseMovedEvent event((float)xPos, (float)yPos);
+	// 		data.eventCallback(event);
+	// 	});
+
+	glfwSetMouseButtonCallback(
+		m_Window, [](GLFWwindow *window, int button, int action,
+					 int mods) { // Uhvatite varijable prema referenci
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			MouseScrolledEvent event((float)xOffset, (float)yOffset);
-			data.eventCallback(event);
+
+			if (button == GLFW_MOUSE_BUTTON_LEFT) {
+				if (action == GLFW_PRESS) {
+					mousePressed = true;
+					glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
+				} else if (action == GLFW_RELEASE) {
+					mousePressed = false;
+				}
+			}
 		});
 
 	glfwSetCursorPosCallback(
-		m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+		m_Window, [](GLFWwindow *window, double xpos,
+					 double ypos) { // Uhvatite varijable prema referenci
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			MouseMovedEvent event((float)xPos, (float)yPos);
-			data.eventCallback(event);
+
+			if (mousePressed) {
+				Camera2D &camera = data.m_Renderer->GetCamera();
+				double deltaX = xpos - lastMouseX;
+				double deltaY = ypos - lastMouseY;
+
+				// glm::vec2 cameraPos = camera.GetPosition();
+				// cameraPos.x -= deltaX * camera.GetScale() * 0.1f;
+				// cameraPos.y += deltaY * camera.GetScale() * 0.1f;
+				//
+				// camera.SetPosition(cameraPos);
+
+				lastMouseX = xpos;
+				lastMouseY = ypos;
+
+				auto view = data.m_Registry->GetRegistry()
+								.view<TransformComponent, SpriteComponent>();
+				for (auto entity : view) {
+					auto &transform = view.get<TransformComponent>(entity);
+					auto &sprite = view.get<SpriteComponent>(entity);
+					transform.position.x -= deltaX * camera.GetScale() * 0.1f;
+					transform.position.y += deltaY * camera.GetScale() * 0.1f;
+				}
+			}
 		});
-}
-
-void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
-
-void LinuxWindow::onUpdate() {
-
+	m_Data.m_Renderer->GetCamera().SetScale(5.f);
 	Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	camera.SetPosition(glm::vec2(0.0f, 0.0f));
-	camera.SetScale(5.0f);
 	auto projection = camera.GetCameraMatrix();
 	GLuint location = glGetUniformLocation(
 		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
@@ -143,8 +201,7 @@ void LinuxWindow::onUpdate() {
 
 	m_Data.m_Renderer->BeginBatch();
 
-	auto registry = std::make_unique<Blazr::Registry>();
-	Entity entity2 = Entity(*registry, "Ent1", "G1");
+	Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
 
 	auto &transform2 = entity2.AddComponent<TransformComponent>(
 		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
@@ -159,11 +216,78 @@ void LinuxWindow::onUpdate() {
 									 sprite2.width, sprite2.height,
 									 {1.0f, 1.0f, 0.0f, 1.0f});
 
+	Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
+
+	auto &transform = entity.AddComponent<TransformComponent>(
+		TransformComponent{.position = glm::vec2(10.0f, 50.0f),
+						   .scale = glm::vec2(1.0f, 1.0f),
+						   .rotation = 0.0f});
+
+	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+		.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
+
+	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+									 transform2.position.y - sprite2.height / 2,
+									 sprite2.width, sprite2.height,
+									 {1.0f, 0.0f, 1.f, 1.0f});
+
 	m_Data.m_Renderer->EndBatch();
 	m_Data.m_Renderer->Flush();
 	camera.Update();
 	m_Data.m_Renderer->PollEvents();
 	m_Data.m_Renderer->SwapBuffers();
+	m_Data.m_Renderer->Clear();
+}
+
+void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
+bool created = false;
+void LinuxWindow::onUpdate() {
+	// Camera2D &camera = m_Data.m_Renderer->GetCamera();
+	// auto projection = camera.GetCameraMatrix();
+	// GLuint location = glGetUniformLocation(
+	// 	m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
+	//
+	// glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
+	//
+	// auto view = m_Data.m_Registry->GetRegistry()
+	// 				.view<TransformComponent, SpriteComponent>();
+	// m_Data.m_Renderer->BeginBatch();
+	// for (auto entity : view) {
+	// 	auto &transform = view.get<TransformComponent>(entity);
+	// 	auto &sprite = view.get<SpriteComponent>(entity);
+	// 	m_Data.m_Renderer->DrawRectangle(
+	// 		transform.position.x - sprite.width / 2,
+	// 		transform.position.y - sprite.height / 2, sprite.width,
+	// 		sprite.height, {1.0f, 1.0f, 0.0f, 1.0f});
+	// }
+	// m_Data.m_Renderer->EndBatch();
+	// m_Data.m_Renderer->Flush();
+	// camera.Update();
+	//
+	// m_Data.m_Renderer->PollEvents();
+	// m_Data.m_Renderer->SwapBuffers();
+	// m_Data.m_Renderer->Clear();
+
+	Camera2D &camera = m_Data.m_Renderer->GetCamera();
+	camera.SetScale(5.0f);
+	auto shader =
+		Blazr::ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
+									"shaders/fragment/TextureTestShader.frag");
+
+	if (!shader) {
+		BLZR_CORE_INFO("Error creating texture");
+		return;
+	}
+	shader->Enable();
+
+	auto projection = m_Data.m_Renderer->GetCamera().GetCameraMatrix();
+	GLuint location =
+		glGetUniformLocation(shader->GetProgramID(), "uProjection");
+	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
+
+	shader->SetUniformMat4("uProjection", projection);
+	camera.Update();
+	shader->Disable();
 }
 
 void LinuxWindow::setVSync(bool enabled) {
