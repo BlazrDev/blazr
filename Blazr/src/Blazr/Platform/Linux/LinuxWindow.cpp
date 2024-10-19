@@ -192,6 +192,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			}
 		});
 	m_Data.m_Renderer->GetCamera().SetScale(1.f);
+	loadTexture("assets/chammy.png");
+	m_Data.m_Renderer->EndBatch();
+	m_Data.m_Renderer->Flush();
+
 	// Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	// auto projection = camera.GetCameraMatrix();
 	// GLuint location = glGetUniformLocation(
@@ -263,13 +267,9 @@ void LinuxWindow::onUpdate() {
 	// m_Data.m_Renderer->Clear();
 	// TODO remove tmp test code
 
-	loadTexture("assets/chammy.png");
-	m_Data.m_Renderer->EndBatch();
-	m_Data.m_Renderer->Flush();
-
-	m_Data.m_Renderer->PollEvents();
+	// m_Data.m_Renderer->PollEvents();
 	// glUseProgram(shaderProgram);
-	m_Data.m_Renderer->SwapBuffers();
+	// m_Data.m_Renderer->SwapBuffers();
 	// m_Data.m_Renderer->Clear();
 }
 
@@ -322,6 +322,7 @@ void LinuxWindow::loadTexture(const std::string &path) {
 	glBindTexture(GL_TEXTURE_2D, texture.GetID());
 	glBindVertexArray(VAO);
 
+	m_Data.m_Renderer->GetCamera().SetScale(5.f);
 	Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	auto projection = camera.GetCameraMatrix();
 	GLuint location = glGetUniformLocation(
@@ -331,7 +332,46 @@ void LinuxWindow::loadTexture(const std::string &path) {
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	m_Shader->Disable();
+	m_Data.m_Renderer->BeginBatch();
+
+	Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
+
+	auto &transform2 = entity2.AddComponent<TransformComponent>(
+		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
+						   .scale = glm::vec2(1.0f, 1.0f),
+						   .rotation = 0.0f});
+
+	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
+		.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
+
+	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+									 transform2.position.y - sprite2.height / 2,
+									 sprite2.width, sprite2.height,
+									 {1.0f, 1.0f, 0.0f, 1.0f});
+
+	Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
+
+	auto &transform = entity.AddComponent<TransformComponent>(
+		TransformComponent{.position = glm::vec2(10.0f, 50.0f),
+						   .scale = glm::vec2(1.0f, 1.0f),
+						   .rotation = 0.0f});
+
+	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+		.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
+
+	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+									 transform2.position.y - sprite2.height / 2,
+									 sprite2.width, sprite2.height,
+									 {1.0f, 0.0f, 1.f, 1.0f});
+
+	m_Data.m_Renderer->EndBatch();
+	m_Data.m_Renderer->Flush();
+	camera.Update();
+	m_Data.m_Renderer->PollEvents();
+	m_Data.m_Renderer->SwapBuffers();
+	m_Data.m_Renderer->Clear();
 }
+
 void LinuxWindow::setVSync(bool enabled) {
 	if (enabled)
 		glfwSwapInterval(1);
