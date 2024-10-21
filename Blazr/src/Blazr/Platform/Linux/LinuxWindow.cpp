@@ -95,27 +95,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
-	glfwSetMouseButtonCallback(
-		m_Window, [](GLFWwindow *window, int button, int action, int mods) {
-			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			double xpos, ypos;
-
-			glfwGetCursorPos(window, &xpos, &ypos);
-			switch (action) {
-			case GLFW_PRESS: {
-				MouseButtonPressedEvent event(button);
-				data.eventCallback(event);
-				data.createRect(xpos, ypos);
-				break;
-			}
-			case GLFW_RELEASE: {
-				MouseButtonReleasedEvent event(button);
-				data.eventCallback(event);
-				break;
-			}
-			}
-		});
-
 	// TODO: napraviti da na scroll prati kursor
 	glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
 									   double yOffset) {
@@ -148,6 +127,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		m_Window, [](GLFWwindow *window, int button, int action,
 					 int mods) { // Uhvatite varijable prema referenci
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+			double xpos, ypos;
+			glfwGetCursorPos(window, &xpos, &ypos);
 
 			if (button == GLFW_MOUSE_BUTTON_LEFT) {
 				if (action == GLFW_PRESS) {
@@ -155,6 +136,15 @@ void LinuxWindow::init(const WindowProperties &properties) {
 					glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
 				} else if (action == GLFW_RELEASE) {
 					mousePressed = false;
+				}
+			} else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+				if (action == GLFW_PRESS) {
+					MouseButtonPressedEvent event(button);
+					data.eventCallback(event);
+					data.createRect(xpos, ypos);
+				} else if (action == GLFW_RELEASE) {
+					MouseButtonReleasedEvent event(button);
+					data.eventCallback(event);
 				}
 			}
 		});

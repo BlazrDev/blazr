@@ -40,28 +40,37 @@ class BLZR_API LinuxWindow : public Window {
 
 		EventCallbackFn eventCallback;
 		void createRect(float x, float y) {
-			Camera2D camera(800.0f, 600.0f);
-			camera.SetPosition(glm::vec2(0.0f, 0.0f));
-			camera.SetScale(1.0f);
-			auto registry = std::make_unique<Blazr::Registry>();
-			Entity entity = Entity(*registry, "Ent1", "G1");
+			BLZR_CORE_INFO("Creating rectangle at {0}, {1}", x, y);
+			Camera2D &camera = m_Renderer->GetCamera();
+			auto projection = camera.GetCameraMatrix();
+			GLuint location = glGetUniformLocation(
+				m_Renderer->GetShaderProgramID(), "uProjection");
+
+			glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
+
 			m_Renderer->BeginBatch();
+
+			Entity entity = Entity(*m_Registry, "Ent1", "G1");
+
 			auto &transform =
 				entity.AddComponent<TransformComponent>(TransformComponent{
 					.position = glm::vec2(2.0f * (x / width) - 1.0f,
 										  1.0f - 2.0f * (y / height)),
 					.scale = glm::vec2(1.0f, 1.0f),
 					.rotation = 0.0f});
+
 			auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
-				.width = 0.2f, .height = 0.2f, .startX = 0, .startY = 0});
+				.width = 10.f, .height = 10.f, .startX = 0, .startY = 0});
+
 			m_Renderer->DrawRectangle(transform.position.x - sprite.width / 2,
 									  transform.position.y - sprite.height / 2,
 									  sprite.width, sprite.height,
 									  {1.0f, 0.0f, 0.0f, 1.0f});
+
 			m_Renderer->EndBatch();
 			m_Renderer->Flush();
-			m_Renderer->SwapBuffers();
 			m_Renderer->PollEvents();
+			m_Renderer->SwapBuffers();
 		}
 	};
 
