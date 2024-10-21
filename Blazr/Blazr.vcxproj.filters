@@ -52,6 +52,9 @@
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>

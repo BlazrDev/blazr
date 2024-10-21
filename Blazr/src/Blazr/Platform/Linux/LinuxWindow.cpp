@@ -135,9 +135,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		} else {
 			camera.SetScale(camera.GetScale() - 0.1f);
 		}
-		camera.SetPosition(
-			mousePosNormalized *
-			camera.GetScale()); // Pomeranje kamere prema poziciji miša
 	});
 
 	// glfwSetCursorPosCallback(
@@ -172,26 +169,22 @@ void LinuxWindow::init(const WindowProperties &properties) {
 				double deltaX = xpos - lastMouseX;
 				double deltaY = ypos - lastMouseY;
 
-				// glm::vec2 cameraPos = camera.GetPosition();
-				// cameraPos.x -= deltaX * camera.GetScale() * 0.1f;
-				// cameraPos.y += deltaY * camera.GetScale() * 0.1f;
-				//
-				// camera.SetPosition(cameraPos);
-
 				lastMouseX = xpos;
 				lastMouseY = ypos;
 
-				auto view = data.m_Registry->GetRegistry()
-								.view<TransformComponent, SpriteComponent>();
-				for (auto entity : view) {
-					auto &transform = view.get<TransformComponent>(entity);
-					auto &sprite = view.get<SpriteComponent>(entity);
-					transform.position.x -= deltaX * camera.GetScale() * 0.1f;
-					transform.position.y += deltaY * camera.GetScale() * 0.1f;
-				}
+				// auto view = data.m_Registry->GetRegistry()
+				// 				.view<TransformComponent, SpriteComponent>();
+				// for (auto entity : view) {
+				// 	auto &transform = view.get<TransformComponent>(entity);
+				// 	auto &sprite = view.get<SpriteComponent>(entity);
+				// 	transform.position.x -= deltaX * camera.GetScale() * 0.1f;
+				// 	transform.position.y += deltaY * camera.GetScale() * 0.1f;
+				// }
+				camera.SetPosition(camera.GetPosition() +
+								   glm::vec2(deltaX, deltaY));
 			}
 		});
-	m_Data.m_Renderer->GetCamera().SetScale(5.f);
+	m_Data.m_Renderer->GetCamera().SetScale(10.f);
 	Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	auto projection = camera.GetCameraMatrix();
 	GLuint location = glGetUniformLocation(
@@ -242,52 +235,31 @@ void LinuxWindow::init(const WindowProperties &properties) {
 void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
 bool created = false;
 void LinuxWindow::onUpdate() {
-	// Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	// auto projection = camera.GetCameraMatrix();
-	// GLuint location = glGetUniformLocation(
-	// 	m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
-	//
-	// glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
-	//
-	// auto view = m_Data.m_Registry->GetRegistry()
-	// 				.view<TransformComponent, SpriteComponent>();
-	// m_Data.m_Renderer->BeginBatch();
-	// for (auto entity : view) {
-	// 	auto &transform = view.get<TransformComponent>(entity);
-	// 	auto &sprite = view.get<SpriteComponent>(entity);
-	// 	m_Data.m_Renderer->DrawRectangle(
-	// 		transform.position.x - sprite.width / 2,
-	// 		transform.position.y - sprite.height / 2, sprite.width,
-	// 		sprite.height, {1.0f, 1.0f, 0.0f, 1.0f});
-	// }
-	// m_Data.m_Renderer->EndBatch();
-	// m_Data.m_Renderer->Flush();
-	// camera.Update();
-	//
-	// m_Data.m_Renderer->PollEvents();
-	// m_Data.m_Renderer->SwapBuffers();
-	// m_Data.m_Renderer->Clear();
-
 	Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	camera.SetScale(5.0f);
-	auto shader =
-		Blazr::ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
-									"shaders/fragment/TextureTestShader.frag");
+	auto projection = camera.GetCameraMatrix();
+	GLuint location = glGetUniformLocation(
+		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
 
-	if (!shader) {
-		BLZR_CORE_INFO("Error creating texture");
-		return;
-	}
-	shader->Enable();
-
-	auto projection = m_Data.m_Renderer->GetCamera().GetCameraMatrix();
-	GLuint location =
-		glGetUniformLocation(shader->GetProgramID(), "uProjection");
 	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
 
-	shader->SetUniformMat4("uProjection", projection);
+	auto view = m_Data.m_Registry->GetRegistry()
+					.view<TransformComponent, SpriteComponent>();
+	m_Data.m_Renderer->BeginBatch();
+	for (auto entity : view) {
+		auto &transform = view.get<TransformComponent>(entity);
+		auto &sprite = view.get<SpriteComponent>(entity);
+		m_Data.m_Renderer->DrawRectangle(
+			transform.position.x - sprite.width / 2,
+			transform.position.y - sprite.height / 2, sprite.width,
+			sprite.height, {1.0f, 1.0f, 0.0f, 1.0f});
+	}
+	m_Data.m_Renderer->EndBatch();
+	m_Data.m_Renderer->Flush();
 	camera.Update();
-	shader->Disable();
+
+	m_Data.m_Renderer->PollEvents();
+	m_Data.m_Renderer->SwapBuffers();
+	m_Data.m_Renderer->Clear();
 }
 
 void LinuxWindow::setVSync(bool enabled) {

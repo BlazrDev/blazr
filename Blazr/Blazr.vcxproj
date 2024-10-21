@@ -165,6 +165,7 @@
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />
     <ClInclude Include="src\Blazr\Core\Window.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Entity.h" />
