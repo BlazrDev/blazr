@@ -9,8 +9,8 @@ Camera2D::Camera2D(int width, int height)
 	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {
 	m_OrthoProjection = glm::ortho(0.f,							 // Left
 								   static_cast<float>(m_Width),	 // Right
-								   static_cast<float>(m_Height), // Top
 								   0.f,							 // Bottom
+								   static_cast<float>(m_Height), // Top
 								   -1.f,						 // Near
 								   1.f);
 }

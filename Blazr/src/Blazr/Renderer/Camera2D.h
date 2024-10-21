@@ -19,8 +19,6 @@ class Camera2D {
 
 	void Update();
 
-	glm::mat4 GetViewMatrix() const;
-
 	glm::mat4 GetCameraMatrix() const;
 
   private:

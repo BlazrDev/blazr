@@ -44,4 +44,9 @@ void Shader::Enable() { glUseProgram(m_ShaderProgramID); }
 void Shader::Disable() { glUseProgram(0); }
 
 GLuint Shader::GetProgramID() const { return m_ShaderProgramID; }
+
+Ref<Shader> Shader::Create(GLuint program, const std::string &vertexPath,
+						   const std::string &fragmentPath) {
+	return CreateRef<Shader>(program, vertexPath, fragmentPath);
+}
 } // namespace Blazr

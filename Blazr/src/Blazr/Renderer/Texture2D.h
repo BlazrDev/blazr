@@ -1,4 +1,5 @@
 #pragma once
+#include "Blazr/Core/Core.h"
 #include <GL/glew.h>
 #include <string>
 
@@ -14,7 +15,13 @@ class Texture2D {
 
 	int GetWidth() const { return m_Width; }
 	int GetHeight() const { return m_Height; }
+	GLuint GetRendererID() const;
 	uint32_t GetID() const { return m_RendererID; }
+	bool operator==(const Texture2D &other) const {
+		return m_RendererID == other.GetRendererID();
+	}
+
+	static Ref<Texture2D> Create(const std::string &filepath);
 
   private:
 	std::string m_FilePath;

@@ -11,6 +11,7 @@
 
 namespace Blazr {
 
+Camera2D camera = Camera2D(1280, 720);
 static bool s_GLFWInitialized = false;
 bool mousePressed = false;
 double lastMouseX, lastMouseY;
@@ -33,26 +34,40 @@ unsigned int LinuxWindow::getHeight() const { return m_Data.height; }
 unsigned int LinuxWindow::getWidth() const { return m_Data.width; }
 
 void LinuxWindow::init(const WindowProperties &properties) {
-	m_Data.m_Renderer = new RendererAPI();
-
-	if (!m_Data.m_Renderer->Init()) {
-		BLZR_CORE_ERROR("Failed to initialize RendererAPI");
+	if (!glfwInit()) {
+		BLZR_CORE_ERROR("Failed to initialize GLFW!");
 		return;
 	}
 
-	m_Window = m_Data.m_Renderer->getWindow();
-	int width, height;
+	m_Window = glfwCreateWindow(1280, 720, "OpenGL Renderer", nullptr, nullptr);
+	if (!m_Window) {
+		BLZR_CORE_ERROR("Failed to create window!");
+		glfwTerminate();
+		return;
+	}
+
+	glfwMakeContextCurrent(m_Window);
+
+	if (glewInit() != GLEW_OK) {
+		BLZR_CORE_ERROR("Failed to initialize GLEW!");
+		return;
+	}
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	int width;
+	int height;
 	glfwGetWindowSize(m_Window, &width, &height);
 
 	m_Data.title = properties.Title;
 	m_Data.width = width;
 	m_Data.height = height;
-	m_Data.m_Renderer->CreateCamera(800.0f, 600.0f);
 
 	BLZR_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title,
 				   properties.Width, properties.Height);
 
 	setVSync(true);
+	Renderer2D::Init();
 
 	glfwSetWindowUserPointer(m_Window, &m_Data);
 
@@ -105,7 +120,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			case GLFW_PRESS: {
 				MouseButtonPressedEvent event(button);
 				data.eventCallback(event);
-				data.createRect(xpos, ypos);
 				break;
 			}
 			case GLFW_RELEASE: {
@@ -122,7 +136,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 		MouseScrolledEvent event((float)xOffset, (float)yOffset);
 		data.eventCallback(event);
-		Camera2D &camera = data.m_Renderer->GetCamera();
+		// Camera2D &camera = data.m_Renderer->GetCamera();
 		double mouseX, mouseY;
 		glfwGetCursorPos(window, &mouseX, &mouseY);
 		glm::vec2 mousePosNormalized = glm::vec2(
@@ -131,13 +145,13 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		);
 
 		if (yOffset > 0) {
-			camera.SetScale(camera.GetScale() + 0.1f);
+			// camera.SetScale(camera.GetScale() + 0.1f);
 		} else {
-			camera.SetScale(camera.GetScale() - 0.1f);
+			// camera.SetScale(camera.GetScale() - 0.1f);
 		}
-		camera.SetPosition(
-			mousePosNormalized *
-			camera.GetScale()); // Pomeranje kamere prema poziciji miša
+		// camera.SetPosition(
+		// mousePosNormalized *
+		// camera.GetScale()); // Pomeranje kamere prema poziciji miša
 	});
 
 	// glfwSetCursorPosCallback(
@@ -168,7 +182,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
 			if (mousePressed) {
-				Camera2D &camera = data.m_Renderer->GetCamera();
+				// Camera2D &camera = data.m_Renderer->GetCamera();
 				double deltaX = xpos - lastMouseX;
 				double deltaY = ypos - lastMouseY;
 
@@ -186,15 +200,16 @@ void LinuxWindow::init(const WindowProperties &properties) {
 				for (auto entity : view) {
 					auto &transform = view.get<TransformComponent>(entity);
 					auto &sprite = view.get<SpriteComponent>(entity);
-					transform.position.x -= deltaX * camera.GetScale() * 0.1f;
-					transform.position.y += deltaY * camera.GetScale() * 0.1f;
+					// transform.position.x -= deltaX * camera.GetScale() *
+					// 0.1f; transform.position.y += deltaY * camera.GetScale()
+					// * 0.1f;
 				}
 			}
 		});
-	m_Data.m_Renderer->GetCamera().SetScale(1.f);
-	loadTexture("assets/chammy.png");
-	m_Data.m_Renderer->EndBatch();
-	m_Data.m_Renderer->Flush();
+	// m_Data.m_Renderer->GetCamera().SetScale(1.f);
+	// loadTexture("assets/chammy.png");
+	// m_Data.m_Renderer->EndBatch();
+	// m_Data.m_Renderer->Flush();
 
 	// Camera2D &camera = m_Data.m_Renderer->GetCamera();
 	// auto projection = camera.GetCameraMatrix();
@@ -241,11 +256,25 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// m_Data.m_Renderer->PollEvents();
 	// m_Data.m_Renderer->SwapBuffers();
 	// m_Data.m_Renderer->Clear();
+	camera.SetScale(1.0f);
+	camera.SetPosition({0.0f, 0.0f});
 }
 
-void LinuxWindow::shutdown() { m_Data.m_Renderer->Shutdown(); }
+void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 
 void LinuxWindow::onUpdate() {
+	glfwPollEvents();
+	glm::vec2 pos = {20.f, 20.f};
+	glm::vec2 size = {200.f, 200.f};
+	glm::vec4 color = {1.f, 0.f, 0.f, 1.f};
+
+	Renderer2D::BeginScene(camera);
+	Renderer2D::DrawQuad(0, pos, size, Texture2D::Create("assets/chammy.png"));
+	Renderer2D::Flush();
+	camera.Update();
+
+	glfwSwapBuffers(m_Window);
+
 	//
 	// auto view = m_Data.m_Registry->GetRegistry()
 	// 				.view<TransformComponent, SpriteComponent>();
@@ -273,104 +302,104 @@ void LinuxWindow::onUpdate() {
 	// m_Data.m_Renderer->Clear();
 }
 
-void LinuxWindow::loadTexture(const std::string &path) {
-	float vertices[] = {
-		// Positions          // Texture Coords
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
-		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
-		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
-		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
-	};
-	unsigned int indices[] = {
-		0, 1, 2, // First triangle
-		2, 3, 0	 // Second triangle
-	};
-	// Create buffers and array objects
-	m_Shader =
-		Blazr::ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
-									"shaders/fragment/TextureTestShader.frag");
-
-	if (!m_Shader) {
-		BLZR_CORE_ERROR("Failed to load shader");
-	}
-
-	m_Shader->Enable();
-	GLuint VAO, VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// Bind VAO and VBO/EBO
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-				 GL_STATIC_DRAW);
-	// Set vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-						  (void *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-						  (void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glBindVertexArray(0);
-	Texture2D texture = Texture2D(path);
-	glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
-									 "texture"),
-				0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.GetID());
-	glBindVertexArray(VAO);
-
-	m_Data.m_Renderer->GetCamera().SetScale(5.f);
-	Camera2D &camera = m_Data.m_Renderer->GetCamera();
-	auto projection = camera.GetCameraMatrix();
-	GLuint location = glGetUniformLocation(
-		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
-	//
-	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
-
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	m_Shader->Disable();
-	m_Data.m_Renderer->BeginBatch();
-
-	Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
-
-	auto &transform2 = entity2.AddComponent<TransformComponent>(
-		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
-						   .scale = glm::vec2(1.0f, 1.0f),
-						   .rotation = 0.0f});
-
-	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
-
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
-									 transform2.position.y - sprite2.height / 2,
-									 sprite2.width, sprite2.height,
-									 {1.0f, 1.0f, 0.0f, 1.0f});
-
-	Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
-
-	auto &transform = entity.AddComponent<TransformComponent>(
-		TransformComponent{.position = glm::vec2(10.0f, 50.0f),
-						   .scale = glm::vec2(1.0f, 1.0f),
-						   .rotation = 0.0f});
-
-	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
-
-	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
-									 transform2.position.y - sprite2.height / 2,
-									 sprite2.width, sprite2.height,
-									 {1.0f, 0.0f, 1.f, 1.0f});
-
-	m_Data.m_Renderer->EndBatch();
-	m_Data.m_Renderer->Flush();
-	camera.Update();
-	m_Data.m_Renderer->PollEvents();
-	m_Data.m_Renderer->SwapBuffers();
-	m_Data.m_Renderer->Clear();
-}
+// void LinuxWindow::loadTexture(const std::string &path) {
+// 	float vertices[] = {
+// 		// Positions          // Texture Coords
+// 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
+// 		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
+// 		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
+// 		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
+// 	};
+// 	unsigned int indices[] = {
+// 		0, 1, 2, // First triangle
+// 		2, 3, 0	 // Second triangle
+// 	};
+// 	// Create buffers and array objects
+// 	m_Shader =
+// 		Blazr::ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
+// 									"shaders/fragment/TextureTestShader.frag");
+//
+// 	if (!m_Shader) {
+// 		BLZR_CORE_ERROR("Failed to load shader");
+// 	}
+//
+// 	m_Shader->Enable();
+// 	GLuint VAO, VBO, EBO;
+// 	glGenVertexArrays(1, &VAO);
+// 	glGenBuffers(1, &VBO);
+// 	glGenBuffers(1, &EBO);
+// 	// Bind VAO and VBO/EBO
+// 	glBindVertexArray(VAO);
+// 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+// 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+// 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+// 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+// 				 GL_STATIC_DRAW);
+// 	// Set vertex attributes
+// 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+// 						  (void *)0);
+// 	glEnableVertexAttribArray(0);
+// 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+// 						  (void *)(3 * sizeof(float)));
+// 	glEnableVertexAttribArray(1);
+// 	glBindVertexArray(0);
+// 	Texture2D texture = Texture2D(path);
+// 	// glUniform1i(glGetUniformLocation(m_Data.m_Renderer->GetShaderProgramID(),
+// 	// 								 "texture"),
+// 	// 			0);
+// 	glActiveTexture(GL_TEXTURE0);
+// 	glBindTexture(GL_TEXTURE_2D, texture.GetID());
+// 	glBindVertexArray(VAO);
+//
+// 	// m_Data.m_Renderer->GetCamera().SetScale(5.f);
+// 	Camera2D &camera = m_Data.m_Renderer->GetCamera();
+// 	auto projection = camera.GetCameraMatrix();
+// 	GLuint location = glGetUniformLocation(
+// 		m_Data.m_Renderer->GetShaderProgramID(), "uProjection");
+// 	//
+// 	glUniformMatrix4fv(location, 1, GL_FALSE, &projection[0][0]);
+//
+// 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+// 	m_Shader->Disable();
+// 	m_Data.m_Renderer->BeginBatch();
+//
+// 	Entity entity2 = Entity(*m_Data.m_Registry, "Ent1", "G1");
+//
+// 	auto &transform2 = entity2.AddComponent<TransformComponent>(
+// 		TransformComponent{.position = glm::vec2(10.0f, 30.0f),
+// 						   .scale = glm::vec2(1.0f, 1.0f),
+// 						   .rotation = 0.0f});
+//
+// 	auto &sprite2 = entity2.AddComponent<SpriteComponent>(SpriteComponent{
+// 		.width = 1.0f, .height = 2.0f, .startX = 10, .startY = 30});
+//
+// 	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+// 									 transform2.position.y - sprite2.height / 2,
+// 									 sprite2.width, sprite2.height,
+// 									 {1.0f, 1.0f, 0.0f, 1.0f});
+//
+// 	Entity entity = Entity(*m_Data.m_Registry, "Ent1", "G1");
+//
+// 	auto &transform = entity.AddComponent<TransformComponent>(
+// 		TransformComponent{.position = glm::vec2(10.0f, 50.0f),
+// 						   .scale = glm::vec2(1.0f, 1.0f),
+// 						   .rotation = 0.0f});
+//
+// 	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+// 		.width = 20.0f, .height = 5.0f, .startX = 10, .startY = 30});
+//
+// 	m_Data.m_Renderer->DrawRectangle(transform2.position.x - sprite2.width / 2,
+// 									 transform2.position.y - sprite2.height / 2,
+// 									 sprite2.width, sprite2.height,
+// 									 {1.0f, 0.0f, 1.f, 1.0f});
+//
+// 	m_Data.m_Renderer->EndBatch();
+// 	m_Data.m_Renderer->Flush();
+// 	camera.Update();
+// 	m_Data.m_Renderer->PollEvents();
+// 	m_Data.m_Renderer->SwapBuffers();
+// 	m_Data.m_Renderer->Clear();
+// }
 
 void LinuxWindow::setVSync(bool enabled) {
 	if (enabled)

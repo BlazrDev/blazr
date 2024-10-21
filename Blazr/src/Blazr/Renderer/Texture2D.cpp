@@ -57,4 +57,10 @@ void Texture2D::Bind(uint32_t slot) const {
 }
 
 void Texture2D::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+
+GLuint Texture2D::GetRendererID() const { return m_RendererID; }
+
+Ref<Texture2D> Texture2D::Create(const std::string &path) {
+	return CreateRef<Texture2D>(path);
+}
 } // namespace Blazr
