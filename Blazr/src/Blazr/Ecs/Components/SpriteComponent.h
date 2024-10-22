@@ -24,5 +24,6 @@ struct SpriteComponent {
 		object.x = startX * object.width;
 		object.y = startY * object.height;
 	}
+	std::string texturePath;
 };
 } // namespace Blazr

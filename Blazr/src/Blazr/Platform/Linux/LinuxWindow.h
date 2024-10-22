@@ -1,11 +1,9 @@
 #pragma once
 
 #include "Blazr/Core/Window.h"
-#include "Blazr/Ecs/Components/SpriteComponent.h"
-#include "Blazr/Ecs/Components/TransformComponent.h"
-#include "Blazr/Ecs/Entity.h"
 #include "Blazr/Renderer/RenderContext.h"
 #include "Blazr/Renderer/Renderer2D.h"
+#include "Blazr/Renderer/Shader.h"
 #include <memory>
 
 namespace Blazr {
@@ -37,9 +35,7 @@ class BLZR_API LinuxWindow : public Window {
 		std::string title;
 		unsigned int width, height;
 		bool vsync;
-		std::unique_ptr<Blazr::Registry> m_Registry =
-			std::make_unique<Blazr::Registry>();
-
+		// RendererAPI *m_Renderer;
 		EventCallbackFn eventCallback;
 	};
 

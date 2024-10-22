@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Blazr/Core/Core.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Camera2D.h"
 #include "Texture2D.h"
 
@@ -15,10 +18,10 @@ class Renderer2D {
 	static void EndScene();
 	static void Flush();
 
-	static void DrawQuad(int entityID, const glm::vec2 &position,
+	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						 const glm::vec2 &size, const glm::vec4 &color);
 
-	static void DrawQuad(int entityID, const glm::vec2 &position,
+	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						 const glm::vec2 &size, const Ref<Texture2D> &texture,
 						 float tilingFactor = 1.0f,
 						 const glm::vec4 &tintColor = glm::vec4(1.0f));
@@ -28,7 +31,9 @@ class Renderer2D {
 	// 					 const Ref<Texture2D> &texture,
 	// 					 float tilingFactor = 1.0f,
 	// 					 const glm::vec4 tintColor = glm::vec4(1.0f),
-	// 					 int entityID = -1);
+	// 					 int entityID = -1)
+	static void DrawQuad(entt::entity entityID);
+	static void Clear();
 
   private:
 	static void StartBatch();

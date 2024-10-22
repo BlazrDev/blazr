@@ -8,13 +8,15 @@
 #include "VertexArray.h"
 
 namespace Blazr {
+// std::unique_ptr<Blazr::Registry> s_Registry =
+// 	std::make_unique<Blazr::Registry>();
 struct QuadVertex {
 	glm::vec3 Position;
 	glm::vec4 Color;
 	glm::vec2 TexCoord;
 	float TexIndex;
 	float TilingFactor;
-	int EntityID;
+	entt::entity EntityID;
 };
 
 struct Renderer2DData {
@@ -85,13 +87,25 @@ void Renderer2D::Init() {
 		ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
 							 "shaders/fragment/TextureTestShader.frag");
 	s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-	s_Data.QuadVertexPositions[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
-	s_Data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
-	s_Data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
-	s_Data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
+	// s_Data.QuadVertexPositions[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
+	// s_Data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
+	// s_Data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
+	// s_Data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
+	//
+	// Srklessove izmjenje zbog kamere da ne ide objekat izban granice
+	s_Data.QuadVertexPositions[0] = {0.f, 0.f, 0.0f, 1.0f};
+	s_Data.QuadVertexPositions[1] = {1.f, 0.f, 0.0f, 1.0f};
+	s_Data.QuadVertexPositions[2] = {1.f, 1.f, 0.0f, 1.0f};
+	s_Data.QuadVertexPositions[3] = {0.f, 1.f, 0.0f, 1.0f};
+
+	// 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
+	// 		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
+	// 		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
+	// 		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
 
 	s_Data.CameraUniformBuffer =
 		UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+	// m_Registry = std::make_unique<Registry>();
 }
 
 void Renderer2D::Shutdown() { delete[] s_Data.QuadVertexBufferBase; }
@@ -135,13 +149,13 @@ void Renderer2D::NextBatch() {
 	StartBatch();
 }
 
-void Renderer2D::DrawQuad(int entityID, const glm::vec2 &position,
+void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						  const glm::vec2 &size, const glm::vec4 &color) {
 
 	constexpr size_t quadVertexCount = 4;
 	const float textureIndex = 0.f;
 	constexpr glm::vec2 textureCoords[] = {
-		{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
 	const float tilingFactor = 1.f;
 
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
@@ -165,13 +179,13 @@ void Renderer2D::DrawQuad(int entityID, const glm::vec2 &position,
 
 	s_Data.QuadIndexCount += 6;
 }
-void Renderer2D::DrawQuad(int entityID, const glm::vec2 &position,
+void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						  const glm::vec2 &size, const Ref<Texture2D> &texture,
 						  float tilingFactor, const glm::vec4 &tintColor) {
 
 	constexpr size_t quadVertexCount = 4;
 	constexpr glm::vec2 textureCoords[] = {
-		{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
 		NextBatch();
 	}
@@ -211,5 +225,26 @@ void Renderer2D::DrawQuad(int entityID, const glm::vec2 &position,
 
 	s_Data.QuadIndexCount += 6;
 }
+// void Renderer2D::DrawQuad(entt::entity entityID) {
+// 	// Retrieve the components associated with this entity
+// 	auto &transform =
+// 		Renderer2D::s_Registry->GetRegistry().get<TransformComponent>(entityID);
+// 	auto &sprite =
+// 		Renderer2D::s_Registry->GetRegistry().get<SpriteComponent>(entityID);
+//
+// 	// Assume TransformComponent contains a position and a size
+// 	glm::vec2 position = transform.position;
+// 	glm::vec2 size = {sprite.width, sprite.height};
+//
+// 	// Assume SpriteComponent contains a texture, tiling factor, and tint color
+// 	Ref<Texture2D> texture = Texture2D::Create(sprite.texturePath);
+// 	// float tilingFactor = sprite.TilingFactor;
+// 	// glm::vec4 tintColor = sprite.TintColor;
+//
+// 	// Render the quad using the other DrawQuad method
+// 	DrawQuad(entityID, position, size, texture);
+// }
+
+void Renderer2D::Clear() { glClear(GL_COLOR_BUFFER_BIT); }
 
 } // namespace Blazr
