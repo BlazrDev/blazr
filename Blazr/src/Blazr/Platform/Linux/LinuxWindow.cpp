@@ -207,12 +207,36 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		entity.AddComponent<TransformComponent>(TransformComponent{
 			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
 
-	auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
-		.width = size[0], .height = size[1], .startX = 10, .startY = 30});
+	auto &sprite = entity.AddComponent<SpriteComponent>(
+		SpriteComponent{.width = size[0],
+						.height = size[1],
+						.startX = 10,
+						.startY = 30,
+						.texturePath = "assets/chammy.png"});
 
+	glm::vec2 pos2 = {-500.f, -520.f};
+	glm::vec2 size2 = {200.f, 200.f};
+	glm::vec4 color2 = {1.f, 0.f, 0.f, 1.f};
+
+	Entity entity2 = Entity(*registry, "Ent1", "G1");
+	auto &transform2 = entity2.AddComponent<TransformComponent>(
+		TransformComponent{.position = pos2,
+						   .scale = glm::vec2(1.0f, 1.0f),
+						   .rotation = 0.0f});
+
+	auto &sprite2 = entity2.AddComponent<SpriteComponent>(
+		SpriteComponent{.width = size2[0],
+						.height = size2[1],
+						.startX = 100,
+						.startY = 100,
+						.texturePath = "assets/masha.png"});
 	Renderer2D::BeginScene(camera);
+
 	Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
 						 Texture2D::Create("assets/chammy.png"));
+	Renderer2D::DrawQuad(entity.GetEntityHandler(), pos2, size2,
+						 Texture2D::Create("assets/masha.png"));
+
 	Renderer2D::Flush();
 }
 
@@ -228,12 +252,8 @@ void LinuxWindow::onUpdate() {
 	for (auto entity : view) {
 		auto &transform = view.get<TransformComponent>(entity);
 		auto &sprite = view.get<SpriteComponent>(entity);
-		Renderer2D::DrawQuad(entity, transform.position,
-							 {sprite.width, sprite.height},
-							 Texture2D::Create("assets/chammy.png"));
+		Renderer2D::DrawQuad(*registry, entity);
 	}
-	// Renderer2D::DrawQuad(0, {0.f, 0.f}, {200.f, 200.f},
-	// 					 Texture2D::Create("assets/chammy.png"));
 	Renderer2D::Flush();
 
 	glfwSwapBuffers(m_Window);
