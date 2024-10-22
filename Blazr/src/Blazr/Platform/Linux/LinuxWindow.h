@@ -36,6 +36,9 @@ class BLZR_API LinuxWindow : public Window {
 		unsigned int width, height;
 		bool vsync;
 		// RendererAPI *m_Renderer;
+		std::unique_ptr<Blazr::Registry> m_Registry =
+			std::make_unique<Blazr::Registry>();
+
 		EventCallbackFn eventCallback;
 	};
 

@@ -1,5 +1,6 @@
 #include "blzrpch.h"
 
+#include "Blazr/Ecs/Registry.h"
 #include "RenderCommand.h"
 #include "Renderer2D.h"
 #include "Shader.h"
@@ -8,8 +9,6 @@
 #include "VertexArray.h"
 
 namespace Blazr {
-// std::unique_ptr<Blazr::Registry> s_Registry =
-// 	std::make_unique<Blazr::Registry>();
 struct QuadVertex {
 	glm::vec3 Position;
 	glm::vec4 Color;
@@ -225,25 +224,23 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 
 	s_Data.QuadIndexCount += 6;
 }
-// void Renderer2D::DrawQuad(entt::entity entityID) {
-// 	// Retrieve the components associated with this entity
-// 	auto &transform =
-// 		Renderer2D::s_Registry->GetRegistry().get<TransformComponent>(entityID);
-// 	auto &sprite =
-// 		Renderer2D::s_Registry->GetRegistry().get<SpriteComponent>(entityID);
-//
-// 	// Assume TransformComponent contains a position and a size
-// 	glm::vec2 position = transform.position;
-// 	glm::vec2 size = {sprite.width, sprite.height};
-//
-// 	// Assume SpriteComponent contains a texture, tiling factor, and tint color
-// 	Ref<Texture2D> texture = Texture2D::Create(sprite.texturePath);
-// 	// float tilingFactor = sprite.TilingFactor;
-// 	// glm::vec4 tintColor = sprite.TintColor;
-//
-// 	// Render the quad using the other DrawQuad method
-// 	DrawQuad(entityID, position, size, texture);
-// }
+void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
+	// Retrieve the components associated with this entity
+	auto &transform = registry.GetRegistry().get<TransformComponent>(entityID);
+	auto &sprite = registry.GetRegistry().get<SpriteComponent>(entityID);
+
+	// Assume TransformComponent contains a position and a size
+	glm::vec2 position = transform.position;
+	glm::vec2 size = {sprite.width, sprite.height};
+
+	// Assume SpriteComponent contains a texture, tiling factor, and tint color
+	Ref<Texture2D> texture = Texture2D::Create(sprite.texturePath);
+	// float tilingFactor = sprite.TilingFactor;
+	// glm::vec4 tintColor = sprite.TintColor;
+
+	// Render the quad using the other DrawQuad method
+	DrawQuad(entityID, position, size, texture);
+}
 
 void Renderer2D::Clear() { glClear(GL_COLOR_BUFFER_BIT); }
 
