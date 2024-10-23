@@ -33,6 +33,12 @@ class Renderer2D {
 	// 					 const glm::vec4 tintColor = glm::vec4(1.0f),
 	// 					 int entityID = -1)
 	static void DrawQuad(Registry &registry, entt::entity entityID);
+	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
+						 const glm::vec2 &size, float rotation,
+						 const glm::vec2 &scale, const Ref<Texture2D> &texture,
+						 float tilingFactor = 1.0f,
+						 const glm::vec4 &tintColor = glm::vec4(1.0f));
+
 	static void Clear();
 
   private:

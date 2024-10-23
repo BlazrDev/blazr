@@ -14,6 +14,7 @@ struct SpriteComponent {
 	float height = 0.0f;
 
 	Object object{.x = 0.0f, .y = 0.0f, .width = 0.0f, .height = 0.0f};
+	glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	int startX = -1;
 	int startY = -1;

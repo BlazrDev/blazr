@@ -224,6 +224,60 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 
 	s_Data.QuadIndexCount += 6;
 }
+
+void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
+						  const glm::vec2 &size, float rotation,
+						  const glm::vec2 &scale, const Ref<Texture2D> &texture,
+						  float tilingFactor, const glm::vec4 &tintColor) {
+
+	constexpr size_t quadVertexCount = 4;
+	constexpr glm::vec2 textureCoords[] = {
+		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
+	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
+		NextBatch();
+	}
+
+	float textureIndex = 0.f;
+
+	for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
+		if (*s_Data.TextureSlots[i] == *texture) {
+			textureIndex = (float)i;
+			break;
+		}
+	}
+
+	if (textureIndex == 0.f) {
+		if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots) {
+			NextBatch();
+		}
+
+		textureIndex = (float)s_Data.TextureSlotIndex;
+		s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+		s_Data.TextureSlotIndex++;
+	}
+
+	glm::vec3 pos = {position.x, position.y, 0.0f};
+
+	// Apply rotation and scale
+	glm::mat4 transform =
+		glm::translate(glm::mat4(1.0f), pos) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
+					{0.0f, 0.0f, 1.0f}) *
+		glm::scale(glm::mat4(1.0f), {scale.x * size.x, scale.y * size.y, 1.0f});
+
+	for (size_t i = 0; i < quadVertexCount; i++) {
+		s_Data.QuadVertexBufferPtr->Position =
+			transform * s_Data.QuadVertexPositions[i];
+		s_Data.QuadVertexBufferPtr->Color = tintColor;
+		s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexBufferPtr++;
+	}
+
+	s_Data.QuadIndexCount += 6;
+}
+
 void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
 	// Retrieve the components associated with this entity
 	auto &transform = registry.GetRegistry().get<TransformComponent>(entityID);
@@ -239,7 +293,8 @@ void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
 	// glm::vec4 tintColor = sprite.TintColor;
 
 	// Render the quad using the other DrawQuad method
-	DrawQuad(entityID, position, size, texture);
+	DrawQuad(entityID, position, size, transform.rotation, transform.scale,
+			 texture, 1.0f, sprite.color);
 }
 
 void Renderer2D::Clear() { glClear(GL_COLOR_BUFFER_BIT); }

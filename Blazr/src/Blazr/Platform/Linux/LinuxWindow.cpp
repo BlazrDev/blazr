@@ -11,15 +11,19 @@
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "LinuxWindow.h"
+#include "ext/vector_float4.hpp"
 
 namespace Blazr {
 
 Camera2D camera = Camera2D(1280, 720);
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
+entt::entity selectedEntity =
+	entt::null;				   // Drži referencu na selektovani entitet
+bool isEntitySelected = false; // Da li je entitet selektovan
+bool mousePressed = false;	   // Da li je dugme miša pritisnuto
+double lastMouseX, lastMouseY; // Poslednja pozicija miša
 
 static bool s_GLFWInitialized = false;
-bool mousePressed = false;
-double lastMouseX, lastMouseY;
 
 static void GLFWErorCallback(int error, const char *description) {
 	BLZR_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -116,25 +120,68 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
-	glfwSetMouseButtonCallback(
-		m_Window, [](GLFWwindow *window, int button, int action, int mods) {
-			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			double xpos, ypos;
+	// glfwSetMouseButtonCallback(
+	// 	m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		double xpos, ypos;
+	//
+	// 		glfwGetCursorPos(window, &xpos, &ypos);
+	// 		switch (action) {
+	// 		case GLFW_PRESS: {
+	// 			MouseButtonPressedEvent event(button);
+	// 			data.eventCallback(event);
+	// 			break;
+	// 		}
+	// 		case GLFW_RELEASE: {
+	// 			MouseButtonReleasedEvent event(button);
+	// 			data.eventCallback(event);
+	// 			break;
+	// 		}
+	// 		}
+	// 	});
+	glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
+											int action, int mods) {
+		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+		if (button == GLFW_MOUSE_BUTTON_LEFT) {
+			if (action == GLFW_PRESS) {
+				mousePressed = true; // Dugme miša je pritisnuto
+				BLZR_CORE_INFO("Mouse button pressed");
+				double mouseX, mouseY;
+				glfwGetCursorPos(window, &mouseX, &mouseY);
 
-			glfwGetCursorPos(window, &xpos, &ypos);
-			switch (action) {
-			case GLFW_PRESS: {
-				MouseButtonPressedEvent event(button);
-				data.eventCallback(event);
-				break;
+				int screenWidth, screenHeight;
+				glfwGetWindowSize(window, &screenWidth, &screenHeight);
+
+				glm::vec2 mouseWorldPos = data.GetWorldCoordinates(
+					mouseX, mouseY, camera, screenWidth, screenHeight);
+
+				// Proveri da li je miš iznad nekog entiteta
+				auto view = registry->GetRegistry()
+								.view<TransformComponent, SpriteComponent>();
+				for (auto entity : view) {
+					auto &transform = view.get<TransformComponent>(entity);
+					auto &sprite = view.get<SpriteComponent>(entity);
+
+					if (data.IsMouseOverEntity(
+							mouseWorldPos, transform.position,
+							{sprite.width, sprite.height}, transform.scale,
+							camera.GetScale())) {
+						BLZR_CORE_INFO("Mouse is over entity {0}",
+									   sprite.texturePath);
+						selectedEntity = entity; // Postavi selektovani entitet
+						isEntitySelected =
+							true; // Obeleži entitet kao selektovan
+						lastMouseX = mouseX;
+						lastMouseY = mouseY;
+						break;
+					}
+				}
+			} else if (action == GLFW_RELEASE) {
+				mousePressed = false;	  // Dugme miša je pušteno
+				isEntitySelected = false; // Oslobodi selekciju
 			}
-			case GLFW_RELEASE: {
-				MouseButtonReleasedEvent event(button);
-				data.eventCallback(event);
-				break;
-			}
-			}
-		});
+		}
+	});
 
 	// TODO: napraviti da na scroll prati kursor
 	glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
@@ -166,41 +213,105 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 		data.eventCallback(event);
 	// 	});
 
-	glfwSetMouseButtonCallback(
-		m_Window, [](GLFWwindow *window, int button, int action,
-					 int mods) { // Uhvatite varijable prema referenci
-			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// glfwSetMouseButtonCallback(
+	// 	m_Window, [](GLFWwindow *window, int button, int action,
+	// 				 int mods) { // Uhvatite varijable prema referenci
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	//
+	// 		if (button == GLFW_MOUSE_BUTTON_LEFT) {
+	// 			if (action == GLFW_PRESS) {
+	// 				mousePressed = true;
+	// 				glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
+	// 			} else if (action == GLFW_RELEASE) {
+	// 				mousePressed = false;
+	// 			}
+	// 		}
+	// 	});
 
-			if (button == GLFW_MOUSE_BUTTON_LEFT) {
-				if (action == GLFW_PRESS) {
-					mousePressed = true;
-					glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
-				} else if (action == GLFW_RELEASE) {
-					mousePressed = false;
-				}
-			}
-		});
+	// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
+	// 										int action, int mods) {
+	// 	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+	// 		BLZR_CORE_INFO("Mouse button pressed");
+	// 		double mouseX, mouseY;
+	// 		glfwGetCursorPos(window, &mouseX, &mouseY);
+	//
+	// 		int screenWidth, screenHeight;
+	// 		glfwGetWindowSize(window, &screenWidth, &screenHeight);
+	//
+	// 		glm::vec2 mouseWorldPos = data.GetWorldCoordinates(
+	// 			mouseX, mouseY, camera, screenWidth, screenHeight);
+	//
+	// 		auto view = registry->GetRegistry()
+	// 						.view<TransformComponent, SpriteComponent>();
+	// 		for (auto entity : view) {
+	// 			auto &transform = view.get<TransformComponent>(entity);
+	// 			auto &sprite = view.get<SpriteComponent>(entity);
+	//
+	// 			if (data.IsMouseOverEntity(mouseWorldPos, transform.position,
+	// 									   {sprite.width, sprite.height},
+	// 									   transform.scale)) {
+	// 				BLZR_CORE_INFO("Mouse is over entity {0}",
+	// 							   sprite.texturePath);
+	// 				// Store selected entity somewhere or add a
+	// 				// SelectedComponent to it
+	// 				selectedEntity = entity;
+	// 			} else {
+	// 				selectedEntity = entt::null;
+	// 			}
+	// 		}
+	// 	}
+	// });
+	//
+	// glfwSetCursorPosCallback(
+	// 	m_Window, [](GLFWwindow *window, double xpos,
+	// 				 double ypos) { // Uhvatite varijable prema referenci
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	//
+	// 		if (mousePressed) {
+	// 			double deltaX = xpos - lastMouseX;
+	// 			double deltaY = ypos - lastMouseY;
+	//
+	// 			lastMouseX = xpos;
+	// 			lastMouseY = ypos;
+	// 			camera.SetPosition(camera.GetPosition() +
+	// 							   glm::vec2(deltaX, deltaY));
+	// 		}
+	// 	});
+	glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xpos,
+										  double ypos) {
+		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+		double deltaX = xpos - lastMouseX;
+		double deltaY = ypos - lastMouseY;
 
-	glfwSetCursorPosCallback(
-		m_Window, [](GLFWwindow *window, double xpos,
-					 double ypos) { // Uhvatite varijable prema referenci
-			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+		lastMouseX = xpos;
+		lastMouseY = ypos;
+		if (mousePressed && isEntitySelected && selectedEntity != entt::null) {
+			BLZR_CORE_INFO("Mouse position: {0}, {1}", xpos, ypos);
+			// Izračunaj pomeraj miša
 
-			if (mousePressed) {
-				double deltaX = xpos - lastMouseX;
-				double deltaY = ypos - lastMouseY;
+			// Ažuriraj poslednju poziciju miša
 
-				lastMouseX = xpos;
-				lastMouseY = ypos;
-				camera.SetPosition(camera.GetPosition() +
-								   glm::vec2(deltaX, deltaY));
-			}
-		});
+			// Ažuriraj poziciju selektovanog entiteta
+			auto &transform =
+				registry->GetRegistry().get<TransformComponent>(selectedEntity);
+			transform.position.x += deltaX; // Pomeraj u X
+			transform.position.y +=
+				deltaY; // Pomeraj u Y (zavisno od orijentacije)
+
+			BLZR_CORE_INFO("Entity moved to: {0}, {1}", transform.position.x,
+						   transform.position.y);
+		} else if (mousePressed && !isEntitySelected) {
+			camera.SetPosition(camera.GetPosition() +
+							   glm::vec2(deltaX, deltaY) * 0.1f);
+		}
+	});
+
 	camera.SetScale(1.0f);
 	camera.SetPosition({0.0f, 0.0f});
 	glm::vec2 pos = {0.f, 0.f};
 	glm::vec2 size = {200.f, 200.f};
-	glm::vec4 color = {1.f, 0.f, 0.f, 1.f};
+	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
 
 	Entity entity = Entity(*registry, "Ent1", "G1");
 	auto &transform =
@@ -214,14 +325,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 						.startY = 30,
 						.texturePath = "assets/chammy.png"});
 
-	glm::vec2 pos2 = {-500.f, -520.f};
+	glm::vec2 pos2 = {300.f, 300.f};
 	glm::vec2 size2 = {200.f, 200.f};
-	glm::vec4 color2 = {1.f, 0.f, 0.f, 1.f};
+	glm::vec4 color2 = {0.f, 1.f, 0.f, 1.f};
 
 	Entity entity2 = Entity(*registry, "Ent1", "G1");
 	auto &transform2 = entity2.AddComponent<TransformComponent>(
 		TransformComponent{.position = pos2,
-						   .scale = glm::vec2(1.0f, 1.0f),
+						   .scale = glm::vec2(2.0f, 2.0f),
 						   .rotation = 0.0f});
 
 	auto &sprite2 = entity2.AddComponent<SpriteComponent>(
@@ -232,10 +343,11 @@ void LinuxWindow::init(const WindowProperties &properties) {
 						.texturePath = "assets/masha.png"});
 	Renderer2D::BeginScene(camera);
 
-	Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
-						 Texture2D::Create("assets/chammy.png"));
-	Renderer2D::DrawQuad(entity.GetEntityHandler(), pos2, size2,
-						 Texture2D::Create("assets/masha.png"));
+	// Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
+	// 					 Texture2D::Create("assets/chammy.png"),
+	// 					 transform.rotation);
+	Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
+						 Texture2D::Create("assets/masha.png"), 1.0f, color2);
 
 	Renderer2D::Flush();
 }

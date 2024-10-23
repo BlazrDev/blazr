@@ -21,6 +21,8 @@ class Camera2D {
 
 	glm::mat4 GetCameraMatrix() const;
 
+	glm::mat4 GetOrthoProjection() const;
+
   private:
 	glm::vec2 m_Position;
 	glm::mat4 m_CameraMatrix, m_OrthoProjection;

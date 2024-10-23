@@ -30,6 +30,8 @@ glm::vec2 Camera2D::GetPosition() const { return m_Position; }
 
 glm::mat4 Camera2D::GetCameraMatrix() const { return m_CameraMatrix; }
 
+glm::mat4 Camera2D::GetOrthoProjection() const { return m_OrthoProjection; }
+
 void Camera2D::Update() {
 	if (!m_bNeedsUpdate) {
 		return;
