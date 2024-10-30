@@ -13,9 +13,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
 IncludeDir["GLEW"] = "Blazr/vendor/glew/include"
+IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Add Lua include directory
 
 LibDir = {}
 LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
+LibDir["Lua"] = {
+    linux = "Blazr/vendor/lua/linux",  -- Lua libraries for Linux
+    windows = "Blazr/vendor/lua/windows" -- Lua libraries for Windows
+}
 
 function build_glew()
     if os.host() == "windows" then
@@ -30,7 +35,6 @@ function build_glew()
         os.execute("cd Blazr/vendor/glew && make clean")
     end
 end
-
 
 include("Blazr/vendor/GLFW")
 
@@ -58,6 +62,7 @@ includedirs({
     "%{prj.name}/vendor/entt",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW}",
+    "%{IncludeDir.Lua}", -- Include Lua directory
 })
 
 libdirs({
@@ -69,11 +74,15 @@ cppdialect("C++20")
 staticruntime("On")
 systemversion("latest")
 
+libdirs({
+    "%{LibDir.Lua.windows}", -- Add Lua library path for Windows
+})
+
 links({
     "OpenGL32",
     "glfw3",
     "GLEW",
-    -- "dwmapi.lib"
+    "lua53", -- Link Lua library
 })
 
 defines({
@@ -90,10 +99,15 @@ cppdialect("C++20")
 staticruntime("On")
 systemversion("latest")
 
+libdirs({
+    "%{LibDir.Lua.linux}", -- Add Lua library path for Linux
+})
+
 links({
     "GL",
     "GLFW",
     "GLEW",
+    "liblua53", -- Link Lua library
 })
 
 defines({
@@ -174,4 +188,3 @@ optimize("On")
 
 filter({ "system:windows", "configurations:Release" })
 buildoptions("/MD")
-
