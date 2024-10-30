@@ -7,12 +7,15 @@ class Entity {
 	Entity(Registry &registry);
 	Entity(Registry &registry, const std::string &name = "",
 		   const std::string &group = "");
+
+	Entity(Registry &registry, const entt::entity &entity);
 	~Entity() = default;
+
+	inline const std::string &GetName() const { return m_Name; }
+	inline const std::string &GetGroup() const { return m_Group; }
 
 	inline entt::registry &GetRegistry() { return m_Registry.GetRegistry(); }
 	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
-	inline const std::string &GetName() const { return m_Name; }
-	inline const std::string &GetGroup() const { return m_Group; }
 	inline std::uint32_t destroy() {
 		return m_Registry.GetRegistry().destroy(m_EntityHandler);
 	}

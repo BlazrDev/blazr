@@ -10,6 +10,7 @@
 #include "Blazr/Renderer/RendererAPI.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
+#include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
 
@@ -119,6 +120,42 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 		}
 	});
+
+	// TODO remove tmp code
+	// Creating lua state
+	auto lua = std::make_shared<sol::state>();
+
+	if (!lua) {
+		BLZR_CORE_ERROR("Failed to create the lua state!");
+		return;
+	}
+
+	lua->open_libraries(sol::lib::base, sol::lib::math, sol::lib::os,
+						sol::lib::table, sol::lib::io, sol::lib::string);
+
+	if (!m_Data.m_Registry->AddToContext<std::shared_ptr<sol::state>>(lua)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the sol::state to the registry context!");
+		return;
+	}
+
+	auto scriptSystem = std::make_shared<ScriptingSystem>(*m_Data.m_Registry);
+	if (!scriptSystem) {
+		BLZR_CORE_ERROR("Failed to create the script system!");
+		return;
+	}
+
+	if (!scriptSystem->LoadMainScript(*lua)) {
+		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+
+	if (!m_Data.m_Registry->AddToContext<std::shared_ptr<ScriptingSystem>>(
+			scriptSystem)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the script system to the registry context!");
+		return;
+	}
 
 	// glfwSetMouseButtonCallback(
 	// 	m_Window, [](GLFWwindow *window, int button, int action, int mods) {
@@ -355,6 +392,13 @@ void LinuxWindow::init(const WindowProperties &properties) {
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 
 void LinuxWindow::onUpdate() {
+
+	auto &scriptSystem =
+		m_Data.m_Registry->GetContext<std::shared_ptr<ScriptingSystem>>();
+
+	scriptSystem->Update();
+	scriptSystem->Render();
+
 	glfwPollEvents();
 	camera.Update();
 

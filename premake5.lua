@@ -13,7 +13,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
 IncludeDir["GLEW"] = "Blazr/vendor/glew/include"
-IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Add Lua include directory
+IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Lua include directory
+IncludeDir["Sol2"] = "Blazr/vendor/sol2"  -- Sol2 include directory
 
 LibDir = {}
 LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
@@ -63,6 +64,7 @@ includedirs({
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW}",
     "%{IncludeDir.Lua}", -- Include Lua directory
+    "%{IncludeDir.Sol2}", -- Include Sol2 directory
 })
 
 libdirs({
@@ -82,7 +84,7 @@ links({
     "OpenGL32",
     "glfw3",
     "GLEW",
-    "lua53", -- Link Lua library
+    "lua", -- Link Lua library
 })
 
 defines({
@@ -107,7 +109,7 @@ links({
     "GL",
     "GLFW",
     "GLEW",
-    "liblua53", -- Link Lua library
+    "lua", -- Link Lua library
 })
 
 defines({
@@ -150,6 +152,7 @@ files({
 includedirs({
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
+    "%{IncludeDir.Sol2}", -- Include Sol2 for Sandbox as well
 })
 
 links({

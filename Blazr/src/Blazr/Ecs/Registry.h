@@ -18,6 +18,18 @@ class Registry {
 		return m_Registry->ctx().emplace<TContext>();
 	}
 
+	template <typename TContext> inline bool AddToContext(TContext &context) {
+		if (m_Registry->ctx().contains<TContext>()) {
+			return false;
+		}
+		m_Registry->ctx().emplace<TContext>(context);
+		return true;
+	}
+
+	template <typename TContext> inline bool RemoveContext() {
+		return m_Registry->ctx().erase<TContext>();
+	}
+
   private:
 	std::unique_ptr<entt::registry> m_Registry;
 };
