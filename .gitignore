@@ -3,4 +3,4 @@
 *.log
 **/Makefile
 \.clangd
-Blazr.vcxproj.*
+**/Blazr.vcxproj.*
