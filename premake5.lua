@@ -12,29 +12,34 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
-IncludeDir["GLEW"] = "Blazr/vendor/glew/include"
+IncludeDir["GLEW"] = {
+    linux = "Blazr/vendor/glew/linux/include",
+    windows = "Blazr/vendor/glew/windows/include"
+}
 IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Lua include directory
 IncludeDir["Sol2"] = "Blazr/vendor/sol2"  -- Sol2 include directory
 
 LibDir = {}
 LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
+LibDir["GLEW"] = {
+    linux = "Blazr/vendor/glew/linux/lib",
+    windows = "Blazr/vendor/glew/windows/lib/Release/x64"
+}
 LibDir["Lua"] = {
     linux = "Blazr/vendor/lua/linux",  -- Lua libraries for Linux
     windows = "Blazr/vendor/lua/windows" -- Lua libraries for Windows
 }
 
+-- Function to build GLEW on Linux
 function build_glew()
-    if os.host() == "windows" then
-        os.execute("cd Blazr/vendor/glew/auto && mingw32-make")
-        os.execute("cd Blazr/vendor/glew && mingw32-make")
-        os.execute("cd Blazr/vendor/glew && mingw32-make install")
-        os.execute("cd Blazr/vendor/glew && mingw32-make install.all")
-    else
-        os.execute("cd Blazr/vendor/glew/auto && make")
-        os.execute("cd Blazr/vendor/glew && make")
-        os.execute("cd Blazr/vendor/glew && sudo make install")
-        os.execute("cd Blazr/vendor/glew && make clean")
+    if os.host() == "linux" then
+        os.execute("cd Blazr/vendor/glew/linux && make")
     end
+end
+
+-- Call build_glew function for Linux only
+if os.host() == "linux" then
+    build_glew()
 end
 
 include("Blazr/vendor/GLFW")
@@ -62,13 +67,14 @@ includedirs({
     "%{prj.name}/vendor/glm",
     "%{prj.name}/vendor/entt",
     "%{IncludeDir.GLFW}",
-    "%{IncludeDir.GLEW}",
+    "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua}", -- Include Lua directory
     "%{IncludeDir.Sol2}", -- Include Sol2 directory
 })
 
 libdirs({
     "%{LibDir.GLFW}",
+    "%{LibDir.GLEW[os.host()]}",
 })
 
 filter("system:windows")
