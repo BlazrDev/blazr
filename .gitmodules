@@ -4,6 +4,3 @@
 [submodule "Blazr/vendor/GLFW"]
 	path = Blazr/vendor/GLFW
 	url = https://github.com/Chameleeon/glfw
-[submodule "Blazr/vendor/glew"]
-	path = Blazr/vendor/glew
-	url = https://github.com/Chameleeon/glew.git
