@@ -1,6 +1,37 @@
+# Visual Studio directories
 **/bin/
 **/obj/
+**/.vs/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
 *.log
 **/Makefile
-\.clangd
+
+# Visual Studio project files
+**/*.vcxproj.user
+**/*.vcxproj.filters
 **/Blazr.vcxproj.*
+
+# Clang tooling
+\.clangd
+
+# Others
+*.pdb
+*.idb
+*.ipch/
+*.aps
+*.ncb
+*.cache
+*.ilk
+*.lastbuildstate
+

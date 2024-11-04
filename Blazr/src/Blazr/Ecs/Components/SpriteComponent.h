@@ -1,6 +1,5 @@
 #pragma once
 #include "Blazr/Ecs/Registry.h"
-#include "Blazr/Renderer/RendererAPI.h"
 #include "sol.hpp"
 #include <glm.hpp>
 #include <string>

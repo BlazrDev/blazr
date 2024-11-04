@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Blazr">
@@ -24,6 +24,9 @@
     </Filter>
     <Filter Include="Blazr\Renderer">
       <UniqueIdentifier>{C67EB12C-B24C-A532-9BE0-1559874D8197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Resources">
+      <UniqueIdentifier>{8AC48E5E-F64F-FC22-FF60-7F176B6B5823}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Systems">
       <UniqueIdentifier>{27AD9556-936D-118D-5CA8-5A0AC8275669}</UniqueIdentifier>
@@ -67,6 +70,9 @@
     <ClInclude Include="src\Blazr\Ecs\Entity.h">
       <Filter>Blazr\Ecs</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\MetaUtil.h">
+      <Filter>Blazr\Ecs</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Registry.h">
       <Filter>Blazr\Ecs</Filter>
     </ClInclude>
@@ -103,9 +109,6 @@
     <ClInclude Include="src\Blazr\Renderer\Renderer2D.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Renderer\RendererAPI.h">
-      <Filter>Blazr\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Shader.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -118,14 +121,14 @@
     <ClInclude Include="src\Blazr\Renderer\UniformBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Renderer\Vertex.h">
-      <Filter>Blazr\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\stb_image.h">
       <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Resources\AssetManager.h">
+      <Filter>Blazr\Resources</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
@@ -139,7 +142,16 @@
     <ClCompile Include="src\Blazr\Core\Log.cpp">
       <Filter>Blazr\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\TransformComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Entity.cpp">
+      <Filter>Blazr\Ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\MetaUtil.cpp">
       <Filter>Blazr\Ecs</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp">
@@ -166,9 +178,6 @@
     <ClCompile Include="src\Blazr\Renderer\Renderer2D.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blazr\Renderer\RendererAPI.cpp">
-      <Filter>Blazr\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Shader.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
@@ -181,14 +190,14 @@
     <ClCompile Include="src\Blazr\Renderer\UniformBuffer.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blazr\Renderer\Vertex.cpp">
-      <Filter>Blazr\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp">
       <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Resources\AssetManager.cpp">
+      <Filter>Blazr\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">
       <Filter>Blazr\Systems</Filter>

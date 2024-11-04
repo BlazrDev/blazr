@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "TransformComponent.h"
 #include "entt.hpp"
 #include "ext/vector_float2.hpp"
