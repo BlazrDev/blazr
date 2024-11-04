@@ -1,6 +1,3 @@
-[submodule "Blazr/vendor/spdlog"]
-	path = Blazr/vendor/spdlog
-	url = https://github.com/gabime/spdlog
 [submodule "Blazr/vendor/GLFW"]
 	path = Blazr/vendor/GLFW
 	url = https://github.com/Chameleeon/glfw
