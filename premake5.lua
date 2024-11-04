@@ -1,59 +1,71 @@
-workspace("Blazr")
+workspace("blazr")
 architecture("x64")
-startproject("Sandbox")
+startproject("sandbox")
 
 configurations({
-    "Debug",
-    "Release",
-    "Dist",
+    "debug",
+    "release",
+    "dist",
 })
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-IncludeDir = {}
-IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
-IncludeDir["GLEW"] = {
-    linux = "Blazr/vendor/glew/linux/include",
-    windows = "Blazr/vendor/glew/windows/include"
+includedir = {}
+includedir["glfw"] = "blazr/vendor/glfw/include"
+includedir["glew"] = {
+    linux = "blazr/vendor/glew/linux/include",
+    windows = "blazr/vendor/glew/windows/include"
 }
-IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Lua include directory
-IncludeDir["Sol2"] = "Blazr/vendor/sol2"  -- Sol2 include directory
+includedir["lua"] = {
+    linux = "blazr/vendor/lua/linux/include",
+    windows = "blazr/vendor/lua/windows/include"
+}
+includedir["sol2"] = "blazr/vendor/sol2"
+includedir["glm"] = "blazr/vendor/glm"
+includedir["entt"] = "blazr/vendor/entt"
 
-LibDir = {}
-LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
-LibDir["GLEW"] = {
-    linux = "Blazr/vendor/glew/linux/lib",
-    windows = "Blazr/vendor/glew/windows/lib/Release/x64"
+libdir = {}
+libdir["glfw"] = {
+    linux = "blazr/vendor/glfw/bin/debug-linux-x86_64/glfw",
+    windows = "blazr/vendor/glfw/bin/debug-windows-x86_64/glfw",
 }
-LibDir["Lua"] = {
-    linux = "Blazr/vendor/lua/linux",  -- Lua libraries for Linux
-    windows = "Blazr/vendor/lua/windows" -- Lua libraries for Windows
+libdir["glew"] = {
+    linux = "blazr/vendor/glew/linux/lib",
+    windows = "blazr/vendor/glew/windows/lib/release/x64"
+}
+libdir["lua"] = {
+    linux = "blazr/vendor/lua/linux",
+    windows = "blazr/vendor/lua/windows"
+}
+libdir["blazr"] = {
+    linux = "bin/debug-linux-x86_64/blazr",
+    windows = "bin/debug-windows-x86_64/blazr",
 }
 
--- Function to build GLEW on Linux
+-- function to build glew on linux
 function build_glew()
     if os.host() == "linux" then
-        os.execute("cd Blazr/vendor/glew/linux && make")
+        os.execute("cd blazr/vendor/glew/linux && make")
     end
 end
 
--- Call build_glew function for Linux only
+-- call build_glew function for linux only
 if os.host() == "linux" then
     build_glew()
 end
 
-include("Blazr/vendor/GLFW")
+include("blazr/vendor/glfw")
 
-project("Blazr")
-location("Blazr")
-kind("SharedLib")
-language("C++")
+project("blazr")
+location("blazr")
+kind("sharedlib")
+language("c++")
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("obj/" .. outputdir .. "/%{prj.name}")
 
 pchheader("blzrpch.h")
-pchsource("Blazr/src/blzrpch.cpp")
+pchsource("blazr/src/blzrpch.cpp")
 
 files({
     "%{prj.name}/src/**.h",
@@ -63,89 +75,83 @@ files({
 includedirs({
     "%{prj.name}/vendor/spdlog/include",
     "%{prj.name}/src",
-    "%{prj.name}/vendor/GLFW/include",
-    "%{prj.name}/vendor/glm",
-    "%{prj.name}/vendor/entt",
-    "%{IncludeDir.GLFW}",
-    "%{IncludeDir.GLEW[os.host()]}",
-    "%{IncludeDir.Lua}", -- Include Lua directory
-    "%{IncludeDir.Sol2}", -- Include Sol2 directory
+    "%{includedir.glfw}",
+    "%{includedir.glew[os.host()]}",
+    "%{includedir.lua[os.host()]}", -- include lua directory based on os
+    "%{includedir.sol2}",
+    "%{includedir.glm}",
+    "%{includedir.entt}",
 })
 
 libdirs({
-    "%{LibDir.GLFW}",
-    "%{LibDir.GLEW[os.host()]}",
+    "%{libdir.glfw[os.host()]}",
+    "%{libdir.glew[os.host()]}",
+    "%{libdir.lua[os.host()]}", -- add lua library path based on os
 })
 
 filter("system:windows")
-cppdialect("C++20")
-staticruntime("On")
+cppdialect("c++20")
+staticruntime("on")
 systemversion("latest")
 
-libdirs({
-    "%{LibDir.Lua.windows}", -- Add Lua library path for Windows
-})
-
 links({
-    "OpenGL32",
-    "glfw3",
-    "GLEW",
-    "lua", -- Link Lua library
+    "opengl32",
+    "glfw",
+    "glew32s",
+    "lua53"
 })
 
 defines({
     "BLZR_PLATFORM_WINDOWS",
     "BLZR_BUILD_DLL",
+    "GLEW_STATIC",
 })
 
 postbuildcommands({
-    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+    ("{copy} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/sandbox"),
 })
 
 filter("system:linux")
-cppdialect("C++20")
-staticruntime("On")
+cppdialect("c++20")
+staticruntime("on")
 systemversion("latest")
 
-libdirs({
-    "%{LibDir.Lua.linux}", -- Add Lua library path for Linux
-})
-
 links({
-    "GL",
-    "GLFW",
-    "GLEW",
-    "lua", -- Link Lua library
+    "gl",
+    "glfw3",
+    "glew",
+    "lua",
 })
 
 defines({
     "BLZR_PLATFORM_LINUX",
     "BLZR_BUILD_SO",
+    "GLEW_STATIC",
 })
 
 postbuildcommands({
-    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+    ("{copy} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/sandbox"),
 })
 
-filter("configurations:Debug")
-defines("BLZR_DEBUG")
-symbols("On")
+filter("configurations:debug")
+defines("blzr_debug")
+symbols("on")
 
-filter("configurations:Release")
-defines("BLZR_RELEASE")
-optimize("On")
+filter("configurations:release")
+defines("blzr_release")
+optimize("on")
 
-filter("configurations:Dist")
-defines("BLZR_DIST")
-optimize("On")
+filter("configurations:dist")
+defines("blzr_dist")
+optimize("on")
 
-filter({ "system:windows", "configurations:Release" })
-buildoptions("/MD")
+filter({ "system:windows", "configurations:release" })
+buildoptions("/md")
 
-project("Sandbox")
-location("Sandbox")
-kind("ConsoleApp")
-language("C++")
+project("sandbox")
+location("sandbox")
+kind("consoleapp")
+language("c++")
 
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("obj/" .. outputdir .. "/%{prj.name}")
@@ -156,18 +162,23 @@ files({
 })
 
 includedirs({
-    "Blazr/vendor/spdlog/include",
-    "Blazr/src",
-    "%{IncludeDir.Sol2}", -- Include Sol2 for Sandbox as well
+    "blazr/vendor/spdlog/include",
+    "blazr/src",
+    "%{includedir.sol2}",
+    "%{includedir.glew[os.host()]}",
+})
+
+libdirs({
+    "%{libdir.blazr[os.host()]}", -- add lua library path based on os
 })
 
 links({
-    "Blazr",
+    "blazr",
 })
 
 filter("system:windows")
-cppdialect("C++20")
-staticruntime("On")
+cppdialect("c++20")
+staticruntime("on")
 systemversion("latest")
 
 defines({
@@ -175,25 +186,25 @@ defines({
 })
 
 filter("system:linux")
-cppdialect("C++20")
-staticruntime("On")
+cppdialect("c++20")
+staticruntime("on")
 systemversion("latest")
 
 defines({
     "BLZR_PLATFORM_LINUX",
 })
 
-filter("configurations:Debug")
-defines("BLZR_DEBUG")
-symbols("On")
+filter("configurations:debug")
+defines("blzr_debug")
+symbols("on")
 
-filter("configurations:Release")
-defines("BLZR_RELEASE")
-optimize("On")
+filter("configurations:release")
+defines("blzr_release")
+optimize("on")
 
-filter("configurations:Dist")
-defines("BLZR_DIST")
-optimize("On")
+filter("configurations:dist")
+defines("blzr_dist")
+optimize("on")
 
-filter({ "system:windows", "configurations:Release" })
-buildoptions("/MD")
+filter({ "system:windows", "configurations:release" })
+buildoptions("/md")
