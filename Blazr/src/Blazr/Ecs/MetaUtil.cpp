@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "MetaUtil.h"
 
 entt::id_type Blazr::GetIdType(const sol::table &comp) {

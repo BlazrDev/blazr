@@ -32,4 +32,6 @@ void Application::Run() {
 		m_Window->onUpdate();
 	}
 }
+
+Application *CreateApplication() { return nullptr; }
 } // namespace Blazr

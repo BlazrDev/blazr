@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "Components/Identification.h"
 #include "Entity.h"
 #include "MetaUtil.h"
