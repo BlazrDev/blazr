@@ -1,4 +1,7 @@
+#pragma once
+#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Renderer/RendererAPI.h"
+#include "sol.hpp"
 #include <glm.hpp>
 #include <string>
 
@@ -26,5 +29,8 @@ struct SpriteComponent {
 		object.y = startY * object.height;
 	}
 	std::string texturePath;
+
+	static void CreateLuaSpriteComponentBind(sol::state &lua,
+											 Registry &registry);
 };
 } // namespace Blazr
