@@ -1,5 +1,6 @@
 #include "Registry.h"
 #include "entt.hpp"
+#include "sol.hpp"
 
 namespace Blazr {
 class Entity {
@@ -15,6 +16,11 @@ class Entity {
 	inline const std::string &GetGroup() const { return m_Group; }
 
 	inline entt::registry &GetRegistry() { return m_Registry.GetRegistry(); }
+
+	static void CreateLuaEntityBind(sol::state_view &lua, Registry &registry);
+
+	template <typename TComponent> static void RegisterMetaComponent();
+
 	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
 		return m_Registry.GetRegistry().destroy(m_EntityHandler);
@@ -47,6 +53,14 @@ class Entity {
 
 	template <typename TComponent> void RemoveComponent() {
 		m_Registry.GetRegistry().remove<TComponent>(m_EntityHandler);
+	}
+
+	template <typename TComponent>
+	auto add_component(Entity &entity, const sol::table &comp,
+					   sol::this_state s) {
+		auto component = entity.AddComponent<TComponent>(
+			comp.valid() ? comp.as<TComponent>() : TComponent{});
+		return sol::make_reference(s, std::ref(component));
 	}
 
   private:
