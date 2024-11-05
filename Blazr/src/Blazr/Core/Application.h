@@ -14,9 +14,11 @@ class BLZR_API Application {
 	void onEvent(Event &e);
 
   private:
-	std::unique_ptr<Window> m_Window;
 	bool m_Running = true;
 	bool onWindowClose(WindowCloseEvent &e);
+
+  protected:
+	std::unique_ptr<Window> m_Window;
 };
 
 // To be defined in CLIENT

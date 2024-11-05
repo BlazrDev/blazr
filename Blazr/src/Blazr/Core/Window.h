@@ -3,6 +3,7 @@
 #include "GL/glew.h"
 #include "../../../vendor/GLFW/include/GLFW/glfw3.h"
 #include "Blazr/Events/Event.h"
+#include "Blazr/Renderer/Camera2D.h"
 #include "Core.h"
 
 namespace Blazr {
@@ -32,6 +33,7 @@ class BLZR_API Window {
 	virtual bool isVSync() const = 0;
 
 	virtual GLFWwindow *GetWindow() const = 0;
+	virtual Camera2D *GetCamera() = 0;
 
 	static Window *
 	create(const WindowProperties &properties = WindowProperties());

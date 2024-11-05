@@ -1,40 +1,18 @@
 #include "Blazr/Core/Log.h"
-#include "Blazr/Renderer/Camera2D.h"
-#include "Blazr/Renderer/RenderContext.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Editor.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 namespace Blazr {
 
-Editor::Editor() : m_Window(nullptr) { Init(); }
+Editor::Editor() { Init(); }
 
-Editor::~Editor() {
-	if (m_Window) {
-		delete m_Window;
-	}
-}
+Editor::~Editor() { Shutdown(); }
 
 void Editor::Init() {
 	BLZR_CORE_INFO("Initializing Editor...");
-
-	WindowProperties props("Blazr Editor", 1280, 720);
-	m_Window = Window::create(props);
-	m_Camera = Camera2D(1280, 720);
-
-	if (!m_Window) {
-		BLZR_CORE_ERROR("Failed to create window!");
-		return;
-	}
-
-	m_Window->setEventCallback(
-		[this](Event &e) { BLZR_CORE_TRACE("Event received in Editor"); });
-
-	m_Window->setVSync(true);
 
 	Renderer2D::Init();
 	m_Renderer = Renderer2D();
@@ -53,28 +31,23 @@ void Editor::InitImGui() {
 
 void Editor::Run() {
 	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
+		// Poll events
 		m_Window->onUpdate();
 
+		// Start ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
 		RenderImGui();
-		m_Renderer.BeginScene(m_Camera);
 
-		m_Renderer.Flush();
-
+		// Render ImGui on top of the scene
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		glfwSwapBuffers(m_Window->GetWindow());
 	}
 }
 
 void Editor::RenderImGui() {
-	// Begin ImGui frame for editor controls
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	ImGui::Begin("Editor Controls");
 
 	// Menu bar example
@@ -100,9 +73,9 @@ void Editor::RenderImGui() {
 		ImGui::EndMainMenuBar();
 	}
 
-	static float zoomLevel = 1.0f; // Starting zoom level
+	static float zoomLevel = 1.0f;
 	if (ImGui::SliderFloat("Camera Zoom", &zoomLevel, 0.1f, 5.0f)) {
-		m_Camera.SetScale(zoomLevel); // Apply the zoom level to the camera
+		m_Window->GetCamera()->SetScale(zoomLevel);
 	}
 
 	ImGui::Text("Rendering API - Blazr");

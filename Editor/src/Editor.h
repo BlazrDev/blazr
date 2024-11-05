@@ -15,8 +15,6 @@ class Editor : public Application {
 
   private:
 	Renderer2D m_Renderer;
-	Camera2D m_Camera;
-	Window *m_Window;
 };
 
 Application *CreateApplication() { return new Editor(); }
