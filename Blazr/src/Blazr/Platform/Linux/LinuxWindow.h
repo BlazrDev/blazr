@@ -18,6 +18,7 @@ class BLZR_API LinuxWindow : public Window {
 	void setEventCallback(const EventCallbackFn &callback) override;
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
+	GLFWwindow *GetWindow() const override;
 
   private:
 	virtual void init(const WindowProperties &properties);

@@ -1,22 +1,22 @@
 #pragma once
+#include "blzrpch.h"
 #include "Core.h"
 #include "Window.h"
-#include "blzrpch.h"
 
 #include "../Events/ApplicationEvent.h"
 namespace Blazr {
 
 class BLZR_API Application {
-public:
-  Application();
-  virtual ~Application();
-  void Run();
-  void onEvent(Event &e);
+  public:
+	Application();
+	virtual ~Application();
+	virtual void Run();
+	void onEvent(Event &e);
 
-private:
-  std::unique_ptr<Window> m_Window;
-  bool m_Running = true;
-  bool onWindowClose(WindowCloseEvent &e);
+  private:
+	std::unique_ptr<Window> m_Window;
+	bool m_Running = true;
+	bool onWindowClose(WindowCloseEvent &e);
 };
 
 // To be defined in CLIENT

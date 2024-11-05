@@ -431,3 +431,5 @@ void Blazr::LinuxWindow::setEventCallback(
 	const LinuxWindow::EventCallbackFn &callback) {
 	m_Data.eventCallback = callback;
 }
+
+GLFWwindow *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
