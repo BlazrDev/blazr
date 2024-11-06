@@ -158,6 +158,8 @@ files({
 includedirs({
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
+    "%{prj.name}/vendor/glm",
+    "%{prj.name}/vendor/entt",
     "%{IncludeDir.Sol2}", -- Include Sol2 for Sandbox as well
 })
 
