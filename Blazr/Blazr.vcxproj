@@ -189,6 +189,7 @@
     <ClInclude Include="src\Blazr\Renderer\Vertex.h" />
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
+    <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
@@ -212,6 +213,7 @@
     <ClCompile Include="src\Blazr\Renderer\Vertex.cpp" />
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
+    <ClCompile Include="src\Blazr\Resources\AssetManager.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
