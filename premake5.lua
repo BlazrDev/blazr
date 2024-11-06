@@ -18,6 +18,7 @@ IncludeDir["GLEW"] = {
 }
 IncludeDir["Lua"] = "Blazr/vendor/lua" -- Lua include directory
 IncludeDir["Sol2"] = "Blazr/vendor/sol2" -- Sol2 include directory
+IncludeDir["json"] = "Blazr/vendor/json"
 
 LibDir = {}
 LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
@@ -67,6 +68,7 @@ includedirs({
     "%{prj.name}/vendor/glm",
     "%{prj.name}/vendor/entt",
     "%{IncludeDir.GLFW}",
+    "%{IncludeDir.json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua}", -- Include Lua directory
     "%{IncludeDir.Sol2}", -- Include Sol2 directory
@@ -160,7 +162,8 @@ includedirs({
     "Blazr/src",
     "%{prj.name}/vendor/glm",
     "%{prj.name}/vendor/entt",
-    "%{IncludeDir.Sol2}", -- Include Sol2 for Sandbox as well
+    "%{IncludeDir.Sol2}",
+    "%{IncludeDir.json}",
 })
 
 links({
