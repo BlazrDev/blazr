@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"

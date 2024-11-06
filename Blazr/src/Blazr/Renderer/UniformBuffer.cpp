@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "UniformBuffer.h"
 namespace Blazr {
 UniformBuffer::UniformBuffer(GLsizeiptr size, GLuint bindingPoint) {

@@ -391,7 +391,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	glm::vec2 size2 = {200.f, 200.f};
 	glm::vec4 color2 = {0.f, 1.f, 0.f, 1.f};
 
-	Entity entity2 = Entity(*registry, "Ent1", "G1");
+	Entity entity2 = Entity(*registry, "Ent2", "G2");
 	auto &transform2 = entity2.AddComponent<TransformComponent>(
 		TransformComponent{.position = pos2,
 						   .scale = glm::vec2(2.0f, 2.0f),
