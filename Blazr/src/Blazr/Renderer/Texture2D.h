@@ -7,6 +7,7 @@ namespace Blazr {
 
 class Texture2D {
   public:
+	Texture2D() = default;
 	Texture2D(const std::string &filepath);
 	~Texture2D();
 
