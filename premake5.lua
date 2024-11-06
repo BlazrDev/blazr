@@ -16,7 +16,11 @@ IncludeDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/include",
     windows = "Blazr/vendor/glew/windows/include",
 }
-IncludeDir["Lua"] = "Blazr/vendor/lua" -- Lua include directory
+IncludeDir["Lua"] ={
+    
+    linux = "Blazr/vendor/linux/lua/include",
+    windows = "Blazr/vendor/windows/lua/include"
+}
 IncludeDir["Sol2"] = "Blazr/vendor/sol2" -- Sol2 include directory
 IncludeDir["json"] = "Blazr/vendor/json"
 
