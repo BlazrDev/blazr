@@ -13,6 +13,7 @@
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
+#include <Blazr/Resources/AssetManager.h>
 
 namespace Blazr {
 
@@ -344,6 +345,27 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
+	auto assetManager = AssetManager::GetInstance();
+
+	if (!assetManager) {
+		BLZR_CORE_ERROR("Failed to create the asset manager!");
+		return;
+	}
+
+	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
+		BLZR_CORE_ERROR("Failed to load the chammy texture!");
+		return;
+	}
+
+	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
+		BLZR_CORE_ERROR("Failed to load the masha texture!");
+		return;
+	}
+
+	auto chammyTexture = assetManager->GetTexture("chammy");
+	BLZR_CORE_INFO("Texture: {0} {1}", chammyTexture->GetWidth(),
+				   chammyTexture->GetHeight());
+
 	camera.SetScale(1.0f);
 	camera.SetPosition({0.0f, 0.0f});
 	glm::vec2 pos = {0.f, 0.f};
@@ -360,7 +382,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 						.height = size[1],
 						.startX = 10,
 						.startY = 30,
-						.texturePath = "assets/chammy.png"});
+						.texturePath = "chammy"});
+
+	sprite.generateObject(chammyTexture->GetWidth(),
+						  chammyTexture->GetHeight());
 
 	glm::vec2 pos2 = {300.f, 300.f};
 	glm::vec2 size2 = {200.f, 200.f};
@@ -377,14 +402,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 						.height = size2[1],
 						.startX = 100,
 						.startY = 100,
-						.texturePath = "assets/masha.png"});
+						.texturePath = "masha"});
 	Renderer2D::BeginScene(camera);
 
 	// Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
 	// 					 Texture2D::Create("assets/chammy.png"),
 	// 					 transform.rotation);
-	Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
-						 Texture2D::Create("assets/masha.png"), 1.0f, color2);
+	// Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
+	// 					 Texture2D::Create("assets/masha.png"), 1.0f, color2);
 
 	Renderer2D::Flush();
 }

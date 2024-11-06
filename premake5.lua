@@ -14,20 +14,20 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
 IncludeDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/include",
-    windows = "Blazr/vendor/glew/windows/include"
+    windows = "Blazr/vendor/glew/windows/include",
 }
-IncludeDir["Lua"] = "Blazr/vendor/lua"  -- Lua include directory
-IncludeDir["Sol2"] = "Blazr/vendor/sol2"  -- Sol2 include directory
+IncludeDir["Lua"] = "Blazr/vendor/lua" -- Lua include directory
+IncludeDir["Sol2"] = "Blazr/vendor/sol2" -- Sol2 include directory
 
 LibDir = {}
 LibDir["GLFW"] = "Blazr/vendor/GLFW/Debug-linux-x86_64/GLFW"
 LibDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/lib",
-    windows = "Blazr/vendor/glew/windows/lib/Release/x64"
+    windows = "Blazr/vendor/glew/windows/lib/Release/x64",
 }
 LibDir["Lua"] = {
-    linux = "Blazr/vendor/lua/linux",  -- Lua libraries for Linux
-    windows = "Blazr/vendor/lua/windows" -- Lua libraries for Windows
+    linux = "Blazr/vendor/lua/linux", -- Lua libraries for Linux
+    windows = "Blazr/vendor/lua/windows", -- Lua libraries for Windows
 }
 
 -- Function to build GLEW on Linux
@@ -158,6 +158,8 @@ files({
 includedirs({
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
+    "%{prj.name}/vendor/glm",
+    "%{prj.name}/vendor/entt",
     "%{IncludeDir.Sol2}", -- Include Sol2 for Sandbox as well
 })
 
