@@ -74,7 +74,7 @@ includedirs({
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.json}",
     "%{IncludeDir.GLEW[os.host()]}",
-    "%{IncludeDir.Lua}", -- Include Lua directory
+    "%{IncludeDir.Lua[os.host()]}", -- Include Lua directory
     "%{IncludeDir.Sol2}", -- Include Sol2 directory
 })
 
