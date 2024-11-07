@@ -8,7 +8,7 @@
 namespace Blazr {
 [[nodiscard]] entt::id_type GetIdType(const sol::table &comp);
 
-// template <typename... Args>
+template <typename... Args>
 inline auto InvokeMeta(entt::meta_type meta, entt::id_type id, Entity &entity,
 					   const sol::table &comp, sol::this_state s) {
 	if (!meta) {
@@ -33,7 +33,7 @@ inline auto InvokeMeta(entt::meta_type meta, entt::id_type id, Entity &entity,
 
 	return entt::meta_any{};
 }
-// template <typename... Args>
+template <typename... Args>
 inline auto InvokeMeta(entt::id_type id, entt::id_type func_id, Entity &entity,
 					   const sol::table &comp, sol::this_state s) {
 	return InvokeMeta(entt::resolve(id), func_id, entity, comp, s);

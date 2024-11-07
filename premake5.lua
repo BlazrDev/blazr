@@ -30,6 +30,7 @@ IncludeDir["Lua"] = {
 IncludeDir["Sol2"] = "Blazr/vendor/sol2"
 IncludeDir["GLM"] = "Blazr/vendor/glm"
 IncludeDir["EnTT"] = "Blazr/vendor/entt"
+IncludeDir["Json"] = "Blazr/vendor/json"
 
 LibDir = {}
 LibDir["GLFW"] = {
@@ -87,6 +88,7 @@ includedirs({
     "%{IncludeDir.Sol2}",
     "%{IncludeDir.GLM}",
     "%{IncludeDir.EnTT}",
+    "%{IncludeDir.Json}",
 })
 
 libdirs({
@@ -175,6 +177,7 @@ includedirs({
     "%{IncludeDir.GLM}",
     "%{IncludeDir.EnTT}",
     "%{IncludeDir.Sol2}",
+    "%{IncludeDir.Json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
 })
@@ -250,6 +253,7 @@ files({
 
 includedirs({
     "%{IncludeDir.ImGui}",
+    "%{IncludeDir.Json}",
     "%{IncludeDir.ImGuiBackends}",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW[os.host()]}"
