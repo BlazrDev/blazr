@@ -30,7 +30,7 @@ LibDir["GLFW"] = {
 }
 LibDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/lib",
-    windows = "Blazr/vendor/glew/windows/lib/Release/x64"
+    windows = "Blazr/vendor/glew/windows/lib/Release/x64",
 }
 LibDir["Lua"] = {
     linux = "Blazr/vendor/lua/linux",
