@@ -1,4 +1,7 @@
+#pragma once
+
 #include "Blazr/Core/Log.h"
+#include "Blazr/Renderer/Renderer2D.h"
 #include "Registry.h"
 #include "entt.hpp"
 #include "sol.hpp"
@@ -25,8 +28,15 @@ class Entity {
 		entt::meta<TComponent>()
 			.type(entt::type_hash<TComponent>::value())
 			.template func<&Blazr::Entity::add_component<TComponent>>(
-				"add_component"_hs);
+				"add_component"_hs)
+			.template func<&Blazr::Entity::add<TComponent>>("add"_hs);
 	};
+
+	template <typename TComponent> static auto add() {
+		BLZR_CORE_INFO("Adding component to entity: {0}",
+					   entt::resolve<TComponent>().info().name());
+		return TransformComponent{};
+	}
 
 	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
@@ -63,8 +73,10 @@ class Entity {
 	}
 
 	template <typename TComponent>
-	auto add_component(Entity &entity, const sol::table &comp,
-					   sol::this_state s) {
+	static auto add_component(Entity &entity, const sol::table &comp,
+							  sol::this_state s) {
+		BLZR_CORE_INFO("Adding component to entity: {0}",
+					   entt::resolve<TComponent>().info().name());
 		auto &component = entity.AddComponent<TComponent>(
 			comp.valid() ? std::move(comp.as<TComponent &&>()) : TComponent{});
 

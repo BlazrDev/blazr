@@ -1,3 +1,4 @@
+#pragma once
 #include "sol.hpp"
 #include <glm.hpp>
 
