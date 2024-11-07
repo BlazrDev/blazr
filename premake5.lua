@@ -213,24 +213,6 @@ filter("system:linux")
 
 linkoptions { "-Wl,-rpath=Blazr/vendor/lua/linux" }
 
-filter("system:windows")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
-
-    defines({
-        "BLZR_PLATFORM_WINDOWS",
-    })
-
-filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
-
-    defines({
-        "BLZR_PLATFORM_LINUX",
-    })
-
 filter("configurations:Debug")
     defines("BLZR_DEBUG")
     symbols("On")

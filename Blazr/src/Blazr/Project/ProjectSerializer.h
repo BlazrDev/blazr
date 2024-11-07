@@ -2,7 +2,7 @@
 
 #include "Project.h"
 #include <filesystem>
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 
 namespace Blazr {
 

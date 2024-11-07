@@ -22,6 +22,9 @@
     <Filter Include="Blazr\Platform\Linux">
       <UniqueIdentifier>{9371B207-7F00-3CD1-281F-50CC148D4C77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Project">
+      <UniqueIdentifier>{66FB045F-D2BB-8095-9BF6-C9120776C571}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Renderer">
       <UniqueIdentifier>{C67EB12C-B24C-A532-9BE0-1559874D8197}</UniqueIdentifier>
     </Filter>
@@ -91,6 +94,12 @@
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Project\Project.h">
+      <Filter>Blazr\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Project\ProjectSerializer.h">
+      <Filter>Blazr\Project</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Buffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -159,6 +168,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp">
+      <Filter>Blazr\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp">
       <Filter>Blazr\Renderer</Filter>
