@@ -166,8 +166,8 @@ files({
 includedirs({
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
-    "%{prj.name}/vendor/glm",
-    "%{prj.name}/vendor/entt",
+    "Blazr/vendor/glm",
+    "Blazr/vendor/entt",
     "%{IncludeDir.Sol2}",
     "%{IncludeDir.json}",
     "%{IncludeDir.GLEW[os.host()]}",
