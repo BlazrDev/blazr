@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Blazr.h"
 #include "Project.h"
 #include <filesystem>
 #include <nlohmann/json.hpp>

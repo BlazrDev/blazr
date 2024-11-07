@@ -1,4 +1,4 @@
-#include "Blazr.h"
+#include "Blazr/Core/Log.h"
 #include <filesystem>
 
 namespace Blazr {
