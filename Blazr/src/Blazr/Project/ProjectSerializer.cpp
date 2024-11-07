@@ -56,11 +56,10 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 	ifs >> j;
 
 	auto project = CreateRef<Project>();
-	project->GetProjectDirectory() =
-		j.at("ProjectDirectory").get<std::string>();
+	project->SetProjectDirectory(j.at("ProjectDirectory").get<std::string>());
+	Project::SetActive(project);
 	project->GetConfig() = ProjectConfigFromJson(j.at("Config"));
 
-	Project::GetActive() = project;
 	return project;
 }
 

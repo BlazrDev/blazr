@@ -23,10 +23,15 @@ class Project {
 	ProjectConfig &GetConfig() { return m_Config; }
 
 	static Ref<Project> GetActive() { return s_ActiveProject; }
+	static void SetActive(Ref<Project> project) { s_ActiveProject = project; }
 
 	static Ref<Project> New();
 	static Ref<Project> Load(const std::filesystem::path &path);
 	static bool SaveActive(const std::filesystem::path &path);
+
+	void SetProjectDirectory(const std::filesystem::path &directory) {
+		m_ProjectDirectory = directory;
+	}
 
   private:
 	ProjectConfig m_Config;
