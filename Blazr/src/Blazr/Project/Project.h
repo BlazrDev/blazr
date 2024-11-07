@@ -1,3 +1,4 @@
+#pragma once
 #include "Blazr.h"
 #include <filesystem>
 

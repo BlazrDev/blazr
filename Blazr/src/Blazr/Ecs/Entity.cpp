@@ -1,10 +1,10 @@
 #include "blzrpch.h"
+#include "Blazr/Core/Log.h"
 #include "Components/Identification.h"
 #include "Components/TransformComponent.h"
 #include "Entity.h"
 #include "MetaUtil.h"
 #include "sol.hpp"
-#include "Blazr/Core/Log.h"
 
 Blazr::Entity::Entity(Registry &registry)
 	: Blazr::Entity(registry, "GameObject", "") {}
@@ -12,7 +12,7 @@ Blazr::Entity::Entity(Registry &registry)
 Blazr::Entity::Entity(Registry &registry, const std::string &name,
 					  const std::string &group)
 	: m_Registry(registry), m_Name(name), m_Group(group) {
-	//AddComponent<Identification>(
+	// AddComponent<Identification>(
 	//	Identification{.name = name,
 	//				   .group = group,
 	//				   .id = static_cast<int32_t>(m_EntityHandler)});

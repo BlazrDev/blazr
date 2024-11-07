@@ -1,5 +1,4 @@
 #include "blzrpch.h"
-#include "Blazr.h"
 #include "Blazr/Core/Log.h"
 #include "ShaderLoader.h"
 #include <fstream>
