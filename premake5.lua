@@ -171,6 +171,7 @@ includedirs({
     "%{IncludeDir.Sol2}",
     "%{IncludeDir.json}",
     "%{IncludeDir.GLEW[os.host()]}",
+    "%{IncludeDir.Lua[os.host()]}",
 })
 
 links({
