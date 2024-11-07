@@ -1,5 +1,6 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Components/Identification.h"
 #include "Components/TransformComponent.h"
 #include "Entity.h"
@@ -11,7 +12,8 @@ Blazr::Entity::Entity(Registry &registry)
 
 Blazr::Entity::Entity(Registry &registry, const std::string &name,
 					  const std::string &group)
-	: m_Registry(registry), m_Name(name), m_Group(group) {
+	: m_Registry(registry), m_Name(name), m_Group(group),
+	  m_EntityHandler{registry.CreateEntity()} {
 	AddComponent<Identification>(
 		Identification{.name = name,
 					   .group = group,

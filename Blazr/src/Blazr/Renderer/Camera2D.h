@@ -1,4 +1,5 @@
 #pragma once
+#include "Blazr/Core/Core.h"
 #include "glm.hpp"
 #include <gtc/matrix_transform.hpp>
 

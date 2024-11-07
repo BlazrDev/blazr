@@ -1,9 +1,9 @@
 #include "Blazr/Core/Log.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Editor.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 namespace Blazr {
 
@@ -29,10 +29,12 @@ void Editor::InitImGui() {
 	ImGui_ImplOpenGL3_Init("#version 450");
 }
 
+static float zoomLevel = 1.0f;
 void Editor::Run() {
 	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
 		// Poll events
 		m_Window->onUpdate();
+		zoomLevel = m_Window->GetCamera()->GetScale();
 
 		// Start ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -49,7 +51,6 @@ void Editor::Run() {
 
 void Editor::RenderImGui() {
 	ImGui::Begin("Editor Controls");
-
 	// Menu bar example
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -73,7 +74,6 @@ void Editor::RenderImGui() {
 		ImGui::EndMainMenuBar();
 	}
 
-	static float zoomLevel = 1.0f;
 	if (ImGui::SliderFloat("Camera Zoom", &zoomLevel, 0.1f, 5.0f)) {
 		m_Window->GetCamera()->SetScale(zoomLevel);
 	}

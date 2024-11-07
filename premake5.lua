@@ -21,11 +21,11 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Blazr/vendor/GLFW/include"
 IncludeDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/include",
-    windows = "Blazr/vendor/glew/windows/include"
+    windows = "Blazr/vendor/glew/windows/include",
 }
 IncludeDir["Lua"] = {
     linux = "Blazr/vendor/lua/linux/include",
-    windows = "Blazr/vendor/lua/windows/include"
+    windows = "Blazr/vendor/lua/windows/include",
 }
 IncludeDir["Sol2"] = "Blazr/vendor/sol2"
 IncludeDir["GLM"] = "Blazr/vendor/glm"
@@ -39,11 +39,11 @@ LibDir["GLFW"] = {
 }
 LibDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/lib",
-    windows = "Blazr/vendor/glew/windows/lib/Release/x64"
+    windows = "Blazr/vendor/glew/windows/lib/Release/x64",
 }
 LibDir["Lua"] = {
     linux = "Blazr/vendor/lua/linux",
-    windows = "Blazr/vendor/lua/windows"
+    windows = "Blazr/vendor/lua/windows",
 }
 LibDir["Blazr"] = {
     linux = "bin/debug-linux-x86_64/Blazr",
@@ -98,62 +98,62 @@ libdirs({
 })
 
 filter("system:windows")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    links({
-        "OpenGL32",
-        "GLFW",
-        "glew32s",
-        "lua53",
-    })
+links({
+    "OpenGL32",
+    "GLFW",
+    "glew32s",
+    "lua53",
+})
 
-    defines({
-        "BLZR_PLATFORM_WINDOWS",
-        "BLZR_BUILD_DLL",
-        "GLEW_STATIC",
-    })
+defines({
+    "BLZR_PLATFORM_WINDOWS",
+    "BLZR_BUILD_DLL",
+    "GLEW_STATIC",
+})
 
-    postbuildcommands({
-        ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
-    })
+postbuildcommands({
+    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+})
 
 filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    links({
-        "GL",
-        "GLFW",
-        "GLEW",
-        "lua53",
-    })
+links({
+    "GL",
+    "GLFW",
+    "GLEW",
+    "lua53",
+})
 
-    linkoptions { "-Wl,-rpath=Blazr/vendor/lua/linux" }
+linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
 
-    defines({
-        "BLZR_PLATFORM_LINUX",
-        "BLZR_BUILD_SO",
-        "GLEW_STATIC",
-    })
+defines({
+    "BLZR_PLATFORM_LINUX",
+    "BLZR_BUILD_SO",
+    "GLEW_STATIC",
+})
 
-    postbuildcommands({
-        ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
-    })
+postbuildcommands({
+    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+})
 
 filter("configurations:Debug")
-    defines("BLZR_DEBUG")
-    symbols("On")
+defines("BLZR_DEBUG")
+symbols("On")
 
 filter("configurations:Release")
-    defines("BLZR_RELEASE")
-    optimize("On")
+defines("BLZR_RELEASE")
+optimize("On")
 
 filter("configurations:Dist")
-    defines("BLZR_DIST")
-    optimize("On")
+defines("BLZR_DIST")
+optimize("On")
 
 project("Sandbox")
 location("Sandbox")
@@ -197,39 +197,39 @@ links({
 })
 
 filter("system:windows")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    defines({
-        "BLZR_PLATFORM_WINDOWS",
-    })
+defines({
+    "BLZR_PLATFORM_WINDOWS",
+})
 
 filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    defines({
-        "BLZR_PLATFORM_LINUX",
-    })
+defines({
+    "BLZR_PLATFORM_LINUX",
+})
 
-linkoptions { "-Wl,-rpath=Blazr/vendor/lua/linux" }
+linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
 
 filter("configurations:Debug")
-    defines("BLZR_DEBUG")
-    symbols("On")
+defines("BLZR_DEBUG")
+symbols("On")
 
 filter("configurations:Release")
-    defines("BLZR_RELEASE")
-    optimize("On")
+defines("BLZR_RELEASE")
+optimize("On")
 
 filter("configurations:Dist")
-    defines("BLZR_DIST")
-    optimize("On")
+defines("BLZR_DIST")
+optimize("On")
 
 filter({ "system:windows", "configurations:Release" })
-    buildoptions("/MD")
+buildoptions("/MD")
 
 IncludeDir["ImGui"] = "ImGui/src"
 IncludeDir["ImGuiBackends"] = "ImGui/src/backends"
@@ -248,7 +248,7 @@ files({
     "%{IncludeDir.ImGui}/imgui_tables.cpp",
     "%{IncludeDir.ImGui}/imgui_widgets.cpp",
     "%{IncludeDir.ImGuiBackends}/imgui_impl_glfw.cpp",
-    "%{IncludeDir.ImGuiBackends}/imgui_impl_opengl3.cpp"
+    "%{IncludeDir.ImGuiBackends}/imgui_impl_opengl3.cpp",
 })
 
 includedirs({
@@ -256,27 +256,27 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.ImGuiBackends}",
     "%{IncludeDir.GLFW}",
-    "%{IncludeDir.GLEW[os.host()]}"
+    "%{IncludeDir.GLEW[os.host()]}",
 })
 
 filter("system:windows")
-    defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
-    links({ "opengl32", "glfw", "glew32s" })
+defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
+links({ "opengl32", "glfw", "glew32s" })
 
 filter("system:linux")
-    links({ "GL", "glfw", "GLEW" })
+links({ "GL", "glfw", "GLEW" })
 
 filter("configurations:Debug")
-    runtime("Debug")
-    symbols("On")
+runtime("Debug")
+symbols("On")
 
 filter("configurations:Release")
-    runtime("Release")
-    optimize("On")
+runtime("Release")
+optimize("On")
 
 filter("configurations:Dist")
-    runtime("Release")
-    optimize("On")
+runtime("Release")
+optimize("On")
 
 project("Editor")
 location("Editor")
@@ -319,33 +319,33 @@ links({
 })
 
 filter("system:windows")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    defines({
-        "BLZR_PLATFORM_WINDOWS",
-    })
+defines({
+    "BLZR_PLATFORM_WINDOWS",
+})
 
 filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    defines({
-        "BLZR_PLATFORM_LINUX",
-    })
+defines({
+    "BLZR_PLATFORM_LINUX",
+})
 
-linkoptions { "-Wl,-rpath=Blazr/vendor/lua/linux" }
+linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
 
 filter("configurations:Debug")
-    defines("BLZR_DEBUG")
-    symbols("On")
+defines("BLZR_DEBUG")
+symbols("On")
 
 filter("configurations:Release")
-    defines("BLZR_RELEASE")
-    optimize("On")
+defines("BLZR_RELEASE")
+optimize("On")
 
 filter("configurations:Dist")
-    defines("BLZR_DIST")
-    optimize("On")
+defines("BLZR_DIST")
+optimize("On")
