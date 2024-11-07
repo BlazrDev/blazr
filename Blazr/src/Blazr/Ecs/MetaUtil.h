@@ -16,7 +16,7 @@ inline auto InvokeMeta(entt::meta_type meta, entt::id_type id, Args &&...args) {
 	}
 
 	if (auto function = meta.func(id); function) {
-		return function.invoke(std::forward<Args>(args)...);
+		return function.invoke({}, std::forward<Args>(args)...);
 	}
 
 	return entt::meta_any{};

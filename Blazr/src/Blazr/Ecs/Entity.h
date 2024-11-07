@@ -1,3 +1,4 @@
+#include "Blazr/Core/Log.h"
 #include "Registry.h"
 #include "entt.hpp"
 #include "sol.hpp"
@@ -19,7 +20,13 @@ class Entity {
 
 	static void CreateLuaEntityBind(sol::state_view &lua, Registry &registry);
 
-	template <typename TComponent> static void RegisterMetaComponent();
+	template <typename TComponent> static void RegisterMetaComponent() {
+		using namespace entt::literals;
+		entt::meta<TComponent>()
+			.type(entt::type_hash<TComponent>::value())
+			.template func<&Blazr::Entity::add_component<TComponent>>(
+				"add_component"_hs);
+	};
 
 	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
@@ -58,8 +65,9 @@ class Entity {
 	template <typename TComponent>
 	auto add_component(Entity &entity, const sol::table &comp,
 					   sol::this_state s) {
-		auto component = entity.AddComponent<TComponent>(
-			comp.valid() ? comp.as<TComponent>() : TComponent{});
+		auto &component = entity.AddComponent<TComponent>(
+			comp.valid() ? std::move(comp.as<TComponent &&>()) : TComponent{});
+
 		return sol::make_reference(s, std::ref(component));
 	}
 
