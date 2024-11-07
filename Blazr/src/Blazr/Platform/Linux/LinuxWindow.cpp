@@ -12,6 +12,7 @@
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
+#include <Blazr/Resources/AssetManager.h>
 
 namespace Blazr {
 
@@ -120,6 +121,27 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
+	auto assetManager = AssetManager::GetInstance();
+
+	if (!assetManager) {
+		BLZR_CORE_ERROR("Failed to create the asset manager!");
+		return;
+	}
+
+	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
+		BLZR_CORE_ERROR("Failed to load the chammy texture!");
+		return;
+	}
+
+	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
+		BLZR_CORE_ERROR("Failed to load the masha texture!");
+		return;
+	}
+
+	auto chammyTexture = assetManager->GetTexture("chammy");
+	BLZR_CORE_INFO("Texture: {0} {1}", chammyTexture->GetWidth(),
+				   chammyTexture->GetHeight());
+
 	// TODO remove tmp code
 	// Creating lua state
 	auto lua = std::make_shared<sol::state>();
@@ -132,27 +154,27 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	lua->open_libraries(sol::lib::base, sol::lib::math, sol::lib::os,
 						sol::lib::table, sol::lib::io, sol::lib::string);
 
-	if (!m_Data.m_Registry->AddToContext<std::shared_ptr<sol::state>>(lua)) {
+	if (!registry->AddToContext<std::shared_ptr<sol::state>>(lua)) {
 		BLZR_CORE_ERROR(
 			"Failed to add the sol::state to the registry context!");
 		return;
 	}
 
-	auto scriptSystem = std::make_shared<ScriptingSystem>(*m_Data.m_Registry);
+	auto scriptSystem = std::make_shared<ScriptingSystem>(*registry);
 	if (!scriptSystem) {
 		BLZR_CORE_ERROR("Failed to create the script system!");
 		return;
 	}
 
-	if (!scriptSystem->LoadMainScript(*lua)) {
-		BLZR_CORE_ERROR("Failed to load the main lua script");
-		return;
-	}
-
-	if (!m_Data.m_Registry->AddToContext<std::shared_ptr<ScriptingSystem>>(
+	if (!registry->AddToContext<std::shared_ptr<ScriptingSystem>>(
 			scriptSystem)) {
 		BLZR_CORE_ERROR(
 			"Failed to add the script system to the registry context!");
+		return;
+	}
+	ScriptingSystem::RegisterLuaBindings(*lua, *registry);
+	if (!scriptSystem->LoadMainScript(*lua)) {
+		BLZR_CORE_ERROR("Failed to load the main lua script");
 		return;
 	}
 
@@ -345,47 +367,50 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
 	camera.SetScale(1.0f);
 	camera.SetPosition({0.0f, 0.0f});
-	glm::vec2 pos = {0.f, 0.f};
-	glm::vec2 size = {200.f, 200.f};
-	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-
-	Entity entity = Entity(*registry, "Ent1", "G1");
-	auto &transform =
-		entity.AddComponent<TransformComponent>(TransformComponent{
-			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-
-	auto &sprite = entity.AddComponent<SpriteComponent>(
-		SpriteComponent{.width = size[0],
-						.height = size[1],
-						.startX = 10,
-						.startY = 30,
-						.texturePath = "assets/chammy.png"});
-
-	glm::vec2 pos2 = {300.f, 300.f};
-	glm::vec2 size2 = {200.f, 200.f};
-	glm::vec4 color2 = {0.f, 1.f, 0.f, 1.f};
-
-	Entity entity2 = Entity(*registry, "Ent2", "G2");
-	auto &transform2 = entity2.AddComponent<TransformComponent>(
-		TransformComponent{.position = pos2,
-						   .scale = glm::vec2(2.0f, 2.0f),
-						   .rotation = 0.0f});
-
-	auto &sprite2 = entity2.AddComponent<SpriteComponent>(
-		SpriteComponent{.width = size2[0],
-						.height = size2[1],
-						.startX = 100,
-						.startY = 100,
-						.texturePath = "assets/masha.png"});
-	Renderer2D::BeginScene(camera);
+	// glm::vec2 pos = {0.f, 0.f};
+	// glm::vec2 size = {200.f, 200.f};
+	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+	//
+	// Entity entity = Entity(*registry, "Ent1", "G1");
+	// auto &transform =
+	// 	entity.AddComponent<TransformComponent>(TransformComponent{
+	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
+	//
+	// auto &sprite = entity.AddComponent<SpriteComponent>(
+	// 	SpriteComponent{.width = size[0],
+	// 					.height = size[1],
+	// 					.startX = 10,
+	// 					.startY = 30,
+	// 					.texturePath = "chammy"});
+	//
+	// sprite.generateObject(chammyTexture->GetWidth(),
+	// 					  chammyTexture->GetHeight());
+	//
+	// glm::vec2 pos2 = {300.f, 300.f};
+	// glm::vec2 size2 = {200.f, 200.f};
+	// glm::vec4 color2 = {0.f, 1.f, 0.f, 1.f};
+	//
+	// Entity entity2 = Entity(*registry, "Ent1", "G1");
+	// auto &transform2 = entity2.AddComponent<TransformComponent>(
+	// 	TransformComponent{.position = pos2,
+	// 					   .scale = glm::vec2(2.0f, 2.0f),
+	// 					   .rotation = 0.0f});
+	//
+	// auto &sprite2 = entity2.AddComponent<SpriteComponent>(
+	// 	SpriteComponent{.width = size2[0],
+	// 					.height = size2[1],
+	// 					.startX = 100,
+	// 					.startY = 100,
+	// 					.texturePath = "masha"});
+	// Renderer2D::BeginScene(camera);
 
 	// Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
 	// 					 Texture2D::Create("assets/chammy.png"),
 	// 					 transform.rotation);
-	/*Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
-						 Texture2D::Create("assets/masha.png"), 1.0f, color2);*/
+	// Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
+	// 					 Texture2D::Create("assets/masha.png"), 1.0f, color2);
 
-	Renderer2D::Flush();
+	// Renderer2D::Flush();
 }
 
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
@@ -393,7 +418,7 @@ void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 void LinuxWindow::onUpdate() {
 
 	auto &scriptSystem =
-		m_Data.m_Registry->GetContext<std::shared_ptr<ScriptingSystem>>();
+		registry->GetContext<std::shared_ptr<ScriptingSystem>>();
 
 	scriptSystem->Update();
 	scriptSystem->Render();
@@ -431,3 +456,6 @@ void Blazr::LinuxWindow::setEventCallback(
 	const LinuxWindow::EventCallbackFn &callback) {
 	m_Data.eventCallback = callback;
 }
+
+GLFWwindow *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
+Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Camera; }

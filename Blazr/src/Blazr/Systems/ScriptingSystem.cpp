@@ -90,13 +90,13 @@ void ScriptingSystem::Render() {
 	}
 }
 
-//void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
-//	Entity::CreateLuaEntityBind(lua, registry);
-//	TransformComponent::CreateLuaTransformComponentBind(lua);
-//	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
-//
-//	Entity::RegisterMetaComponent<TransformComponent>();
-//	Entity::RegisterMetaComponent<SpriteComponent>();
-//}
+void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
+	Entity::CreateLuaEntityBind(lua, registry);
+	TransformComponent::CreateLuaTransformComponentBind(lua);
+	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
+
+	Entity::RegisterMetaComponent<TransformComponent>();
+	Entity::RegisterMetaComponent<SpriteComponent>();
+}
 
 } // namespace Blazr

@@ -1,6 +1,7 @@
 #include "blzrpch.h"
 
 #include "Blazr/Ecs/Registry.h"
+#include "Blazr/Resources/AssetManager.h"
 #include "RenderCommand.h"
 #include "Renderer2D.h"
 #include "Shader.h"
@@ -279,16 +280,15 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 }
 
 void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
-	// Retrieve the components associated with this entity
 	auto &transform = registry.GetRegistry().get<TransformComponent>(entityID);
 	auto &sprite = registry.GetRegistry().get<SpriteComponent>(entityID);
 
-	// Assume TransformComponent contains a position and a size
 	glm::vec2 position = transform.position;
 	glm::vec2 size = {sprite.width, sprite.height};
 
 	// Assume SpriteComponent contains a texture, tiling factor, and tint color
-	Ref<Texture2D> texture = Texture2D::Create(sprite.texturePath);
+	auto assetManager = AssetManager::GetInstance();
+	Ref<Texture2D> texture = assetManager->GetTexture(sprite.texturePath);
 	// float tilingFactor = sprite.TilingFactor;
 	// glm::vec4 tintColor = sprite.TintColor;
 

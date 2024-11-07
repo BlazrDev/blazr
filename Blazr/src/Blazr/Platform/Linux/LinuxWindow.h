@@ -18,12 +18,13 @@ class BLZR_API LinuxWindow : public Window {
 	void setEventCallback(const EventCallbackFn &callback) override;
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
+	GLFWwindow *GetWindow() const override;
+	Camera2D *GetCamera() override;
 
   private:
+	Camera2D m_Camera;
 	virtual void init(const WindowProperties &properties);
 	virtual void shutdown();
-
-  private:
 	GLFWwindow *m_Window;
 	Scope<RenderContext> m_RenderContext;
 	unsigned int VAO, VBO, EBO;
@@ -34,7 +35,6 @@ class BLZR_API LinuxWindow : public Window {
 		std::string title;
 		unsigned int width, height;
 		bool vsync;
-		// RendererAPI *m_Renderer;
 		std::unique_ptr<Blazr::Registry> m_Registry =
 			std::make_unique<Blazr::Registry>();
 
