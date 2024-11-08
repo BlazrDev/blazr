@@ -3,6 +3,7 @@
 #include "Texture2D.h"
 #include "stb_image.h"
 #include <iostream>
+#include <filesystem>
 
 namespace Blazr {
 Texture2D::Texture2D(const std::string &filepath)
@@ -61,6 +62,9 @@ void Texture2D::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
 GLuint Texture2D::GetRendererID() const { return m_RendererID; }
 
 Ref<Texture2D> Texture2D::Create(const std::string &path) {
+	BLZR_CORE_ERROR("PATH: {0}", path);
+	std::cout << "Current Directory: " << std::filesystem::current_path()
+			  << std::endl;
 	return CreateRef<Texture2D>(path);
 }
 } // namespace Blazr

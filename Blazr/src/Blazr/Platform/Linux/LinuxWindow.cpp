@@ -463,5 +463,5 @@ void Blazr::LinuxWindow::setEventCallback(
 	m_Data.eventCallback = callback;
 }
 
-GLFWwindow *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
+GLFWwindow BLZR_API *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
 Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Data.m_Camera; }

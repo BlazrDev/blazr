@@ -17,7 +17,7 @@ void Editor::Init() {
 	Renderer2D::Init();
 	m_Renderer = Renderer2D();
 
-	InitImGui();
+	//InitImGui();
 }
 
 void Editor::InitImGui() {
@@ -25,6 +25,10 @@ void Editor::InitImGui() {
 	ImGuiIO &io = ImGui::GetIO();
 	(void)io;
 	ImGui::StyleColorsDark();
+	if (!m_Window || !m_Window->GetWindow()) {
+		BLZR_CORE_ERROR("GLFW window is not initialized before ImGui setup.");
+		return;
+	}
 	ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 450");
 }

@@ -11,8 +11,8 @@ namespace Blazr {
 
 class Renderer2D {
   public:
-	static void Init();
-	static void Shutdown();
+	static void BLZR_API Init();
+	static void BLZR_API Shutdown();
 
 	static void BeginScene(const Camera2D &camera);
 	static void EndScene();
