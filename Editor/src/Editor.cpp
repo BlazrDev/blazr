@@ -17,7 +17,7 @@ void Editor::Init() {
 	Renderer2D::Init();
 	m_Renderer = Renderer2D();
 
-	//InitImGui();
+	InitImGui();
 }
 
 void Editor::InitImGui() {
