@@ -91,12 +91,18 @@ void ScriptingSystem::Render() {
 }
 
 void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
+
+	Registry::CreateLuaRegistryBind(lua, registry);
+
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
+
+	Registry::RegisterMetaComponent<TransformComponent>();
+	Registry::RegisterMetaComponent<SpriteComponent>();
 }
 
 } // namespace Blazr

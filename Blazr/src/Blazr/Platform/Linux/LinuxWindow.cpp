@@ -383,7 +383,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.startX = 10,
 	// 					.startY = 30,
 	// 					.texturePath = "chammy"});
-	//
+
+	// entity.RemoveComponent<TransformComponent>();
+	// BLZR_CORE_INFO("Entity removed component {0}",
+	// 			   entity.HasComponent<TransformComponent>());
 	// sprite.generateObject(chammyTexture->GetWidth(),
 	// 					  chammyTexture->GetHeight());
 	//
