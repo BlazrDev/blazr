@@ -21,14 +21,26 @@ void Editor::Init() {
 }
 
 void Editor::InitImGui() {
+	if (!glfwInit()) {
+		BLZR_CORE_ERROR ("GLFW initialization failed!");
+		return;
+	}
+	if (!m_Window->GetWindow()) {
+		glfwTerminate();
+		BLZR_CORE_ERROR("GLFW window creation failed!");
+		return;
+	}
+
+	glfwMakeContextCurrent(m_Window->GetWindow());
+	glfwSwapInterval(1);
+
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO &io = ImGui::GetIO();
 	(void)io;
+
 	ImGui::StyleColorsDark();
-	if (!m_Window || !m_Window->GetWindow()) {
-		BLZR_CORE_ERROR("GLFW window is not initialized before ImGui setup.");
-		return;
-	}
+
 	ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 450");
 }
