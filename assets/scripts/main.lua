@@ -8,7 +8,7 @@ gEntity2 = Entity("E2", "G1")
 local transform2 = gEntity2:add_component(TransformComponent(100, 300, 1, 1, 10))
 local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 0))
 
-local s2 = gEntity2:get_component(sprite2)
+local s2 = gEntity2:get_component(SpriteComponent)
 print(s2.width)
 
 local x = 0

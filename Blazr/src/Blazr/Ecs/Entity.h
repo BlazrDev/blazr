@@ -91,7 +91,7 @@ class Entity {
 
 	template <typename TComponent>
 	static auto get_component(Entity &entity, sol::this_state s) {
-		auto component = entity.GetComponent<TComponent>();
+		auto &component = entity.GetComponent<TComponent>();
 		return sol::make_reference(s, std::ref(component));
 	}
 

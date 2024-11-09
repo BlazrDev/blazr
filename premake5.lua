@@ -96,7 +96,6 @@ libdirs({
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
 })
-buildoptions({ "/utf-8" })
 
 filter("system:windows")
 cppdialect("C++20")
@@ -145,7 +144,6 @@ postbuildcommands({
     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Editor"),
 })
-buildoptions({ "/utf-8" })
 
 filter("configurations:Debug")
 defines("BLZR_DEBUG")
@@ -408,5 +406,3 @@ optimize("On")
 filter("configurations:Dist")
 defines("BLZR_DIST")
 optimize("On")
-
-buildoptions({ "/utf-8" })
