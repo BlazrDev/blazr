@@ -96,6 +96,7 @@ libdirs({
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
 })
+buildoptions({ "/utf-8" })
 
 filter("system:windows")
 cppdialect("C++20")
@@ -144,6 +145,7 @@ postbuildcommands({
     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Editor"),
 })
+buildoptions({ "/utf-8" })
 
 filter("configurations:Debug")
 defines("BLZR_DEBUG")
@@ -189,7 +191,6 @@ libdirs({
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
 })
-
 
 filter("system:windows")
 cppdialect("C++20")
@@ -269,19 +270,19 @@ includedirs({
 })
 
 filter("system:windows")
-    defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
-    links({ "opengl32", "glfw" })
+defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
+links({ "opengl32", "glfw" })
 
 filter("system:linux")
-    links({ "GL", "glfw", "GLEW" })
+links({ "GL", "glfw", "GLEW" })
 
 filter("configurations:Debug")
-    runtime("Debug")
-    symbols("On")
+runtime("Debug")
+symbols("On")
 
 filter("configurations:Release")
-    runtime("Release")
-    optimize("On")
+runtime("Release")
+optimize("On")
 
 project("Editor")
 location("Editor")
@@ -318,93 +319,94 @@ libdirs({
 
 -- General Links
 links({
-    "ImGui", 
+    "ImGui",
     "Blazr",
 })
 
 -- Windows-specific configuration
 filter("system:windows")
-    cppdialect("C++20")
-    systemversion("latest")
+cppdialect("C++20")
+systemversion("latest")
 
-    links({
-        "OpenGL32",
-        "glew32s",
-        "lua53",
-    })
+links({
+    "OpenGL32",
+    "glew32s",
+    "lua53",
+})
 
-    defines({
-        "BLZR_PLATFORM_WINDOWS",
-        "UNICODE",
-        "_UNICODE",
-    })
-
--- Linux-specific configuration
-filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
-
-    links({
-        "GL",
-        "GLEW",
-        "lua53",
-    })
-
-    defines({
-        "BLZR_PLATFORM_LINUX",
-    })
-
-    linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
-
--- Debug Configuration
-filter("configurations:Debug")
-    runtime("Debug")
-    defines("BLZR_DEBUG")
-    symbols("On")
-
--- Release Configuration
-filter("configurations:Release")
-    runtime("Release")
-    defines("BLZR_RELEASE")
-    optimize("On")
-
--- Distribution Configuration
-filter("configurations:Dist")
-    runtime("Release")
-    defines("BLZR_DIST")
-    optimize("On")
-
+defines({
+    "BLZR_PLATFORM_WINDOWS",
+    "UNICODE",
+    "_UNICODE",
+})
 
 -- Linux-specific configuration
 filter("system:linux")
-    cppdialect("C++20")
-    staticruntime("On")
-    systemversion("latest")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
 
-    links({
-        "GL",
-        "GLEW",
-        "lua53",
-    })
+links({
+    "GL",
+    "GLEW",
+    "lua53",
+})
 
-    defines({
-        "BLZR_PLATFORM_LINUX",
-    })
+defines({
+    "BLZR_PLATFORM_LINUX",
+})
 
-    linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
+linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
 
 -- Debug Configuration
 filter("configurations:Debug")
-    defines("BLZR_DEBUG")
-    symbols("On")
+runtime("Debug")
+defines("BLZR_DEBUG")
+symbols("On")
 
 -- Release Configuration
 filter("configurations:Release")
-    defines("BLZR_RELEASE")
-    optimize("On")
+runtime("Release")
+defines("BLZR_RELEASE")
+optimize("On")
 
 -- Distribution Configuration
 filter("configurations:Dist")
-    defines("BLZR_DIST")
-    optimize("On")
+runtime("Release")
+defines("BLZR_DIST")
+optimize("On")
+
+-- Linux-specific configuration
+filter("system:linux")
+cppdialect("C++20")
+staticruntime("On")
+systemversion("latest")
+
+links({
+    "GL",
+    "GLEW",
+    "lua53",
+})
+
+defines({
+    "BLZR_PLATFORM_LINUX",
+})
+
+linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
+
+-- Debug Configuration
+filter("configurations:Debug")
+defines("BLZR_DEBUG")
+symbols("On")
+
+-- Release Configuration
+filter("configurations:Release")
+defines("BLZR_RELEASE")
+optimize("On")
+
+-- Distribution Configuration
+filter("configurations:Dist")
+defines("BLZR_DIST")
+optimize("On")
+
+buildoptions({ "/utf-8" })
