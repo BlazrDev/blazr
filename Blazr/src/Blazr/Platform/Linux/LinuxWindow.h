@@ -22,7 +22,6 @@ class BLZR_API LinuxWindow : public Window {
 	Camera2D *GetCamera() override;
 
   private:
-	Camera2D m_Camera;
 	virtual void init(const WindowProperties &properties);
 	virtual void shutdown();
 	GLFWwindow *m_Window;
@@ -32,6 +31,7 @@ class BLZR_API LinuxWindow : public Window {
 	std::shared_ptr<Shader> m_Shader;
 
 	struct WindowData {
+		Camera2D m_Camera{1280, 720};
 		std::string title;
 		unsigned int width, height;
 		bool vsync;

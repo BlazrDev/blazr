@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Blazr">
@@ -30,6 +30,9 @@
     </Filter>
     <Filter Include="Blazr\Resources">
       <UniqueIdentifier>{8AC48E5E-F64F-FC22-FF60-7F176B6B5823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Scripting">
+      <UniqueIdentifier>{2214359F-8E9F-A263-97B0-255803BBFE63}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Systems">
       <UniqueIdentifier>{27AD9556-936D-118D-5CA8-5A0AC8275669}</UniqueIdentifier>
@@ -139,6 +142,9 @@
     <ClInclude Include="src\Blazr\Resources\AssetManager.h">
       <Filter>Blazr\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h">
+      <Filter>Blazr\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -210,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp">
       <Filter>Blazr\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp">
+      <Filter>Blazr\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">
       <Filter>Blazr\Systems</Filter>

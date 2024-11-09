@@ -29,14 +29,13 @@ class Entity {
 			.type(entt::type_hash<TComponent>::value())
 			.template func<&Blazr::Entity::add_component<TComponent>>(
 				"add_component"_hs)
-			.template func<&Blazr::Entity::add<TComponent>>("add"_hs);
+			.template func<&Blazr::Entity::has_component<TComponent>>(
+				"has_component"_hs)
+			.template func<&Blazr::Entity::get_component<TComponent>>(
+				"get_component"_hs)
+			.template func<&Blazr::Entity::remove_component<TComponent>>(
+				"remove_component"_hs);
 	};
-
-	template <typename TComponent> static auto add() {
-		BLZR_CORE_INFO("Adding component to entity: {0}",
-					   entt::resolve<TComponent>().info().name());
-		return TransformComponent{};
-	}
 
 	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
@@ -68,18 +67,31 @@ class Entity {
 		return m_Registry.GetRegistry().all_of<TComponent>(m_EntityHandler);
 	}
 
-	template <typename TComponent> void RemoveComponent() {
-		m_Registry.GetRegistry().remove<TComponent>(m_EntityHandler);
+	template <typename TComponent> auto RemoveComponent() {
+		return m_Registry.GetRegistry().remove<TComponent>(m_EntityHandler);
 	}
 
 	template <typename TComponent>
 	static auto add_component(Entity &entity, const sol::table &comp,
 							  sol::this_state s) {
-		BLZR_CORE_INFO("Adding component to entity: {0}",
-					   entt::resolve<TComponent>().info().name());
 		auto &component = entity.AddComponent<TComponent>(
 			comp.valid() ? std::move(comp.as<TComponent &&>()) : TComponent{});
 
+		return sol::make_reference(s, std::ref(component));
+	}
+
+	template <typename TComponent> static bool has_component(Entity &entity) {
+		return entity.HasComponent<TComponent>();
+	}
+
+	template <typename TComponent>
+	static auto remove_component(Entity &entity) {
+		return entity.RemoveComponent<TComponent>();
+	}
+
+	template <typename TComponent>
+	static auto get_component(Entity &entity, sol::this_state s) {
+		auto &component = entity.GetComponent<TComponent>();
 		return sol::make_reference(s, std::ref(component));
 	}
 

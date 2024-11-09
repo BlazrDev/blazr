@@ -80,11 +80,10 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\json;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -92,11 +91,12 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul)
+IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Editor &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll ..\bin\Debug-windows-x86_64\Editor &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,14 +105,13 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\json;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -121,11 +120,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul)
+IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Editor &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Blazr\Blazr.dll ..\bin\Release-windows-x86_64\Editor &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -134,14 +134,13 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glm;vendor\entt;vendor\GLFW\include;vendor\json;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -150,11 +149,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Dist-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul)
+IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Editor &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll ..\bin\Dist-windows-x86_64\Editor &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -178,6 +178,8 @@
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
+    <ClInclude Include="src\Blazr\Project\Project.h" />
+    <ClInclude Include="src\Blazr\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
     <ClInclude Include="src\Blazr\Renderer\Camera2D.h" />
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
+    <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
@@ -203,6 +206,7 @@
     <ClCompile Include="src\Blazr\Ecs\MetaUtil.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
+    <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp" />
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
@@ -216,6 +220,7 @@
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp" />
+    <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
