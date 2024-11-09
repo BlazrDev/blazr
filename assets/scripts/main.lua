@@ -1,32 +1,33 @@
 -- Main Script
 --
-gEntity = Entity("E1", "G1")
-local transform2 = gEntity:add_component(TransformComponent(100, 300, 1, 1, 0))
-gEntity:add_component(SpriteComponent(50, 50, "chammy", 0, 0, 0))
+-- local transform = TransformComponent(100, 100, 1, 1, 10)
+-- gEntity:add_component(transform)
+-- -- -- gEntity:add_component(SpriteComponent(200, 200, "chammy", 0, 0, 0))
+-- --
+gEntity2 = Entity("E2", "G1")
+local transform2 = gEntity2:add_component(TransformComponent(100, 300, 1, 1, 10))
+local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 0))
 
-gEntity = Entity("E1", "G1")
-local transform = gEntity:add_component(TransformComponent(100, 300, 1, 1, 0))
-local sprite = gEntity:add_component(SpriteComponent(200, 200, "masha", 0, 0, 0))
+local s2 = gEntity2:get_component(sprite2)
+print(s2.width)
 
--- local transoform = gEntity:add_component(TransformComponent(100, 100, 0, 0, 0))
--- print(transoform.scale)
-local radius = 150 -- Poluprečnik kruga
-local centerX = 400 -- X koordinata centra kruga
-local centerY = 300 -- Y koordinata centra kruga
-local steps = 100
-local i = 0
+local x = 0
+local max_x = 800
+
 main = {
     [1] = {
         update = function()
-            if i == steps then
-                i = 0
+            if x < max_x then
+                transform2:set_position(x, 300.0)
+                x = x + 20
             end
-            local angle = (i / steps) * (2 * math.pi) -- Ugao u radijanima za svaku iteraciju
-            local x = centerX + radius * math.cos(angle)
-            local y = centerY + radius * math.sin(angle)
-            i = i + 1
-            transform2:set_position(x + 130, y + 45)
-            transform:set_position(x, y)
+
+            if x >= max_x then
+                x = 0
+            end
+
+            -- local s1 = gEntity2:remove_component(sprite2)
+            -- print(s1.width)
         end,
     },
     [2] = {
