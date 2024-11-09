@@ -193,6 +193,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
+    <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
@@ -219,6 +220,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp" />
+    <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

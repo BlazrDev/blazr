@@ -5,7 +5,7 @@
 -- -- -- gEntity:add_component(SpriteComponent(200, 200, "chammy", 0, 0, 0))
 -- --
 gEntity2 = Entity("E2", "G1")
-local transform2 = gEntity2:add_component(TransformComponent(100, 300, 1, 1, 10))
+local transform2 = gEntity2:add_component(TransformComponent(vec2(100, 300), vec2(1, 1), 10))
 local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 0))
 
 local s2 = gEntity2:get_component(SpriteComponent)
@@ -18,7 +18,9 @@ main = {
     [1] = {
         update = function()
             if x < max_x then
-                transform2:set_position(x, 300.0)
+                transform2.position.x = x
+                transform2.position.y = 300.0
+                -- transform2:set_position(x, 300.0)
                 x = x + 20
             end
 
