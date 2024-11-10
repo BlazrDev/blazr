@@ -1,0 +1,13 @@
+IncludeCategories:
+    - Regex: '.*blzrpch.h'
+      Priority: 1
+    - Regex: '.*"GL/glew.h"'
+      Priority: 2
+    - Regex: '.*GLFW/glfw3.h"'
+      Priority: 3
+    - Regex: '.*'
+      Priority: 8
+IncludeIsMainRegex: '(blzrpch|GL/glew|GLFW/glfw3)\.h'
+UseTab: Always
+IndentWidth: 4
+TabWidth: 4
