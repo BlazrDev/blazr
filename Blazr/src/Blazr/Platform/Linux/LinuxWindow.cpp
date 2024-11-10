@@ -9,6 +9,7 @@
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
+#include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
@@ -138,9 +139,13 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		return;
 	}
 
-	auto chammyTexture = assetManager->GetTexture("chammy");
-	BLZR_CORE_INFO("Texture: {0} {1}", chammyTexture->GetWidth(),
-				   chammyTexture->GetHeight());
+	if (!assetManager->LoadTexture("player", "assets/player_sprite.png",
+								   false)) {
+		BLZR_CORE_ERROR("Failed to load the chammy texture!");
+		return;
+	}
+
+	auto playerTexture = assetManager->GetTexture("player");
 
 	// TODO remove tmp code
 	// Creating lua state
@@ -175,6 +180,19 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	ScriptingSystem::RegisterLuaBindings(*lua, *registry);
 	if (!scriptSystem->LoadMainScript(*lua)) {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+
+	auto animationSystem = std::make_shared<AnimationSystem>(*registry);
+	if (!animationSystem) {
+		BLZR_CORE_ERROR("Failed to create the animation system!");
+		return;
+	}
+
+	if (!registry->AddToContext<std::shared_ptr<AnimationSystem>>(
+			animationSystem)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the animation system to the registry context!");
 		return;
 	}
 
@@ -367,10 +385,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
 	camera.SetScale(1.0f);
 	camera.SetPosition({0.0f, 0.0f});
-	// glm::vec2 pos = {0.f, 0.f};
-	// glm::vec2 size = {200.f, 200.f};
-	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-	//
+	glm::vec2 pos = {0.f, 0.f};
+	glm::vec2 size = {200.f, 200.f};
+	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+
 	// Entity entity = Entity(*registry, "Ent1", "G1");
 	// auto &transform =
 	// 	entity.AddComponent<TransformComponent>(TransformComponent{
@@ -381,8 +399,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.height = size[1],
 	// 					.startX = 10,
 	// 					.startY = 30,
-	// 					.texturePath = "chammy"});
+	// 					.texturePath = "player"});
 	//
+	// sprite.generateObject(playerTexture->GetWidth(),
+	// playerTexture->GetHeight(), 					  0, 0);
+
+	// entity.RemoveComponent<TransformComponent>();
+	// BLZR_CORE_INFO("Entity removed component {0}",
+	// 			   entity.HasComponent<TransformComponent>());
 	// sprite.generateObject(chammyTexture->GetWidth(),
 	// 					  chammyTexture->GetHeight());
 	//
@@ -422,6 +446,11 @@ void LinuxWindow::onUpdate() {
 
 	scriptSystem->Update();
 	scriptSystem->Render();
+
+	auto &animationSystem =
+		registry->GetContext<std::shared_ptr<AnimationSystem>>();
+
+	animationSystem->Update();
 
 	glfwPollEvents();
 	camera.Update();
