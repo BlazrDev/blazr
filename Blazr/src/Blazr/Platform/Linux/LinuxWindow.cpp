@@ -1,6 +1,7 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
@@ -99,28 +100,28 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		data.eventCallback(event);
 	});
 
-	glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode,
-									int action, int mods) {
-		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-
-		switch (action) {
-		case GLFW_PRESS: {
-			KeyPressedEvent event(key, 0);
-			data.eventCallback(event);
-			break;
-		}
-		case GLFW_RELEASE: {
-			KeyReleasedEvent event(key);
-			data.eventCallback(event);
-			break;
-		}
-		case GLFW_REPEAT: {
-			KeyPressedEvent event(key, 1);
-			data.eventCallback(event);
-			break;
-		}
-		}
-	});
+	// glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int
+	// scancode, 								int action, int mods) { 	WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window);
+	//
+	// 	switch (action) {
+	// 	case GLFW_PRESS: {
+	// 		KeyPressedEvent event(key, 0);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	case GLFW_RELEASE: {
+	// 		KeyReleasedEvent event(key);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	case GLFW_REPEAT: {
+	// 		KeyPressedEvent event(key, 1);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	}
+	// });
 
 	auto assetManager = AssetManager::GetInstance();
 
@@ -139,13 +140,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		return;
 	}
 
-	if (!assetManager->LoadTexture("player", "assets/player_sprite.png",
+	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
 								   false)) {
 		BLZR_CORE_ERROR("Failed to load the chammy texture!");
 		return;
 	}
 
 	auto playerTexture = assetManager->GetTexture("player");
+	auto mashaTexture = assetManager->GetTexture("masha");
 
 	// TODO remove tmp code
 	// Creating lua state
@@ -385,10 +387,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
 	camera.SetScale(1.0f);
 	camera.SetPosition({0.0f, 0.0f});
-	glm::vec2 pos = {0.f, 0.f};
-	glm::vec2 size = {200.f, 200.f};
-	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-
+	// glm::vec2 pos = {0.f, 0.f};
+	// glm::vec2 size = {200.f, 200.f};
+	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+	//
 	// Entity entity = Entity(*registry, "Ent1", "G1");
 	// auto &transform =
 	// 	entity.AddComponent<TransformComponent>(TransformComponent{
@@ -399,10 +401,19 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.height = size[1],
 	// 					.startX = 10,
 	// 					.startY = 30,
-	// 					.texturePath = "player"});
-	//
+	// 					.texturePath = "masha"});
+
+	// auto &animation = entity.AddComponent<AnimationComponent>(
+	// 	AnimationComponent{.numFrames = 6,
+	// 					   .frameRate = 10,
+	// 					   .frameOffset = 0,
+	// 					   .currentFrame = 0,
+	// 					   .bVertical = false});
+	// sprite.generateObject(mashaTexture->GetWidth(),
+	// mashaTexture->GetHeight());
+
 	// sprite.generateObject(playerTexture->GetWidth(),
-	// playerTexture->GetHeight(), 					  0, 0);
+	// 					  playerTexture->GetHeight());
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
@@ -459,8 +470,8 @@ void LinuxWindow::onUpdate() {
 	auto view =
 		registry->GetRegistry().view<TransformComponent, SpriteComponent>();
 	for (auto entity : view) {
-		auto &transform = view.get<TransformComponent>(entity);
 		auto &sprite = view.get<SpriteComponent>(entity);
+		sprite.generateTextureCoordinates();
 		Renderer2D::DrawQuad(*registry, entity);
 	}
 	Renderer2D::Flush();

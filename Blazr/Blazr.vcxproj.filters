@@ -145,6 +145,9 @@
     <ClInclude Include="src\Blazr\Systems\AnimationSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\InputSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -221,6 +224,9 @@
       <Filter>Blazr\Resources</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\AnimationSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\InputSystem.cpp">
       <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">

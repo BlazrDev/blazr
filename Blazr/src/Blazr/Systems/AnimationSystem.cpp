@@ -19,11 +19,14 @@ void Blazr::AnimationSystem::Update() {
 			(int)(glfwGetTime() * animation.frameRate) % animation.numFrames;
 
 		if (animation.bVertical) {
-			sprite.object.x = animation.currentFrame * sprite.object.width;
-			sprite.object.y = animation.frameOffset * sprite.object.width;
+			sprite.object.x = animation.currentFrame;
+			sprite.object.y = animation.frameOffset;
+
 		} else {
-			sprite.object.y = (animation.currentFrame * sprite.object.height) +
-							  (animation.frameOffset * sprite.object.width);
+			sprite.object.coordX = animation.currentFrame;
+			sprite.object.coordY = animation.frameOffset;
 		}
+
+		// sprite.generateTextureCoordinates();
 	}
 }
