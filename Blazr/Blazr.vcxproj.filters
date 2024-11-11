@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Blazr">
@@ -36,6 +36,9 @@
     </Filter>
     <Filter Include="Blazr\Systems">
       <UniqueIdentifier>{27AD9556-936D-118D-5CA8-5A0AC8275669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Systems\Sounds">
+      <UniqueIdentifier>{727880E3-5E07-0AAD-0726-1EA8F3931A53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +151,21 @@
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\Sounds\Effect.h">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\Sounds\EffectPlayer.h">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\Sounds\Music.h">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\Sounds\SoundPlayer.h">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\Sounds\SoundProperties.h">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClInclude>
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +240,15 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">
       <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\Sounds\Effect.cpp">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\Sounds\Music.cpp">
+      <Filter>Blazr\Systems\Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\Sounds\SoundPlayer.cpp">
+      <Filter>Blazr\Systems\Sounds</Filter>
     </ClCompile>
     <ClCompile Include="src\blzrpch.cpp" />
   </ItemGroup>

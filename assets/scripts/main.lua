@@ -10,6 +10,7 @@ local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 
 
 local s2 = gEntity2:get_component(SpriteComponent)
 print(s2.width)
+local soundPlayer = SoundPlayer.get_instance()
 
 local x = 0
 local max_x = 800
@@ -17,6 +18,7 @@ local max_x = 800
 main = {
     [1] = {
         update = function()
+            -- print(soundPlayer:is_playing(1))
             if x < max_x then
                 transform2.position.x = x
                 transform2.position.y = 300.0
@@ -26,6 +28,7 @@ main = {
 
             if x >= max_x then
                 x = 0
+                soundPlayer:play_effect("boing", 0, 1)
             end
 
             -- local s1 = gEntity2:remove_component(sprite2)

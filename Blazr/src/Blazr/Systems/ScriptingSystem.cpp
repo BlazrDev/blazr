@@ -7,6 +7,8 @@
 
 #include "Blazr/Scripting/GlmLuaBindings.h"
 #include "ScriptingSystem.h"
+
+#include "Sounds/SoundPlayer.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}
 
@@ -106,6 +108,8 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
+	SoundPlayer::CreateLuaEntityBind(lua);
+	
 }
 
 } // namespace Blazr

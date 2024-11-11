@@ -15,7 +15,9 @@
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
-
+#include "Blazr/Systems/Sounds/SoundProperties.h"
+#include "Blazr/Systems/Sounds/SoundPlayer.h"
+#include <string>
 namespace Blazr {
 
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
@@ -123,6 +125,22 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	});
 
 	auto assetManager = AssetManager::GetInstance();
+
+	auto soundPlayer = SoundPlayer::GetInstance();
+
+	// assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "danilo");
+	// assetManager->LoadMusic("sample", "assets/sounds/sample.wav", "danilo2");
+	assetManager->LoadEffect("bigben", "assets/sounds/bigben.wav", "danilo3");
+	assetManager->LoadEffect("boing", "assets/sounds/boing.wav", "danilo4");
+	// BLZR_CORE_ERROR(" Retarde {0}", sp.duration);
+
+	// Music* m = new Music(sp, mm);
+	// if(!m->getSample()) {
+	// 	BLZR_CORE_ERROR("SAMPL NULL");
+	// }
+	// musicPlayer->PlayMusic("masa", 1);
+	// musicPlayer->PlayMusic("sample", 0);
+	// soundPlayer->PlayEffect("bigben", 1, -1);
 
 	if (!assetManager) {
 		BLZR_CORE_ERROR("Failed to create the asset manager!");
@@ -240,6 +258,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 				isEntitySelected = false; // Oslobodi selekciju
 			}
 		}
+
 	});
 
 	// TODO: napraviti da na scroll prati kursor
