@@ -1,12 +1,9 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
-<<<<<<< HEAD
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
-=======
-#include "Blazr/Ecs/Components/AnimationComponent.h"
->>>>>>> origin/BLAZRDEV-33-Animation-System
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
@@ -105,7 +102,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	});
 
 	// glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int
-	// scancode, 								int action, int mods) { 	WindowData &data = *(WindowData
+	// scancode, 								int action, int mods) {
+	// WindowData &data = *(WindowData
 	// *)glfwGetWindowUserPointer(window);
 	//
 	// 	switch (action) {
@@ -394,59 +392,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 									  glm::vec2(deltaX, deltaY) * 0.1f);
 		}
 	});
-
-<<<<<<< HEAD
-	m_Data.m_Camera.SetScale(1.0f);
-	m_Data.m_Camera.SetPosition({0.0f, 0.0f});
-	glm::vec2 pos = {0.f, 0.f};
-	glm::vec2 size = {200.f, 200.f};
-	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-
-	Entity entity = Entity(*registry, "Ent1", "G1");
-	auto &transform =
-		entity.AddComponent<TransformComponent>(TransformComponent{
-			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-
-	auto &sprite = entity.AddComponent<SpriteComponent>(
-		SpriteComponent{.width = size[0],
-						.height = size[1],
-						.startX = 10,
-						.startY = 30,
-						.texturePath = "chammy"});
-
-	auto t1 = entity.GetComponent<SpriteComponent>();
-	BLZR_CORE_INFO("Entity has component {0}", t1.width);
-=======
-	camera.SetScale(1.0f);
-	camera.SetPosition({0.0f, 0.0f});
-	// glm::vec2 pos = {0.f, 0.f};
-	// glm::vec2 size = {200.f, 200.f};
-	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-	//
-	// Entity entity = Entity(*registry, "Ent1", "G1");
-	// auto &transform =
-	// 	entity.AddComponent<TransformComponent>(TransformComponent{
-	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-	//
-	// auto &sprite = entity.AddComponent<SpriteComponent>(
-	// 	SpriteComponent{.width = size[0],
-	// 					.height = size[1],
-	// 					.startX = 10,
-	// 					.startY = 30,
-	// 					.texturePath = "masha"});
-
-	// auto &animation = entity.AddComponent<AnimationComponent>(
-	// 	AnimationComponent{.numFrames = 6,
-	// 					   .frameRate = 10,
-	// 					   .frameOffset = 0,
-	// 					   .currentFrame = 0,
-	// 					   .bVertical = false});
-	// sprite.generateObject(mashaTexture->GetWidth(),
-	// mashaTexture->GetHeight());
-
-	// sprite.generateObject(playerTexture->GetWidth(),
-	// 					  playerTexture->GetHeight());
->>>>>>> origin/BLAZRDEV-33-Animation-System
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",

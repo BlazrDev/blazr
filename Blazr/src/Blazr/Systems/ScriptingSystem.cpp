@@ -6,11 +6,8 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 
-<<<<<<< HEAD
 #include "Blazr/Scripting/GlmLuaBindings.h"
-=======
 #include "Blazr/Systems/InputSystem.h"
->>>>>>> origin/BLAZRDEV-33-Animation-System
 #include "ScriptingSystem.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}

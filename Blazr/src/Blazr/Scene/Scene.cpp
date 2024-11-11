@@ -1,6 +1,6 @@
 #include "blzrpch.h"
-#include "Blazr/"
 #include "Blazr/Renderer/Renderer2D.h"
+#include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Scene.h"
 
@@ -30,6 +30,7 @@ void Scene::Update() {
 	if (auto scriptingSystem =
 			m_Registry.GetContext<std::shared_ptr<ScriptingSystem>>()) {
 		scriptingSystem->Update();
+		scriptingSystem->Render();
 	}
 }
 

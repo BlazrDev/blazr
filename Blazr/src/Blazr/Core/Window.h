@@ -32,8 +32,6 @@ class BLZR_API Window {
 	virtual void setVSync(bool enabled) = 0;
 	virtual bool isVSync() const = 0;
 
-	virtual void RenderGameScene(Camera2D camera) = 0;
-
 	virtual GLFWwindow *GetWindow() const = 0;
 	virtual Camera2D *GetCamera() = 0;
 
