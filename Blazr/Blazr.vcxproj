@@ -175,6 +175,8 @@
     <ClInclude Include="src\Blazr\Events\Event.h" />
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
+    <ClInclude Include="src\Blazr\Fonts\Font.h" />
+    <ClInclude Include="src\Blazr\Fonts\stb_truetype.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Project\Project.h" />
     <ClInclude Include="src\Blazr\Project\ProjectSerializer.h" />
@@ -205,6 +207,8 @@
     <ClCompile Include="src\Blazr\Ecs\Entity.cpp" />
     <ClCompile Include="src\Blazr\Ecs\MetaUtil.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\Font.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />

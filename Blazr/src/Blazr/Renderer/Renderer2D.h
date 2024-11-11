@@ -4,6 +4,7 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Registry.h"
+#include "Blazr/Fonts/Font.h"
 #include "Camera2D.h"
 #include "Texture2D.h"
 
@@ -44,10 +45,23 @@ class Renderer2D {
 						 float tilingFactor, const glm::vec4 &tintColor,
 						 const glm::vec2 *textureCoords);
 
+	// draw texture using UVs
+	static void DrawQuad(const glm::vec2 &position, const glm::vec2 &size,
+						 const Ref<Texture2D> &texture,
+						 const glm::vec2 uvCoords[4], const glm::vec4 &color);
+
+	// draw text
+	static void DrawText(const std::string &text, const glm::vec2 &position,
+						 const glm::vec4 &color, const Ref<Font> &font,
+						 float scale = 1.0f, float maxWidth = 10000);
+
 	static void Clear();
 
   private:
 	static void StartBatch();
 	static void NextBatch();
+	static void RenderCharacter(const Glyph &glyph, const glm::vec2 &position,
+								const glm::vec4 &color, float scale,
+								const Ref<Texture2D> &textureAtlas);
 };
 } // namespace Blazr

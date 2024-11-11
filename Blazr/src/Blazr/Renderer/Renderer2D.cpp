@@ -1,6 +1,5 @@
 #include "blzrpch.h"
 
-#include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "RenderCommand.h"
@@ -88,25 +87,21 @@ void Renderer2D::Init() {
 		ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
 							 "shaders/fragment/TextureTestShader.frag");
 	s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-	// s_Data.QuadVertexPositions[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
-	// s_Data.QuadVertexPositions[1] = {0.5f, -0.5f, 0.0f, 1.0f};
-	// s_Data.QuadVertexPositions[2] = {0.5f, 0.5f, 0.0f, 1.0f};
-	// s_Data.QuadVertexPositions[3] = {-0.5f, 0.5f, 0.0f, 1.0f};
-	//
-	// Srklessove izmjenje zbog kamere da ne ide objekat izban granice
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	s_Data.QuadVertexPositions[0] = {0.f, 0.f, 0.0f, 1.0f};
 	s_Data.QuadVertexPositions[1] = {1.f, 0.f, 0.0f, 1.0f};
 	s_Data.QuadVertexPositions[2] = {1.f, 1.f, 0.0f, 1.0f};
 	s_Data.QuadVertexPositions[3] = {0.f, 1.f, 0.0f, 1.0f};
 
-	// 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom-left
-	// 		0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Bottom-right
-	// 		0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Top-right
-	// 		-0.5f, 0.5f,  0.0f, 0.0f, 1.0f	// Top-left
-
 	s_Data.CameraUniformBuffer =
 		UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
-	// m_Registry = std::make_unique<Registry>();
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void Renderer2D::Shutdown() { delete[] s_Data.QuadVertexBufferBase; }
@@ -238,21 +233,10 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 		  textureHeight = texture->GetHeight();
 
 	constexpr size_t quadVertexCount = 4;
-	// glm::vec2 textureCoords[] = {
-	// 	{(x * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 (y * spriteHeight) / textureHeight},
-	// 	{(x * spriteWidth) / textureWidth, (y * spriteHeight) / textureHeight}};
 
 	//
-	glm::vec2 textureCoords[] = {// 	TL, TR, BR, BL
-								 {0.0f, 1.0f},
-								 {1.0f, 1.0f},
-								 {1.0f, 0.0f},
-								 {0.0f, 0.0f}};
+	glm::vec2 textureCoords[] = {
+		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
 
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
 		NextBatch();
@@ -279,7 +263,6 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 
 	glm::vec3 pos = {position.x, position.y, 0.0f};
 
-	// Apply rotation and scale
 	glm::mat4 transform =
 		glm::translate(glm::mat4(1.0f), pos) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
@@ -312,18 +295,8 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 		  textureHeight = texture->GetHeight();
 
 	constexpr size_t quadVertexCount = 4;
-	// glm::vec2 textureCoords2[] = {
-	// 	{(x * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 (y * spriteHeight) / textureHeight},
-	// 	{(x * spriteWidth) / textureWidth, (y * spriteHeight) / textureHeight}};
+
 	//
-	// BLZR_CORE_INFO("TextureCoords: {0}, {1}, {2}, {3}", textureCoords2[0].x,
-	// 			   textureCoords2[0].y, textureCoords2[1].x,
-	// 			   textureCoords2[1].y);
 
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
 		NextBatch();
@@ -350,7 +323,6 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 
 	glm::vec3 pos = {position.x, position.y, 0.0f};
 
-	// Apply rotation and scale
 	glm::mat4 transform =
 		glm::translate(glm::mat4(1.0f), pos) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
@@ -381,11 +353,124 @@ void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
 	auto assetManager = AssetManager::GetInstance();
 	Ref<Texture2D> texture = assetManager->GetTexture(sprite.texturePath);
 
-	// sprite.generateObject(texture->GetWidth(), texture->GetHeight());
 	DrawQuad(entityID, position, size, texture, transform.rotation,
 			 transform.scale, 1.0f, sprite.color, sprite.textureCoordinates);
 }
 
 void Renderer2D::Clear() { glClear(GL_COLOR_BUFFER_BIT); }
+
+void Renderer2D::DrawText(const std::string &text, const glm::vec2 &position,
+						  const glm::vec4 &color, const Ref<Font> &font,
+						  float scale, float maxWidth) {
+	glm::vec2 pos = position;
+	float lineStartX = position.x;
+
+	std::istringstream stream(text);
+	std::string word;
+	float spaceWidth = font->GetGlyph(' ').advance * scale;
+
+	while (stream >> word) {
+
+		float wordWidth = 0.0f;
+		for (size_t i = 0; i < word.size(); ++i) {
+			const Glyph &glyph = font->GetGlyph(word[i]);
+			wordWidth += glyph.advance * scale;
+
+			if (i + 1 < word.size()) {
+				float kerning = stbtt_GetCodepointKernAdvance(
+									&font->m_FontInfo, word[i], word[i + 1]) *
+								scale;
+				wordWidth += kerning;
+			}
+		}
+
+		if (pos.x + wordWidth > lineStartX + maxWidth) {
+			pos.x = lineStartX;
+			pos.y += font->GetLineHeight() * scale;
+		}
+		std::unordered_map<std::string, float> customKerning = {
+			{"To", 2.0f}, {"AV", 1.5f}, {"of", 7.9f},
+			{"ap", 4.2f}, {"pp", 3.2f},
+		};
+
+		for (size_t i = 0; i < word.size(); ++i) {
+			char character = word[i];
+			const Glyph &glyph = font->GetGlyph(character);
+
+			glm::vec2 charPos =
+				pos + glm::vec2(glyph.bearing.x * scale,
+								(glyph.bearing.y > 0 ? -glyph.bearing.y
+													 : glyph.bearing.y) *
+									scale);
+			RenderCharacter(glyph, charPos, color, scale,
+							font->GetTextureAtlas());
+
+			pos.x += glyph.advance * scale;
+
+			float kerning = stbtt_GetCodepointKernAdvance(
+				&font->m_FontInfo, character, word[i + 1]);
+			if (i + 1 < word.size()) {
+				std::string pair =
+					std::string(1, character) + std::string(1, word[i + 1]);
+				if (customKerning.find(pair) != customKerning.end()) {
+					pos.x += customKerning[pair] * scale;
+				}
+			}
+		}
+
+		pos.x += spaceWidth;
+	}
+}
+
+void Renderer2D::RenderCharacter(const Glyph &glyph, const glm::vec2 &position,
+								 const glm::vec4 &color, float scale,
+								 const Ref<Texture2D> &textureAtlas) {
+	glm::vec2 quadSize = glyph.size * scale;
+
+	DrawQuad(position, quadSize, textureAtlas, glyph.uvCoords, color);
+}
+
+void Renderer2D::DrawQuad(const glm::vec2 &position, const glm::vec2 &size,
+						  const Ref<Texture2D> &texture,
+						  const glm::vec2 uvCoords[4], const glm::vec4 &color) {
+	constexpr size_t quadVertexCount = 4;
+
+	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
+		NextBatch();
+	}
+
+	float textureIndex = 0.0f;
+	for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
+		if (*s_Data.TextureSlots[i] == *texture) {
+			textureIndex = (float)i;
+			break;
+		}
+	}
+
+	if (textureIndex == 0.0f) {
+		if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots) {
+			NextBatch();
+		}
+		textureIndex = (float)s_Data.TextureSlotIndex;
+		s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+		s_Data.TextureSlotIndex++;
+	}
+
+	glm::vec3 pos = {position.x, position.y, 0.0f};
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) *
+						  glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
+
+	for (size_t i = 0; i < quadVertexCount; i++) {
+		s_Data.QuadVertexBufferPtr->Position =
+			transform * s_Data.QuadVertexPositions[i];
+		s_Data.QuadVertexBufferPtr->Color = color;
+		s_Data.QuadVertexBufferPtr->TexCoord = uvCoords[i];
+		s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+		s_Data.QuadVertexBufferPtr->TilingFactor = 1.0f;
+		s_Data.QuadVertexBufferPtr++;
+	}
+
+	s_Data.QuadIndexCount += 6;
+}
 
 } // namespace Blazr

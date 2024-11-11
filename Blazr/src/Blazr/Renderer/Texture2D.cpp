@@ -49,6 +49,23 @@ Texture2D::Texture2D(const std::string &filepath)
 	}
 }
 
+Texture2D::Texture2D(int width, int height, const unsigned char *data)
+	: m_Width(width), m_Height(height), m_LocalBuffer(nullptr) {
+	glGenTextures(1, &m_RendererID);
+	glBindTexture(GL_TEXTURE_2D, m_RendererID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	auto rgbaData = ConvertToRGBA(data, width, height);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA,
+				 GL_UNSIGNED_BYTE, rgbaData.data());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 Texture2D::~Texture2D() { glDeleteTextures(1, &m_RendererID); }
 
 void Texture2D::Bind(uint32_t slot) const {
@@ -63,4 +80,21 @@ GLuint Texture2D::GetRendererID() const { return m_RendererID; }
 Ref<Texture2D> Texture2D::Create(const std::string &path) {
 	return CreateRef<Texture2D>(path);
 }
+Ref<Texture2D> Texture2D::Create(int width, int height,
+								 const unsigned char *data) {
+	return CreateRef<Texture2D>(width, height, data);
+}
+
+std::vector<unsigned char> Texture2D::ConvertToRGBA(const unsigned char *data,
+													int width, int height) {
+	std::vector<unsigned char> rgbaData(width * height * 4);
+	for (int i = 0; i < width * height; ++i) {
+		rgbaData[i * 4 + 0] = data[i];
+		rgbaData[i * 4 + 1] = data[i];
+		rgbaData[i * 4 + 2] = data[i];
+		rgbaData[i * 4 + 3] = 255;
+	}
+	return rgbaData;
+}
+
 } // namespace Blazr
