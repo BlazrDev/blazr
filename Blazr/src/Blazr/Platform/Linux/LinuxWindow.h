@@ -19,10 +19,10 @@ class BLZR_API LinuxWindow : public Window {
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
 	GLFWwindow *GetWindow() const override;
-	Camera2D *GetCamera() override;
+	//Ref<Camera2D>& GetCamera() override;
 
   private:
-	Camera2D m_Camera;
+	Ref<Camera2D> m_Camera;
 	virtual void init(const WindowProperties &properties);
 	virtual void shutdown();
 	GLFWwindow *m_Window;

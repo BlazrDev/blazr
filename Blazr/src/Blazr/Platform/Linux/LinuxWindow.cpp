@@ -14,8 +14,8 @@
 #include "ext/vector_float4.hpp"
 
 namespace Blazr {
-Camera2D *camera;
 
+Ref<Camera2D> camera;
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
 	entt::null;				   // Drži referencu na selektovani entitet
@@ -43,8 +43,8 @@ unsigned int LinuxWindow::getHeight() const { return m_Data.height; }
 unsigned int LinuxWindow::getWidth() const { return m_Data.width; }
 
 void LinuxWindow::init(const WindowProperties &properties) {
-	m_Camera = Camera2D(1280, 720);
-	camera = &m_Camera;
+	m_Camera = Camera2D::GetInstance();
+	camera = Camera2D::GetInstance();
 
 	if (!glfwInit()) {
 		BLZR_CORE_ERROR("Failed to initialize GLFW!");
@@ -345,8 +345,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
-	m_Camera.SetScale(1.0f);
-	m_Camera.SetPosition({0.0f, 0.0f});
+	m_Camera->SetScale(1.0f);
+	m_Camera->SetPosition({0.0f, 0.0f});
 	glm::vec2 pos = {0.f, 0.f};
 	glm::vec2 size = {200.f, 200.f};
 	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
@@ -379,31 +379,31 @@ void LinuxWindow::init(const WindowProperties &properties) {
 						.startX = 100,
 						.startY = 100,
 						.texturePath = "assets/masha.png"});*/
-	Renderer2D::BeginScene(m_Camera);
+	/*Renderer2D::BeginScene(*m_Camera);
 
-	// Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
-	// 					 Texture2D::Create("assets/chammy.png"),
-	// 					 transform.rotation);
-	/*Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
+	 Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
+	 					 Texture2D::Create("assets/chammy.png"),
+	 					 transform.rotation);*/
+	/*Renderer2D::DrawQuad(entity.GetEntityHandler(), pos2, size2,
 						 Texture2D::Create("assets/masha.png"), 1.0f, color2);*/
 
-	Renderer2D::Flush();
+	//Renderer2D::Flush();
 }
 
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 
 void LinuxWindow::onUpdate() {
 
-	auto &scriptSystem =
+	/*auto &scriptSystem =
 		m_Data.m_Registry->GetContext<std::shared_ptr<ScriptingSystem>>();
 
 	scriptSystem->Update();
-	scriptSystem->Render();
+	scriptSystem->Render();*/
 
-	glfwPollEvents();
-	m_Camera.Update();
+	//glfwPollEvents();
+	m_Camera->Update();
 
-	Renderer2D::BeginScene(m_Camera);
+	Renderer2D::BeginScene(*m_Camera);
 	auto view =
 		registry->GetRegistry().view<TransformComponent, SpriteComponent>();
 	for (auto entity : view) {
@@ -412,9 +412,8 @@ void LinuxWindow::onUpdate() {
 		Renderer2D::DrawQuad(*registry, entity);
 	}
 	Renderer2D::Flush();
-
 	glfwSwapBuffers(m_Window);
-	Renderer2D::Clear();
+	
 }
 
 } // namespace Blazr
@@ -435,4 +434,4 @@ void Blazr::LinuxWindow::setEventCallback(
 }
 
 GLFWwindow *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
-Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Camera; }
+//Ref<Blazr::Camera2D>& Blazr::LinuxWindow::GetCamera() { return m_Camera; }

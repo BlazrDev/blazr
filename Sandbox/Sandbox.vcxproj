@@ -79,17 +79,19 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,14 +99,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -112,6 +113,8 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -119,14 +122,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -134,12 +136,17 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Blazr\ImGui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Blazr\Blazr.vcxproj">
       <Project>{2037E60C-8C4B-0EBE-55CD-B11DC1A00AEF}</Project>
     </ProjectReference>

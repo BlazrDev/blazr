@@ -10,8 +10,11 @@ class Editor : public Application {
 	void Init();
 	void InitImGui();
 	void Run() override;
-	void RenderImGui();
 	void Shutdown();
+	void RenderImGui();
+	
+	void End();
+	void Begin();
 
   private:
 	Renderer2D m_Renderer;

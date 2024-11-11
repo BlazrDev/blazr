@@ -3,7 +3,9 @@
 
 namespace Blazr {
 
-Camera2D::Camera2D() : Camera2D(640, 480){};
+Camera2D::Camera2D() : Camera2D(1280, 720){};
+
+Ref<Blazr::Camera2D> Blazr::Camera2D::instance = nullptr;
 Camera2D::Camera2D(int width, int height)
 	: m_Width(width), m_Height(height), m_Scale(1.f), m_Position(glm::vec2{0}),
 	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {

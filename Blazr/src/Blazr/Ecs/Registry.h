@@ -1,10 +1,10 @@
 #pragma once
 #include "entt.hpp"
-
+#include "Blazr/Core/Core.h"
 namespace Blazr {
 class Registry {
   public:
-	Registry();
+	BLZR_API Registry();
 	~Registry() = default;
 
 	inline entt::registry &GetRegistry() { return *m_Registry; }

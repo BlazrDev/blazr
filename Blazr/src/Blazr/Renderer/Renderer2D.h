@@ -11,17 +11,19 @@ namespace Blazr {
 
 class Renderer2D {
   public:
-	static void Init();
-	static void Shutdown();
+	static BLZR_API void Init();
+	static BLZR_API void Shutdown();
 
-	static void BeginScene(const Camera2D &camera);
-	static void EndScene();
-	static void Flush();
+	static void BLZR_API BeginScene(const Camera2D &camera);
+	static void BLZR_API EndScene();
+	static void BLZR_API Flush();
 
-	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
+	static void BLZR_API DrawQuad(entt::entity entityID,
+								 const glm::vec2 &position,
 						 const glm::vec2 &size, const glm::vec4 &color);
 
-	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
+	static void BLZR_API DrawQuad(entt::entity entityID,
+								  const glm::vec2 &position,
 						 const glm::vec2 &size, const Ref<Texture2D> &texture,
 						 float tilingFactor = 1.0f,
 						 const glm::vec4 &tintColor = glm::vec4(1.0f));
@@ -32,8 +34,9 @@ class Renderer2D {
 	// 					 float tilingFactor = 1.0f,
 	// 					 const glm::vec4 tintColor = glm::vec4(1.0f),
 	// 					 int entityID = -1)
-	static void DrawQuad(Registry &registry, entt::entity entityID);
-	static void DrawQuad(entt::entity entityID, const glm::vec2 &position,
+	static void BLZR_API DrawQuad(Registry &registry, entt::entity entityID);
+	static void BLZR_API DrawQuad(entt::entity entityID,
+								 const glm::vec2 &position,
 						 const glm::vec2 &size, float rotation,
 						 const glm::vec2 &scale, const Ref<Texture2D> &texture,
 						 float tilingFactor = 1.0f,

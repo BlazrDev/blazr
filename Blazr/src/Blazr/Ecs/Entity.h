@@ -6,7 +6,7 @@ namespace Blazr {
 class Entity {
   public:
 	Entity(Registry &registry);
-	Entity(Registry &registry, const std::string &name = "",
+	BLZR_API Entity(Registry &registry, const std::string &name = "",
 		   const std::string &group = "");
 
 	Entity(Registry &registry, const entt::entity &entity);
