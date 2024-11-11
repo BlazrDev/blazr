@@ -2,6 +2,8 @@
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
@@ -18,7 +20,6 @@
 
 namespace Blazr {
 
-Camera2D camera = Camera2D(1280, 720);
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
 	entt::null;				   // Drži referencu na selektovani entitet
@@ -232,7 +233,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 				glfwGetWindowSize(window, &screenWidth, &screenHeight);
 
 				glm::vec2 mouseWorldPos = data.GetWorldCoordinates(
-					mouseX, mouseY, camera, screenWidth, screenHeight);
+					mouseX, mouseY, data.m_Camera, screenWidth, screenHeight);
 
 				// Proveri da li je miš iznad nekog entiteta
 				auto view = registry->GetRegistry()
@@ -244,7 +245,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 					if (data.IsMouseOverEntity(
 							mouseWorldPos, transform.position,
 							{sprite.width, sprite.height}, transform.scale,
-							camera.GetScale())) {
+							data.m_Camera.GetScale())) {
 						BLZR_CORE_INFO("Mouse is over entity {0}",
 									   sprite.texturePath);
 						selectedEntity = entity; // Postavi selektovani entitet
@@ -276,26 +277,30 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		);
 
 		if (yOffset > 0) {
-			camera.SetScale(camera.GetScale() + 0.1f);
+			data.m_Camera.SetScale(data.m_Camera.GetScale() + 0.1f);
 		} else {
-			camera.SetScale(camera.GetScale() - 0.1f);
+			data.m_Camera.SetScale(data.m_Camera.GetScale() - 0.1f);
 		}
-		// camera.SetPosition(
+		// float zoomLevel = data.m_Camera.GetScale();
+		// ImGui::SliderFloat("Camera Zoom", &zoomLevel, 0.1f, 5.0f);
+
+		// m_Camera.SetPosition(
 		// 	mousePosNormalized *
-		// 	camera.GetScale()); // Pomeranje kamere prema poziciji miša
+		// 	m_Camera.GetScale()); // Pomeranje kamere prema poziciji miša
 	});
 
 	// glfwSetCursorPosCallback(
 	// 	m_Window, [](GLFWwindow *window, double xPos, double yPos) {
-	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-	// 		MouseMovedEvent event((float)xPos, (float)yPos);
-	// 		data.eventCallback(event);
+	// 		WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window); 		MouseMovedEvent
+	// event((float)xPos, (float)yPos); 		data.eventCallback(event);
 	// 	});
 
 	// glfwSetMouseButtonCallback(
 	// 	m_Window, [](GLFWwindow *window, int button, int action,
 	// 				 int mods) { // Uhvatite varijable prema referenci
-	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window);
 	//
 	// 		if (button == GLFW_MOUSE_BUTTON_LEFT) {
 	// 			if (action == GLFW_PRESS) {
@@ -307,10 +312,11 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 		}
 	// 	});
 
-	// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
-	// 										int action, int mods) {
-	// 	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-	// 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+	// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int
+	// button, 										int action, int mods) {
+	// WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window); 	if (button ==
+	// GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 	// 		BLZR_CORE_INFO("Mouse button pressed");
 	// 		double mouseX, mouseY;
 	// 		glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -319,7 +325,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 		glfwGetWindowSize(window, &screenWidth, &screenHeight);
 	//
 	// 		glm::vec2 mouseWorldPos = data.GetWorldCoordinates(
-	// 			mouseX, mouseY, camera, screenWidth, screenHeight);
+	// 			mouseX, mouseY, m_Camera, screenWidth, screenHeight);
 	//
 	// 		auto view = registry->GetRegistry()
 	// 						.view<TransformComponent, SpriteComponent>();
@@ -327,11 +333,11 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 			auto &transform = view.get<TransformComponent>(entity);
 	// 			auto &sprite = view.get<SpriteComponent>(entity);
 	//
-	// 			if (data.IsMouseOverEntity(mouseWorldPos, transform.position,
-	// 									   {sprite.width, sprite.height},
-	// 									   transform.scale)) {
-	// 				BLZR_CORE_INFO("Mouse is over entity {0}",
-	// 							   sprite.texturePath);
+	// 			if (data.IsMouseOverEntity(mouseWorldPos,
+	// transform.position, 									   {sprite.width,
+	// sprite.height}, 									   transform.scale)) {
+	// BLZR_CORE_INFO("Mouse is over entity {0}",
+	// sprite.texturePath);
 	// 				// Store selected entity somewhere or add a
 	// 				// SelectedComponent to it
 	// 				selectedEntity = entity;
@@ -345,7 +351,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// glfwSetCursorPosCallback(
 	// 	m_Window, [](GLFWwindow *window, double xpos,
 	// 				 double ypos) { // Uhvatite varijable prema referenci
-	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window);
 	//
 	// 		if (mousePressed) {
 	// 			double deltaX = xpos - lastMouseX;
@@ -353,7 +360,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	//
 	// 			lastMouseX = xpos;
 	// 			lastMouseY = ypos;
-	// 			camera.SetPosition(camera.GetPosition() +
+	// 			m_Camera.SetPosition(camera.GetPosition() +
 	// 							   glm::vec2(deltaX, deltaY));
 	// 		}
 	// 	});
@@ -381,40 +388,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 			BLZR_CORE_INFO("Entity moved to: {0}, {1}", transform.position.x,
 						   transform.position.y);
 		} else if (mousePressed && !isEntitySelected) {
-			camera.SetPosition(camera.GetPosition() +
-							   glm::vec2(deltaX, deltaY) * 0.1f);
+			data.m_Camera.SetPosition(data.m_Camera.GetPosition() +
+									  glm::vec2(deltaX, deltaY) * 0.1f);
 		}
 	});
-
-	camera.SetScale(1.0f);
-	camera.SetPosition({0.0f, 0.0f});
-	// glm::vec2 pos = {0.f, 0.f};
-	// glm::vec2 size = {200.f, 200.f};
-	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-	//
-	// Entity entity = Entity(*registry, "Ent1", "G1");
-	// auto &transform =
-	// 	entity.AddComponent<TransformComponent>(TransformComponent{
-	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-	//
-	// auto &sprite = entity.AddComponent<SpriteComponent>(
-	// 	SpriteComponent{.width = size[0],
-	// 					.height = size[1],
-	// 					.startX = 10,
-	// 					.startY = 30,
-	// 					.texturePath = "masha"});
-
-	// auto &animation = entity.AddComponent<AnimationComponent>(
-	// 	AnimationComponent{.numFrames = 6,
-	// 					   .frameRate = 10,
-	// 					   .frameOffset = 0,
-	// 					   .currentFrame = 0,
-	// 					   .bVertical = false});
-	// sprite.generateObject(mashaTexture->GetWidth(),
-	// mashaTexture->GetHeight());
-
-	// sprite.generateObject(playerTexture->GetWidth(),
-	// 					  playerTexture->GetHeight());
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
@@ -438,13 +415,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.startX = 100,
 	// 					.startY = 100,
 	// 					.texturePath = "masha"});
-	// Renderer2D::BeginScene(camera);
+	// Renderer2D::BeginScene(m_Camera);
 
 	// Renderer2D::DrawQuad(entity.GetEntityHandler(), pos, size,
 	// 					 Texture2D::Create("assets/chammy.png"),
 	// 					 transform.rotation);
 	// Renderer2D::DrawQuad(entity2.GetEntityHandler(), pos2, size2,
-	// 					 Texture2D::Create("assets/masha.png"), 1.0f, color2);
+	// 					 Texture2D::Create("assets/masha.png"), 1.0f,
+	// color2);
 
 	// Renderer2D::Flush();
 }
@@ -452,7 +430,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 
 void LinuxWindow::onUpdate() {
-
 	auto &scriptSystem =
 		registry->GetContext<std::shared_ptr<ScriptingSystem>>();
 
@@ -465,9 +442,9 @@ void LinuxWindow::onUpdate() {
 	animationSystem->Update();
 
 	glfwPollEvents();
-	camera.Update();
+	m_Data.m_Camera.Update();
 
-	Renderer2D::BeginScene(camera);
+	Renderer2D::BeginScene(m_Data.m_Camera);
 	auto view =
 		registry->GetRegistry().view<TransformComponent, SpriteComponent>();
 	for (auto entity : view) {
@@ -498,5 +475,5 @@ void Blazr::LinuxWindow::setEventCallback(
 	m_Data.eventCallback = callback;
 }
 
-GLFWwindow *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
-Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Camera; }
+GLFWwindow BLZR_API *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
+Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Data.m_Camera; }

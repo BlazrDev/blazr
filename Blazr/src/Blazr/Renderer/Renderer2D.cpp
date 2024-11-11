@@ -8,8 +8,14 @@
 #include "ShaderLoader.h"
 #include "UniformBuffer.h"
 #include "VertexArray.h"
+#include <filesystem>
+
+namespace fs = std::filesystem;
+
 
 namespace Blazr {
+fs::path baseAssetPath = fs::path("assets");
+fs::path shaderPath = fs::path("shaders");
 struct QuadVertex {
 	glm::vec3 Position;
 	glm::vec4 Color;
@@ -43,7 +49,6 @@ struct Renderer2DData {
 
 	CameraData CameraBuffer;
 	Ref<UniformBuffer> CameraUniformBuffer;
-	//
 };
 
 static Renderer2DData s_Data;
@@ -82,10 +87,12 @@ void Renderer2D::Init() {
 	s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	s_Data.WhiteTexture = Texture2D::Create("assets/white_texture.png");
-	s_Data.QuadShader =
-		ShaderLoader::Create("shaders/vertex/TextureTestShader.vert",
-							 "shaders/fragment/TextureTestShader.frag");
+	s_Data.WhiteTexture =
+		Texture2D::Create((baseAssetPath / "white_texture.png").string());
+	s_Data.QuadShader = ShaderLoader::Create(
+		(shaderPath / "vertex" / "TextureTestShader.vert").string(),
+		(shaderPath / "fragment" / "TextureTestShader.frag").string());
+
 	s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 
 	glEnable(GL_BLEND);

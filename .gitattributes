@@ -1,0 +1,2 @@
+# Treat .lib files as binary to void line-ending conversion
+*.lib binary

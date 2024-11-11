@@ -16,14 +16,20 @@ sprite2:generate_object()
 main = {
     [1] = {
         update = function()
+<<<<<<< HEAD
             if InputSystem.key_pressed(KEY_A) then
                 transform2.position.x = transform2.position.x - 1
             end
+=======
+>>>>>>> origin/BLAZRDEV-50-Scene
         end,
     },
     [2] = {
         render = function()
+<<<<<<< HEAD
             -- print("We are rendering in lua!")
+=======
+>>>>>>> origin/BLAZRDEV-50-Scene
         end,
     },
 }

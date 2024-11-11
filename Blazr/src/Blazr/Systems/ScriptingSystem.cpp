@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 
+#include "Blazr/Scripting/GlmLuaBindings.h"
 #include "Blazr/Systems/InputSystem.h"
 #include "ScriptingSystem.h"
 namespace Blazr {
@@ -93,6 +94,8 @@ void ScriptingSystem::Render() {
 }
 
 void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
+
+	GLMBindings::CreateLuaGLMBinding(lua);
 
 	Registry::CreateLuaRegistryBind(lua, registry);
 

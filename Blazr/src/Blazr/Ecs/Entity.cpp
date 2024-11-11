@@ -1,5 +1,6 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Components/Identification.h"
 #include "Entity.h"
 #include "MetaUtil.h"
