@@ -21,8 +21,8 @@ struct SpriteComponent {
 	Object object{.x = 0.0f, .y = 0.0f, .width = 0.0f, .height = 0.0f};
 	glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-	int startX = 0;
-	int startY = 0;
+	int startX = -1;
+	int startY = -1;
 
 	glm::vec2 textureCoordinates[4] = {
 		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
@@ -34,9 +34,14 @@ struct SpriteComponent {
 		// Set the position of the current frame within the texture
 		object.width = width / textureWidth;
 		object.height = height / textureHeight;
+		// BLZR_CORE_INFO("Object width: {0}, Object height: {1}, textureWidth:
+		// "
+		// 			   "{2}, textureHeight:{3}",
+		// 			   object.width, object.height, textureWidth,
+		// 			   textureHeight);
 
-		// object.x = startX * object.width;
-		// object.y = startY * object.height;
+		object.x = startX * object.width;
+		object.y = startY * object.height;
 
 		// Set the texture coordinates for the sprite
 		textureCoordinates[0] = {object.coordX * object.width,

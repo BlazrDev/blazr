@@ -13,7 +13,6 @@
 
 namespace fs = std::filesystem;
 
-
 namespace Blazr {
 fs::path baseAssetPath = fs::path("assets");
 fs::path shaderPath = fs::path("shaders");
@@ -192,6 +191,20 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						  float tilingFactor, const glm::vec4 &tintColor) {
 
 	constexpr size_t quadVertexCount = 4;
+	constexpr int x = 0, y = 0;
+	constexpr float spriteWidth = 472.f, spriteHeight = 617.f;
+	float textureWidth = texture->GetWidth(),
+		  textureHeight = texture->GetHeight();
+
+	// glm::vec2 textureCoords[] = {
+	// 	{(x * spriteWidth) / textureWidth,
+	// 	 ((y + 1) * spriteHeight) / textureHeight},
+	// 	{((x + 1) * spriteWidth) / textureWidth,
+	// 	 ((y + 1) * spriteHeight) / textureHeight},
+	// 	{((x + 1) * spriteWidth) / textureWidth,
+	// 	 (y * spriteHeight) / textureHeight},
+	// 	{(x * spriteWidth) / textureWidth, (y * spriteHeight) / textureHeight}};
+
 	constexpr glm::vec2 textureCoords[] = {
 		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
@@ -239,27 +252,27 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						  const glm::vec2 &scale, const Ref<Texture2D> &texture,
 						  float tilingFactor, const glm::vec4 &tintColor) {
 
-	constexpr int x = 4, y = 3;
-	constexpr float spriteWidth = 32.f, spriteHeight = 32.f;
+	constexpr int x = 0, y = 0;
+	constexpr float spriteWidth = 472.f, spriteHeight = 617.f;
 	float textureWidth = texture->GetWidth(),
 		  textureHeight = texture->GetHeight();
 
 	constexpr size_t quadVertexCount = 4;
-	// glm::vec2 textureCoords[] = {
-	// 	{(x * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 ((y + 1) * spriteHeight) / textureHeight},
-	// 	{((x + 1) * spriteWidth) / textureWidth,
-	// 	 (y * spriteHeight) / textureHeight},
-	// 	{(x * spriteWidth) / textureWidth, (y * spriteHeight) / textureHeight}};
+	glm::vec2 textureCoords[] = {
+		{(x * spriteWidth) / textureWidth,
+		 ((y + 1) * spriteHeight) / textureHeight},
+		{((x + 1) * spriteWidth) / textureWidth,
+		 ((y + 1) * spriteHeight) / textureHeight},
+		{((x + 1) * spriteWidth) / textureWidth,
+		 (y * spriteHeight) / textureHeight},
+		{(x * spriteWidth) / textureWidth, (y * spriteHeight) / textureHeight}};
 
 	//
-	glm::vec2 textureCoords[] = {// 	TL, TR, BR, BL
-								 {0.0f, 1.0f},
-								 {1.0f, 1.0f},
-								 {1.0f, 0.0f},
-								 {0.0f, 0.0f}};
+	// glm::vec2 textureCoords[] = {// 	TL, TR, BR, BL
+	// 							 {0.0f, 1.0f},
+	// 							 {1.0f, 1.0f},
+	// 							 {1.0f, 0.0f},
+	// 							 {0.0f, 0.0f}};
 
 	if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
 		NextBatch();
@@ -287,12 +300,10 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 	glm::vec3 pos = {position.x, position.y, 0.0f};
 
 	// Apply rotation and scale
-	glm::mat4 transform =
-		glm::translate(glm::mat4(1.0f), pos) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
-					{0.0f, 0.0f, 1.0f}) *
-		glm::scale(glm::mat4(1.0f),
-				   {scale.x * scale.x, scale.y * scale.y, 1.0f});
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) *
+						  glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
+									  {0.0f, 0.0f, 1.0f}) *
+						  glm::scale(glm::mat4(1.0f), {scale.x, scale.y, 1.0f});
 
 	for (size_t i = 0; i < quadVertexCount; i++) {
 		s_Data.QuadVertexBufferPtr->Position =
@@ -313,8 +324,8 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 						  float tilingFactor, const glm::vec4 &tintColor,
 						  const glm::vec2 *textureCoords) {
 
-	constexpr int x = 3, y = 1;
-	constexpr float spriteWidth = 32.f, spriteHeight = 32.f;
+	constexpr int x = 0, y = 0;
+	constexpr float spriteWidth = 472.f, spriteHeight = 617.f;
 	float textureWidth = texture->GetWidth(),
 		  textureHeight = texture->GetHeight();
 
@@ -362,8 +373,7 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 		glm::translate(glm::mat4(1.0f), pos) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
 					{0.0f, 0.0f, 1.0f}) *
-		glm::scale(glm::mat4(1.0f),
-				   {scale.x * scale.x, scale.y * scale.y, 1.0f});
+		glm::scale(glm::mat4(1.0f), {size.x * scale.x, size.y * scale.y, 1.0f});
 
 	for (size_t i = 0; i < quadVertexCount; i++) {
 		s_Data.QuadVertexBufferPtr->Position =
@@ -388,9 +398,10 @@ void Renderer2D::DrawQuad(Registry &registry, entt::entity entityID) {
 	auto assetManager = AssetManager::GetInstance();
 	Ref<Texture2D> texture = assetManager->GetTexture(sprite.texturePath);
 
-	// sprite.generateObject(texture->GetWidth(), texture->GetHeight());
+	sprite.generateObject(texture->GetWidth(), texture->GetHeight());
 	DrawQuad(entityID, position, size, texture, transform.rotation,
 			 transform.scale, 1.0f, sprite.color, sprite.textureCoordinates);
+	// DrawQuad(entityID, position, size, texture, 1.0f, sprite.color);
 }
 
 void Renderer2D::Clear() { glClear(GL_COLOR_BUFFER_BIT); }

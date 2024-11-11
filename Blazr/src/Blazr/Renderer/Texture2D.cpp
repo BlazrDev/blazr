@@ -2,8 +2,8 @@
 #include "Blazr/Core/Log.h"
 #include "Texture2D.h"
 #include "stb_image.h"
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
 namespace Blazr {
 Texture2D::Texture2D(const std::string &filepath)
@@ -35,7 +35,7 @@ Texture2D::Texture2D(const std::string &filepath)
 	glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
