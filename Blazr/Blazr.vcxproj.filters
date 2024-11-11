@@ -16,17 +16,29 @@
     <Filter Include="Blazr\Events">
       <UniqueIdentifier>{049F9246-F001-22EB-9987-5AA185C9ED6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Fonts">
+      <UniqueIdentifier>{59F98E76-C5AE-076C-4EA3-0143BA57FE6F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Platform">
       <UniqueIdentifier>{7477D451-6045-C857-49D9-387E3546A4BC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Platform\Linux">
       <UniqueIdentifier>{9371B207-7F00-3CD1-281F-50CC148D4C77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Project">
+      <UniqueIdentifier>{66FB045F-D2BB-8095-9BF6-C9120776C571}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Renderer">
       <UniqueIdentifier>{C67EB12C-B24C-A532-9BE0-1559874D8197}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Resources">
       <UniqueIdentifier>{8AC48E5E-F64F-FC22-FF60-7F176B6B5823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Scene">
+      <UniqueIdentifier>{3D7C7377-A931-EC6C-3226-E6439EDAE270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Scripting">
+      <UniqueIdentifier>{2214359F-8E9F-A263-97B0-255803BBFE63}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Systems">
       <UniqueIdentifier>{27AD9556-936D-118D-5CA8-5A0AC8275669}</UniqueIdentifier>
@@ -54,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="src\Blazr\Core\Window.h">
       <Filter>Blazr\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\AnimationComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
@@ -88,8 +103,20 @@
     <ClInclude Include="src\Blazr\Events\MouseEvent.h">
       <Filter>Blazr\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Fonts\Font.h">
+      <Filter>Blazr\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Fonts\stb_truetype.h">
+      <Filter>Blazr\Fonts</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Project\Project.h">
+      <Filter>Blazr\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Project\ProjectSerializer.h">
+      <Filter>Blazr\Project</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Buffer.h">
       <Filter>Blazr\Renderer</Filter>
@@ -130,6 +157,18 @@
     <ClInclude Include="src\Blazr\Resources\AssetManager.h">
       <Filter>Blazr\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Scene\Scene.h">
+      <Filter>Blazr\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h">
+      <Filter>Blazr\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\AnimationSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\InputSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -141,6 +180,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Core\Log.cpp">
       <Filter>Blazr\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\AnimationComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
@@ -157,8 +199,17 @@
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp">
       <Filter>Blazr\Ecs</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Fonts\Font.cpp">
+      <Filter>Blazr\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp">
+      <Filter>Blazr\Fonts</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp">
+      <Filter>Blazr\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp">
       <Filter>Blazr\Renderer</Filter>
@@ -198,6 +249,18 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp">
       <Filter>Blazr\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Scene\Scene.cpp">
+      <Filter>Blazr\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp">
+      <Filter>Blazr\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\AnimationSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\InputSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">
       <Filter>Blazr\Systems</Filter>

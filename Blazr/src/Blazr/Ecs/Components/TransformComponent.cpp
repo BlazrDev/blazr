@@ -19,15 +19,9 @@ void Blazr::TransformComponent::CreateLuaTransformComponentBind(
 										  .scale = glm::vec2{scale_x, scale_y},
 										  .rotation = rotation};
 			}),
-		"position",
-		[](TransformComponent &transform) {
-			return std::make_tuple(transform.position.x, transform.position.y);
-		},
-		"scale",
-		[](TransformComponent &transform) {
-			return std::make_tuple(transform.scale.x, transform.scale.y);
-		},
-		"rotation", &TransformComponent::rotation, "set_position",
+		"position", &TransformComponent::position, "scale",
+		&TransformComponent::scale, "rotation", &TransformComponent::rotation,
+		"set_position",
 		[](TransformComponent &transform, float x, float y) {
 			transform.position = glm::vec2(x, y);
 		},

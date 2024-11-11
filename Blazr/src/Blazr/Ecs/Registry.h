@@ -1,6 +1,8 @@
 #pragma once
-#include "entt.hpp"
 #include "Blazr/Core/Core.h"
+#include "entt.hpp"
+#include "sol.hpp"
+
 namespace Blazr {
 class Registry {
   public:
@@ -28,6 +30,31 @@ class Registry {
 
 	template <typename TContext> inline bool RemoveContext() {
 		return m_Registry->ctx().erase<TContext>();
+	}
+
+	static void CreateLuaRegistryBind(sol::state_view &lua, Registry &registry);
+
+	template <typename TComponent>
+	static entt::runtime_view &add_component_to_view(Registry *registry,
+													 entt::runtime_view &view) {
+		return view.iterate(registry->GetRegistry().storage<TComponent>());
+	}
+
+	template <typename TComponent>
+	static entt::runtime_view &
+	exclude_component_from_view(Registry *registry, entt::runtime_view &view) {
+		return view.exclude(registry->GetRegistry().storage<TComponent>());
+	}
+
+	template <typename TComponent> static void RegisterMetaComponent() {
+		using namespace entt::literals;
+		entt::meta<TComponent>()
+			.type(entt::type_hash<TComponent>::value())
+			.template func<&Blazr::Registry::add_component_to_view<TComponent>>(
+				"add_component_to_view"_hs)
+			.template func<
+				&Blazr::Registry::exclude_component_from_view<TComponent>>(
+				"exclude_component_from_view"_hs);
 	}
 
   private:

@@ -1,7 +1,7 @@
 #pragma once
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
 #include "Blazr/Core/Core.h"
+#include "glm.hpp"
+#include <gtc/matrix_transform.hpp>
 
 namespace Blazr {
 
@@ -10,9 +10,9 @@ class Camera2D {
 	BLZR_API Camera2D();
 	BLZR_API Camera2D(int width, int height);
 
-	void SetPosition(const glm::vec2 &position);
+	void BLZR_API SetPosition(const glm::vec2 &position);
 
-	glm::vec2 GetPosition() const;
+	glm::vec2 BLZR_API GetPosition() const;
 
 	void BLZR_API SetScale(const float &);
 
