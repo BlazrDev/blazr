@@ -16,14 +16,14 @@ class Scene {
 	entt::entity AddEntity();
 	void RemoveEntity(entt::entity entity);
 
-	Registry &GetRegistry() { return m_Registry; }
+	std::shared_ptr<Registry> GetRegistry() { return m_Registry; }
 	Camera2D &GetCamera() { return m_Camera; }
 
 	void Update();
 	void Render();
 
   private:
-	Registry m_Registry;
+	std::shared_ptr<Blazr::Registry> m_Registry;
 	Camera2D m_Camera;
 };
 

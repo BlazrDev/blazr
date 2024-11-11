@@ -12,7 +12,6 @@
 
 namespace fs = std::filesystem;
 
-
 namespace Blazr {
 fs::path baseAssetPath = fs::path("assets");
 fs::path shaderPath = fs::path("shaders");

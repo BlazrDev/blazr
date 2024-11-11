@@ -23,7 +23,6 @@ main = {
     },
     [2] = {
         render = function()
-            -- print("We are rendering in lua!")
         end,
     },
 }
