@@ -22,7 +22,7 @@ void Editor::Init() {
 
 void Editor::InitImGui() {
 	if (!glfwInit()) {
-		BLZR_CORE_ERROR ("GLFW initialization failed!");
+		BLZR_CORE_ERROR("GLFW initialization failed!");
 		return;
 	}
 	if (!m_Window->GetWindow()) {
