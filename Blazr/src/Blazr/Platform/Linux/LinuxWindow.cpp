@@ -1,9 +1,6 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
-#include "Blazr/Ecs/Components/AnimationComponent.h"
-#include "Blazr/Ecs/Components/SpriteComponent.h"
-#include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
@@ -19,7 +16,7 @@
 #include <Blazr/Resources/AssetManager.h>
 
 namespace Blazr {
-
+Camera2D camera = Camera2D(1280, 720);
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
 	entt::null;				   // Drži referencu na selektovani entitet
@@ -318,6 +315,36 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
+	camera.SetScale(1.0f);
+	camera.SetPosition({0.0f, 0.0f});
+	// glm::vec2 pos = {0.f, 0.f};
+	// glm::vec2 size = {200.f, 200.f};
+	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+	//
+	// Entity entity = Entity(*registry, "Ent1", "G1");
+	// auto &transform =
+	// 	entity.AddComponent<TransformComponent>(TransformComponent{
+	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
+	//
+	// auto &sprite = entity.AddComponent<SpriteComponent>(
+	// 	SpriteComponent{.width = size[0],
+	// 					.height = size[1],
+	// 					.startX = 10,
+	// 					.startY = 30,
+	// 					.texturePath = "masha"});
+
+	// auto &animation = entity.AddComponent<AnimationComponent>(
+	// 	AnimationComponent{.numFrames = 6,
+	// 					   .frameRate = 10,
+	// 					   .frameOffset = 0,
+	// 					   .currentFrame = 0,
+	// 					   .bVertical = false});
+	// sprite.generateObject(mashaTexture->GetWidth(),
+	// mashaTexture->GetHeight());
+
+	// sprite.generateObject(playerTexture->GetWidth(),
+	// 					  playerTexture->GetHeight());
+
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
 	// 			   entity.HasComponent<TransformComponent>());
@@ -383,7 +410,6 @@ void LinuxWindow::onUpdate() {
 	Renderer2D::Clear();
 }
 
-} // namespace Blazr
 void Blazr::LinuxWindow::setVSync(bool enabled) {
 
 	if (enabled)
@@ -402,3 +428,4 @@ void Blazr::LinuxWindow::setEventCallback(
 
 GLFWwindow BLZR_API *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
 Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Data.m_Camera; }
+} // namespace Blazr

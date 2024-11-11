@@ -16,8 +16,17 @@ sprite2:generate_object()
 main = {
     [1] = {
         update = function()
-            if InputSystem.key_pressed(KEY_A) then
-                transform2.position.x = transform2.position.x - 1
+            if InputSystem.key_repeating(KEY_A) then
+                transform2.position.x = transform2.position.x - 5
+            end
+            if InputSystem.key_repeating(KEY_D) then
+                transform2.position.x = transform2.position.x + 5
+            end
+            if InputSystem.key_repeating(KEY_S) then
+                transform2.position.y = transform2.position.y + 5
+            end
+            if InputSystem.key_repeating(KEY_W) then
+                transform2.position.y = transform2.position.y - 5
             end
         end,
     },
