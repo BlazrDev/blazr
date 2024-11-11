@@ -1,11 +1,16 @@
 #include "blzrpch.h"
 #include "../Ecs/Entity.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 
+<<<<<<< HEAD
 #include "Blazr/Scripting/GlmLuaBindings.h"
+=======
+#include "Blazr/Systems/InputSystem.h"
+>>>>>>> origin/BLAZRDEV-33-Animation-System
 #include "ScriptingSystem.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}
@@ -97,15 +102,20 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	Registry::CreateLuaRegistryBind(lua, registry);
 
+	InputSystem::CreateInputLuaBind(lua);
+
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
+	AnimationComponent::CreateAnimationLuaBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
+	Entity::RegisterMetaComponent<AnimationComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
+	Registry::RegisterMetaComponent<AnimationComponent>();
 }
 
 } // namespace Blazr
