@@ -333,8 +333,7 @@ void Renderer2D::DrawQuad(entt::entity entityID, const glm::vec2 &position,
 		glm::translate(glm::mat4(1.0f), pos) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotation),
 					{0.0f, 0.0f, 1.0f}) *
-		glm::scale(glm::mat4(1.0f),
-				   {scale.x * scale.x, scale.y * scale.y, 1.0f});
+		glm::scale(glm::mat4(1.0f), {size.x * scale.x, size.y * scale.y, 1.0f});
 
 	for (size_t i = 0; i < quadVertexCount; i++) {
 		s_Data.QuadVertexBufferPtr->Position =

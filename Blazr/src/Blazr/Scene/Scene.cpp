@@ -112,6 +112,7 @@ void Scene::Update() {
 void Scene::Render() {
 
 	Renderer2D::BeginScene(m_Camera);
+	m_Camera.Update();
 
 	auto view =
 		m_Registry->GetRegistry().view<TransformComponent, SpriteComponent>();
