@@ -128,10 +128,10 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
 	auto soundPlayer = SoundPlayer::GetInstance();
 
-	// assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "danilo");
+	assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "danilo");
 	// assetManager->LoadMusic("sample", "assets/sounds/sample.wav", "danilo2");
 	assetManager->LoadEffect("bigben", "assets/sounds/bigben.wav", "danilo3");
-	assetManager->LoadEffect("boing", "assets/sounds/boing.wav", "danilo4");
+	assetManager->LoadEffect("jump", "assets/sounds/jump.wav", "danilo4");
 	// BLZR_CORE_ERROR(" Retarde {0}", sp.duration);
 
 	// Music* m = new Music(sp, mm);

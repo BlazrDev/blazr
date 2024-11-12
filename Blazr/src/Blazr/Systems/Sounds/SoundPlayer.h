@@ -30,6 +30,8 @@ namespace Blazr {
 
             
             void PlayMusic(const std::string &name, int loop);
+            void PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect);
+            void ToggleMusic(const std::string &name);
             void PlayEffect(const std::string &name, int loop, int channel);
             void ToggleEffect(int channel);
             bool isChannelPlaying(int channel);

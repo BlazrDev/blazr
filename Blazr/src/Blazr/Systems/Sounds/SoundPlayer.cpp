@@ -15,7 +15,7 @@ Blazr::SoundPlayer::SoundPlayer() {
         BLZR_CORE_ERROR("Unable to open SDL Music Mixer {0}", error);
     }
 
-    BLZR_CORE_ERROR("Channels allocated {0}", Mix_AllocateChannels(16));
+    BLZR_CORE_INFO("Channels allocated {0}", Mix_AllocateChannels(16));
 
 };
 
@@ -34,6 +34,8 @@ void Blazr::SoundPlayer::CreateLuaEntityBind(sol::state_view &lua) {
         "SoundPlayer",
         sol::constructors<SoundPlayer()>(),
         "play_music", &SoundPlayer::PlayMusic,
+        "play_music_fade_in", &SoundPlayer::PlayMusicFadeIn,
+        "toggle_music", &SoundPlayer::ToggleMusic,
         "play_effect", &SoundPlayer::PlayEffect,
         "toggle_effect", &SoundPlayer::ToggleEffect,
         "is_playing", &SoundPlayer::isChannelPlaying,
@@ -53,12 +55,35 @@ void Blazr::SoundPlayer::PlayMusic(const std::string &name, int loop) {
         return;
     }
 
-    if(Mix_PlayMusic(music->getSample(), loop) != 0) {
+    if(Mix_PlayMusic(music->getSample(), loop) == -1) {
         std::string error(Mix_GetError());
         BLZR_CORE_ERROR("Failed to play music: {0}", error);
     }
 
 
+}
+
+void Blazr::SoundPlayer::PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect) {
+    auto assetManager = AssetManager::GetInstance();
+
+    auto music = assetManager->GetMusic(name);
+    if(!music->getSample()) {
+        BLZR_CORE_ERROR("Mix_Music is null");
+        return;
+    }
+
+    if(Mix_FadeInMusic(music->getSample(), loop, fadeInEffect) == -1) {
+        std::string error(Mix_GetError());
+        BLZR_CORE_ERROR("Failed to play faded music: {0}", error);
+    }
+}
+
+void Blazr::SoundPlayer::ToggleMusic(const std::string &name) {
+    if(Mix_PausedMusic()) {
+        Mix_ResumeMusic();
+    } else {
+        Mix_PausedMusic();
+    }
 }
 
 
@@ -69,7 +94,7 @@ void Blazr::SoundPlayer::PlayEffect(const std::string &name, int loop, int chann
         BLZR_CORE_ERROR("Mix_Chunk is null");
         return;
     }
-    if(Mix_PlayChannel(channel, effect->getSample(), loop) != 0) {
+    if(Mix_PlayChannel(channel, effect->getSample(), loop) == -1) {
         std::string error(Mix_GetError());
         BLZR_CORE_ERROR("Failed to play effect: {0}", error);
     }
