@@ -140,7 +140,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// }
 	// musicPlayer->PlayMusic("masa", 1);
 	// musicPlayer->PlayMusic("sample", 0);
-	// soundPlayer->PlayEffect("bigben", 1, -1);
+	//soundPlayer->PlayEffect("bigben", 1, -1);
 
 	if (!assetManager) {
 		BLZR_CORE_ERROR("Failed to create the asset manager!");

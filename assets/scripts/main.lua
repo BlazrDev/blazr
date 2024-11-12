@@ -11,7 +11,7 @@ local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 
 local s2 = gEntity2:get_component(SpriteComponent)
 print(s2.width)
 local soundPlayer = SoundPlayer.get_instance()
-soundPlayer:play_music_fade_in("masa", 0, 0)
+soundPlayer:play_effect("boing", 0, 1)
 local x = 0
 local max_x = 800
 
