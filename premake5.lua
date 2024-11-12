@@ -118,6 +118,8 @@ links({
     "GLFW",
     "glew32s",
     "lua53",
+    "SDL2",
+    "SDL2_mixer"
 })
 
 defines({
@@ -218,6 +220,8 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
+    "SDL2",
+    "SDL2_mixer",
 })
 
 defines({
