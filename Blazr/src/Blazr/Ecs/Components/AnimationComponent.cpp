@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "AnimationComponent.h"
 #include "entt.hpp"
 

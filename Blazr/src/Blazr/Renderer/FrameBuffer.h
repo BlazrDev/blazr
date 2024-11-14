@@ -5,11 +5,11 @@
 
 class FrameBuffer {
   public:
-	FrameBuffer(int width, int height);
-	~FrameBuffer();
+	BLZR_API FrameBuffer(int width, int height);
+	BLZR_API  ~FrameBuffer();
 
-	void Bind() const;
-	void Unbind() const;
+	void BLZR_API Bind() const;
+	void BLZR_API Unbind() const;
 
 	void BLZR_API Resize(int width, int height);
 
