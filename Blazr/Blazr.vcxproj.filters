@@ -61,6 +61,9 @@
     <ClInclude Include="src\Blazr\Core\Window.h">
       <Filter>Blazr\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
@@ -145,6 +148,9 @@
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h">
       <Filter>Blazr\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -156,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Core\Log.cpp">
       <Filter>Blazr\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
@@ -219,6 +228,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp">
       <Filter>Blazr\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">
       <Filter>Blazr\Systems</Filter>
