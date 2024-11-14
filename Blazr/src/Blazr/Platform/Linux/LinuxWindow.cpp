@@ -128,7 +128,9 @@ void LinuxWindow::init(const WindowProperties &properties) {
 
 	auto soundPlayer = SoundPlayer::GetInstance();
 
-	assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "danilo");
+	assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "masamp3");
+
+	assetManager->LoadEffect("masa", "assets/sounds/masa.wav", "danilo");
 	// assetManager->LoadMusic("sample", "assets/sounds/sample.wav", "danilo2");
 	assetManager->LoadEffect("bigben", "assets/sounds/bigben.wav", "danilo3");
 	assetManager->LoadEffect("jump", "assets/sounds/jump.wav", "danilo4");
