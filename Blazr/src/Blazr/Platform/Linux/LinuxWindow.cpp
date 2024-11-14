@@ -1,8 +1,6 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
-#include "Blazr/Ecs/Components/SpriteComponent.h"
-#include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
@@ -11,6 +9,7 @@
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
+#include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
@@ -19,7 +18,7 @@
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include <string>
 namespace Blazr {
-
+Camera2D camera = Camera2D(1280, 720);
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
 	entt::null;				   // Drži referencu na selektovani entitet
@@ -73,6 +72,53 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	int height;
 	glfwGetWindowSize(m_Window, &width, &height);
 
+	// <<<<<<< HEAD
+	//     switch (action) {
+	//     case GLFW_PRESS: {
+	//       KeyPressedEvent event(key, 0);
+	//       data.eventCallback(event);
+	//       break;
+	//     }
+	//     case GLFW_RELEASE: {
+	//       KeyReleasedEvent event(key);
+	//       data.eventCallback(event);
+	//       break;
+	//     }
+	//     case GLFW_REPEAT: {
+	//       KeyPressedEvent event(key, 1);
+	//       data.eventCallback(event);
+	//       break;
+	//     }
+	//     }
+	//   });
+	//   //
+	//   glfwSetMouseButtonCallback(
+	//       m_Window, [](GLFWwindow *window, int button, int action, int mods)
+	//       {
+	//         WindowData &data = *(WindowData
+	//         *)glfwGetWindowUserPointer(window);
+	//
+	//         switch (action) {
+	//         case GLFW_PRESS: {
+	//           MouseButtonPressedEvent event(button);
+	//           data.eventCallback(event);
+	//           break;
+	//         }
+	//         case GLFW_RELEASE: {
+	//           MouseButtonReleasedEvent event(button);
+	//           data.eventCallback(event);
+	//           break;
+	//         }
+	//         }
+	//       });
+	//   //
+	//   glfwSetScrollCallback(
+	//       m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
+	//         WindowData &data = *(WindowData
+	//         *)glfwGetWindowUserPointer(window); MouseScrolledEvent
+	//         event((float)xOffset, (float)yOffset); data.eventCallback(event);
+	//       });
+	// =======
 	m_Data.title = properties.Title;
 	m_Data.width = width;
 	m_Data.height = height;
@@ -101,28 +147,29 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		data.eventCallback(event);
 	});
 
-	glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode,
-									int action, int mods) {
-		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-
-		switch (action) {
-		case GLFW_PRESS: {
-			KeyPressedEvent event(key, 0);
-			data.eventCallback(event);
-			break;
-		}
-		case GLFW_RELEASE: {
-			KeyReleasedEvent event(key);
-			data.eventCallback(event);
-			break;
-		}
-		case GLFW_REPEAT: {
-			KeyPressedEvent event(key, 1);
-			data.eventCallback(event);
-			break;
-		}
-		}
-	});
+	// glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int
+	// scancode, 								int action, int mods) {
+	// WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window);
+	//
+	// 	switch (action) {
+	// 	case GLFW_PRESS: {
+	// 		KeyPressedEvent event(key, 0);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	case GLFW_RELEASE: {
+	// 		KeyReleasedEvent event(key);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	case GLFW_REPEAT: {
+	// 		KeyPressedEvent event(key, 1);
+	// 		data.eventCallback(event);
+	// 		break;
+	// 	}
+	// 	}
+	// });
 
 	auto assetManager = AssetManager::GetInstance();
 
@@ -159,9 +206,14 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		return;
 	}
 
-	auto chammyTexture = assetManager->GetTexture("chammy");
-	BLZR_CORE_INFO("Texture: {0} {1}", chammyTexture->GetWidth(),
-				   chammyTexture->GetHeight());
+	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
+								   false)) {
+		BLZR_CORE_ERROR("Failed to load the chammy texture!");
+		return;
+	}
+
+	auto playerTexture = assetManager->GetTexture("player");
+	auto mashaTexture = assetManager->GetTexture("masha");
 
 	// TODO remove tmp code
 	// Creating lua state
@@ -196,6 +248,19 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	ScriptingSystem::RegisterLuaBindings(*lua, *registry);
 	if (!scriptSystem->LoadMainScript(*lua)) {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+
+	auto animationSystem = std::make_shared<AnimationSystem>(*registry);
+	if (!animationSystem) {
+		BLZR_CORE_ERROR("Failed to create the animation system!");
+		return;
+	}
+
+	if (!registry->AddToContext<std::shared_ptr<AnimationSystem>>(
+			animationSystem)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the animation system to the registry context!");
 		return;
 	}
 
@@ -393,12 +458,12 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		}
 	});
 
-	m_Data.m_Camera.SetScale(1.0f);
-	m_Data.m_Camera.SetPosition({0.0f, 0.0f});
-	glm::vec2 pos = {0.f, 0.f};
-	glm::vec2 size = {200.f, 200.f};
-	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-
+	camera.SetScale(1.0f);
+	camera.SetPosition({0.0f, 0.0f});
+	// glm::vec2 pos = {0.f, 0.f};
+	// glm::vec2 size = {200.f, 200.f};
+	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+	//
 	// Entity entity = Entity(*registry, "Ent1", "G1");
 	// auto &transform =
 	// 	entity.AddComponent<TransformComponent>(TransformComponent{
@@ -409,10 +474,19 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.height = size[1],
 	// 					.startX = 10,
 	// 					.startY = 30,
-	// 					.texturePath = "chammy"});
-	//
-	// auto t1 = entity.GetComponent<SpriteComponent>();
-	// BLZR_CORE_INFO("Entity has component {0}", t1.width);
+	// 					.texturePath = "masha"});
+
+	// auto &animation = entity.AddComponent<AnimationComponent>(
+	// 	AnimationComponent{.numFrames = 6,
+	// 					   .frameRate = 10,
+	// 					   .frameOffset = 0,
+	// 					   .currentFrame = 0,
+	// 					   .bVertical = false});
+	// sprite.generateObject(mashaTexture->GetWidth(),
+	// mashaTexture->GetHeight());
+
+	// sprite.generateObject(playerTexture->GetWidth(),
+	// 					  playerTexture->GetHeight());
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
@@ -457,6 +531,11 @@ void LinuxWindow::onUpdate() {
 	scriptSystem->Update();
 	scriptSystem->Render();
 
+	auto &animationSystem =
+		registry->GetContext<std::shared_ptr<AnimationSystem>>();
+
+	animationSystem->Update();
+
 	glfwPollEvents();
 	m_Data.m_Camera.Update();
 
@@ -464,8 +543,8 @@ void LinuxWindow::onUpdate() {
 	auto view =
 		registry->GetRegistry().view<TransformComponent, SpriteComponent>();
 	for (auto entity : view) {
-		auto &transform = view.get<TransformComponent>(entity);
 		auto &sprite = view.get<SpriteComponent>(entity);
+		sprite.generateTextureCoordinates();
 		Renderer2D::DrawQuad(*registry, entity);
 	}
 	Renderer2D::Flush();
@@ -474,7 +553,6 @@ void LinuxWindow::onUpdate() {
 	Renderer2D::Clear();
 }
 
-} // namespace Blazr
 void Blazr::LinuxWindow::setVSync(bool enabled) {
 
 	if (enabled)
@@ -493,3 +571,4 @@ void Blazr::LinuxWindow::setEventCallback(
 
 GLFWwindow BLZR_API *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
 Blazr::Camera2D *Blazr::LinuxWindow::GetCamera() { return &m_Data.m_Camera; }
+} // namespace Blazr
