@@ -50,7 +50,7 @@ void Editor::InitImGui() {
 	ImGuiIO &io = ImGui::GetIO();
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 	ImGui::StyleColorsDark();
@@ -64,7 +64,7 @@ void Editor::Run() {
 	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
 
 		m_Window->onUpdate();
-		// zoomLevel = m_Window->GetCamera()->GetScale();
+		zoomLevel = m_Scene->GetCamera().GetScale();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -96,7 +96,8 @@ void Editor::RenderImGui() {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGuiWindowFlags window_flags =
 		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		ImGuiConfigFlags_ViewportsEnable | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove;
 	window_flags |=
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
