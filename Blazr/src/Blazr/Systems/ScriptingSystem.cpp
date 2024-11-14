@@ -1,11 +1,14 @@
 #include "blzrpch.h"
 #include "../Ecs/Entity.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 
+#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Scripting/GlmLuaBindings.h"
+#include "Blazr/Systems/BoxColliderSystem.h"
 #include "ScriptingSystem.h"
 
 #include "Sounds/SoundPlayer.h"
@@ -96,20 +99,23 @@ void ScriptingSystem::Render() {
 void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	GLMBindings::CreateLuaGLMBinding(lua);
-
 	Registry::CreateLuaRegistryBind(lua, registry);
+	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
 
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
+	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
+	Entity::RegisterMetaComponent<BoxColliderComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
 	SoundPlayer::CreateLuaEntityBind(lua);
 	
+	Registry::RegisterMetaComponent<BoxColliderComponent>();
 }
 
 } // namespace Blazr

@@ -399,20 +399,20 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	glm::vec2 size = {200.f, 200.f};
 	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
 
-	Entity entity = Entity(*registry, "Ent1", "G1");
-	auto &transform =
-		entity.AddComponent<TransformComponent>(TransformComponent{
-			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-
-	auto &sprite = entity.AddComponent<SpriteComponent>(
-		SpriteComponent{.width = size[0],
-						.height = size[1],
-						.startX = 10,
-						.startY = 30,
-						.texturePath = "chammy"});
-
-	auto t1 = entity.GetComponent<SpriteComponent>();
-	BLZR_CORE_INFO("Entity has component {0}", t1.width);
+	// Entity entity = Entity(*registry, "Ent1", "G1");
+	// auto &transform =
+	// 	entity.AddComponent<TransformComponent>(TransformComponent{
+	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
+	//
+	// auto &sprite = entity.AddComponent<SpriteComponent>(
+	// 	SpriteComponent{.width = size[0],
+	// 					.height = size[1],
+	// 					.startX = 10,
+	// 					.startY = 30,
+	// 					.texturePath = "chammy"});
+	//
+	// auto t1 = entity.GetComponent<SpriteComponent>();
+	// BLZR_CORE_INFO("Entity has component {0}", t1.width);
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
