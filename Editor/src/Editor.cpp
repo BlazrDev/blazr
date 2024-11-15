@@ -7,99 +7,108 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-namespace Blazr 
-{
-	static float zoomLevel = 1.0f;
-	static float volumeLevel = 0.0f;
-	static float pitchLevel = 0.0f;
-	static float positionX = 0.0f;
-	static float positionY = 0.0f;
-	static float scaleX = 1.0f;
-	static float scaleY = 1.0f;
-	static float rotation = 0.0f;
-	static char name[128] = "";
-	static char groupName[128] = "";
-	Editor::Editor() { Init(); }
+namespace Blazr {
+static float zoomLevel = 1.0f;
+static float volumeLevel = 0.0f;
+static float pitchLevel = 0.0f;
+static float positionX = 0.0f;
+static float positionY = 0.0f;
+static float scaleX = 1.0f;
+static float scaleY = 1.0f;
+static float rotation = 0.0f;
+static char name[128] = "";
+static char groupName[128] = "";
+static bool showCodeEditor = false;
+static std::string luaScriptContent = ""; // Sadr≈æaj Lua skripte
+static char
+	luaScriptBuffer[1024 * 16]; // Buffer za unos teksta (pode≈°en na 16KB)
 
-	Editor::~Editor() { Shutdown(); }
+Editor::Editor() { Init(); }
 
-	void Editor::Init() {
-		BLZR_CORE_INFO("Initializing Editor...");
+Editor::~Editor() { Shutdown(); }
 
-		Renderer2D::Init();
-		m_Scene = CreateRef<Scene>();
-		auto animationSystem =
-			std::make_shared<AnimationSystem>(*(m_Scene->GetRegistry()).get());
-		auto scriptingSystem =
-			std::make_shared<ScriptingSystem>(*(m_Scene->GetRegistry()).get());
+void Editor::Init() {
+	BLZR_CORE_INFO("Initializing Editor...");
 
-		m_Scene->GetRegistry()->AddToContext(animationSystem);
-		m_Scene->GetRegistry()->AddToContext(scriptingSystem);
-		m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
-		m_Renderer = Renderer2D();
+	Renderer2D::Init();
+	m_Scene = CreateRef<Scene>();
+	auto animationSystem =
+		std::make_shared<AnimationSystem>(*(m_Scene->GetRegistry()).get());
+	auto scriptingSystem =
+		std::make_shared<ScriptingSystem>(*(m_Scene->GetRegistry()).get());
 
-		InitImGui();
+	m_Scene->GetRegistry()->AddToContext(animationSystem);
+	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
+	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
+	m_Renderer = Renderer2D();
+
+	InitImGui();
+}
+
+void Editor::InitImGui() {
+	if (!glfwInit()) {
+		BLZR_CORE_ERROR("GLFW initialization failed!");
+		return;
+	}
+	if (!m_Window->GetWindow()) {
+		glfwTerminate();
+		BLZR_CORE_ERROR("GLFW window creation failed!");
+		return;
 	}
 
-	void Editor::InitImGui() {
-		if (!glfwInit()) {
-			BLZR_CORE_ERROR("GLFW initialization failed!");
-			return;
-		}
-		if (!m_Window->GetWindow()) {
-			glfwTerminate();
-			BLZR_CORE_ERROR("GLFW window creation failed!");
-			return;
-		}
+	glfwMakeContextCurrent(m_Window->GetWindow());
+	glfwSwapInterval(1);
 
-		glfwMakeContextCurrent(m_Window->GetWindow());
-		glfwSwapInterval(1);
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO &io = ImGui::GetIO();
+	(void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	 //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	//io.ConfigWindowsMoveFromTitleBarOnly = true;
 
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 410");
+	//glDisable(GL_SCISSOR_TEST);
+}
+
+void Editor::Run() {
+	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
+
+		glfwPollEvents();
+		m_Window->onUpdate();
+		// zoomLevel = m_Window->GetCamera()->GetScale();
+
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		
+		RenderImGui();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		//glClear(GL_COLOR_BUFFER_BIT);
+
 		ImGuiIO &io = ImGui::GetIO();
-		(void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		io.ConfigWindowsMoveFromTitleBarOnly = true;
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			GLFWwindow *backupContext = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
 
-		ImGui::StyleColorsDark();
-
-		ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
-		ImGui_ImplOpenGL3_Init("#version 410");
-	}
-
-	void Editor::Run() {
-		while (!glfwWindowShouldClose(m_Window->GetWindow())) {
-
-			glfwPollEvents();
-			m_Window->onUpdate();
-			// zoomLevel = m_Window->GetCamera()->GetScale();
-
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame();
-
-			RenderImGui();
-
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-			ImGuiIO &io = ImGui::GetIO();
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-				GLFWwindow *backupContext = glfwGetCurrentContext();
-				ImGui::UpdatePlatformWindows();
-				ImGui::RenderPlatformWindowsDefault();
-
-				glfwMakeContextCurrent(backupContext);
-			}
+			glfwMakeContextCurrent(backupContext);
 		}
 
-		glfwSwapBuffers(m_Window->GetWindow());
+		
+	//glfwSwapBuffers(m_Window->GetWindow());
 	}
 
-	void Editor::RenderImGui() {
+	glfwSwapBuffers(m_Window->GetWindow());
+}
 
+void Editor::RenderImGui() {
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
@@ -119,10 +128,9 @@ namespace Blazr
 	// Docking space
 	ImGui::DockSpace(ImGui::GetID("MainDockSpace"), ImVec2(0.0f, 0.0f));
 
-
-	static bool showDetails = false;
-	static std::string selectedComponent = "ObjectDetails";
-	int numberOfComponents = 10;
+	static bool showGameObjectDetails = false;
+	static std::string selectedGameObject = "ObjectDetails";
+	int numberOfComponents = 3;
 
 	// Menu bar
 	if (ImGui::BeginMainMenuBar()) {
@@ -159,46 +167,49 @@ namespace Blazr
 		ImGui::EndMainMenuBar();
 	}
 
+	//--------------------------------------------------------------1. box
+	//-Editor Controls--------------------------------
+	//ImGui::SetNextWindowSize(ImVec2(230, 90), ImGuiCond_Once);
+	//ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+	//ImGui::Begin("Editor Controls", nullptr);
+	//ImGui::SetCursorPos(ImVec2(50, 20));
+	//ImGui::Text("Camera Zoom");
+	//// Zooming
+	//if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
+	//	m_Scene->GetCamera().SetScale(zoomLevel);
+	//}
 
+	//--------------------------------------------------------------2. box -
+	//Scene---------------------------------
 
-	//--------------------------------------------------------------1. box - Editor Controls--------------------------------
-	ImGui::SetNextWindowSize(ImVec2(230, 90), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-	ImGui::Begin("Editor Controls", nullptr);
-	ImGui::SetCursorPos(ImVec2(50, 20));
-	ImGui::Text("Camera Zoom");
-	// Zooming
-	if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
-		m_Scene->GetCamera().SetScale(zoomLevel);
-	}
+	int widthSize = m_Window->getWidth();
+	int heightSize = m_Window->getHeight() - 20;
 
-
-	//--------------------------------------------------------------2. box - Scene---------------------------------
-	ImGui::SetNextWindowSize(ImVec2(230, 170), ImGuiCond_Once);
-	ImVec2 editorControlsPos = ImGui::GetWindowPos();
-	ImVec2 editorControlsSize = ImGui::GetWindowSize();
-	ImGui::SetNextWindowPos(ImVec2(editorControlsPos.x, editorControlsPos.y + editorControlsSize.y));
-	ImGui::Begin("Scene", nullptr);
+	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
+	ImGui::SetNextWindowPos(ImVec2(0,19));
+	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+					 ImGuiWindowFlags_NoNavFocus);
 	for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
 		std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
 		if (ImGui::Selectable(gameObjectName.c_str())) {
-			selectedComponent = "ObjectDetails-" + gameObjectName;
-			showDetails = true;
+			selectedGameObject = "ObjectDetails-" + gameObjectName;
+			showGameObjectDetails = true;
 		}
 	}
 	ImVec2 scenePos = ImGui::GetWindowPos();
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
 
+	//---------------------------------------------------------------3. box -
+	//Object details---------------------------------
+	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
+	ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
 
-	//---------------------------------------------------------------3. box - Object details---------------------------------
-	ImGui::SetNextWindowSize(ImVec2(310, 700), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 310, 20),
-							ImGuiCond_Once);
-	//ImGui::Begin(selectedComponent.c_str(), nullptr);
-	// Tab bar for different sections of details
-	if (ImGui::Begin(selectedComponent.c_str(), nullptr)) 
-	{
+	static bool showComponentWindow = false;
+	if (showGameObjectDetails) {
+		ImGui::Begin(selectedGameObject.c_str(), nullptr,
+					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+						 ImGuiWindowFlags_NoNavFocus);
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Transform")) {
 				ImGui::Separator();
@@ -209,7 +220,6 @@ namespace Blazr
 				float lineWidth =
 					ImGui::GetContentRegionAvail().x; // remaining line length
 				float lineHeight = 2.0f;			  // line thickness
-				//
 				float textHeight = ImGui::GetTextLineHeight();
 				float lineY = p.y + 2.0 + textHeight / 2.0f - lineHeight / 2.0f;
 				// drawing line
@@ -220,7 +230,7 @@ namespace Blazr
 
 				{
 					// Position input
-					ImGui::PushItemWidth(130);
+					ImGui::PushItemWidth(100);
 					ImGui::SetCursorPos(ImVec2(10, 80));
 					ImGui::Text("Position");
 					ImGui::Text("X");
@@ -265,7 +275,6 @@ namespace Blazr
 				float lineWidth2 =
 					ImGui::GetContentRegionAvail().x; // remaining line length
 				float lineHeight2 = 2.0f;			  // line thickness
-				//
 				float textHeight2 = ImGui::GetTextLineHeight();
 				float lineY2 =
 					p2.y + 2.0 + textHeight2 / 2.0f - lineHeight2 / 2.0f;
@@ -290,21 +299,84 @@ namespace Blazr
 									 IM_ARRAYSIZE(groupName));
 					ImGui::PopItemWidth();
 				}
+
 				ImGui::Dummy(ImVec2(ImGui::GetContentRegionAvail().x,
 									500.0f)); // visina prostora
-
 				// Detekcija desnog klika na prazan prostor
 				if (ImGui::IsItemHovered() &&
 					ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
 					ImGui::OpenPopup("AddComponentPopup");
 				}
-
 				// Popup za dodavanje komponenti
 				if (ImGui::BeginPopup("AddComponentPopup")) {
-					if (ImGui::Selectable("Add Component 1")) {
-						// Logika za dodavanje komponente 1
+					if (ImGui::MenuItem("Add Component")) {
+						ImGui::CloseCurrentPopup(); // Zatvaranje popup-a
+						showComponentWindow = true;
 					}
 					ImGui::EndPopup();
+				}
+				if (showComponentWindow) {
+					ImGui::SetNextWindowPos(ImVec2(300, 300),
+											ImGuiCond_FirstUseEver);
+					ImGui::SetNextWindowSize(ImVec2(300, 200),
+											 ImGuiCond_FirstUseEver);
+
+					ImGui::Begin("Choose Component", &showComponentWindow,
+								 ImGuiWindowFlags_NoCollapse);
+					ImGui::Text("CHOOSE COMPONENT TO ADD");
+					ImGui::Dummy(ImVec2(0.0f, 10.0f));
+					const char *components[] = {"Sprite Component",
+												"Box Collider", "Animation"};
+					static int selectedComponentIndex =
+						-1; // -1 znaƒçi da nijedna komponenta nije izabrana
+					ImGui::SetNextItemWidth(170.0f);
+					if (ImGui::BeginCombo(
+							"##ComponentDropdown",
+							selectedComponentIndex == -1
+								? "Choose a component"
+								: components[selectedComponentIndex])) {
+						for (int i = 0; i < IM_ARRAYSIZE(components); i++) {
+							bool isSelected = (selectedComponentIndex == i);
+							if (ImGui::Selectable(components[i], isSelected)) {
+								selectedComponentIndex = i;
+							}
+							if (isSelected) {
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+
+					ImGui::Dummy(
+						ImVec2(0.0f, ImGui::GetContentRegionAvail().y - 30.0f));
+
+					// Dugmad "Add" i "Cancel"
+					if (ImGui::Button("Add", ImVec2(80, 0))) {
+						if (selectedComponentIndex != -1) {
+							// Logika za dodavanje izabrane komponente
+							switch (selectedComponentIndex) {
+							case 0:
+								// TO DO: dodati sprite details u DETAILS BOX
+								break;
+							case 1:
+								// TO DO: dodati box collider details U DETAILS
+								// BOX
+								break;
+							case 2:
+								// TO DO: dodati animation details u DETAILS BOX
+								break;
+							}
+							showComponentWindow =
+								false; // Zatvori prozor nakon dodavanja
+						}
+					}
+
+					ImGui::SameLine();
+					if (ImGui::Button("Cancel", ImVec2(80, 0))) {
+						showComponentWindow =
+							false; // Zatvori prozor bez dodavanja
+					}
+					ImGui::End();
 				}
 				ImGui::EndTabItem();
 			}
@@ -326,150 +398,194 @@ namespace Blazr
 			ImGui::EndTabBar();
 		}
 		ImGui::End();
+	} else {
+		/*ImGui::SetNextWindowSize(ImVec2(310, 700), ImGuiCond_Once);
+		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 310, 20),
+								ImGuiCond_Once);*/
+		ImGui::Begin("ObjectDetails", nullptr,
+					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+						 ImGuiWindowFlags_NoNavFocus);
+		ImGui::Separator();
+		ImGui::SetWindowFontScale(1.3f);
+		ImGui::Text(" Choose GameObject for details!");
+		ImGui::SetWindowFontScale(1.0f);
+
+		ImGui::End();
 	}
 
-	//-----------------------------------------------------------4. box - Camera box with tabs---------------------------------
-	ImGui::SetNextWindowSize(ImVec2(740, 398), ImGuiCond_Once);
-	 ImGui::SetNextWindowPos(ImVec2(editorControlsPos.x + editorControlsSize.x, editorControlsPos.y));
-	ImGui::Begin("Camera", nullptr);
-	if (ImGui::BeginTabBar("DetailsTabs")) {
+	//-----------------------------------------------------------4. box - Camera
+	//box with tabs---------------------------------
+	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
+	ImGui::SetNextWindowPos(ImVec2(270, 19));
+	ImGui::Begin("Camera", nullptr,
+				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+	if (ImGui::BeginTabBar("##DetailsTabs")) {
 
 		if (ImGui::BeginTabItem("Scene 1")) {
+			if (ImGui::Button("Play")) {
+				// Logika za pokretanje scene
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Stop")) {
+				// Logika za zaustavljanje scene
+			}
+			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
 
-			// Create a child window within the "Scene 1" tab for the Game
-			// View
-			ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+			if (ImGui::Button("Code")) {
+				showCodeEditor =
+					!showCodeEditor; // Prikazuje ili skriva prozor za kod
+				// Uƒçitavanje Lua skripte samo prilikom prvog otvaranja editora
+				if (showCodeEditor) {
+					luaScriptContent = "Lua kod\n";
+					strncpy(luaScriptBuffer, luaScriptContent.c_str(),
+							sizeof(luaScriptBuffer));
+				}
+			}
+			// Create a child window within the "Scene 1" tab for the Game View
+			ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
+							  ImGuiWindowFlags_NoMove |
+								  ImGuiWindowFlags_NoResize);
 
-			// Get the available space in the child window to render the
-			// Game View ImGui::Begin("Game View");
+			// Get the available space in the child window to render the Game
+			// View ImGui::Begin("Game View");
 			ImVec2 windowSize = ImGui::GetContentRegionAvail();
 			int newWidth = static_cast<int>(windowSize.x);
 			int newHeight = static_cast<int>(windowSize.y);
 
-			if (newWidth != m_GameFrameBuffer->GetWidth() || newHeight != m_GameFrameBuffer->GetHeight()) {
+			if (newWidth != m_GameFrameBuffer->GetWidth() ||
+				newHeight != m_GameFrameBuffer->GetHeight()) {
 				m_GameFrameBuffer->Resize(newWidth, newHeight);
 			}
 			// Render the scene to texture
 			RenderSceneToTexture();
 			// Display the framebuffer texture in the Game View
-			ImGui::Image((intptr_t)m_GameFrameBuffer->GetTextureID(), windowSize, ImVec2(0, 1), ImVec2(1, 0));
-			ImGui::EndChild(); // End the Game View child window
+			ImGui::Image((intptr_t)m_GameFrameBuffer->GetTextureID(),
+						 windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::EndChild();	 // End the Game View child window
 			ImGui::EndTabItem(); // End "Scene 1" tab item
 		}
 		if (ImGui::BeginTabItem("+")) {
-			//NAPRAVITI
+			// TO DO
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
 	}
+	if (showCodeEditor) {
+		ImGui::Begin("Lua Script Editor", &showCodeEditor,
+					 ImGuiWindowFlags_AlwaysAutoResize);
+
+		// Prikaz editora za unos Lua koda
+		ImGui::InputTextMultiline(
+			"##luaScript", luaScriptBuffer, sizeof(luaScriptBuffer),
+			ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16),
+			ImGuiInputTextFlags_AllowTabInput);
+
+		if (ImGui::Button("Save")) {
+			// Logika za ƒçuvanje Lua koda u fajl
+			luaScriptContent = luaScriptBuffer;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Close")) {
+			showCodeEditor = false; // Zatvara editor
+		}
+
+		ImGui::End();
+	}
+
 	ImVec2 cameraPos = ImGui::GetWindowPos();
 	ImVec2 cameraSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//-------------------------------------------------------------5. box - audio/templates---------------------------------
-	ImGui::SetNextWindowSize(ImVec2(740, 300), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(editorControlsPos.x + editorControlsSize.x, cameraPos.y + cameraSize.y));
-	ImGui::Begin("BOX", nullptr);
-	if (ImGui::BeginTabBar("Tabs")) {
+	//-------------------------------------------------------------5. box -
+	//audio/templates---------------------------------
+	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, 300));
+	ImGui::SetNextWindowPos(ImVec2(270, heightSize - 281));
+	ImGui::Begin("BOX", nullptr,
+				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+	const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX", "SCENES"};
+	static int current_item = 0;
 
-		if (ImGui::BeginTabItem("Audio")) {
+	//if (ImGui::BeginTabBar("Tabs")) {
 
-			ImGui::SetCursorPos(ImVec2(41, 60));
-			ImGui::Text("Volume");
-			ImGui::SetCursorPos(ImVec2(165, 60));
-			ImGui::Text("Pitch");
+	//	if (ImGui::BeginTabItem("Audio")) {
 
-			ImGui::SetCursorPos(ImVec2(44, 73));
-			ImGui::Text("%.3f", volumeLevel);
-			ImGui::SetCursorPos(ImVec2(165, 73));
-			ImGui::Text("%.3f", pitchLevel);
+	//		ImGui::SetCursorPos(ImVec2(41, 60));
+	//		ImGui::Text("Volume");
+	//		ImGui::SetCursorPos(ImVec2(165, 60));
+	//		ImGui::Text("Pitch");
 
-			ImGui::SetCursorPos(ImVec2(20, 90));
-			ImGui::VSliderFloat("###volume", ImVec2(80, 180), &volumeLevel, 0.0f, 1.0f, "");
-			ImGui::SetCursorPos(ImVec2(140, 90));
-			ImGui::VSliderFloat("###pitch", ImVec2(80, 180), &pitchLevel, 0.0f, 1.0f, "");
-			//Backend: varijable volumeLevel i pitchLevel
+	//		ImGui::SetCursorPos(ImVec2(44, 73));
+	//		ImGui::Text("%.3f", volumeLevel);
+	//		ImGui::SetCursorPos(ImVec2(165, 73));
+	//		ImGui::Text("%.3f", pitchLevel);
 
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Templates")) {
-			ImGui::Text("  Volume");
+	//		ImGui::SetCursorPos(ImVec2(20, 90));
+	//		ImGui::VSliderFloat("###volume", ImVec2(80, 180), &volumeLevel,
+	//							0.0f, 1.0f, "");
+	//		ImGui::SetCursorPos(ImVec2(140, 90));
+	//		ImGui::VSliderFloat("###pitch", ImVec2(80, 180), &pitchLevel, 0.0f,
+	//							1.0f, "");
+	//		// Backend: varijable volumeLevel i pitchLevel
 
-			// PoËetna i maksimalna visina za kretanje kruga
-			ImVec2 start_pos = ImGui::GetCursorScreenPos();
-			float slider_height = 150.0f; // Visina "slidera"
-			float slider_width = 60.0f;	  // äirina "slidera"
+	//		ImGui::EndTabItem();
+	//	}
+	//	if (ImGui::BeginTabItem("Assets")) {
 
-			// Kreiramo prostor za nevidljivi "slider"
-			ImGui::InvisibleButton("##slider",ImVec2(slider_width, slider_height));
+	//		if (ImGui::BeginCombo("Asset Type", items[current_item])) {
+	//			for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
+	//				if (ImGui::Selectable(items[n], current_item == n)) {
+	//					current_item = n;
+	//				}
+	//				if (current_item == n) {
+	//					ImGui::SetItemDefaultFocus();
+	//				}
+	//			}
+	//			ImGui::EndCombo();
+	//		}
 
-			// PoËetna pozicija kruga
-			static float progress = 0.5f; // Vrednost napretka izmeu 0.0 i 1.0
-			float circle_y = start_pos.y + progress * slider_height;
-
-			// Proverimo da li je kliknut i pomeran miö unutar "slidera"
-			if (ImGui::IsItemActive()) {
-				// Relativna pozicija miöa unutar slidera
-				float mouse_y = ImGui::GetIO().MousePos.y;
-				// RaËunanje pozicije kruga u odnosu na poziciju kursora
-				progress = (mouse_y - start_pos.y) / slider_height;
-				progress = progress < 0.0f ? 0.0f : (progress > 1.0f ? 1.0f : progress);
-
-				circle_y = start_pos.y + progress * slider_height;
-			}
-
-			// Crtanje pozadinske linije za slider
-			ImDrawList *draw_list = ImGui::GetWindowDrawList();
-			ImVec2 line_start =	ImVec2(start_pos.x + slider_width / 2, start_pos.y);
-			ImVec2 line_end = ImVec2(start_pos.x + slider_width / 2, start_pos.y + slider_height);
-			draw_list->AddLine(line_start, line_end, IM_COL32(200, 200, 200, 255), 4.0f);
-
-			// Crtanje kruga koji predstavlja napredak
-			ImVec2 circle_pos = ImVec2(line_start.x, circle_y);
-			draw_list->AddCircleFilled(circle_pos, 10.0f, IM_COL32(43, 98, 128, 255));
-
-			ImGui::EndTabItem();
-		}
-
-		ImGui::EndTabBar();
-	}
+	//		ImGui::Spacing();
+	//		ImGui::Separator();
+	//		ImGui::Spacing();
+	//		switch (current_item) {
+	//		case 0: // TEXTURES
+	//			ImGui::Text("Texture");
+	//			break;
+	//		case 1: // FONTS
+	//			ImGui::Text("Font");
+	//			break;
+	//		case 2: // MUSIC
+	//			ImGui::Text("Music");
+	//			break;
+	//		case 3: // SOUNDFX
+	//			ImGui::Text("Sound");
+	//			break;
+	//		case 4: // SCENES
+	//			ImGui::Text("Scene");
+	//			break;
+	//		default:
+	//			ImGui::Text("Select an asset type to view its content.");
+	//			break;
+	//		}
+	//		ImGui::EndTabItem();
+	//	}
+	//	if (ImGui::BeginTabItem("Logs")) {
+	//		// TO DO
+	//		ImGui::EndTabItem();
+	//	}
+	//	ImGui::EndTabBar();
+	//}
 	ImGui::End();
-
 	ImGui::End();
-	ImGui::End();
-	
-
-	// Game View window (docked within the main window)
-	 //ImGui::Begin("Game View", nullptr, ImGuiConfigFlags_DockingEnable);
-	
-	 //// Adjust the Game View framebuffer size if the window is resized
-	 //ImVec2 windowSize = ImGui::GetContentRegionAvail();
-	 //int newWidth = static_cast<int>(windowSize.x);
-	 //int newHeight = static_cast<int>(windowSize.y);
-	
-	 //if (newWidth != m_GameFrameBuffer->GetWidth() ||
-	 //	newHeight != m_GameFrameBuffer->GetHeight()) {
-	 //	m_GameFrameBuffer->Resize(newWidth, newHeight);
-	 //}
-	
-	 //// Render the scene to texture
-	 //RenderSceneToTexture();
-	
-	 //// Display the framebuffer texture in the Game View
-	 //ImGui::Image((intptr_t)m_GameFrameBuffer->GetTextureID(), windowSize,
-	 //			 ImVec2(0, 1), ImVec2(1, 0));
-	 //ImGui::End();
-
 }
 
-	void Editor::Shutdown() {
+void Editor::Shutdown() {
 	Renderer2D::Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
-	void Editor::RenderSceneToTexture() {
+void Editor::RenderSceneToTexture() {
 	m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
