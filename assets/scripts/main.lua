@@ -10,10 +10,13 @@ local transform2 = gEntity2:add_component(TransformComponent(vec2(100, 300), vec
 local sprite2 = gEntity2:add_component(SpriteComponent(200, 200, "masha", 0, 0, 0))
 local collider2 = gEntity2:add_component(BoxColliderComponent(200, 200, vec2(0, 0)))
 
-playerEntity = Entity("Player", "G1")
+collider2.colliding = true
+
+playerEntity = Entity("Player", "G2")
 local transform = playerEntity:add_component(TransformComponent(500, 450, 1, 1, 0))
 local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "chammy", 0, 0, 0))
 local collider = playerEntity:add_component(BoxColliderComponent(200, 200, vec2(0, 0)))
+collider.colliding = true
 
 local x = 0
 local max_x = 800
