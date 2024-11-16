@@ -144,7 +144,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 		}
 	// 		}
 	// 	});
-	//glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
+	// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
 	//										int action, int mods) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	if (button == GLFW_MOUSE_BUTTON_LEFT) {
@@ -189,7 +189,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	//});
 
 	// TODO: napraviti da na scroll prati kursor
-	//glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
+	// glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
 	//								   double yOffset) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	MouseScrolledEvent event((float)xOffset, (float)yOffset);
@@ -289,7 +289,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 							   glm::vec2(deltaX, deltaY));
 	// 		}
 	// 	});
-	//glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xpos,
+	// glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xpos,
 	//									  double ypos) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	double deltaX = xpos - lastMouseX;
@@ -338,18 +338,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.startX = 10,
 	// 					.startY = 30,
 	// 					.texturePath = "masha"});
-
-	// auto &animation = entity.AddComponent<AnimationComponent>(
-	// 	AnimationComponent{.numFrames = 6,
-	// 					   .frameRate = 10,
-	// 					   .frameOffset = 0,
-	// 					   .currentFrame = 0,
-	// 					   .bVertical = false});
-	// sprite.generateObject(mashaTexture->GetWidth(),
-	// mashaTexture->GetHeight());
-
-	// sprite.generateObject(playerTexture->GetWidth(),
-	// 					  playerTexture->GetHeight());
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
