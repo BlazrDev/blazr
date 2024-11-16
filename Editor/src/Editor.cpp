@@ -167,20 +167,10 @@ void Editor::RenderImGui() {
 		ImGui::EndMainMenuBar();
 	}
 
-	//--------------------------------------------------------------1. box
-	//-Editor Controls--------------------------------
-	//ImGui::SetNextWindowSize(ImVec2(230, 90), ImGuiCond_Once);
-	//ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-	//ImGui::Begin("Editor Controls", nullptr);
-	//ImGui::SetCursorPos(ImVec2(50, 20));
-	//ImGui::Text("Camera Zoom");
 	//// Zooming
 	//if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
 	//	m_Scene->GetCamera().SetScale(zoomLevel);
-	//}
-
-	//--------------------------------------------------------------2. box -
-	//Scene---------------------------------
+	//}----------------------------------------------------------1. box - Scene---------------------------------
 
 	int widthSize = m_Window->getWidth();
 	int heightSize = m_Window->getHeight() - 20;
@@ -200,16 +190,12 @@ void Editor::RenderImGui() {
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//---------------------------------------------------------------3. box -
-	//Object details---------------------------------
+	//---------------------------------------------------------------2. box - Object details---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
 	ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
-
+	ImGui::Begin(selectedGameObject.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
 	static bool showComponentWindow = false;
 	if (showGameObjectDetails) {
-		ImGui::Begin(selectedGameObject.c_str(), nullptr,
-					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
-						 ImGuiWindowFlags_NoNavFocus);
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Transform")) {
 				ImGui::Separator();
@@ -397,24 +383,217 @@ void Editor::RenderImGui() {
 			}
 			ImGui::EndTabBar();
 		}
-		ImGui::End();
 	} else {
-		/*ImGui::SetNextWindowSize(ImVec2(310, 700), ImGuiCond_Once);
-		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 310, 20),
-								ImGuiCond_Once);*/
-		ImGui::Begin("ObjectDetails", nullptr,
-					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
-						 ImGuiWindowFlags_NoNavFocus);
 		ImGui::Separator();
-		ImGui::SetWindowFontScale(1.3f);
-		ImGui::Text(" Choose GameObject for details!");
+		ImGui::Dummy(ImVec2());
+		ImGui::SetWindowFontScale(1.2f);
+		ImGui::Text("Choose GameObject for details!");
 		ImGui::SetWindowFontScale(1.0f);
-
-		ImGui::End();
 	}
+	ImGui::End();
+	//static bool showComponentWindow = false;
+	//if (showGameObjectDetails) {
+	//	ImGui::Begin(selectedGameObject.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
+	//	if (ImGui::BeginTabBar("DetailsTabs")) {
+	//		if (ImGui::BeginTabItem("Transform")) {
+	//			ImGui::Separator();
+	//			ImGui::Text("Transform");
+	//			ImGui::SameLine();
+	//			ImVec2 p = ImGui::GetCursorScreenPos(); // position of next
+	//													// element after Text
+	//			float lineWidth =
+	//				ImGui::GetContentRegionAvail().x; // remaining line length
+	//			float lineHeight = 2.0f;			  // line thickness
+	//			float textHeight = ImGui::GetTextLineHeight();
+	//			float lineY = p.y + 2.0 + textHeight / 2.0f - lineHeight / 2.0f;
+	//			// drawing line
+	//			ImGui::GetWindowDrawList()->AddRectFilled(
+	//				ImVec2(p.x, lineY),
+	//				ImVec2(p.x + lineWidth, lineY + lineHeight),
+	//				IM_COL32(255, 255, 255, 255));
 
-	//-----------------------------------------------------------4. box - Camera
-	//box with tabs---------------------------------
+	//			{
+	//				// Position input
+	//				ImGui::PushItemWidth(100);
+	//				ImGui::SetCursorPos(ImVec2(10, 80));
+	//				ImGui::Text("Position");
+	//				ImGui::Text("X");
+	//				ImGui::SameLine();
+	//				ImGui::InputFloat("##PositionX", &positionX, 0.1f, 1.0f,
+	//								  "%.1f"); // Input za X koordinatu
+	//				ImGui::SameLine();
+	//				ImGui::Text("Y");
+	//				ImGui::SameLine();
+	//				ImGui::InputFloat("##PositionY", &positionY, 0.1f, 1.0f,
+	//								  "%.1f"); // Input za Y koordinatu
+
+	//				// Scale input
+	//				ImGui::SetCursorPos(ImVec2(10, 130));
+	//				ImGui::Text("Scale");
+	//				ImGui::Text("X");
+	//				ImGui::SameLine();
+	//				ImGui::InputFloat("##ScaleX", &scaleX, 0.1f, 1.0f,
+	//								  "%.1f"); // Input za skaliranje po X osi
+	//				ImGui::SameLine();
+	//				ImGui::Text("Y");
+	//				ImGui::SameLine();
+	//				ImGui::InputFloat("##ScaleY", &scaleY, 0.1f, 1.0f,
+	//								  "%.1f"); // Input za skaliranje po Y osi
+
+	//				// Rotation input
+	//				ImGui::SetCursorPos(ImVec2(10, 180));
+	//				ImGui::Text("Rotation");
+	//				ImGui::PushItemWidth(130);
+	//				ImGui::SetCursorPos(ImVec2(20, 200));
+	//				ImGui::InputFloat("##Rotation", &rotation, 0.1f, 1.0f,
+	//								  "%.1f"); // Input za rotaciju
+	//				ImGui::PopItemWidth();
+	//			}
+
+	//			ImGui::SetCursorPos(ImVec2(10, 240));
+	//			ImGui::Separator();
+	//			ImGui::Text("Identification");
+	//			ImGui::SameLine();
+	//			ImVec2 p2 = ImGui::GetCursorScreenPos(); // position of next
+	//													 // element after Text
+	//			float lineWidth2 =
+	//				ImGui::GetContentRegionAvail().x; // remaining line length
+	//			float lineHeight2 = 2.0f;			  // line thickness
+	//			float textHeight2 = ImGui::GetTextLineHeight();
+	//			float lineY2 =
+	//				p2.y + 2.0 + textHeight2 / 2.0f - lineHeight2 / 2.0f;
+	//			// drawing line
+	//			ImGui::GetWindowDrawList()->AddRectFilled(
+	//				ImVec2(p2.x, lineY2),
+	//				ImVec2(p2.x + lineWidth2, lineY2 + lineHeight2),
+	//				IM_COL32(255, 255, 255, 255));
+
+	//			{
+	//				ImGui::SetCursorPos(ImVec2(10, 270));
+	//				ImGui::Text("Name");
+	//				ImGui::SetCursorPos(ImVec2(50, 270));
+	//				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+	//				ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
+	//				ImGui::PopItemWidth();
+	//				ImGui::SetCursorPos(ImVec2(10, 293));
+	//				ImGui::Text("Group");
+	//				ImGui::SetCursorPos(ImVec2(50, 293));
+	//				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+	//				ImGui::InputText("###group", groupName,
+	//								 IM_ARRAYSIZE(groupName));
+	//				ImGui::PopItemWidth();
+	//			}
+
+	//			ImGui::Dummy(ImVec2(ImGui::GetContentRegionAvail().x,
+	//								500.0f)); // visina prostora
+	//			// Detekcija desnog klika na prazan prostor
+	//			if (ImGui::IsItemHovered() &&
+	//				ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
+	//				ImGui::OpenPopup("AddComponentPopup");
+	//			}
+	//			// Popup za dodavanje komponenti
+	//			if (ImGui::BeginPopup("AddComponentPopup")) {
+	//				if (ImGui::MenuItem("Add Component")) {
+	//					ImGui::CloseCurrentPopup(); // Zatvaranje popup-a
+	//					showComponentWindow = true;
+	//				}
+	//				ImGui::EndPopup();
+	//			}
+	//			if (showComponentWindow) {
+	//				ImGui::SetNextWindowPos(ImVec2(300, 300),
+	//										ImGuiCond_FirstUseEver);
+	//				ImGui::SetNextWindowSize(ImVec2(300, 200),
+	//										 ImGuiCond_FirstUseEver);
+
+	//				ImGui::Begin("Choose Component", &showComponentWindow,
+	//							 ImGuiWindowFlags_NoCollapse);
+	//				ImGui::Text("CHOOSE COMPONENT TO ADD");
+	//				ImGui::Dummy(ImVec2(0.0f, 10.0f));
+	//				const char *components[] = {"Sprite Component",
+	//											"Box Collider", "Animation"};
+	//				static int selectedComponentIndex =
+	//					-1; // -1 znači da nijedna komponenta nije izabrana
+	//				ImGui::SetNextItemWidth(170.0f);
+	//				if (ImGui::BeginCombo(
+	//						"##ComponentDropdown",
+	//						selectedComponentIndex == -1
+	//							? "Choose a component"
+	//							: components[selectedComponentIndex])) {
+	//					for (int i = 0; i < IM_ARRAYSIZE(components); i++) {
+	//						bool isSelected = (selectedComponentIndex == i);
+	//						if (ImGui::Selectable(components[i], isSelected)) {
+	//							selectedComponentIndex = i;
+	//						}
+	//						if (isSelected) {
+	//							ImGui::SetItemDefaultFocus();
+	//						}
+	//					}
+	//					ImGui::EndCombo();
+	//				}
+
+	//				ImGui::Dummy(
+	//					ImVec2(0.0f, ImGui::GetContentRegionAvail().y - 30.0f));
+
+	//				// Dugmad "Add" i "Cancel"
+	//				if (ImGui::Button("Add", ImVec2(80, 0))) {
+	//					if (selectedComponentIndex != -1) {
+	//						// Logika za dodavanje izabrane komponente
+	//						switch (selectedComponentIndex) {
+	//						case 0:
+	//							// TO DO: dodati sprite details u DETAILS BOX
+	//							break;
+	//						case 1:
+	//							// TO DO: dodati box collider details U DETAILS
+	//							// BOX
+	//							break;
+	//						case 2:
+	//							// TO DO: dodati animation details u DETAILS BOX
+	//							break;
+	//						}
+	//						showComponentWindow =
+	//							false; // Zatvori prozor nakon dodavanja
+	//					}
+	//				}
+
+	//				ImGui::SameLine();
+	//				if (ImGui::Button("Cancel", ImVec2(80, 0))) {
+	//					showComponentWindow =
+	//						false; // Zatvori prozor bez dodavanja
+	//				}
+	//				ImGui::End();
+	//			}
+	//			ImGui::EndTabItem();
+	//		}
+	//		if (ImGui::BeginTabItem("Color")) {
+	//			ImGui::Text("Color settings");
+	//			static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+	//			if (ImGui::ColorPicker3("Game object\ncolor",
+	//									(float *)&sceneColor)) {
+	//				Ref<Registry> registry = m_Scene->GetRegistry();
+	//				auto view = registry->GetRegistry().view<SpriteComponent>();
+	//				for (auto entity : view) {
+	//					auto &sprite = view.get<SpriteComponent>(entity);
+	//					sprite.color = {sceneColor.x, sceneColor.y,
+	//									sceneColor.z, sceneColor.w};
+	//				}
+	//			}
+	//			ImGui::EndTabItem();
+	//		}
+	//		ImGui::EndTabBar();
+	//	}
+	//	ImGui::End();
+	//} else {
+	//	ImGui::Begin("ObjectDetails", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
+	//	ImGui::Separator();
+	//	ImGui::Dummy(ImVec2());
+	//	ImGui::SetWindowFontScale(1.2f);
+	//	ImGui::Text("Choose GameObject for details!");
+	//	ImGui::SetWindowFontScale(1.0f);
+
+	//	ImGui::End();
+	//}
+
+	//-----------------------------------------------------------3. box - Camera box with tabs---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
 	ImGui::Begin("Camera", nullptr,
@@ -496,8 +675,7 @@ void Editor::RenderImGui() {
 	ImVec2 cameraSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//-------------------------------------------------------------5. box -
-	//audio/templates---------------------------------
+	//-------------------------------------------------------------4. box - audio/templates---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, 300));
 	ImGui::SetNextWindowPos(ImVec2(270, heightSize - 281));
 	ImGui::Begin("BOX", nullptr,
@@ -505,75 +683,75 @@ void Editor::RenderImGui() {
 	const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX", "SCENES"};
 	static int current_item = 0;
 
-	//if (ImGui::BeginTabBar("Tabs")) {
+	if (ImGui::BeginTabBar("Tabs")) {
 
-	//	if (ImGui::BeginTabItem("Audio")) {
+		if (ImGui::BeginTabItem("Audio")) {
 
-	//		ImGui::SetCursorPos(ImVec2(41, 60));
-	//		ImGui::Text("Volume");
-	//		ImGui::SetCursorPos(ImVec2(165, 60));
-	//		ImGui::Text("Pitch");
+			ImGui::SetCursorPos(ImVec2(41, 60));
+			ImGui::Text("Volume");
+			ImGui::SetCursorPos(ImVec2(165, 60));
+			ImGui::Text("Pitch");
 
-	//		ImGui::SetCursorPos(ImVec2(44, 73));
-	//		ImGui::Text("%.3f", volumeLevel);
-	//		ImGui::SetCursorPos(ImVec2(165, 73));
-	//		ImGui::Text("%.3f", pitchLevel);
+			ImGui::SetCursorPos(ImVec2(44, 73));
+			ImGui::Text("%.3f", volumeLevel);
+			ImGui::SetCursorPos(ImVec2(165, 73));
+			ImGui::Text("%.3f", pitchLevel);
 
-	//		ImGui::SetCursorPos(ImVec2(20, 90));
-	//		ImGui::VSliderFloat("###volume", ImVec2(80, 180), &volumeLevel,
-	//							0.0f, 1.0f, "");
-	//		ImGui::SetCursorPos(ImVec2(140, 90));
-	//		ImGui::VSliderFloat("###pitch", ImVec2(80, 180), &pitchLevel, 0.0f,
-	//							1.0f, "");
-	//		// Backend: varijable volumeLevel i pitchLevel
+			ImGui::SetCursorPos(ImVec2(20, 90));
+			ImGui::VSliderFloat("###volume", ImVec2(80, 180), &volumeLevel,
+								0.0f, 1.0f, "");
+			ImGui::SetCursorPos(ImVec2(140, 90));
+			ImGui::VSliderFloat("###pitch", ImVec2(80, 180), &pitchLevel, 0.0f,
+								1.0f, "");
+			// Backend: varijable volumeLevel i pitchLevel
 
-	//		ImGui::EndTabItem();
-	//	}
-	//	if (ImGui::BeginTabItem("Assets")) {
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Assets")) {
 
-	//		if (ImGui::BeginCombo("Asset Type", items[current_item])) {
-	//			for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
-	//				if (ImGui::Selectable(items[n], current_item == n)) {
-	//					current_item = n;
-	//				}
-	//				if (current_item == n) {
-	//					ImGui::SetItemDefaultFocus();
-	//				}
-	//			}
-	//			ImGui::EndCombo();
-	//		}
+			if (ImGui::BeginCombo("Asset Type", items[current_item])) {
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
+					if (ImGui::Selectable(items[n], current_item == n)) {
+						current_item = n;
+					}
+					if (current_item == n) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
 
-	//		ImGui::Spacing();
-	//		ImGui::Separator();
-	//		ImGui::Spacing();
-	//		switch (current_item) {
-	//		case 0: // TEXTURES
-	//			ImGui::Text("Texture");
-	//			break;
-	//		case 1: // FONTS
-	//			ImGui::Text("Font");
-	//			break;
-	//		case 2: // MUSIC
-	//			ImGui::Text("Music");
-	//			break;
-	//		case 3: // SOUNDFX
-	//			ImGui::Text("Sound");
-	//			break;
-	//		case 4: // SCENES
-	//			ImGui::Text("Scene");
-	//			break;
-	//		default:
-	//			ImGui::Text("Select an asset type to view its content.");
-	//			break;
-	//		}
-	//		ImGui::EndTabItem();
-	//	}
-	//	if (ImGui::BeginTabItem("Logs")) {
-	//		// TO DO
-	//		ImGui::EndTabItem();
-	//	}
-	//	ImGui::EndTabBar();
-	//}
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+			switch (current_item) {
+			case 0: // TEXTURES
+				ImGui::Text("Texture");
+				break;
+			case 1: // FONTS
+				ImGui::Text("Font");
+				break;
+			case 2: // MUSIC
+				ImGui::Text("Music");
+				break;
+			case 3: // SOUNDFX
+				ImGui::Text("Sound");
+				break;
+			case 4: // SCENES
+				ImGui::Text("Scene");
+				break;
+			default:
+				ImGui::Text("Select an asset type to view its content.");
+				break;
+			}
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Logs")) {
+			// TO DO
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
+	}
 	ImGui::End();
 	ImGui::End();
 }
