@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "BoxColliderSystem.h"
