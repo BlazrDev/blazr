@@ -166,6 +166,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Core\Log.h" />
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />
     <ClInclude Include="src\Blazr\Core\Window.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
@@ -194,12 +195,14 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
+    <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blazr\Core\Application.cpp" />
     <ClCompile Include="src\Blazr\Core\Log.cpp" />
+    <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\TransformComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Entity.cpp" />
@@ -221,6 +224,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp" />
     <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp" />
+    <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
