@@ -16,6 +16,9 @@
     <Filter Include="Blazr\Events">
       <UniqueIdentifier>{049F9246-F001-22EB-9987-5AA185C9ED6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Physics">
+      <UniqueIdentifier>{925A6B48-FE1A-E77E-C755-30FC33D52B5B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Platform">
       <UniqueIdentifier>{7477D451-6045-C857-49D9-387E3546A4BC}</UniqueIdentifier>
     </Filter>
@@ -67,6 +70,9 @@
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\PhysicsComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
@@ -96,6 +102,9 @@
     </ClInclude>
     <ClInclude Include="src\Blazr\Events\MouseEvent.h">
       <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Physics\Box2DWrapper.h">
+      <Filter>Blazr\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
@@ -151,6 +160,9 @@
     <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\PhysicsSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -164,6 +176,9 @@
       <Filter>Blazr\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\PhysicsComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp">
@@ -230,6 +245,9 @@
       <Filter>Blazr\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\PhysicsSystem.cpp">
       <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">

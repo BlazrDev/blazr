@@ -1,6 +1,8 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
@@ -8,13 +10,19 @@
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
+#include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
+#include "box2d/box2d.h"
+#include "box2d/id.h"
+#include "box2d/math_functions.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
+#include <memory>
 
 namespace Blazr {
 
@@ -179,10 +187,29 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		return;
 	}
 
+	b2Vec2 gravity = {0.0f, 9.8f};
+	b2WorldDef worldDef = b2DefaultWorldDef();
+	worldDef.gravity = gravity;
+	b2WorldId worldId = b2CreateWorld(&worldDef);
+
+	PhysicsWorld world = worldId;
+	if (!registry->AddToContext<PhysicsWorld>(world)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the physics world to the registry context!");
+		return;
+	}
+	//
+	auto physicsSystem = std::make_shared<PhysicsSystem>(*registry);
+	if (!registry->AddToContext<std::shared_ptr<PhysicsSystem>>(
+			physicsSystem)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the physics system to the registry context!");
+		return;
+	}
 	// glfwSetMouseButtonCallback(
 	// 	m_Window, [](GLFWwindow *window, int button, int action, int mods) {
-	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-	// 		double xpos, ypos;
+	// 		WindowData &data = *(WindowData
+	// *)glfwGetWindowUserPointer(window); 		double xpos, ypos;
 	//
 	// 		glfwGetCursorPos(window, &xpos, &ypos);
 	// 		switch (action) {
@@ -378,20 +405,33 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	glm::vec2 size = {200.f, 200.f};
 	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
 
-	// Entity entity = Entity(*registry, "Ent1", "G1");
-	// auto &transform =
-	// 	entity.AddComponent<TransformComponent>(TransformComponent{
-	// 		.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
-	//
-	// auto &sprite = entity.AddComponent<SpriteComponent>(
-	// 	SpriteComponent{.width = size[0],
-	// 					.height = size[1],
-	// 					.startX = 10,
-	// 					.startY = 30,
-	// 					.texturePath = "chammy"});
-	//
-	// auto t1 = entity.GetComponent<SpriteComponent>();
-	// BLZR_CORE_INFO("Entity has component {0}", t1.width);
+	Entity entity = Entity(*registry, "Ent1", "G1");
+	auto &transform =
+		entity.AddComponent<TransformComponent>(TransformComponent{
+			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
+
+	auto &sprite = entity.AddComponent<SpriteComponent>(
+		SpriteComponent{.width = 200.f,
+						.height = 200.f,
+						.startX = 10,
+						.startY = 30,
+						.texturePath = "masha"});
+
+	auto &collider =
+		entity.AddComponent<BoxColliderComponent>(BoxColliderComponent{
+			.width = 200, .height = 200, .offset = glm::vec2(0, 0)});
+
+	auto &physics = entity.AddComponent<PhysicsComponent>(
+		PhysicsComponent{world, PhysicsAtributes{.type = RigidBodyType::DYNAMIC,
+												 .density = 100.f,
+												 .friction = 0.5f,
+												 .restitution = 0.f,
+												 .gravityScale = 5.f,
+												 .position = transform.position,
+												 .scale = transform.scale}});
+
+	physics.init(1280, 720);
+	// sprite.generateObject(int textureWidth, int textureHeight);
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
@@ -438,6 +478,13 @@ void LinuxWindow::onUpdate() {
 
 	glfwPollEvents();
 	m_Data.m_Camera.Update();
+	auto &physicsWor = registry->GetContext<PhysicsWorld>();
+
+	float timeStep = 1.0f / 60.f;
+	int32_t subSteps = 10;
+	b2World_Step(physicsWor, timeStep, subSteps);
+	auto &physicsSys = registry->GetContext<std::shared_ptr<PhysicsSystem>>();
+	physicsSys->Update(*registry);
 
 	Renderer2D::BeginScene(m_Data.m_Camera);
 	auto view =
