@@ -1,3 +1,4 @@
+#include "blzrpch.h"2
 #include "GLFW/glfw3.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Events/KeyEvent.h"

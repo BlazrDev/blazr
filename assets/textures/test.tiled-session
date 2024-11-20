@@ -1,0 +1,39 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 2
+        },
+        "#grass___sprites___pixel_by_willdesignk_deczfon-pre": {
+            "scaleInEditor": 1
+        },
+        "#village": {
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/home/malisa/ETF/Tiled/testmap",
+    "last.imagePath": "/home/malisa/Documents/Tiled",
+    "map.height": 15,
+    "map.lastUsedExportFilter": "Lua files (*.lua)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "test.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

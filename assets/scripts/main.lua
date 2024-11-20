@@ -13,8 +13,6 @@ local sprite2 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha",
 sprite:generate_object()
 sprite2:generate_object()
 
-local soundPlayer = SoundPlayer:get_instance()
-
 local function stoji()
     animation.frame_offset = 7
     animation.current_frame = 0
@@ -49,7 +47,6 @@ main = {
             end
             if InputSystem.key_repeating(KEY_SPACE) then
                 skace()
-                soundPlayer:play_effect("jump", 0, 1)
             end
         end,
     },

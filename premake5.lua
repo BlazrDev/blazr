@@ -188,6 +188,8 @@ files({
 })
 
 includedirs({
+    "Blazr/vendor/glm",
+    "Blazr/vendor/entt",
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
     "%{IncludeDir.ImGui}",

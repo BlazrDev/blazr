@@ -11,6 +11,9 @@ class BLZR_API Application {
 	Application();
 	virtual ~Application();
 	virtual void Run();
+	/*virtual void RenderImGui();
+	virtual void End();
+	virtual void Begin();*/
 	void onEvent(Event &e);
 
   private:

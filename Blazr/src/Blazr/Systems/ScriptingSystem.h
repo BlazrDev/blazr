@@ -9,7 +9,7 @@ class ScriptingSystem {
 	bool m_bMainLoaded;
 
   public:
-	ScriptingSystem(Registry &registry);
+	BLZR_API ScriptingSystem(Registry &registry);
 	~ScriptingSystem() = default;
 
 	bool LoadMainScript(sol::state &lua);
