@@ -13,9 +13,7 @@
 #include "LinuxWindow.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
-#include "Blazr/Systems/Sounds/SoundProperties.h"
-#include "Blazr/Systems/Sounds/SoundPlayer.h"
-#include <string>
+
 namespace Blazr {
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
@@ -127,99 +125,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 	}
 	// });
 
-	auto assetManager = AssetManager::GetInstance();
-
-	auto soundPlayer = SoundPlayer::GetInstance();
-
-	assetManager->LoadMusic("masa", "assets/sounds/masa.mp3", "masamp3");
-
-	assetManager->LoadEffect("masa", "assets/sounds/masa.wav", "danilo");
-	// assetManager->LoadMusic("sample", "assets/sounds/sample.wav", "danilo2");
-	assetManager->LoadEffect("bigben", "assets/sounds/bigben.wav", "danilo3");
-	assetManager->LoadEffect("jump", "assets/sounds/jump.wav", "danilo4");
-	// BLZR_CORE_ERROR(" Retarde {0}", sp.duration);
-
-	// Music* m = new Music(sp, mm);
-	// if(!m->getSample()) {
-	// 	BLZR_CORE_ERROR("SAMPL NULL");
-	// }
-	// musicPlayer->PlayMusic("masa", 1);
-	// musicPlayer->PlayMusic("sample", 0);
-	//soundPlayer->PlayEffect("bigben", 1, -1);
-
-	if (!assetManager) {
-		BLZR_CORE_ERROR("Failed to create the asset manager!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the masha texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
-								   false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	auto playerTexture = assetManager->GetTexture("player");
-	auto mashaTexture = assetManager->GetTexture("masha");
-
-	// TODO remove tmp code
-	// Creating lua state
-	auto lua = std::make_shared<sol::state>();
-
-	if (!lua) {
-		BLZR_CORE_ERROR("Failed to create the lua state!");
-		return;
-	}
-
-	lua->open_libraries(sol::lib::base, sol::lib::math, sol::lib::os,
-						sol::lib::table, sol::lib::io, sol::lib::string);
-
-	if (!registry->AddToContext<std::shared_ptr<sol::state>>(lua)) {
-		BLZR_CORE_ERROR(
-			"Failed to add the sol::state to the registry context!");
-		return;
-	}
-
-	auto scriptSystem = std::make_shared<ScriptingSystem>(*registry);
-	if (!scriptSystem) {
-		BLZR_CORE_ERROR("Failed to create the script system!");
-		return;
-	}
-
-	if (!registry->AddToContext<std::shared_ptr<ScriptingSystem>>(
-			scriptSystem)) {
-		BLZR_CORE_ERROR(
-			"Failed to add the script system to the registry context!");
-		return;
-	}
-	ScriptingSystem::RegisterLuaBindings(*lua, *registry);
-	if (!scriptSystem->LoadMainScript(*lua)) {
-		BLZR_CORE_ERROR("Failed to load the main lua script");
-		return;
-	}
-
-	auto animationSystem = std::make_shared<AnimationSystem>(*registry);
-	if (!animationSystem) {
-		BLZR_CORE_ERROR("Failed to create the animation system!");
-		return;
-	}
-
-	if (!registry->AddToContext<std::shared_ptr<AnimationSystem>>(
-			animationSystem)) {
-		BLZR_CORE_ERROR(
-			"Failed to add the animation system to the registry context!");
-		return;
-	}
-
 	// glfwSetMouseButtonCallback(
 	// 	m_Window, [](GLFWwindow *window, int button, int action, int mods) {
 	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
@@ -239,7 +144,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 		}
 	// 		}
 	// 	});
-	//glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
+	// glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button,
 	//										int action, int mods) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	if (button == GLFW_MOUSE_BUTTON_LEFT) {
@@ -262,30 +167,29 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	//				auto &transform = view.get<TransformComponent>(entity);
 	//				auto &sprite = view.get<SpriteComponent>(entity);
 
-					if (data.IsMouseOverEntity(
-							mouseWorldPos, transform.position,
-							{sprite.width, sprite.height}, transform.scale,
-							data.m_Camera.GetScale())) {
-						BLZR_CORE_INFO("Mouse is over entity {0}",
-									   sprite.texturePath);
-						selectedEntity = entity; // Postavi selektovani entitet
-						isEntitySelected =
-							true; // Obeleži entitet kao selektovan
-						lastMouseX = mouseX;
-						lastMouseY = mouseY;
-						break;
-					}
-				}
-			} else if (action == GLFW_RELEASE) {
-				mousePressed = false;	  // Dugme miša je pušteno
-				isEntitySelected = false; // Oslobodi selekciju
-			}
-		}
-
-	});
+	//				if (data.IsMouseOverEntity(
+	//						mouseWorldPos, transform.position,
+	//						{sprite.width, sprite.height}, transform.scale,
+	//						data.m_Camera.GetScale())) {
+	//					BLZR_CORE_INFO("Mouse is over entity {0}",
+	//								   sprite.texturePath);
+	//					selectedEntity = entity; // Postavi selektovani entitet
+	//					isEntitySelected =
+	//						true; // Obeleži entitet kao selektovan
+	//					lastMouseX = mouseX;
+	//					lastMouseY = mouseY;
+	//					break;
+	//				}
+	//			}
+	//		} else if (action == GLFW_RELEASE) {
+	//			mousePressed = false;	  // Dugme miša je pušteno
+	//			isEntitySelected = false; // Oslobodi selekciju
+	//		}
+	//	}
+	//});
 
 	// TODO: napraviti da na scroll prati kursor
-	//glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
+	// glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset,
 	//								   double yOffset) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	MouseScrolledEvent event((float)xOffset, (float)yOffset);
@@ -385,7 +289,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 							   glm::vec2(deltaX, deltaY));
 	// 		}
 	// 	});
-	//glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xpos,
+	// glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xpos,
 	//									  double ypos) {
 	//	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 	//	double deltaX = xpos - lastMouseX;
@@ -434,18 +338,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 					.startX = 10,
 	// 					.startY = 30,
 	// 					.texturePath = "masha"});
-
-	// auto &animation = entity.AddComponent<AnimationComponent>(
-	// 	AnimationComponent{.numFrames = 6,
-	// 					   .frameRate = 10,
-	// 					   .frameOffset = 0,
-	// 					   .currentFrame = 0,
-	// 					   .bVertical = false});
-	// sprite.generateObject(mashaTexture->GetWidth(),
-	// mashaTexture->GetHeight());
-
-	// sprite.generateObject(playerTexture->GetWidth(),
-	// 					  playerTexture->GetHeight());
 
 	// entity.RemoveComponent<TransformComponent>();
 	// BLZR_CORE_INFO("Entity removed component {0}",
