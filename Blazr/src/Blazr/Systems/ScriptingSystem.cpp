@@ -3,12 +3,15 @@
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 
 #include "Blazr/Ecs/Registry.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Scripting/GlmLuaBindings.h"
+#include "Blazr/Systems/BoxColliderSystem.h"
 #include "Blazr/Systems/InputSystem.h"
 #include "Blazr/Systems/BoxColliderSystem.h"
 #include "ScriptingSystem.h"
@@ -102,6 +105,7 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	GLMBindings::CreateLuaGLMBinding(lua);
 	Registry::CreateLuaRegistryBind(lua, registry);
+	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
 
 	InputSystem::CreateInputLuaBind(lua);
 	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);

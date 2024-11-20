@@ -3,6 +3,7 @@
 #include "Blazr.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
+#include "imgui.h"
 
 namespace Blazr {
 class Editor : public Application {
@@ -19,6 +20,8 @@ class Editor : public Application {
 	void End();
 	void Begin();
 	void RenderSceneToTexture();
+	void renderTransformComponent(ImVec2 &cursorPos);
+	void renderIdentificationComponent(ImVec2 &cursorPos);
 
   private:
 	Renderer2D m_Renderer;
