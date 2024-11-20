@@ -3,10 +3,13 @@
 playerEntity = Entity("Player", "Character")
 --
 local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
+local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
+local animation = playerEntity:add_component(AnimationComponent(10, 10, 3, false))
 local animation = playerEntity:add_component(AnimationComponent(10, 10, 3, false))
 
 mashaEntity = Entity("Masha", "Character")
+local transform2 = mashaEntity:add_component(TransformComponent(300, 300, 0.3, 0.3, 0))
 local transform2 = mashaEntity:add_component(TransformComponent(300, 300, 0.3, 0.3, 0))
 local sprite2 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
 
@@ -52,6 +55,7 @@ main = {
     },
     [2] = {
         render = function()
+            -- stoji()
             -- stoji()
             -- print("We are rendering in lua!")
         end,
