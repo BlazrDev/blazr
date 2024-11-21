@@ -16,6 +16,9 @@
     <Filter Include="Blazr\Events">
       <UniqueIdentifier>{049F9246-F001-22EB-9987-5AA185C9ED6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Fonts">
+      <UniqueIdentifier>{59F98E76-C5AE-076C-4EA3-0143BA57FE6F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Physics">
       <UniqueIdentifier>{925A6B48-FE1A-E77E-C755-30FC33D52B5B}</UniqueIdentifier>
     </Filter>
@@ -33,6 +36,9 @@
     </Filter>
     <Filter Include="Blazr\Resources">
       <UniqueIdentifier>{8AC48E5E-F64F-FC22-FF60-7F176B6B5823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Scene">
+      <UniqueIdentifier>{3D7C7377-A931-EC6C-3226-E6439EDAE270}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blazr\Scripting">
       <UniqueIdentifier>{2214359F-8E9F-A263-97B0-255803BBFE63}</UniqueIdentifier>
@@ -63,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="src\Blazr\Core\Window.h">
       <Filter>Blazr\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\AnimationComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
@@ -102,6 +111,12 @@
     </ClInclude>
     <ClInclude Include="src\Blazr\Events\MouseEvent.h">
       <Filter>Blazr\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Fonts\Font.h">
+      <Filter>Blazr\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Fonts\stb_truetype.h">
+      <Filter>Blazr\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Physics\Box2DWrapper.h">
       <Filter>Blazr\Physics</Filter>
@@ -154,10 +169,19 @@
     <ClInclude Include="src\Blazr\Resources\AssetManager.h">
       <Filter>Blazr\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Scene\Scene.h">
+      <Filter>Blazr\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h">
       <Filter>Blazr\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\AnimationSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\InputSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Systems\PhysicsSystem.h">
@@ -174,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Core\Log.cpp">
       <Filter>Blazr\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\AnimationComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
@@ -195,6 +222,12 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp">
       <Filter>Blazr\Ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Fonts\Font.cpp">
+      <Filter>Blazr\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp">
+      <Filter>Blazr\Fonts</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
@@ -241,10 +274,19 @@
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp">
       <Filter>Blazr\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Scene\Scene.cpp">
+      <Filter>Blazr\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp">
       <Filter>Blazr\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\AnimationSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\InputSystem.cpp">
       <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\PhysicsSystem.cpp">

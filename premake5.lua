@@ -180,6 +180,8 @@ files({
 })
 
 includedirs({
+    "Blazr/vendor/glm",
+    "Blazr/vendor/entt",
     "Blazr/vendor/spdlog/include",
     "Blazr/vendor/box2d/include",
     "Blazr/src",

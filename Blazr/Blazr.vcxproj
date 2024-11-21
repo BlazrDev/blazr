@@ -166,6 +166,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Core\Log.h" />
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />
     <ClInclude Include="src\Blazr\Core\Window.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\AnimationComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\PhysicsComponent.h" />
@@ -179,6 +180,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Events\Event.h" />
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
+    <ClInclude Include="src\Blazr\Fonts\Font.h" />
+    <ClInclude Include="src\Blazr\Fonts\stb_truetype.h" />
     <ClInclude Include="src\Blazr\Physics\Box2DWrapper.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Project\Project.h" />
@@ -196,8 +199,11 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
+    <ClInclude Include="src\Blazr\Scene\Scene.h" />
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
+    <ClInclude Include="src\Blazr\Systems\AnimationSystem.h" />
     <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h" />
+    <ClInclude Include="src\Blazr\Systems\InputSystem.h" />
     <ClInclude Include="src\Blazr\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\blzrpch.h" />
@@ -205,6 +211,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
   <ItemGroup>
     <ClCompile Include="src\Blazr\Core\Application.cpp" />
     <ClCompile Include="src\Blazr\Core\Log.cpp" />
+    <ClCompile Include="src\Blazr\Ecs\Components\AnimationComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\PhysicsComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp" />
@@ -212,6 +219,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Ecs\Entity.cpp" />
     <ClCompile Include="src\Blazr\Ecs\MetaUtil.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\Font.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
@@ -227,8 +236,11 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blazr\Renderer\stb_image.cpp" />
     <ClCompile Include="src\Blazr\Resources\AssetManager.cpp" />
+    <ClCompile Include="src\Blazr\Scene\Scene.cpp" />
     <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp" />
+    <ClCompile Include="src\Blazr\Systems\AnimationSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp" />
+    <ClCompile Include="src\Blazr\Systems\InputSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
