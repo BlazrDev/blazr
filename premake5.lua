@@ -31,6 +31,10 @@ IncludeDir["Sol2"] = "Blazr/vendor/sol2"
 IncludeDir["GLM"] = "Blazr/vendor/glm"
 IncludeDir["EnTT"] = "Blazr/vendor/entt"
 IncludeDir["Json"] = "Blazr/vendor/json"
+IncludeDir["SDL"] = {
+    linux = "Blazr/vendor/sdl/linux/include",
+    windows = "Blazr/vendor/sdl/windows/include",
+}
 
 LibDir = {}
 LibDir["GLFW"] = {
@@ -48,6 +52,11 @@ LibDir["Lua"] = {
 LibDir["Blazr"] = {
     linux = "bin/Debug-linux-x86_64/Blazr",
     windows = "bin/Debug-windows-x86_64/Blazr",
+}
+
+LibDir["SDL"] = {
+    linux = "Blazr/vendor/sdl/linux",
+    windows = "Blazr/vendor/sdl/windows",
 }
 
 -- Function to build GLEW on Linux
@@ -89,12 +98,14 @@ includedirs({
     "%{IncludeDir.GLM}",
     "%{IncludeDir.EnTT}",
     "%{IncludeDir.Json}",
+    "%{IncludeDir.SDL[os.host()]}"
 })
 
 libdirs({
     "%{LibDir.GLFW[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
+    "%{LibDir.SDL[os.host()]}"
 })
 
 filter("system:windows")
@@ -107,6 +118,8 @@ links({
     "GLFW",
     "glew32s",
     "lua53",
+    "SDL2",
+    "SDL2_mixer"
 })
 
 defines({
@@ -130,9 +143,13 @@ links({
     "GLFW",
     "GLEW",
     "lua53",
+    "SDL2",
+    "SDL2_mixer"
 })
 
 linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
+linkoptions({ "-LBlazr/vendor/sdl/linux", "-Wl,-rpath=Blazr/vendor/sdl/linux" })
+
 
 defines({
     "BLZR_PLATFORM_LINUX",
@@ -171,6 +188,8 @@ files({
 })
 
 includedirs({
+    "Blazr/vendor/glm",
+    "Blazr/vendor/entt",
     "Blazr/vendor/spdlog/include",
     "Blazr/src",
     "%{IncludeDir.ImGui}",
@@ -182,12 +201,14 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
+    "%{IncludeDir.SDL[os.host()]}",
 })
 
 libdirs({
     "%{LibDir.Blazr[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
+    "%{LibDir.SDL[os.host()]}",
 })
 
 filter("system:windows")
@@ -201,6 +222,8 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
+    "SDL2",
+    "SDL2_mixer",
 })
 
 defines({
@@ -218,6 +241,8 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
+    "SDL2",
+    "SDL2_mixer",
 })
 
 defines({

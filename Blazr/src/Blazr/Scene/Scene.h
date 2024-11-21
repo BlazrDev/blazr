@@ -10,20 +10,20 @@ namespace Blazr {
 
 class Scene {
   public:
-	Scene();
-	~Scene();
+	BLZR_API Scene();
+	BLZR_API  ~Scene();
 
 	entt::entity AddEntity();
 	void RemoveEntity(entt::entity entity);
 
-	Registry &GetRegistry() { return m_Registry; }
+	std::shared_ptr<Registry> GetRegistry() { return m_Registry; }
 	Camera2D &GetCamera() { return m_Camera; }
 
-	void Update();
-	void Render();
+	void BLZR_API Update();
+	void BLZR_API Render();
 
   private:
-	Registry m_Registry;
+	std::shared_ptr<Blazr::Registry> m_Registry;
 	Camera2D m_Camera;
 };
 

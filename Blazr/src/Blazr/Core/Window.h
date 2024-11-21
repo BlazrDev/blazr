@@ -33,7 +33,7 @@ class BLZR_API Window {
 	virtual bool isVSync() const = 0;
 
 	virtual GLFWwindow *GetWindow() const = 0;
-	virtual Camera2D *GetCamera() = 0;
+	//virtual Camera2D *GetCamera() = 0;
 
 	static Window *
 	create(const WindowProperties &properties = WindowProperties());

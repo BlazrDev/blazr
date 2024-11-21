@@ -80,18 +80,28 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+<<<<<<< HEAD
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+<<<<<<< HEAD
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+=======
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Debug-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -105,7 +115,11 @@ IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+<<<<<<< HEAD
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -119,8 +133,13 @@ IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+<<<<<<< HEAD
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+=======
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Release-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -134,7 +153,11 @@ IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bi
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+<<<<<<< HEAD
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -148,8 +171,13 @@ IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bi
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+<<<<<<< HEAD
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+=======
+      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+>>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Dist-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -167,6 +195,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />
     <ClInclude Include="src\Blazr\Core\Window.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\AnimationComponent.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
@@ -178,6 +207,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Events\Event.h" />
     <ClInclude Include="src\Blazr\Events\KeyEvent.h" />
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
+    <ClInclude Include="src\Blazr\Fonts\Font.h" />
+    <ClInclude Include="src\Blazr\Fonts\stb_truetype.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Project\Project.h" />
     <ClInclude Include="src\Blazr\Project\ProjectSerializer.h" />
@@ -197,19 +228,28 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Scene\Scene.h" />
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
     <ClInclude Include="src\Blazr\Systems\AnimationSystem.h" />
+    <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h" />
     <ClInclude Include="src\Blazr\Systems\InputSystem.h" />
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h" />
+    <ClInclude Include="src\Blazr\Systems\Sounds\Effect.h" />
+    <ClInclude Include="src\Blazr\Systems\Sounds\EffectPlayer.h" />
+    <ClInclude Include="src\Blazr\Systems\Sounds\Music.h" />
+    <ClInclude Include="src\Blazr\Systems\Sounds\SoundPlayer.h" />
+    <ClInclude Include="src\Blazr\Systems\Sounds\SoundProperties.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blazr\Core\Application.cpp" />
     <ClCompile Include="src\Blazr\Core\Log.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\AnimationComponent.cpp" />
+    <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Components\TransformComponent.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Entity.cpp" />
     <ClCompile Include="src\Blazr\Ecs\MetaUtil.cpp" />
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\Font.cpp" />
+    <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
@@ -228,8 +268,12 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Scene\Scene.cpp" />
     <ClCompile Include="src\Blazr\Scripting\GlmLuaBindings.cpp" />
     <ClCompile Include="src\Blazr\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="src\Blazr\Systems\BoxColliderSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\InputSystem.cpp" />
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Blazr\Systems\Sounds\Effect.cpp" />
+    <ClCompile Include="src\Blazr\Systems\Sounds\Music.cpp" />
+    <ClCompile Include="src\Blazr\Systems\Sounds\SoundPlayer.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

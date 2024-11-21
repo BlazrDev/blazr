@@ -4,7 +4,7 @@
 namespace Blazr {
 class AnimationSystem {
   public:
-	AnimationSystem(Registry &registry);
+	BLZR_API AnimationSystem(Registry &registry);
 	~AnimationSystem() = default;
 
 	void Update();

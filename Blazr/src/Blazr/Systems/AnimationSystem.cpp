@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "GLFW/glfw3.h"
 #include "AnimationSystem.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
