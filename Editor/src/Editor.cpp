@@ -1,8 +1,15 @@
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Systems/AnimationSystem.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Editor.h"
+#include "box2d/box2d.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -39,8 +46,62 @@ void Editor::Init() {
 
 	m_Scene->GetRegistry()->AddToContext(animationSystem);
 	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
+
+	b2Vec2 gravity = {0.0f, 9.8f};
+	b2WorldDef worldDef = b2DefaultWorldDef();
+	worldDef.gravity = gravity;
+	b2WorldId worldId = b2CreateWorld(&worldDef);
+
+	PhysicsWorld world = worldId;
+	if (!m_Scene->GetRegistry()->AddToContext<PhysicsWorld>(world)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the physics world to the registry context!");
+		return;
+	}
+	//
+	auto physicsSystem =
+		std::make_shared<PhysicsSystem>(*m_Scene->GetRegistry());
+	if (!m_Scene->GetRegistry()->AddToContext<std::shared_ptr<PhysicsSystem>>(
+			physicsSystem)) {
+		BLZR_CORE_ERROR(
+			"Failed to add the physics system to the registry context!");
+		return;
+	}
+
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
+
+	glm::vec2 pos = {0.f, 0.f};
+	glm::vec2 size = {200.f, 200.f};
+	glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
+
+	Entity entity = Entity(*m_Scene->GetRegistry(), "Ent1", "G1");
+	auto &transform =
+		entity.AddComponent<TransformComponent>(TransformComponent{
+			.position = pos, .scale = glm::vec2(1.0f, 1.0f), .rotation = 0.0f});
+
+	auto &sprite = entity.AddComponent<SpriteComponent>(
+		SpriteComponent{.width = 200.f,
+						.height = 200.f,
+						.startX = 10,
+						.startY = 30,
+						.texturePath = "masha"});
+
+	auto &collider =
+		entity.AddComponent<BoxColliderComponent>(BoxColliderComponent{
+			.width = 200, .height = 200, .offset = glm::vec2(0, 0)});
+
+	auto &physics = entity.AddComponent<PhysicsComponent>(
+		PhysicsComponent{world, PhysicsAtributes{.type = RigidBodyType::DYNAMIC,
+												 .density = 100.f,
+												 .friction = 0.5f,
+												 .restitution = 0.f,
+												 .gravityScale = 0.2f,
+												 .position = transform.position,
+												 .scale = transform.scale}});
+
+	physics.init(1280, 720);
+	sprite.generateObject(200, 200);
 
 	InitImGui();
 }
@@ -64,14 +125,14 @@ void Editor::InitImGui() {
 	ImGuiIO &io = ImGui::GetIO();
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	 //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	//io.ConfigWindowsMoveFromTitleBarOnly = true;
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	// io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 410");
-	//glDisable(GL_SCISSOR_TEST);
+	// glDisable(GL_SCISSOR_TEST);
 }
 
 void Editor::Run() {
@@ -84,13 +145,13 @@ void Editor::Run() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		
+
 		RenderImGui();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		//glClear(GL_COLOR_BUFFER_BIT);
+		// glClear(GL_COLOR_BUFFER_BIT);
 
 		ImGuiIO &io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
@@ -100,9 +161,16 @@ void Editor::Run() {
 
 			glfwMakeContextCurrent(backupContext);
 		}
+		auto &physicsWor = m_Scene->GetRegistry()->GetContext<PhysicsWorld>();
 
-		
-	//glfwSwapBuffers(m_Window->GetWindow());
+		float timeStep = 1.0f / 120.f;
+		int32_t subSteps = 100;
+		b2World_Step(physicsWor, timeStep, subSteps);
+		auto &physicsSys = m_Scene->GetRegistry()
+							   ->GetContext<std::shared_ptr<PhysicsSystem>>();
+		physicsSys->Update(*m_Scene->GetRegistry());
+
+		// glfwSwapBuffers(m_Window->GetWindow());
 	}
 
 	glfwSwapBuffers(m_Window->GetWindow());
@@ -168,16 +236,18 @@ void Editor::RenderImGui() {
 	}
 
 	//// Zooming
-	//if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
+	// if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
 	//	m_Scene->GetCamera().SetScale(zoomLevel);
-	//}----------------------------------------------------------1. box - Scene---------------------------------
+	// }----------------------------------------------------------1. box -
+	// Scene---------------------------------
 
 	int widthSize = m_Window->getWidth();
 	int heightSize = m_Window->getHeight() - 20;
 
 	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
-	ImGui::SetNextWindowPos(ImVec2(0,19));
-	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+	ImGui::SetNextWindowPos(ImVec2(0, 19));
+	ImGui::Begin("Scene", nullptr,
+				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
 	for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
 		std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
@@ -190,10 +260,13 @@ void Editor::RenderImGui() {
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//---------------------------------------------------------------2. box - Object details---------------------------------
+	//---------------------------------------------------------------2. box -
+	// Object details---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
 	ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
-	ImGui::Begin(selectedGameObject.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
+	ImGui::Begin(selectedGameObject.c_str(), nullptr,
+				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+					 ImGuiWindowFlags_NoNavFocus);
 	static bool showComponentWindow = false;
 	if (showGameObjectDetails) {
 		if (ImGui::BeginTabBar("DetailsTabs")) {
@@ -392,7 +465,8 @@ void Editor::RenderImGui() {
 	}
 	ImGui::End();
 
-	//-----------------------------------------------------------3. box - Camera box with tabs---------------------------------
+	//-----------------------------------------------------------3. box - Camera
+	// box with tabs---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
 	ImGui::Begin("Camera", nullptr,
@@ -474,11 +548,13 @@ void Editor::RenderImGui() {
 	ImVec2 cameraSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//-------------------------------------------------------------4. box - audio/templates---------------------------------
+	//-------------------------------------------------------------4. box -
+	// audio/templates---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, 300));
 	ImGui::SetNextWindowPos(ImVec2(270, heightSize - 281));
 	ImGui::Begin("BOX", nullptr,
-				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+					 ImGuiWindowFlags_NoTitleBar);
 	const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX", "SCENES"};
 	static int current_item = 0;
 
