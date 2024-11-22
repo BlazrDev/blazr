@@ -3,6 +3,7 @@
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
+#include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Scene.h"
 
 namespace Blazr {
@@ -11,6 +12,7 @@ Scene::Scene() : m_Camera(1280, 720) {
 	m_Camera.SetScale(1.0f);
 	m_Camera.SetPosition({0.0f, 0.0f});
 	auto assetManager = AssetManager::GetInstance();
+	auto soundPlayer = SoundPlayer::GetInstance();
 	m_Registry = std::make_shared<Registry>();
 
 	if (!assetManager) {
@@ -37,6 +39,7 @@ Scene::Scene() : m_Camera(1280, 720) {
 	auto playerTexture = assetManager->GetTexture("player");
 	auto mashaTexture = assetManager->GetTexture("masha");
 
+
 	auto lua = std::make_shared<sol::state>();
 
 	if (!lua) {
@@ -50,6 +53,14 @@ Scene::Scene() : m_Camera(1280, 720) {
 	if (!m_Registry->AddToContext<std::shared_ptr<sol::state>>(lua)) {
 		BLZR_CORE_ERROR(
 			"Failed to add the sol::state to the registry context!");
+		return;
+	}
+	if(!m_Registry->AddToContext<std::shared_ptr<AssetManager>>(assetManager)) {
+		BLZR_CORE_ERROR("Failed to load the asset manager to the registry context!");
+		return;
+	}
+	if(!m_Registry->AddToContext<std::shared_ptr<SoundPlayer>>(soundPlayer)) {
+		BLZR_CORE_ERROR("Failed to load the sound player to the registry context!");
 		return;
 	}
 
@@ -67,6 +78,7 @@ Scene::Scene() : m_Camera(1280, 720) {
 	}
 
 	ScriptingSystem::RegisterLuaBindings(*lua, *m_Registry);
+	ScriptingSystem::RegisterLuaFunctions(*lua);
 	if (!scriptSystem->LoadMainScript(*lua)) {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
 		return;

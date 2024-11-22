@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-#include "blzrpch.h"
->>>>>>> 59163daac4a7ceee34e917ac458ba1bea6b690c3
 #include "BoxColliderComponent.h"
 
 void Blazr::BoxColliderComponent::CreateLuaBoxColliderComponentBind(

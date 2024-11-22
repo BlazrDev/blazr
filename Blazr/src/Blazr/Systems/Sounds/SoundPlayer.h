@@ -5,6 +5,7 @@
 #include "Blazr/Core/Log.h"
 #include "entt.hpp"
 #include "sol.hpp"
+#include "Blazr/Ecs/Registry.h"
 namespace Blazr {
 
     class SoundPlayer {
@@ -31,7 +32,7 @@ namespace Blazr {
 
 
             static void CreateLuaEntityBind(sol::state_view &lua);
-
+            static void CreateLuaSoundPlayer(sol::state &lua, Registry &registry);
             
             void PlayMusic(const std::string &name, int loop);
             void PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect);

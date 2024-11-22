@@ -80,28 +80,18 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< HEAD
-      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Debug-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -115,11 +105,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -133,13 +119,8 @@ IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-<<<<<<< HEAD
-      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Release-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -153,11 +134,7 @@ IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bi
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\windows\include;vendor\lua\windows\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -171,13 +148,8 @@ IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bi
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-<<<<<<< HEAD
-      <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-windows-x86_64\GLFW;vendor\glew\windows\lib\Release\x64;vendor\lua\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
       <AdditionalDependencies>OpenGL32.lib;glew32s.lib;lua53.lib;SDL2.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\GLFW\bin\Debug-linux-x86_64\GLFW;vendor\glew\linux\lib;vendor\lua\linux;vendor\sdl\linux;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
->>>>>>> BLAZRDEV-15-audio_component
       <ImportLibrary>..\bin\Dist-windows-x86_64\Blazr\Blazr.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>

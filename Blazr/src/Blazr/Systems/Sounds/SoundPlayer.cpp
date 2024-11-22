@@ -41,12 +41,12 @@ void Blazr::SoundPlayer::CreateLuaEntityBind(sol::state_view &lua) {
     lua.new_usertype<SoundPlayer>(
         "SoundPlayer",
         sol::constructors<SoundPlayer()>(),
-        "play_music", &SoundPlayer::PlayMusicFadeIn,
+        // "play_music", &SoundPlayer::PlayMusicFadeIn,
         "toggle_music", &SoundPlayer::ToggleMusic,
         "set_music_volume", &SoundPlayer::MusicVolume,
         "get_music_volume", &SoundPlayer::GetCurrentMusicVolume,
         "toggle_music_mute", &SoundPlayer::ToggleMusicMute,
-        "play_effect", &SoundPlayer::PlayEffect,
+        // "play_effect", &SoundPlayer::PlayEffect,
         "toggle_effect", &SoundPlayer::ToggleEffect,
         "set_channel_volume", &SoundPlayer::EffectVolume,
         "get_channel_volume", &SoundPlayer::GetEffectVolume,
@@ -58,6 +58,7 @@ void Blazr::SoundPlayer::CreateLuaEntityBind(sol::state_view &lua) {
         "get_instance", []() { return SoundPlayer::GetInstance().get(); }
     );
 }
+
 
 
 
@@ -203,3 +204,42 @@ void Blazr::SoundPlayer::effectTest(int channel, int value) {
     Mix_SetDistance(channel, value);
 }
 
+
+void Blazr::SoundPlayer::CreateLuaSoundPlayer(sol::state &lua, Registry &registry) {
+    auto& sound_player = registry.GetContext<std::shared_ptr<SoundPlayer>>();
+    if(!sound_player) {
+        BLZR_CORE_ERROR("Failed to bind Sound Player to Lua - Does not exist in registry");
+        return;
+    }
+    lua.new_usertype<SoundPlayer>(
+        "SoundPlayer",
+        sol::no_constructor,
+        "play_music", [&](const std::string &name, int loop, int fade) {
+            sound_player->PlayMusicFadeIn(name, loop, fade);
+        },
+        "play_effect", [&](const std::string& name, int loop, int channel) {
+            sound_player->PlayEffect(name, loop, channel);
+        },
+        "toggle_music", [&](const std::string &name) {
+            sound_player->ToggleMusic(name);
+        },
+        "toggle_effect", [&](const int channel) {
+            sound_player->ToggleEffect(channel);
+        },
+        "set_music_volume", [&](const int volume) {
+            sound_player->MusicVolume(volume);
+        },
+        "toggle_music_mute", [&]() {
+            sound_player->ToggleMusicMute();
+        },
+        "set_effect_volume", [&](const int channel, const int volume) {
+            sound_player->EffectVolume(channel, volume);
+        },
+        "toggle_mute_effect", [&](const int channel) {
+            sound_player->ToggleMuteEffect(channel);
+        },
+        "toggle_mute_all_effects", [&]() {
+            sound_player->ToggleMuteAllEffects();
+        }
+    );
+}

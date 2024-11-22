@@ -8,6 +8,8 @@
 #include "Blazr/Systems/Sounds/Music.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
 #include "Blazr/Systems/Sounds/Effect.h"
+#include "Blazr/Ecs/Registry.h"
+#include "sol.hpp"
 
 namespace Blazr {
 class AssetManager {
@@ -28,6 +30,8 @@ class AssetManager {
 		}
 		return instance;
 	}
+	// static void CreateLuaEntityBind(sol::state_view &lua);
+	static void CreateLuaAssetManager(sol::state &lua, Registry &registry);
 
 	bool LoadTexture(const std::string &name, const std::string &texturePath,
 					 bool pixelArt = true);

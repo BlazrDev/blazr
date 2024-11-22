@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 #include "blzrpch.h"
->>>>>>> 59163daac4a7ceee34e917ac458ba1bea6b690c3
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "BoxColliderSystem.h"
