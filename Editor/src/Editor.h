@@ -22,6 +22,8 @@ class Editor : public Application {
 	void RenderSceneToTexture();
 	void renderTransformComponent(ImVec2 &cursorPos);
 	void renderIdentificationComponent(ImVec2 &cursorPos);
+	void renderSpriteComponent(ImVec2 &cursorPos);
+	void renderPhysicsComponent(ImVec2 &cursorPos);
 
   private:
 	Renderer2D m_Renderer;
