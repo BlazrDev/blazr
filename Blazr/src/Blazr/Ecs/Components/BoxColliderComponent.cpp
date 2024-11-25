@@ -1,4 +1,3 @@
-#include "blzrpch.h"
 #include "BoxColliderComponent.h"
 
 void Blazr::BoxColliderComponent::CreateLuaBoxColliderComponentBind(

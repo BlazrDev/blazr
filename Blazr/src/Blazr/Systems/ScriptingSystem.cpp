@@ -9,9 +9,12 @@
 
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Scripting/GlmLuaBindings.h"
-#include "Blazr/Systems/BoxColliderSystem.h"
 #include "Blazr/Systems/InputSystem.h"
+#include "Blazr/Systems/BoxColliderSystem.h"
 #include "ScriptingSystem.h"
+
+#include "Sounds/SoundPlayer.h"
+#include "../Resources/AssetManager.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}
 
@@ -100,31 +103,44 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	GLMBindings::CreateLuaGLMBinding(lua);
 	Registry::CreateLuaRegistryBind(lua, registry);
-	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
 
 	InputSystem::CreateInputLuaBind(lua);
+	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
 
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
 	AnimationComponent::CreateAnimationLuaBind(lua);
-
-	Entity::RegisterMetaComponent<TransformComponent>();
-	Entity::RegisterMetaComponent<SpriteComponent>();
-	Entity::RegisterMetaComponent<AnimationComponent>();
-
-	Registry::RegisterMetaComponent<TransformComponent>();
-	Registry::RegisterMetaComponent<SpriteComponent>();
-	Registry::RegisterMetaComponent<AnimationComponent>();
 	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
+	Entity::RegisterMetaComponent<AnimationComponent>();
 	Entity::RegisterMetaComponent<BoxColliderComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
+	Registry::RegisterMetaComponent<AnimationComponent>();
 	Registry::RegisterMetaComponent<BoxColliderComponent>();
+	SoundPlayer::CreateLuaEntityBind(lua);
+	// AssetManager::CreateLuaEntityBind(lua);
+	AssetManager::CreateLuaAssetManager(lua, registry);
+	SoundPlayer::CreateLuaSoundPlayer(lua, registry);
 }
+
+
+	void ScriptingSystem::RegisterLuaFunctions(sol::state &lua) {
+		lua.set_function(
+			"run_script", [&](const std::string &path) {
+				try {
+					lua.safe_script_file(path);
+				} catch(sol::error& error) {
+					BLZR_CORE_ERROR("Failed to load Lua script {0}", error.what());
+					return false;
+				}
+				return true;
+			}
+		);
+	}
 
 } // namespace Blazr

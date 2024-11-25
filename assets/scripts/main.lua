@@ -20,6 +20,8 @@ local collider2 = mashaEntity:add_component(BoxColliderComponent(472, 617, vec2(
 sprite:generate_object()
 sprite2:generate_object()
 
+
+
 local lifes = 3
 collider.colliding = true
 collider2.colliding = true
@@ -45,6 +47,14 @@ local function trci()
     sprite2.color.y = 1.0
     sprite2.color.z = 1.0
 end
+-- local am = AssetManager:get_instance()
+-- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
+-- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
+-- SoundPlayer.play_music("masa", 0, 0)
+-- run_script("assets/scripts/test.lua")
+
+
+
 main = {
     [1] = {
         update = function()
@@ -62,6 +72,7 @@ main = {
             end
             if InputSystem.key_repeating(KEY_SPACE) then
                 udara()
+                SoundPlayer.play_effect("boing", 0, 1)
             end
 
             if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then
@@ -77,6 +88,7 @@ main = {
     },
     [2] = {
         render = function()
+            -- stoji()
             -- stoji()
             -- print("We are rendering in lua!")
         end,
