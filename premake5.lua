@@ -7,6 +7,7 @@ function getAbsolutePath()
     local relativePath = "Blazr/vendor/lua/linux"
     return path.getabsolute(path.join(projectRoot, relativePath))
 end
+
 local absoluteLuaPath = getAbsolutePath()
 
 configurations({
@@ -111,11 +112,8 @@ libdirs({
     "%{LibDir.GLFW[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
-<<<<<<< HEAD
-    "%{LibDir.SDL[os.host()]}"
-=======
+    "%{LibDir.SDL[os.host()]}",
     "%{LibDir.box2d[os.host()]}",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 filter("system:windows")
@@ -128,12 +126,9 @@ links({
     "GLFW",
     "glew32s",
     "lua53",
-<<<<<<< HEAD
     "SDL2",
-    "SDL2_mixer"
-=======
+    "SDL2_mixer",
     "box2d",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 defines({
@@ -157,12 +152,9 @@ links({
     "GLFW",
     "GLEW",
     "lua53",
-<<<<<<< HEAD
     "SDL2",
-    "SDL2_mixer"
-=======
+    "SDL2_mixer",
     "box2d",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
@@ -227,11 +219,8 @@ libdirs({
     "%{LibDir.Blazr[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
-<<<<<<< HEAD
     "%{LibDir.SDL[os.host()]}",
-=======
     "%{LibDir.box2d[os.host()]}",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 filter("system:windows")
@@ -245,12 +234,9 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
-<<<<<<< HEAD
     "SDL2",
     "SDL2_mixer",
-=======
     "box2d",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 defines({
@@ -268,12 +254,9 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
-<<<<<<< HEAD
     "SDL2",
     "SDL2_mixer",
-=======
     "box2d",
->>>>>>> origin/BLAZRDEV-25-Physics
 })
 
 defines({

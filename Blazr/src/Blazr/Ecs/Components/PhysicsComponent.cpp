@@ -2,8 +2,6 @@
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "PhysicsComponent.h"
 #include "box2d/box2d.h"
-#include "box2d/collision.h"
-#include "box2d/id.h"
 
 Blazr::PhysicsComponent::PhysicsComponent(Blazr::PhysicsWorld world,
 										  const PhysicsAtributes &atributes)
