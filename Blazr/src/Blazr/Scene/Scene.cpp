@@ -3,6 +3,7 @@
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
+#include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Scene.h"
 #include <json.hpp>
 
@@ -13,6 +14,7 @@ Scene::Scene() : m_Camera(1280, 720) {
 	m_Camera.SetScale(1.0f);
 	m_Camera.SetPosition({0.0f, 0.0f});
 	auto assetManager = AssetManager::GetInstance();
+	auto soundPlayer = SoundPlayer::GetInstance();
 	m_Registry = std::make_shared<Registry>();
 
 	if (!assetManager) {
@@ -20,21 +22,21 @@ Scene::Scene() : m_Camera(1280, 720) {
 		return;
 	}
 
-	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the masha texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
-								   false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
+	// if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the chammy texture!");
+	// 	return;
+	// }
+	//
+	// if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the masha texture!");
+	// 	return;
+	// }
+	//
+	// if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
+	// 							   false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the chammy texture!");
+	// 	return;
+	// }
 
 	auto playerTexture = assetManager->GetTexture("player");
 	auto mashaTexture = assetManager->GetTexture("masha");
@@ -54,6 +56,17 @@ Scene::Scene() : m_Camera(1280, 720) {
 			"Failed to add the sol::state to the registry context!");
 		return;
 	}
+	if (!m_Registry->AddToContext<std::shared_ptr<AssetManager>>(
+			assetManager)) {
+		BLZR_CORE_ERROR(
+			"Failed to load the asset manager to the registry context!");
+		return;
+	}
+	if (!m_Registry->AddToContext<std::shared_ptr<SoundPlayer>>(soundPlayer)) {
+		BLZR_CORE_ERROR(
+			"Failed to load the sound player to the registry context!");
+		return;
+	}
 
 	auto scriptSystem = std::make_shared<ScriptingSystem>(*m_Registry);
 	if (!scriptSystem) {
@@ -69,6 +82,7 @@ Scene::Scene() : m_Camera(1280, 720) {
 	}
 
 	ScriptingSystem::RegisterLuaBindings(*lua, *m_Registry);
+	ScriptingSystem::RegisterLuaFunctions(*lua);
 	if (!scriptSystem->LoadMainScript(*lua)) {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
 		return;

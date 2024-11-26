@@ -17,5 +17,7 @@ class ScriptingSystem {
 	void Render();
 
 	static void RegisterLuaBindings(sol::state &lua, Registry &registry);
+
+	static void RegisterLuaFunctions(sol::state &lua);
 };
 } // namespace Blazr

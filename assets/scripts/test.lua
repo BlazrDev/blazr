@@ -1,0 +1,1 @@
+print("druga skripta")

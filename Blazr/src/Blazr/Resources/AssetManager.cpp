@@ -146,3 +146,40 @@ Ref<Blazr::Effect> Blazr::AssetManager::GetEffect(const std::string &name) {
 
 	return effectIterator->second;
 }
+
+// void Blazr::AssetManager::CreateLuaEntityBind(sol::state_view &lua) {
+// 	lua.new_usertype<AssetManager>(
+// 		"AssetManager", sol::constructors<AssetManager()>(),
+// 		"get_instance", []() {return AssetManager::GetInstance().get();},
+// 		"load_music", &AssetManager::LoadMusic,
+// 		"load_effect", &AssetManager::LoadEffect,
+// 		"load_shader", &AssetManager::LoadShader,
+// 		"load_texture", &AssetManager::LoadTexture
+
+// 	);
+// }
+
+void Blazr::AssetManager::CreateLuaAssetManager(sol::state &lua, Registry &registry) {
+	auto& asset_manager = registry.GetContext<std::shared_ptr<AssetManager>>();
+	if(!asset_manager) {
+		BLZR_CORE_ERROR("Failed to bind Asset Manager to Lua - Does not exist in registry");
+		return;
+	}
+
+	lua.new_usertype<AssetManager>(
+		"AssetManager",
+		sol::no_constructor,
+		"load_music", [&](const std::string &name, const std::string &path, const std::string &desc) {
+			return asset_manager->LoadMusic(name, path, desc);
+		},
+		"load_effect", [&](const std::string &name, const std::string &path, const std::string &desc) {
+			return asset_manager->LoadEffect(name, path, desc);
+		},
+		"load_shader", [&](const std::string &name, const std::string &vertexPath, const std::string &fragmentPath) {
+			return asset_manager->LoadShader(name, vertexPath, fragmentPath);
+		},
+		"load_texture", [&](const std::string &name, const std::string &texturePath, bool pixelArt) {
+			return asset_manager->LoadTexture(name, texturePath, pixelArt);
+		}
+	);
+}
