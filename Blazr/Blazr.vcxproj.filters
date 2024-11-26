@@ -79,9 +79,6 @@
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blazr\Ecs\Components\InterpolationComponent.h">
-      <Filter>Blazr\Ecs\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
@@ -237,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Project\Project.cpp">
+      <Filter>Blazr\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp">
       <Filter>Blazr\Project</Filter>

@@ -169,7 +169,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Ecs\Components\AnimationComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\BoxColliderComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h" />
-    <ClInclude Include="src\Blazr\Ecs\Components\InterpolationComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h" />
@@ -224,6 +223,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Fonts\Font.cpp" />
     <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
+    <ClCompile Include="src\Blazr\Project\Project.cpp" />
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp" />

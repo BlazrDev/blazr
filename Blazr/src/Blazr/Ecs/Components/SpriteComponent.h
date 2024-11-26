@@ -43,6 +43,8 @@ struct SpriteComponent {
 
 		object.x = startX * object.width;
 		object.y = startY * object.height;
+		object.coordX = startX;
+		object.coordY = startY;
 
 		// Set the texture coordinates for the sprite
 		textureCoordinates[0] = {object.coordX * object.width,

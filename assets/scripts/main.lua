@@ -62,17 +62,17 @@ Player = {
 --
 Assets = {
 	music = {
-		{ name = "masa", path = "assets/sounds/masa.mp3", desc = "Masa background music" },
+		{ name = "masa",  path = "assets/sounds/masa.mp3",  desc = "Masa background music" },
 		{ name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
 	},
 	sound_effects = {
 		{ name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
 	},
 	textures = {
-		{ name = "masha", path = "assets/masha.png", pixelArt = false },
-		{ name = "chammy", path = "assets/chammy.png", pixelArt = false },
-		{ name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
-		{ name = "map", path = "assets/map_assets/map.png", pixelArt = true },
+		{ name = "masha",    path = "assets/masha.png",               pixelArt = false },
+		{ name = "chammy",   path = "assets/chammy.png",              pixelArt = false },
+		{ name = "player",   path = "assets/sprite_sheet.png",        pixelArt = false },
+		{ name = "map",      path = "assets/map_assets/map.png",      pixelArt = true },
 		{ name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
 	},
 }
@@ -122,21 +122,12 @@ local function udara()
 end
 
 local function trci()
-<<<<<<< HEAD
-    animation.frame_offset = 6
-    animation.current_frame = 0
-    animation.num_frames = 8
-    -- sprite2.color.x = 1.0
-    -- sprite2.color.y = 1.0
-    -- sprite2.color.z = 1.0
-=======
 	playerAnimation.frame_offset = 6
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 8
 	-- sprite2.color.x = 1.0
 	-- sprite2.color.y = 1.0
 	-- sprite2.color.z = 1.0
->>>>>>> 3aa7c3cd26516cf36e21bea0e96d228c39955d33
 end
 -- local am = AssetManager:get_instance()
 -- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
@@ -144,25 +135,6 @@ end
 -- SoundPlayer.play_music("masa", 0, 0)
 -- run_script("assets/scripts/test.lua")
 
-<<<<<<< HEAD
-            if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then
-                print("Colliding")
-                -- sprite2.color.x = 1.0
-                -- sprite2.color.y = 0.0
-                -- sprite2.color.z = 0.0
-                transform.position.x = transform.position.x - 5
-            end
-            -- collider.colliding = false
-            -- collider2.colliding = false
-        end,
-    },
-    [2] = {
-        render = function()
-            -- stoji()
-            -- print("We are rendering in lua!")
-        end,
-    },
-=======
 main = {
 	[1] = {
 		update = function()
@@ -201,5 +173,4 @@ main = {
 			-- print("We are rendering in lua!")
 		end,
 	},
->>>>>>> 3aa7c3cd26516cf36e21bea0e96d228c39955d33
 }

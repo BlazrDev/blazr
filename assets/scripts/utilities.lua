@@ -128,10 +128,12 @@ end
 function Tileset:GetTileCoords(id)
 	assert(self:TileIdExists(id), "Tile with id: " .. id .. "does not exist in the tileset: " .. self.name)
 	local actualId = id - self.firstgid
-	local startY = math.floor(actualId / self.columns)
+	local startY = math.floor(1440 / 16) - math.floor(actualId / self.columns) - 1
 	local startX = math.floor(actualId % self.columns)
+	print("start x: " .. startX .. " start y: " .. startY)
 	return startX, startY
 end
+
 function LoadMap(mapDef)
 	assert(mapDef, "Map does not exist")
 
