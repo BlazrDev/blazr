@@ -20,25 +20,24 @@ Scene::Scene() : m_Camera(1280, 720) {
 		return;
 	}
 
-	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the masha texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
-								   false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
+	// if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the chammy texture!");
+	// 	return;
+	// }
+	//
+	// if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the masha texture!");
+	// 	return;
+	// }
+	//
+	// if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
+	// 							   false)) {
+	// 	BLZR_CORE_ERROR("Failed to load the chammy texture!");
+	// 	return;
+	// }
 
 	auto playerTexture = assetManager->GetTexture("player");
 	auto mashaTexture = assetManager->GetTexture("masha");
-
 
 	auto lua = std::make_shared<sol::state>();
 
@@ -55,12 +54,15 @@ Scene::Scene() : m_Camera(1280, 720) {
 			"Failed to add the sol::state to the registry context!");
 		return;
 	}
-	if(!m_Registry->AddToContext<std::shared_ptr<AssetManager>>(assetManager)) {
-		BLZR_CORE_ERROR("Failed to load the asset manager to the registry context!");
+	if (!m_Registry->AddToContext<std::shared_ptr<AssetManager>>(
+			assetManager)) {
+		BLZR_CORE_ERROR(
+			"Failed to load the asset manager to the registry context!");
 		return;
 	}
-	if(!m_Registry->AddToContext<std::shared_ptr<SoundPlayer>>(soundPlayer)) {
-		BLZR_CORE_ERROR("Failed to load the sound player to the registry context!");
+	if (!m_Registry->AddToContext<std::shared_ptr<SoundPlayer>>(soundPlayer)) {
+		BLZR_CORE_ERROR(
+			"Failed to load the sound player to the registry context!");
 		return;
 	}
 
