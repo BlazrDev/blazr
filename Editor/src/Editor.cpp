@@ -5,6 +5,7 @@
 #include "Editor.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "Blazr/Systems/Sounds/SoundPlayer.h"
 
 namespace Blazr {
 	static float zoomLevel = 1.0f;
@@ -12,7 +13,7 @@ namespace Blazr {
 	static float volumeLevel = 0.0f;
 	// varijable za backend:
 	// transform
-	static float positionX = 0.0f; 
+	static float positionX = 0.0f;
 	static float positionY = 0.0f;
 	static float scaleX = 1.0f;
 	static float scaleY = 1.0f;
@@ -41,8 +42,12 @@ namespace Blazr {
 	static bool showPhysicsComponent = false;
 	static bool showColorTab = false;
 
+	// managers
+	static auto soundPlayer = SoundPlayer::GetInstance();
+
 	static std::string luaScriptContent = ""; // Sadržaj Lua skripte
-	static char	luaScriptBuffer[1024 * 16]; // Buffer za unos teksta (podešen na 16KB)
+	static char
+		luaScriptBuffer[1024 * 16]; // Buffer za unos teksta (podešen na 16KB)
 
 	Editor::Editor() { Init(); }
 
@@ -85,14 +90,14 @@ namespace Blazr {
 		ImGuiIO &io = ImGui::GetIO();
 		(void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		 //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		//io.ConfigWindowsMoveFromTitleBarOnly = true;
+		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		// io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 		ImGui::StyleColorsDark();
 
 		ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 410");
-		//glDisable(GL_SCISSOR_TEST);
+		// glDisable(GL_SCISSOR_TEST);
 	}
 
 	void Editor::Run() {
@@ -105,13 +110,13 @@ namespace Blazr {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
-		
+
 			RenderImGui();
 
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-			//glClear(GL_COLOR_BUFFER_BIT);
+			// glClear(GL_COLOR_BUFFER_BIT);
 
 			ImGuiIO &io = ImGui::GetIO();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
@@ -122,8 +127,7 @@ namespace Blazr {
 				glfwMakeContextCurrent(backupContext);
 			}
 
-		
-		//glfwSwapBuffers(m_Window->GetWindow());
+			// glfwSwapBuffers(m_Window->GetWindow());
 		}
 
 		glfwSwapBuffers(m_Window->GetWindow());
@@ -202,7 +206,7 @@ namespace Blazr {
 		cursorPos.y += 35;
 	}
 
-	void Editor::renderSpriteComponent(ImVec2& cursorPos) {
+	void Editor::renderSpriteComponent(ImVec2 &cursorPos) {
 		ImGui::SetCursorPos(cursorPos);
 		ImGui::Separator();
 		ImGui::Text("Sprite");
@@ -213,9 +217,12 @@ namespace Blazr {
 		cursorPos.x += 65;
 		ImGui::SetCursorPos(cursorPos);
 		const char *textures[] = {"Texture1", "Texture2"};
-		static int selectedTextureIndex =	-1;
+		static int selectedTextureIndex = -1;
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-		if (ImGui::BeginCombo("##TexturesDropdown", selectedTextureIndex == -1 ? "Choose a component" : textures[selectedTextureIndex])) {
+		if (ImGui::BeginCombo("##TexturesDropdown",
+							  selectedTextureIndex == -1
+								  ? "Choose a component"
+								  : textures[selectedTextureIndex])) {
 			for (int i = 0; i < IM_ARRAYSIZE(textures); i++) {
 				bool isSelected = (selectedTextureIndex == i);
 				if (ImGui::Selectable(textures[i], isSelected)) {
@@ -227,7 +234,7 @@ namespace Blazr {
 			}
 			ImGui::EndCombo();
 		}
-		//spriteWidth
+		// spriteWidth
 		cursorPos.x -= 64;
 		cursorPos.y += 28;
 		ImGui::SetCursorPos(cursorPos);
@@ -236,8 +243,7 @@ namespace Blazr {
 		cursorPos.y -= 3;
 		ImGui::SetCursorPos(cursorPos);
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-		ImGui::InputFloat("##spriteWidth", &spriteWidth, 0.1f, 1.0f,
-							"%.1f");
+		ImGui::InputFloat("##spriteWidth", &spriteWidth, 0.1f, 1.0f, "%.1f");
 		// spriteHeight
 		cursorPos.x -= 65;
 		cursorPos.y += 28;
@@ -247,8 +253,7 @@ namespace Blazr {
 		cursorPos.y -= 3;
 		ImGui::SetCursorPos(cursorPos);
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-		ImGui::InputFloat("##spriteHeight", &spriteHeight, 0.1f, 1.0f,
-							"%.1f");
+		ImGui::InputFloat("##spriteHeight", &spriteHeight, 0.1f, 1.0f, "%.1f");
 		// layer
 		cursorPos.x -= 65;
 		cursorPos.y += 28;
@@ -289,9 +294,11 @@ namespace Blazr {
 		cursorPos.x += 90;
 		ImGui::SetCursorPos(cursorPos);
 		const char *types[] = {"Static", "Dynamic", "Kinematic"};
-		static int selectedTypeIndex = -1; 
+		static int selectedTypeIndex = -1;
 		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-		if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1 ? "Choose a type" : types[selectedTypeIndex])) {
+		if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
+													 ? "Choose a type"
+													 : types[selectedTypeIndex])) {
 			for (int i = 0; i < IM_ARRAYSIZE(types); i++) {
 				bool isSelected = (selectedTypeIndex == i);
 				if (ImGui::Selectable(types[i], isSelected)) {
@@ -356,21 +363,23 @@ namespace Blazr {
 		ImGui::Text("isFixedRotation");
 		ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
 		ImGui::Checkbox("##isFixedRotation", &isFixedRotation);
-		
+
 		cursorPos.y += 35;
 	}
 
-	void Editor::RenderImGui() { 
-		
+	void Editor::RenderImGui() {
+
 		ImGuiViewport *viewport = ImGui::GetMainViewport();
 		ImGui::SetNextWindowPos(viewport->Pos);
 		ImGui::SetNextWindowSize(viewport->Size);
 		ImGui::SetNextWindowViewport(viewport->ID);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags window_flags =
+			ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-		window_flags |=	ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		window_flags |=
+			ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 		// Begin a full-screen window that acts as the main dock space
 		glfwSwapInterval(1);
@@ -419,16 +428,19 @@ namespace Blazr {
 		}
 
 		//// Zooming
-		//if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
+		// if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
 		//	m_Scene->GetCamera().SetScale(zoomLevel);
-		//}----------------------------------------------------------1. box - Scene---------------------------------
+		// }----------------------------------------------------------1. box -
+		// Scene---------------------------------
 
 		int widthSize = m_Window->getWidth();
 		int heightSize = m_Window->getHeight() - 20;
 
 		ImGui::SetNextWindowSize(ImVec2(270, heightSize));
-		ImGui::SetNextWindowPos(ImVec2(0,19));
-		ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
+		ImGui::SetNextWindowPos(ImVec2(0, 19));
+		ImGui::Begin("Scene", nullptr,
+					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+						 ImGuiWindowFlags_NoNavFocus);
 		for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
 			std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
 			if (ImGui::Selectable(gameObjectName.c_str())) {
@@ -440,11 +452,13 @@ namespace Blazr {
 		ImVec2 sceneSize = ImGui::GetWindowSize();
 		ImGui::End();
 
-
-		//---------------------------------------------------------------2. box - Object details---------------------------------
+		//---------------------------------------------------------------2. box -
+		//Object details---------------------------------
 		ImGui::SetNextWindowSize(ImVec2(270, heightSize));
 		ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
-		ImGui::Begin(selectedGameObject.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNavFocus);
+		ImGui::Begin(selectedGameObject.c_str(), nullptr,
+					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+						 ImGuiWindowFlags_NoNavFocus);
 		static bool showComponentWindow = false;
 		if (showGameObjectDetails) {
 			ImVec2 cursorPos = ImVec2(10, 55);
@@ -459,27 +473,41 @@ namespace Blazr {
 					if (showSpriteComponent) {
 						renderSpriteComponent(cursorPos);
 					}
-					//if (showPhysicsComponent) {
+					if (showPhysicsComponent) {
 						renderPhysicsComponent(cursorPos);
-					//}
+					}
 
-					if (ImGui::BeginPopupContextWindow("AddComponentPopup", ImGuiPopupFlags_MouseButtonRight)) {
+					if (ImGui::BeginPopupContextWindow(
+							"AddComponentPopup",
+							ImGuiPopupFlags_MouseButtonRight)) {
 						if (ImGui::MenuItem("Add Component")) {
 							showComponentWindow = true;
 						}
 						ImGui::EndPopup();
 					}
 					if (showComponentWindow) {
-						ImGui::SetNextWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
-						ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
+						ImGui::SetNextWindowPos(ImVec2(300, 300),
+												ImGuiCond_FirstUseEver);
+						ImGui::SetNextWindowSize(ImVec2(300, 200),
+												 ImGuiCond_FirstUseEver);
 
-						ImGui::Begin("Choose Component", &showComponentWindow, ImGuiWindowFlags_NoCollapse);
+						ImGui::Begin("Choose Component", &showComponentWindow,
+									 ImGuiWindowFlags_NoCollapse);
 						ImGui::Text("CHOOSE COMPONENT TO ADD");
 						ImGui::Dummy(ImVec2(0.0f, 10.0f));
-						const char *components[] = {"Sprite Component", "Box Collider", "Animation", "Identification", "RigidBody", "Transform Component", "Physics"};
-						static int selectedComponentIndex =	-1; // -1 znači da nijedna komponenta nije izabrana
+						const char *components[] = {
+							"Sprite Component", "Box Collider",
+							"Animation",		"Identification",
+							"RigidBody",		"Transform Component",
+							"Physics"};
+						static int selectedComponentIndex =
+							-1; // -1 znači da nijedna komponenta nije izabrana
 						ImGui::SetNextItemWidth(170.0f);
-						if (ImGui::BeginCombo("##ComponentDropdown", selectedComponentIndex == -1 ? "Choose a component" : components[selectedComponentIndex])) {
+						if (ImGui::BeginCombo(
+								"##ComponentDropdown",
+								selectedComponentIndex == -1
+									? "Choose a component"
+									: components[selectedComponentIndex])) {
 							for (int i = 0; i < IM_ARRAYSIZE(components); i++) {
 								bool isSelected = (selectedComponentIndex == i);
 								if (ImGui::Selectable(components[i], isSelected)) {
@@ -491,7 +519,8 @@ namespace Blazr {
 							}
 							ImGui::EndCombo();
 						}
-						ImGui::Dummy(ImVec2(0.0f, ImGui::GetContentRegionAvail().y - 30.0f));
+						ImGui::Dummy(
+							ImVec2(0.0f, ImGui::GetContentRegionAvail().y - 30.0f));
 						// Dugmad "Add" i "Cancel"
 						if (ImGui::Button("Add", ImVec2(80, 0))) {
 							if (selectedComponentIndex != -1) {
@@ -515,18 +544,19 @@ namespace Blazr {
 									// RigidBody
 									break;
 								case 5:
-									showTransformComponent = true; 
+									showTransformComponent = true;
 									break;
 								case 6:
 									showPhysicsComponent = true;
 									break;
 								}
-								showComponentWindow = false; // Zatvori prozor nakon dodavanja
+								showComponentWindow =
+									false; // Zatvori prozor nakon dodavanja
 							}
 						}
 						ImGui::SameLine();
 						if (ImGui::Button("Cancel", ImVec2(80, 0))) {
-							showComponentWindow = false; 
+							showComponentWindow = false;
 						}
 						ImGui::End();
 					}
@@ -535,16 +565,14 @@ namespace Blazr {
 				if (showColorTab) {
 					if (ImGui::BeginTabItem("Color")) {
 						ImGui::Text("Color settings");
-						static ImVec4 sceneColor =
-							ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+						static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 						if (ImGui::ColorPicker3("Game object\ncolor",
 												(float *)&sceneColor)) {
 							Ref<Registry> registry = m_Scene->GetRegistry();
 							auto view =
 								registry->GetRegistry().view<SpriteComponent>();
 							for (auto entity : view) {
-								auto &sprite =
-									view.get<SpriteComponent>(entity);
+								auto &sprite = view.get<SpriteComponent>(entity);
 								sprite.color = {sceneColor.x, sceneColor.y,
 												sceneColor.z, sceneColor.w};
 							}
@@ -554,8 +582,7 @@ namespace Blazr {
 				}
 				ImGui::EndTabBar();
 			}
-		} 
-		else {
+		} else {
 			ImGui::Separator();
 			ImGui::Dummy(ImVec2());
 			ImGui::SetWindowFontScale(1.2f);
@@ -564,7 +591,8 @@ namespace Blazr {
 		}
 		ImGui::End();
 
-		//-----------------------------------------------------------3. box - Camera box with tabs---------------------------------
+		//-----------------------------------------------------------3. box - Camera
+		//box with tabs---------------------------------
 		ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 		ImGui::SetNextWindowPos(ImVec2(270, 19));
 		ImGui::Begin("Camera", nullptr,
@@ -576,13 +604,14 @@ namespace Blazr {
 					//
 				}
 				ImGui::SameLine();
-				if (ImGui::Button("Stop")) {		
+				if (ImGui::Button("Stop")) {
 					//
 				}
 				ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
 
 				if (ImGui::Button("Code")) {
-					showCodeEditor = !showCodeEditor; // Prikazuje ili skriva prozor za kod
+					showCodeEditor =
+						!showCodeEditor; // Prikazuje ili skriva prozor za kod
 					// Učitavanje Lua skripte samo prilikom prvog otvaranja editora
 					if (showCodeEditor) {
 						luaScriptContent = "Lua kod\n";
@@ -591,7 +620,9 @@ namespace Blazr {
 					}
 				}
 				// Create a child window within the "Scene 1" tab for the Game View
-				ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+				ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
+								  ImGuiWindowFlags_NoMove |
+									  ImGuiWindowFlags_NoResize);
 
 				// Get the available space in the child window to render the Game
 				// View ImGui::Begin("Game View");
@@ -643,11 +674,13 @@ namespace Blazr {
 		ImVec2 cameraSize = ImGui::GetWindowSize();
 		ImGui::End();
 
-		//-------------------------------------------------------------4. box - audio/templates---------------------------------
+		//-------------------------------------------------------------4. box -
+		//audio/templates---------------------------------
 		ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, 300));
 		ImGui::SetNextWindowPos(ImVec2(270, heightSize - 281));
 		ImGui::Begin("BOX", nullptr,
-					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+					 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+						 ImGuiWindowFlags_NoTitleBar);
 		const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX", "SCENES"};
 		static int current_item = 0;
 
@@ -662,10 +695,14 @@ namespace Blazr {
 				ImGui::Text("%.3f", volumeLevel);
 
 				ImGui::SetCursorPos(ImVec2(22, 90));
-				ImGui::VSliderFloat("###volume", ImVec2(68, 180), &volumeLevel,
-									0.0f, 1.0f, "");
-				// Backend: varijable volumeLevel i pitchLevel
+				if (ImGui::VSliderFloat("###volume", ImVec2(68, 180), &volumeLevel,
+										0.0f, 1.0f, "")) {
+					BLZR_CORE_ERROR("{0}", volumeLevel);
 
+				
+				}
+			
+				// Backend: varijable volumeLevel 
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Assets")) {
@@ -733,4 +770,4 @@ namespace Blazr {
 		m_GameFrameBuffer->Unbind();
 	}
 
-} // namespace Blazr
+	} // namespace Blazr
