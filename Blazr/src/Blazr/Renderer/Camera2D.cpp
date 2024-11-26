@@ -9,11 +9,11 @@ Ref<Blazr::Camera2D> Blazr::Camera2D::instance = nullptr;
 Camera2D::Camera2D(int width, int height)
 	: m_Width(width), m_Height(height), m_Scale(1.f), m_Position(glm::vec2{0}),
 	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {
-	m_OrthoProjection = glm::ortho(0.f,							 // Left
-								   static_cast<float>(m_Width),	 // Right
-								   static_cast<float>(m_Height), // Top
-								   0.f,							 // Bottom
-								   -1.f,						 // Near
+	m_OrthoProjection = glm::ortho(-static_cast<float>(m_Width / 2),  // Left
+								   static_cast<float>(m_Width / 2),	  // Right
+								   -static_cast<float>(m_Height / 2), // Bottom
+								   static_cast<float>(m_Height / 2),  // Top
+								   -1.f,							  // Near
 								   1.f);
 }
 

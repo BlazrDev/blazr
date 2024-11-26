@@ -18,9 +18,6 @@
 #include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "LinuxWindow.h"
-#include "box2d/box2d.h"
-#include "box2d/id.h"
-#include "box2d/math_functions.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
 #include <memory>
@@ -136,25 +133,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// 	}
 	// });
 
-	b2Vec2 gravity = {0.0f, 9.8f};
-	b2WorldDef worldDef = b2DefaultWorldDef();
-	worldDef.gravity = gravity;
-	b2WorldId worldId = b2CreateWorld(&worldDef);
-
-	PhysicsWorld world = worldId;
-	if (!registry->AddToContext<PhysicsWorld>(world)) {
-		BLZR_CORE_ERROR(
-			"Failed to add the physics world to the registry context!");
-		return;
-	}
-	//
-	auto physicsSystem = std::make_shared<PhysicsSystem>(*registry);
-	if (!registry->AddToContext<std::shared_ptr<PhysicsSystem>>(
-			physicsSystem)) {
-		BLZR_CORE_ERROR(
-			"Failed to add the physics system to the registry context!");
-		return;
-	}
 	// glfwSetMouseButtonCallback(
 	// 	m_Window, [](GLFWwindow *window, int button, int action, int mods) {
 	// 		WindowData &data = *(WindowData
