@@ -4,16 +4,12 @@
 #include <memory>
 
 namespace Blazr {
-using PhysicsWorld = b2WorldId;
+using PhysicsWorld = std::shared_ptr<b2World>();
 
 struct BodyDestroyer {
-	void operator()(b2BodyId *body) const {
-		b2DestroyBody(*body);
-		*body = b2_nullBodyId;
-	}
+	void operator()(b2Body *body) const { body->GetWorld()->DestroyBody(body); }
 };
-
-// static std::shared_ptr<b2BodyId> CreateSharedBody(b2BodyId body) {
-// 	return std::shared_ptr<b2BodyId>(&body, BodyDestroyer{});
-// }
+static std::shared_ptr<b2Body> CreateSharedBody(b2Body *body) {
+	return std::shared_ptr<b2Body>(body, BodyDestroyer{});
+}
 } // namespace Blazr

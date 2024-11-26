@@ -3,6 +3,7 @@
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
@@ -12,6 +13,7 @@
 #include "Blazr/Scripting/GlmLuaBindings.h"
 #include "Blazr/Systems/BoxColliderSystem.h"
 #include "Blazr/Systems/InputSystem.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "ScriptingSystem.h"
 
 #include "../Resources/AssetManager.h"
@@ -111,24 +113,20 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
 	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
-
-	Entity::RegisterMetaComponent<TransformComponent>();
-	Entity::RegisterMetaComponent<SpriteComponent>();
-	Entity::RegisterMetaComponent<BoxColliderComponent>();
-
-	Registry::RegisterMetaComponent<TransformComponent>();
-	Registry::RegisterMetaComponent<SpriteComponent>();
+	PhysicsComponent::CreateLuaPhysicsComponentBind(lua, registry);
 	AnimationComponent::CreateAnimationLuaBind(lua);
-	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
-	Entity::RegisterMetaComponent<AnimationComponent>();
 	Entity::RegisterMetaComponent<BoxColliderComponent>();
+	Entity::RegisterMetaComponent<AnimationComponent>();
+	Entity::RegisterMetaComponent<PhysicsComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
 	Registry::RegisterMetaComponent<AnimationComponent>();
+	Registry::RegisterMetaComponent<BoxColliderComponent>();
+	Registry::RegisterMetaComponent<PhysicsComponent>();
 	SoundPlayer::CreateLuaEntityBind(lua);
 
 	Registry::RegisterMetaComponent<BoxColliderComponent>();

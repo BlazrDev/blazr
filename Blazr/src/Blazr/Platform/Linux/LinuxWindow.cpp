@@ -20,9 +20,6 @@
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
 #include "LinuxWindow.h"
-#include "box2d/box2d.h"
-#include "box2d/id.h"
-#include "box2d/math_functions.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
 #include <memory>
@@ -113,7 +110,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 		WindowCloseEvent event;
 		data.eventCallback(event);
 	});
-	auto lua = std::make_shared<sol::state>();
 }
 
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
