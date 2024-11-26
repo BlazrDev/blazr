@@ -32,3 +32,22 @@ void Blazr::TransformComponent::CreateLuaTransformComponentBind(
 
 	);
 }
+void Blazr::TransformComponent::to_json(nlohmann::json &j,
+										const TransformComponent &transform) {
+
+	j = nlohmann::json{
+		{"position", {transform.position.x, transform.position.y}},
+		{"scale", {transform.scale.x, transform.scale.y}},
+		{"rotation", transform.rotation}};
+}
+
+void Blazr::TransformComponent::from_json(const nlohmann::json &j,
+										  TransformComponent &transform) {
+	auto pos = j.at("position").get<std::vector<float>>();
+	transform.position = {pos[0], pos[1]};
+
+	auto scale = j.at("scale").get<std::vector<float>>();
+	transform.scale = {scale[0], scale[1]};
+
+	transform.rotation = j.at("rotation").get<float>();
+}

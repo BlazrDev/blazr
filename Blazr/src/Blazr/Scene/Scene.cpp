@@ -4,7 +4,9 @@
 #include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Scene.h"
+#include <json.hpp>
 
+using namespace nlohmann;
 namespace Blazr {
 
 Scene::Scene() : m_Camera(1280, 720) {
@@ -127,6 +129,45 @@ void Scene::Render() {
 
 	Renderer2D::EndScene();
 	Renderer2D::Flush();
+}
+
+void Scene::Serialize(nlohmann::json &j) const {
+	j["Entities"] = nlohmann::json::array();
+	auto &registry = m_Registry->GetRegistry();
+
+	auto view = registry.view<TransformComponent, SpriteComponent>();
+
+	view.each([&](auto entity, TransformComponent &transform,
+				  SpriteComponent &sprite) {
+		nlohmann::json entityJson;
+
+		TransformComponent::to_json(entityJson["Transform"], transform);
+
+		SpriteComponent::to_json(entityJson["Sprite"], sprite);
+
+		j["Entities"].push_back(entityJson);
+	});
+}
+
+void Scene::Deserialize(const nlohmann::json &j) {
+	auto &registry = m_Registry->GetRegistry();
+
+	for (const auto &entityJson : j.at("Entities")) {
+		auto entity = registry.create();
+
+		if (entityJson.contains("Transform")) {
+			TransformComponent transform;
+			TransformComponent::from_json(entityJson.at("Transform"),
+										  transform);
+			registry.emplace<TransformComponent>(entity, transform);
+		}
+
+		if (entityJson.contains("Sprite")) {
+			SpriteComponent sprite;
+			SpriteComponent::from_json(entityJson.at("Sprite"), sprite);
+			registry.emplace<SpriteComponent>(entity, sprite);
+		}
+	}
 }
 
 } // namespace Blazr
