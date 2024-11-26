@@ -10,6 +10,7 @@
 
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Scripting/GlmLuaBindings.h"
+#include "Blazr/Systems/BoxColliderSystem.h"
 #include "Blazr/Systems/InputSystem.h"
 #include "ScriptingSystem.h"
 
@@ -103,13 +104,20 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	GLMBindings::CreateLuaGLMBinding(lua);
 	Registry::CreateLuaRegistryBind(lua, registry);
-
-	InputSystem::CreateInputLuaBind(lua);
 	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
+	InputSystem::CreateInputLuaBind(lua);
 
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
 	SpriteComponent::CreateLuaSpriteComponentBind(lua, registry);
+	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
+
+	Entity::RegisterMetaComponent<TransformComponent>();
+	Entity::RegisterMetaComponent<SpriteComponent>();
+	Entity::RegisterMetaComponent<BoxColliderComponent>();
+
+	Registry::RegisterMetaComponent<TransformComponent>();
+	Registry::RegisterMetaComponent<SpriteComponent>();
 	AnimationComponent::CreateAnimationLuaBind(lua);
 	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 

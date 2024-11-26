@@ -37,12 +37,13 @@ bool Blazr::BoxColliderSystem::isColliding(Entity &entity1, Entity &entity2) {
 	float bottom2 = top2 + collider2.height;
 
 	// Check for overlap between the two colliders
-	bool isColliding =
-		(left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2);
+	bool isColliding = (left1 < right2 && right1 > left2 && top1 < bottom2 &&
+						bottom1 > top2) &&
+					   collider1.colliding && collider2.colliding;
 
-	// Update the colliding state
-	collider1.colliding = isColliding;
-	collider2.colliding = isColliding;
+	// // Update the colliding state
+	// collider1.colliding = isColliding;
+	// collider2.colliding = isColliding;
 
 	return isColliding;
 }

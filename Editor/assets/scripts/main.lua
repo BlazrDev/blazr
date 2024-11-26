@@ -3,22 +3,12 @@
 playerEntity = Entity("Player", "Character")
 --
 local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
-local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
-<<<<<<< HEAD
-local animation = playerEntity:add_component(AnimationComponent(10, 10, 3, false))
-local animation = playerEntity:add_component(AnimationComponent(10, 10, 3, false))
-
-mashaEntity = Entity("Masha", "Character")
-local transform2 = mashaEntity:add_component(TransformComponent(300, 300, 0.3, 0.3, 0))
-local transform2 = mashaEntity:add_component(TransformComponent(300, 300, 0.3, 0.3, 0))
-=======
 local animation = playerEntity:add_component(AnimationComponent(10, 1, 10, false))
 local collider = playerEntity:add_component(BoxColliderComponent(32, 32, vec2(32, 0)))
 
 mashaEntity = Entity("Masha", "Character2")
 local transform2 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
->>>>>>> 59163daac4a7ceee34e917ac458ba1bea6b690c3
 local sprite2 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
 local collider2 = mashaEntity:add_component(BoxColliderComponent(472, 617, vec2(0, 0)))
 
@@ -71,7 +61,7 @@ main = {
                 stoji()
             end
             if InputSystem.key_repeating(KEY_SPACE) then
-                udara()
+                skace()
             end
 
             if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then

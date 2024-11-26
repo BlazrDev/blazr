@@ -1,21 +1,32 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/KeyEvent.h"
 #include "Blazr/Events/MouseEvent.h"
+#include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "Blazr/Systems/AnimationSystem.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
 #include "LinuxWindow.h"
+#include "box2d/box2d.h"
+#include "box2d/id.h"
+#include "box2d/math_functions.h"
 #include "ext/vector_float4.hpp"
 #include <Blazr/Resources/AssetManager.h>
-#include <string>
+#include <memory>
+
 namespace Blazr {
 std::unique_ptr<Registry> registry = std::make_unique<Registry>();
 entt::entity selectedEntity =
