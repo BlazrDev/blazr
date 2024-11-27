@@ -19,8 +19,8 @@ namespace Blazr {
 
 
         public:
-            static Ref<SoundPlayer> &GetInstance() {
-                BLZR_CORE_INFO("Sound player reference");
+            BLZR_API static Ref<SoundPlayer> &GetInstance() {
+                //BLZR_CORE_INFO("Sound player reference");
                 if(instance == nullptr) {
                     instance = std::make_shared<SoundPlayer>();
                 }

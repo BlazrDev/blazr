@@ -24,7 +24,7 @@ class AssetManager {
 	AssetManager() = default;
 	~AssetManager() = default;
 
-	static Ref<AssetManager> &GetInstance() {
+	BLZR_API static Ref<AssetManager> &GetInstance() {
 		if (instance == nullptr) {
 			instance = std::make_shared<AssetManager>();
 		}
@@ -41,13 +41,15 @@ class AssetManager {
 					const std::string &fragmentPath);
 	Ref<Blazr::Shader> GetShader(const std::string &name);
 
-	bool LoadMusic(const std::string &name, const std::string &musicPath, const std::string &musicDescription);
+	bool LoadMusic(const std::string &name, const std::string &musicPath,
+				   const std::string &musicDescription);
 	Ref<Blazr::Music> GetMusic(const std::string &name);
 
-	bool LoadEffect(const std::string &name, const std::string &effectPath, const std::string &effectDescription);
+	bool LoadEffect(const std::string &name, const std::string &effectPath,
+					const std::string &effectDescription);
 	Ref<Blazr::Effect> GetEffect(const std::string &name);
 
   private:
 	static Ref<AssetManager> instance;
 };
-} // namespace Blazr
+}; // namespace Blazr

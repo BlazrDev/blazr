@@ -6,6 +6,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
+#include "Blazr/Resources/AssetManager.h"
 
 namespace Blazr {
 	static float zoomLevel = 1.0f;
@@ -43,7 +44,10 @@ namespace Blazr {
 	static bool showColorTab = false;
 
 	// managers
+	
+	static auto assetManager = AssetManager::GetInstance();
 	static auto soundPlayer = SoundPlayer::GetInstance();
+	
 
 	static std::string luaScriptContent = ""; // Sadržaj Lua skripte
 	static char
@@ -69,6 +73,7 @@ namespace Blazr {
 		m_Renderer = Renderer2D();
 
 		InitImGui();
+		
 	}
 
 	void Editor::InitImGui() {

@@ -332,12 +332,14 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
+    "%{IncludeDir.SDL[os.host()]}"
 })
 
 libdirs({
     "%{LibDir.Blazr[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
+    "%{LibDir.SDL[os.host()]}"
 })
 
 -- General Links

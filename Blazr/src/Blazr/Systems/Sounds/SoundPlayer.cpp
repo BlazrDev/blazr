@@ -18,7 +18,9 @@ Blazr::SoundPlayer::SoundPlayer() {
         BLZR_CORE_ERROR("Unable to open SDL Music Mixer {0}", error);
     }
 
-    BLZR_CORE_INFO("Channels allocated {0}", Mix_AllocateChannels(NUM_OF_CHANNELS));
+    Mix_AllocateChannels(NUM_OF_CHANNELS);
+
+    //BLZR_CORE_INFO("Channels allocated {0}", Mix_AllocateChannels(NUM_OF_CHANNELS));
 
     for(int i = 1; i <= NUM_OF_CHANNELS; i++) {
         channelVolumes.emplace(i, MIX_MAX_VOLUME);

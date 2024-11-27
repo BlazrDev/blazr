@@ -1,5 +1,5 @@
-#pragma once
-
+#pragma once 
+#include "blzrpch.h"
 #include "Blazr.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
