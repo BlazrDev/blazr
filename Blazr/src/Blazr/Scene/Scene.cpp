@@ -30,27 +30,6 @@ Scene::Scene() : m_Camera(1280, 720) {
 		return;
 	}
 
-	if (!assetManager->LoadTexture("chammy", "assets/chammy.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("texture", "assets/texture.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("masha", "assets/masha.png", false)) {
-		BLZR_CORE_ERROR("Failed to load the masha texture!");
-		return;
-	}
-
-	if (!assetManager->LoadTexture("player", "assets/sprite_sheet.png",
-								   false)) {
-		BLZR_CORE_ERROR("Failed to load the chammy texture!");
-		return;
-	}
-
 	auto physicsWorld = std::make_shared<b2World>(b2Vec2(0.0f, -9.8f));
 
 	if (!m_Registry->AddToContext<std::shared_ptr<b2World>>(physicsWorld)) {
@@ -65,9 +44,6 @@ Scene::Scene() : m_Camera(1280, 720) {
 			"Failed to add the physics system to the registry context!");
 		return;
 	}
-
-	auto playerTexture = assetManager->GetTexture("player");
-	auto mashaTexture = assetManager->GetTexture("masha");
 
 	auto lua = std::make_shared<sol::state>();
 
@@ -128,84 +104,6 @@ Scene::Scene() : m_Camera(1280, 720) {
 			"Failed to add the animation system to the registry context!");
 		return;
 	}
-
-	// Create the player entity
-
-	// glm::vec2 pos = {100.f, 100.f};
-	// // glm::vec2 size = {200.f, 200.f};
-	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};
-	//
-	// Entity entity = Entity(*m_Registry, "Ent1", "G1");
-	// auto &transform =
-	// 	entity.AddComponent<TransformComponent>(TransformComponent{
-	// 		.position = pos, .scale = glm::vec2(0.3f, 0.3f), .rotation = 0.0f});
-	//
-	// auto &sprite = entity.AddComponent<SpriteComponent>(
-	// 	SpriteComponent{.width = 472.f,
-	// 					.height = 617.f,
-	// 					.startX = 0,
-	// 					.startY = 0,
-	// 					.texturePath = "masha"});
-	// auto &collider =
-	// 	entity.AddComponent<BoxColliderComponent>(BoxColliderComponent{
-	// 		.width = 472, .height = 617, .offset = glm::vec2(0, 0)});
-	// sprite.generateObject(472, 617);
-	//
-	// auto &physics = entity.AddComponent<PhysicsComponent>(
-	// 	PhysicsComponent{physicsWorld,
-	// 					 PhysicsAtributes{
-	// 						 .type = RigidBodyType::DYNAMIC,
-	// 						 .density = 100.f,
-	// 						 .friction = 0.5f,
-	// 						 .restitution = 0.4f,
-	// 						 .radius = 0.f,
-	// 						 .gravityScale = 9.81f,
-	// 						 .position = transform.position,
-	// 						 .scale = transform.scale,
-	// 						 .isFixedRotation = true,
-	// 						 .isCircle = false,
-	// 						 .isBoxShape = true,
-	// 					 }} // namespace Blazr
-	// );
-	// physics.init(1280, 720);
-	//
-	// glm::vec2 pos2 = {100.f, 600.f};
-	// // glm::vec2 size = {200.f, 200.f};
-	//
-	// Entity entity2 = Entity(*m_Registry, "Ent2", "G2");
-	// auto &transform2 =
-	// 	entity2.AddComponent<TransformComponent>(TransformComponent{
-	// 		.position = pos2, .scale = glm::vec2(1.f, 1.f), .rotation = 0.0f});
-	//
-	// auto &sprite2 = entity2.AddComponent<SpriteComponent>(
-	// 	SpriteComponent{.width = 224.f,
-	// 					.height = 224.f,
-	// 					.startX = 0,
-	// 					.startY = 0,
-	// 					.texturePath = "chammy"});
-	// auto &collider2 =
-	// 	entity2.AddComponent<BoxColliderComponent>(BoxColliderComponent{
-	// 		.width = 224, .height = 224, .offset = glm::vec2(0, 0)});
-	// sprite2.generateObject(224, 224);
-	// //
-	// auto &physics2 = entity2.AddComponent<PhysicsComponent>(
-	// 	PhysicsComponent{physicsWorld,
-	// 					 PhysicsAtributes{
-	// 						 .type = RigidBodyType::STATIC,
-	// 						 .density = 100.f,
-	// 						 .friction = 0.9f,
-	// 						 .restitution = 0.f,
-	// 						 .radius = 0.f,
-	// 						 .gravityScale = 5.f,
-	// 						 .position = transform2.position,
-	// 						 .scale = transform2.scale,
-	// 						 .isFixedRotation = true,
-	// 						 .isCircle = false,
-	// 						 .isBoxShape = true,
-	// 					 }} // namespace Blazr
-	// );
-	//
-	// physics2.init(1280, 720);
 }
 
 Scene::~Scene() {}
@@ -254,12 +152,12 @@ void Scene::Render() {
 		sprite.generateTextureCoordinates();
 
 		Renderer2D::DrawQuad(*m_Registry, entity);
-		// Renderer2D::DrawQuad(entt::null,
-		// 					 {transform.position.x + collider.offset.x,
-		// 					  transform.position.y + collider.offset.y},
-		// 					 {collider.width * transform.scale.x,
-		// 					  collider.height * transform.scale.y},
-		// 					 {255, 0, 0, 0.6});
+		Renderer2D::DrawQuad(entt::null,
+							 {transform.position.x + collider.offset.x,
+							  transform.position.y + collider.offset.y},
+							 {collider.width * transform.scale.x,
+							  collider.height * transform.scale.y},
+							 {255, 0, 0, 0.6});
 	}
 
 	Renderer2D::EndScene();

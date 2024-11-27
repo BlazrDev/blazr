@@ -1,3 +1,4 @@
+#pragma once
 #include "entt.hpp"
 #include "glm.hpp"
 #include "sol.hpp"

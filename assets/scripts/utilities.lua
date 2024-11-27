@@ -188,6 +188,11 @@ function LoadMap(mapDef)
 				sprite:generate_object()
 				if tileset.name == "collider" then
 					tile:add_component(BoxColliderComponent(tileset.tilewidth, tileset.tileheight, vec2(0, 0)))
+					tile:add_component(PhysicsComponent(PhysicsAtributes({position = vec2(
+						((col - 1) * tileset.tilewidth * scale),
+						(row * tileset.tileheight * scale)
+					),
+					boxSize = vec2(tileset.tilewidth, tileset.tileheight)})))
 				end
 
 				::continue::

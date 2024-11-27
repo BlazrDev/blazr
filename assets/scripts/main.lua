@@ -10,7 +10,7 @@ Masha = {
 	group = "Character2",
 	components = {
 		transform = {
-			position = { x = 300, y = 300 },
+			position = { x = -300, y = -300 },
 			scale = { x = 0.3, y = 0.3 },
 			rotation = 0,
 		},
@@ -57,132 +57,131 @@ Player = {
 		},
 	},
 }
-
-playerEntity = Entity("Player", "Character")
-local transform = playerEntity:add_component(TransformComponent(300, 720, 5, 5, 0))
-local sprite = playerEntity:add_component(SpriteComponent(32, 32, "player", 0, 0, 0))
-local animation = playerEntity:add_component(AnimationComponent(10, 10, 10, false))
-local collider = playerEntity:add_component(BoxColliderComponent(20, 32, vec2(20, 0)))
 local attributes = PhysicsAtributes({
-	type = RigidBodyType.Dynamic,
-	density = 80,
-	friction = 10,
-	restitution = 0.3,
-	gravityScale = 9.81,
-	position = vec2(300, 1000),
-	scale = vec2(5, 5),
-	boxSize = vec2(20, 32),
-	offset = vec2(20, 0),
-	isSensor = false,
-	isFixedRotation = true,
+    type = RigidBodyType.Dynamic,
+    density = 80,
+    friction = 10,
+    restitution = 0.3,
+    gravityScale = 9.81,
+    position = vec2(300, 1000),
+    scale = vec2(5, 5),
+    boxSize = vec2(20, 32),
+    offset = vec2(20, 0),
+    isSensor = false,
+    isFixedRotation = true,
 })
 local physics = PhysicsComponent(attributes)
 
+
+-- playerEntity = Entity("Player", "Character")
+--
+Assets = {
+	music = {
+		{ name = "masa",  path = "assets/sounds/masa.mp3",  desc = "Masa background music" },
+		{ name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
+	},
+	sound_effects = {
+		{ name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
+	},
+	textures = {
+		{ name = "masha",    path = "assets/masha.png",               pixelArt = false },
+		{ name = "chammy",   path = "assets/chammy.png",              pixelArt = false },
+		{ name = "player",   path = "assets/sprite_sheet.png",        pixelArt = false },
+		{ name = "map",      path = "assets/map_assets/map.png",      pixelArt = true },
+		{ name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
+	},
+}
+
+local tileset = CreateMap()
+LoadAssets(Assets)
+LoadMap(tileset)
+-- local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
+-- local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
+-- local animation = playerEntity:add_component(AnimationComponent(10, 1, 10, false))
+-- local collider = playerEntity:add_component(BoxColliderComponent(32, 32, vec2(32, 0)))
+--
+-- mashaEntity = Entity("Masha", "Character2")
+-- local transform2 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
+-- local sprite2 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
+-- local collider2 = mashaEntity:add_component(BoxColliderComponent(472, 617, vec2(0, 0)))
+local mashaEntity = LoadEntity(Masha)
+local playerEntity = LoadEntity(Player)
 local physicsComponent = playerEntity:add_component(physics)
+local playerCollider = playerEntity:get_component(BoxColliderComponent)
+local mashaCollider = mashaEntity:get_component(BoxColliderComponent)
+local playerAnimation = playerEntity:get_component(AnimationComponent)
+local playerTransform = playerEntity:get_component(TransformComponent)
+-- explosionntity = Entity("Explosion", "e")
+-- local transform3 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
+-- local sprite3 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
+-- local animation3 = playerEntity:add_component(AnimationComponent(10, 10, 10, false))
 
-mashaEntity = Entity("Masha", "Character2")
-local transform2 = mashaEntity:add_component(TransformComponent(-640, -360, 1, 1, 0))
-local sprite2 = mashaEntity:add_component(SpriteComponent(640.0, 360.0, "texture", 0, 0, 0))
-local collider2 = mashaEntity:add_component(BoxColliderComponent(640, 360, vec2(0, -50)))
-local attributes2 = PhysicsAtributes({
-	type = RigidBodyType.Static,
-	density = 1000,
-	friction = 0.5,
-	restitution = 0,
-	gravityScale = 0,
-	position = vec2(-640, -360),
-	scale = vec2(1, 1),
-	boxSize = vec2(640, 360),
-	offset = vec2(0, -50),
-	isSensor = false,
-	isFixedRotation = false,
-})
-local physics2 = PhysicsComponent(attributes2)
+-- sprite:generate_object()
+-- sprite2:generate_object()
+local lifes = 3
+playerCollider.colliding = true
+mashaCollider.colliding = true
+-- collider.colliding = true
+-- collider2.colliding = true
 
-local physicsComponent2 = mashaEntity:add_component(physics2)
-
-texture = Entity("Texture", "Character3")
-local transform3 = texture:add_component(TransformComponent(200, -360, 1, 1, 0))
-local sprite3 = texture:add_component(SpriteComponent(640.0, 360.0, "texture", 0, 0, 0))
-local collider3 = texture:add_component(BoxColliderComponent(640, 360, vec2(0, -50)))
-local attributes3 = PhysicsAtributes({
-	type = RigidBodyType.Static,
-	density = 1000,
-	friction = 0.5,
-	restitution = 0,
-	gravityScale = 0,
-	position = vec2(200, -320),
-	scale = vec2(1, 1),
-	boxSize = vec2(640, 360),
-	offset = vec2(0, -50),
-	isSensor = false,
-	isFixedRotation = false,
-})
-local physics3 = PhysicsComponent(attributes3)
-
-local physicsComponent3 = texture:add_component(physics3)
-
-sprite:generate_object()
-sprite2:generate_object()
-sprite3:generate_object()
 local function stoji()
 	playerAnimation.frame_offset = 7
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 11
 end
 
-local function skace()
-	animation.frame_offset = 2
-	animation.current_frame = 0
-	animation.num_frames = 6
+local function udara()
+	playerAnimation.frame_offset = 4
+
+	playerAnimation.current_frame = 2
+	playerAnimation.num_frames = 10
 end
 
 local function trci()
-	animation.frame_offset = 6
-	animation.current_frame = 0
-	animation.num_frames = 8
+	playerAnimation.frame_offset = 6
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 8
 	-- sprite2.color.x = 1.0
 	-- sprite2.color.y = 1.0
 	-- sprite2.color.z = 1.0
 end
-
-collider.colliding = true
-collider2.colliding = true
-
-local x = -100
-
+-- local am = AssetManager:get_instance()
+-- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
+-- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
+-- SoundPlayer.play_music("masa", 0, 0)
+-- run_script("assets/scripts/test.lua")
 local function update()
-	local velocity = physicsComponent:get_linear_velocity()
-	if InputSystem.key_repeating(KEY_A) then
-		physicsComponent:set_linear_velocity(vec2(-25, velocity.y))
-		trci()
-	else
-		stoji()
-	end
-	if InputSystem.key_repeating(KEY_D) then
-		physicsComponent:set_linear_velocity(vec2(25, velocity.y))
-		trci()
-	else
-		stoji()
-	end
-	if InputSystem.key_repeating(KEY_SPACE) then
-		physicsComponent:set_linear_velocity(vec2(velocity.x, 0))
-		physicsComponent:set_linear_impulse(vec2(0, -1000000))
-		skace()
-	else
-		stoji()
-	end
+    local velocity = physicsComponent:get_linear_velocity()
+    if InputSystem.key_repeating(KEY_A) then
+        physicsComponent:set_linear_velocity(vec2(-25, velocity.y))
+        trci()
+    else
+        stoji()
+    end
+    if InputSystem.key_repeating(KEY_D) then
+        physicsComponent:set_linear_velocity(vec2(25, velocity.y))
+        trci()
+    else
+        stoji()
+    end
+    if InputSystem.key_repeating(KEY_SPACE) then
+        physicsComponent:set_linear_velocity(vec2(velocity.x, 0))
+        physicsComponent:set_linear_impulse(vec2(0, -1000000))
+        skace()
+    else
+        stoji()
+    end
 end
 
 main = {
 	[1] = {
 		update = function()
+
 			update()
 		end,
 	},
 	[2] = {
 		render = function()
-			-- print("We are rendering in lua!")
 		end,
 	},
 }
