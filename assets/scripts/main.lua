@@ -20,77 +20,73 @@ local collider2 = mashaEntity:add_component(BoxColliderComponent(472, 617, vec2(
 sprite:generate_object()
 sprite2:generate_object()
 
-
-
 local lifes = 3
 collider.colliding = true
 collider2.colliding = true
 
 local function stoji()
-    animation.frame_offset = 7
-    animation.current_frame = 0
-    animation.num_frames = 11
+	animation.frame_offset = 7
+	animation.current_frame = 0
+	animation.num_frames = 11
 end
 
 local function udara()
-    animation.frame_offset = 4
+	animation.frame_offset = 4
 
-    animation.current_frame = 2
-    animation.num_frames = 10
+	animation.current_frame = 2
+	animation.num_frames = 10
 end
 
 local function trci()
-    animation.frame_offset = 6
-    animation.current_frame = 0
-    animation.num_frames = 8
-    sprite2.color.x = 1.0
-    sprite2.color.y = 1.0
-    sprite2.color.z = 1.0
+	animation.frame_offset = 6
+	animation.current_frame = 0
+	animation.num_frames = 8
+	sprite2.color.x = 1.0
+	sprite2.color.y = 1.0
+	sprite2.color.z = 1.0
 end
 -- local am = AssetManager:get_instance()
--- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
+AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
 -- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
--- SoundPlayer.play_music("masa", 0, 0)
+SoundPlayer.play_music("masa", 0, 0)
 -- run_script("assets/scripts/test.lua")
 
-
-
 main = {
-    [1] = {
-        update = function()
-            if InputSystem.key_repeating(KEY_A) then
-                transform.position.x = transform.position.x - 5
-            elseif InputSystem.key_repeating(KEY_D) then
-                transform.position.x = transform.position.x + 5
-                trci()
-            elseif InputSystem.key_repeating(KEY_S) then
-                transform.position.y = transform.position.y + 5
-            elseif InputSystem.key_repeating(KEY_W) then
-                transform.position.y = transform.position.y - 5
-            else
-                stoji()
-            end
-            if InputSystem.key_repeating(KEY_SPACE) then
-                udara()
-                SoundPlayer.play_effect("boing", 0, 1)
-            end
+	[1] = {
+		update = function()
+			if InputSystem.key_repeating(KEY_A) then
+				transform.position.x = transform.position.x - 5
+			elseif InputSystem.key_repeating(KEY_D) then
+				transform.position.x = transform.position.x + 5
+				trci()
+			elseif InputSystem.key_repeating(KEY_S) then
+				transform.position.y = transform.position.y + 5
+			elseif InputSystem.key_repeating(KEY_W) then
+				transform.position.y = transform.position.y - 5
+			else
+				stoji()
+			end
+			if InputSystem.key_repeating(KEY_SPACE) then
+				udara()
+				SoundPlayer.play_effect("boing", 0, 1)
+			end
 
-            if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then
-                print("Colliding")
-                sprite2.color.x = 1.0
-                sprite2.color.y = 0.0
-                sprite2.color.z = 0.0
-                transform.position.x = transform.position.x - 5
-            end
-            -- collider.colliding = false
-            -- collider2.colliding = false
-        end,
-    },
-    [2] = {
-        render = function()
-            -- stoji()
-            -- stoji()
-            -- print("We are rendering in lua!")
-        end,
-    },
+			if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then
+				print("Colliding")
+				sprite2.color.x = 1.0
+				sprite2.color.y = 0.0
+				sprite2.color.z = 0.0
+				transform.position.x = transform.position.x - 5
+			end
+			-- collider.colliding = false
+			-- collider2.colliding = false
+		end,
+	},
+	[2] = {
+		render = function()
+			-- stoji()
+			-- stoji()
+			-- print("We are rendering in lua!")
+		end,
+	},
 }
