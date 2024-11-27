@@ -19,11 +19,13 @@ class Editor : public Application {
 	void End();
 	void Begin();
 	void RenderSceneToTexture();
+	void setEventCallback(const Window::EventCallbackFn &callback);
 
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
 	Ref<Scene> m_Scene;
+	Window::EventCallbackFn m_EventCallback;
 };
 
 Application *CreateApplication() { return new Editor(); }

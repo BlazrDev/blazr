@@ -15,9 +15,9 @@
 
 namespace Blazr {
 
-Scene::Scene() : m_Camera(1280, 720) {
-	m_Camera.SetScale(1.0f);
-	m_Camera.SetPosition({0.0f, 0.0f});
+Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
+	m_Camera.GetCamera().SetScale(1.0f);
+	m_Camera.GetCamera().SetPosition({0.0f, 0.0f});
 	auto assetManager = AssetManager::GetInstance();
 	m_Registry = std::make_shared<Registry>();
 
@@ -222,10 +222,13 @@ void Scene::Update() {
 	}
 }
 
+void Scene::onEvent(Event &e) { m_Camera.OnEvent(e); }
+
 void Scene::Render() {
 
-	Renderer2D::BeginScene(m_Camera);
-	m_Camera.Update();
+	Renderer2D::BeginScene(m_Camera.GetCamera());
+	m_Camera.GetCamera().Update();
+	m_Camera.OnUpdate();
 
 	auto view =
 		m_Registry->GetRegistry()

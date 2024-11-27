@@ -25,6 +25,10 @@ void Camera2D::SetScale(const float &scale) {
 	m_Scale = scale;
 	m_bNeedsUpdate = true;
 }
+void Camera2D::SetProjection(float left, float right, float bottom, float top) {
+	m_OrthoProjection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+	m_CameraMatrix = m_OrthoProjection;
+}
 
 float Camera2D::GetScale() const { return m_Scale; }
 

@@ -188,6 +188,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Blazr\Renderer\Buffer.h" />
     <ClInclude Include="src\Blazr\Renderer\Camera2D.h" />
+    <ClInclude Include="src\Blazr\Renderer\CameraController.h" />
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Blazr\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Blazr\Renderer\RenderContext.h" />
@@ -225,6 +226,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp" />
+    <ClCompile Include="src\Blazr\Renderer\CameraController.cpp" />
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Blazr\Renderer\RenderContext.cpp" />
