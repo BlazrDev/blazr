@@ -6,16 +6,16 @@ local transform = playerEntity:add_component(TransformComponent(300, 720, 5, 5, 
 local sprite = playerEntity:add_component(SpriteComponent(32, 32, "player", 0, 0, 0))
 local animation = playerEntity:add_component(AnimationComponent(10, 10, 10, false))
 local collider = playerEntity:add_component(BoxColliderComponent(20, 32, vec2(20, 0)))
-local attributes = PhysicsAtributes({
+local attributes = PhysicsAttributes({
     type = RigidBodyType.Dynamic,
     density = 80,
     friction = 10,
     restitution = 0.3,
     gravityScale = 9.81,
-    position = vec2(300, 1000),
-    scale = vec2(5, 5),
-    boxSize = vec2(20, 32),
-    offset = vec2(20, 0),
+    position = transform.position,
+    scale = transform.scale,
+    boxSize = vec2(collider.width, collider.height),
+    offset = collider.offset,
     isSensor = false,
     isFixedRotation = true,
 })
@@ -27,7 +27,7 @@ mashaEntity = Entity("Masha", "Character2")
 local transform2 = mashaEntity:add_component(TransformComponent(-640, -360, 1, 1, 0))
 local sprite2 = mashaEntity:add_component(SpriteComponent(640.0, 360.0, "texture", 0, 0, 0))
 local collider2 = mashaEntity:add_component(BoxColliderComponent(640, 360, vec2(0, -50)))
-local attributes2 = PhysicsAtributes({
+local attributes2 = PhysicsAttributes({
     type = RigidBodyType.Static,
     density = 1000,
     friction = 0.5,
@@ -48,7 +48,7 @@ texture = Entity("Texture", "Character3")
 local transform3 = texture:add_component(TransformComponent(200, -360, 1, 1, 0))
 local sprite3 = texture:add_component(SpriteComponent(640.0, 360.0, "texture", 0, 0, 0))
 local collider3 = texture:add_component(BoxColliderComponent(640, 360, vec2(0, -50)))
-local attributes3 = PhysicsAtributes({
+local attributes3 = PhysicsAttributes({
     type = RigidBodyType.Static,
     density = 1000,
     friction = 0.5,
@@ -99,21 +99,15 @@ local function update()
     if InputSystem.key_repeating(KEY_A) then
         physicsComponent:set_linear_velocity(vec2(-25, velocity.y))
         trci()
-    else
-        stoji()
     end
     if InputSystem.key_repeating(KEY_D) then
         physicsComponent:set_linear_velocity(vec2(25, velocity.y))
         trci()
-    else
-        stoji()
     end
     if InputSystem.key_repeating(KEY_SPACE) then
         physicsComponent:set_linear_velocity(vec2(velocity.x, 0))
         physicsComponent:set_linear_impulse(vec2(0, -1000000))
         skace()
-    else
-        stoji()
     end
 end
 
