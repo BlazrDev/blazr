@@ -47,16 +47,14 @@ void Editor::Init() {
 	BLZR_CORE_INFO("Initializing Editor...");
 
 	Renderer2D::Init();
-	m_Scene = CreateRef<Scene>();
-	auto animationSystem =
-		std::make_shared<AnimationSystem>(*(m_Scene->GetRegistry()).get());
-	auto scriptingSystem =
-		std::make_shared<ScriptingSystem>(*(m_Scene->GetRegistry()).get());
+	// m_Scene = CreateRef<Scene>();
+	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry.get());
+	auto scriptingSystem = std::make_shared<ScriptingSystem>(*m_Registry.get());
 
-	m_Scene->GetRegistry()->AddToContext(animationSystem);
-	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
-    m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
-		m_Renderer = Renderer2D();
+	m_Registry->AddToContext(animationSystem);
+	m_Registry->AddToContext(scriptingSystem);
+	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
+	m_Renderer = Renderer2D();
 	InitImGui();
 }
 
@@ -94,7 +92,6 @@ void Editor::Run() {
 
 		glfwPollEvents();
 		m_Window->onUpdate();
-		// zoomLevel = m_Window->GetCamera()->GetScale();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -104,8 +101,6 @@ void Editor::Run() {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		// glClear(GL_COLOR_BUFFER_BIT);
 
 		ImGuiIO &io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
@@ -393,9 +388,8 @@ void Editor::RenderImGui() {
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 					if (ImGui::ColorPicker3("Game object\ncolor",
 											(float *)&sceneColor)) {
-						Ref<Registry> registry = m_Scene->GetRegistry();
 						auto view =
-							registry->GetRegistry().view<SpriteComponent>();
+							m_Registry->GetRegistry().view<SpriteComponent>();
 						for (auto entity : view) {
 							auto &sprite = view.get<SpriteComponent>(entity);
 							sprite.color = {sceneColor.x, sceneColor.y,
@@ -587,9 +581,13 @@ void Editor::RenderSceneToTexture() {
 	m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_Scene->Update();
+	if (m_ActiveScene != nullptr) {
+		m_ActiveScene->Update();
 
-	m_Scene->Render();
+		m_ActiveScene->Render();
+	} else {
+		BLZR_CORE_WARN("Active scene is null");
+	}
 
 	m_GameFrameBuffer->Unbind();
 }

@@ -22,8 +22,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	bodyDef.type = static_cast<b2BodyType>(m_Atributes.type);
 	// bodyDef.type = b2BodyType::b2_dynamicBody;
 	//
-	BLZR_CORE_ERROR("PhysicsComponent::init window size: {0} {1}", windowWidth,
-					windowHeight);
 
 	bodyDef.position.Set((m_Atributes.position.x - (windowWidth * 0.5f) +
 						  m_Atributes.boxSize.x * m_Atributes.scale.x * 0.5f) *
@@ -31,9 +29,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 						 (m_Atributes.position.y - (windowHeight * 0.5f) +
 						  m_Atributes.boxSize.y * m_Atributes.scale.y * 0.5f) *
 							 PIXELS_TO_METERS);
-
-	BLZR_CORE_ERROR("PhysicsComponent::init: {0}, {1}", bodyDef.position.x,
-					bodyDef.position.y);
 
 	bodyDef.gravityScale = m_Atributes.gravityScale;
 	bodyDef.fixedRotation = m_Atributes.isFixedRotation;
@@ -59,19 +54,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 						  b2Vec2{m_Atributes.offset.x * PIXELS_TO_METERS,
 								 m_Atributes.offset.y * PIXELS_TO_METERS},
 						  0.0f);
-
-		BLZR_CORE_ERROR(
-			"BoxShape::init: {0}, {1}",
-			PIXELS_TO_METERS * (m_Atributes.boxSize.x + m_Atributes.offset.x) *
-				m_Atributes.scale.x * 0.5f,
-			PIXELS_TO_METERS * (m_Atributes.boxSize.y + m_Atributes.offset.y) *
-				m_Atributes.scale.y * 0.5f);
-		// // boxShape.SetAsBox(50, 50);
-		// BLZR_CORE_ERROR("BoxShape::init: {0}, {1}",
-		// 				PIXELS_TO_METERS * m_Atributes.boxSize.x *
-		// 					m_Atributes.scale.x * 0.5f,
-		// 				PIXELS_TO_METERS * m_Atributes.boxSize.y *
-		// 					m_Atributes.scale.y * 0.5f);
 	}
 
 	// b2Polygon box = b2MakeBox(1.0f, 1.0f);

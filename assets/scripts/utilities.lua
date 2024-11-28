@@ -113,14 +113,12 @@ function Tileset:Create(params)
 	}
 	this.rows = params.height / params.tileheight
 	this.lastgid = math.floor(((this.rows * this.columns) + this.firstgid - 1))
-	print("debilu")
 	print(this.rows, this.lastgid)
 	setmetatable(this, self)
 	return this
 end
 
 function Tileset:TileIdExists(id)
-	print("nnjesto")
 	return id >= self.firstgid and id <= self.lastgid
 end
 
@@ -130,11 +128,10 @@ function Tileset:GetTileCoords(id)
 	local actualId = id - self.firstgid
 	local startY = math.floor(1440 / 16) - math.floor(actualId / self.columns) - 1
 	local startX = math.floor(actualId % self.columns)
-	print("start x: " .. startX .. " start y: " .. startY)
 	return startX, startY
 end
 
-function LoadMap(mapDef)
+function LoadMap(mapDef, scene)
 	assert(mapDef, "Map does not exist")
 
 	local tilesets = {}
@@ -171,12 +168,12 @@ function LoadMap(mapDef)
 
 				local startX, startY = tileset:GetTileCoords(id)
 				--for now scale is 2
-				local scale = 2
+				local scale = 3
 				local tile = Entity("", "tiles")
 				tile:add_component(
 					TransformComponent(
 						((col - 1) * tileset.tilewidth * scale),
-						(row * tileset.tileheight * scale),
+						(((rows-row) * (tileset.tileheight) * scale)),
 						scale,
 						scale,
 						0
@@ -189,11 +186,14 @@ function LoadMap(mapDef)
 				if tileset.name == "collider" then
 					tile:add_component(BoxColliderComponent(tileset.tilewidth, tileset.tileheight, vec2(0, 0)))
 					tile:add_component(PhysicsComponent(PhysicsAtributes({position = vec2(
-						((col - 1) * tileset.tilewidth * scale),
-						(row * tileset.tileheight * scale)
-					),
+						((col - 1/2) * tileset.tilewidth * scale),
+						(((rows-row +1/2) * tileset.tileheight * scale))
+			),
 					boxSize = vec2(tileset.tilewidth, tileset.tileheight)})))
 				end
+
+				local layerManager = scene:GetLayerManager()
+				layerManager:AddEntityToLayer(tostring(layer),tile)
 
 				::continue::
 			end

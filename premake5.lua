@@ -347,6 +347,7 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
+    "%{IncludeDir.SDL[os.host()]}",
 })
 
 libdirs({

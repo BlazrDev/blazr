@@ -17,14 +17,8 @@ inline auto InvokeMeta(entt::meta_type meta, entt::id_type id, Args &&...args) {
 	}
 
 	if (auto function = meta.func(id); function) {
-		BLZR_CORE_INFO("Function found!");
 		auto result = function.invoke({}, std::forward<Args>(args)...);
 
-		if (result) {
-			BLZR_CORE_INFO("Function invoked successfully, result is valid.");
-		} else {
-			BLZR_CORE_ERROR("Function invoked, but result is null.");
-		}
 		return result;
 	}
 

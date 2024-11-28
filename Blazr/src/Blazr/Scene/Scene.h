@@ -2,12 +2,15 @@
 
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Ecs/Registry.h"
+#include "Blazr/Layers/LayerManager.h"
 #include "Blazr/Renderer/Camera2D.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include <json.hpp>
 #include <memory>
+#include <vector>
 
 using namespace nlohmann;
+
 namespace Blazr {
 
 class Scene {
@@ -23,12 +26,27 @@ class Scene {
 
 	void BLZR_API Update();
 	void BLZR_API Render();
+
 	void Serialize(json &j) const;
 	void Deserialize(const json &j);
+
+	void AddLayer(const std::string &layerName, int zIndex);
+	void RemoveLayer(const std::string &layerName);
+	Ref<Layer> GetLayerByName(const std::string &layerName);
+	std::vector<Ref<Layer>> GetAllLayers() const;
+
+	void AddEntityToLayer(const std::string &layerName, Ref<Entity> entity);
+	void RemoveEntityFromLayer(const std::string &layerName,
+							   Ref<Entity> entity);
+
+	Ref<LayerManager> GetLayerManager() { return m_LayerManager; }
+
+	static void BindScene(sol::state &lua);
 
   private:
 	std::shared_ptr<Blazr::Registry> m_Registry;
 	Camera2D m_Camera;
+	Ref<LayerManager> m_LayerManager;
 };
 
 } // namespace Blazr

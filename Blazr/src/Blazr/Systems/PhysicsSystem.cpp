@@ -29,9 +29,6 @@ void Blazr::PhysicsSystem::Update(Registry &registry) {
 
 		const auto &pos = rigidBody->GetPosition();
 
-		BLZR_CORE_INFO("PhysicsSystem::Update postition: {0}, {1}", pos.x,
-					   pos.y);
-
 		// transform.position.x =
 		// 	((scaledWidth / 2.f) + pos.x) * METERS_TO_PIXELS -
 		// 	(collider.width * transform.scale.x) / 2.f;
@@ -47,14 +44,6 @@ void Blazr::PhysicsSystem::Update(Registry &registry) {
 		transform.position.y =
 			(scaledHeight * 0.5f - collider.height * transform.scale.y * 0.5f) +
 			pos.y * METERS_TO_PIXELS;
-
-		BLZR_CORE_INFO(
-			"PhysicsSystem::Update: {0}, {1}",
-			(scaledWidth * 0.5f - collider.width * transform.scale.x * 0.5f) +
-				pos.x * METERS_TO_PIXELS,
-
-			(scaledHeight * 0.5f - collider.height * transform.scale.y * 0.5f) +
-				pos.y * METERS_TO_PIXELS);
 
 		if (!rigidBody->IsFixedRotation()) {
 			transform.rotation = glm::degrees(rigidBody->GetAngle());

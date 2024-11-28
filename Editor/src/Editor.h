@@ -26,7 +26,6 @@ class Editor : public Application {
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
-	Ref<Scene> m_Scene;
 };
 
 Application *CreateApplication() { return new Editor(); }

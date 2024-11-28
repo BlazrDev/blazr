@@ -182,6 +182,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Events\MouseEvent.h" />
     <ClInclude Include="src\Blazr\Fonts\Font.h" />
     <ClInclude Include="src\Blazr\Fonts\stb_truetype.h" />
+    <ClInclude Include="src\Blazr\Layers\Layer.h" />
+    <ClInclude Include="src\Blazr\Layers\LayerManager.h" />
     <ClInclude Include="src\Blazr\Physics\Box2DWrapper.h" />
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h" />
     <ClInclude Include="src\Blazr\Project\Project.h" />
@@ -226,6 +228,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Ecs\Registry.cpp" />
     <ClCompile Include="src\Blazr\Fonts\Font.cpp" />
     <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp" />
+    <ClCompile Include="src\Blazr\Layers\Layer.cpp" />
+    <ClCompile Include="src\Blazr\Layers\LayerManager.cpp" />
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp" />
     <ClCompile Include="src\Blazr\Project\Project.cpp" />
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp" />

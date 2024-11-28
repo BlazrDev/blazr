@@ -10,7 +10,7 @@ Masha = {
 	group = "Character2",
 	components = {
 		transform = {
-			position = { x = -300, y = -300 },
+			position = { x = 0, y = 0},
 			scale = { x = 0.3, y = 0.3 },
 			rotation = 0,
 		},
@@ -34,7 +34,7 @@ Player = {
 	components = {
 		transform = {
 			position = { x = 100, y = 100 },
-			scale = { x = 5, y = 5 },
+			scale = { x = 3, y = 3},
 			rotation = 0,
 		},
 		sprite = {
@@ -45,9 +45,9 @@ Player = {
 			layer = 0,
 		},
 		box_collider = {
-			width = 32,
-			height = 32,
-			offset = { x = 32, y = 0 },
+			width = 20,
+			height = 24,
+			offset = { x = 15, y = 0 },
 		},
 		animation = {
 			num_frames = 10,
@@ -60,17 +60,24 @@ Player = {
 local attributes = PhysicsAtributes({
     type = RigidBodyType.Dynamic,
     density = 80,
-    friction = 10,
+    friction = 1000,
     restitution = 0.3,
-    gravityScale = 9.81,
-    position = vec2(300, 1000),
-    scale = vec2(5, 5),
-    boxSize = vec2(20, 32),
-    offset = vec2(20, 0),
+    gravityScale = 0.0,
+    position = vec2(100, 300),
+    scale = vec2(3, 3),
+    boxSize = vec2(20, 24),
+    offset = vec2(15, 0),
     isSensor = false,
     isFixedRotation = true,
 })
 local physics = PhysicsComponent(attributes)
+
+local scene = Scene()
+local layerManager = scene:GetLayerManager()
+local backgroundLayer = layerManager:CreateLayer("0", 0)
+local playerLayer = layerManager:CreateLayer("1", 1)
+local colliderLayer = layerManager:CreateLayer("2", 2)
+editor:SetActiveScene(scene)
 
 
 -- playerEntity = Entity("Player", "Character")
@@ -94,7 +101,7 @@ Assets = {
 
 local tileset = CreateMap()
 LoadAssets(Assets)
-LoadMap(tileset)
+LoadMap(tileset, scene)
 -- local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 -- local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
 -- local animation = playerEntity:add_component(AnimationComponent(10, 1, 10, false))
@@ -111,6 +118,9 @@ local playerCollider = playerEntity:get_component(BoxColliderComponent)
 local mashaCollider = mashaEntity:get_component(BoxColliderComponent)
 local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
+
+layerManager:AddEntityToLayer("0", mashaEntity)
+layerManager:AddEntityToLayer("1", playerEntity)
 -- explosionntity = Entity("Explosion", "e")
 -- local transform3 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
 -- local sprite3 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
@@ -150,38 +160,41 @@ end
 -- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
 -- SoundPlayer.play_music("masa", 0, 0)
 -- run_script("assets/scripts/test.lua")
+local x = 5
+local y = 5
 local function update()
     local velocity = physicsComponent:get_linear_velocity()
     if InputSystem.key_repeating(KEY_A) then
-        physicsComponent:set_linear_velocity(vec2(-25, velocity.y))
+        physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
         trci()
-    else
-        stoji()
-    end
-    if InputSystem.key_repeating(KEY_D) then
-        physicsComponent:set_linear_velocity(vec2(25, velocity.y))
+    elseif InputSystem.key_repeating(KEY_D) then
+        physicsComponent:set_linear_velocity(vec2(x, velocity.y))
         trci()
-    else
-        stoji()
-    end
-    if InputSystem.key_repeating(KEY_SPACE) then
-        physicsComponent:set_linear_velocity(vec2(velocity.x, 0))
-        physicsComponent:set_linear_impulse(vec2(0, -1000000))
-        skace()
-    else
-        stoji()
+  	else
+				local new_velocity_x = (velocity.x < 0) and (velocity.x + x/10) or (velocity.x - x/10)
+				physicsComponent:set_linear_velocity(vec2(new_velocity_x, velocity.y))
+        trci()
+  	end
+    if InputSystem.key_repeating(KEY_W) then
+        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
+        trci()
+  	end
+    if InputSystem.key_repeating(KEY_S) then
+        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
+        trci()
     end
 end
 
 main = {
 	[1] = {
 		update = function()
-
 			update()
+			-- scene:Update()
 		end,
 	},
 	[2] = {
 		render = function()
+			-- scene:Render()
 		end,
 	},
 }
