@@ -1,11 +1,18 @@
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Editor.h"
+#include "box2d/box2d.h"
+#include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
@@ -71,7 +78,6 @@ void Editor::Init() {
 	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
-
 	InitImGui();
 }
 
@@ -130,7 +136,6 @@ void Editor::Run() {
 
 			glfwMakeContextCurrent(backupContext);
 		}
-
 		// glfwSwapBuffers(m_Window->GetWindow());
 	}
 
@@ -779,10 +784,12 @@ void Editor::Shutdown() {
 }
 
 void Editor::RenderSceneToTexture() {
+
 	m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_Scene->Update();
+
 	m_Scene->Render();
 
 	m_GameFrameBuffer->Unbind();

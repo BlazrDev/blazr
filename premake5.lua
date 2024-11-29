@@ -58,6 +58,10 @@ LibDir["SDL"] = {
     linux = "Blazr/vendor/sdl/linux",
     windows = "Blazr/vendor/sdl/windows",
 }
+LibDir["box2d"] = {
+    linux = "Blazr/vendor/box2d/lib",
+    windows = "Blazr/vendor/box2d/lib",
+}
 
 -- Function to build GLEW on Linux
 function build_glew()
@@ -90,6 +94,7 @@ files({
 
 includedirs({
     "%{prj.name}/vendor/spdlog/include",
+    "%{prj.name}/vendor/box2d/include",
     "%{prj.name}/src",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW[os.host()]}",
@@ -98,14 +103,15 @@ includedirs({
     "%{IncludeDir.GLM}",
     "%{IncludeDir.EnTT}",
     "%{IncludeDir.Json}",
-    "%{IncludeDir.SDL[os.host()]}"
+    "%{IncludeDir.SDL[os.host()]}",
 })
 
 libdirs({
     "%{LibDir.GLFW[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
-    "%{LibDir.SDL[os.host()]}"
+    "%{LibDir.SDL[os.host()]}",
+    "%{LibDir.box2d[os.host()]}",
 })
 
 filter("system:windows")
@@ -119,7 +125,8 @@ links({
     "glew32s",
     "lua53",
     "SDL2",
-    "SDL2_mixer"
+    "SDL2_mixer",
+    "box2d",
 })
 
 defines({
@@ -144,12 +151,12 @@ links({
     "GLEW",
     "lua53",
     "SDL2",
-    "SDL2_mixer"
+    "SDL2_mixer",
+    "box2d",
 })
 
 linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
 linkoptions({ "-LBlazr/vendor/sdl/linux", "-Wl,-rpath=Blazr/vendor/sdl/linux" })
-
 
 defines({
     "BLZR_PLATFORM_LINUX",
@@ -191,6 +198,7 @@ includedirs({
     "Blazr/vendor/glm",
     "Blazr/vendor/entt",
     "Blazr/vendor/spdlog/include",
+    "Blazr/vendor/box2d/include",
     "Blazr/src",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.ImGuiBackends}",
@@ -209,6 +217,7 @@ libdirs({
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
     "%{LibDir.SDL[os.host()]}",
+    "%{LibDir.box2d[os.host()]}",
 })
 
 filter("system:windows")
@@ -222,8 +231,8 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
-    "SDL2",
     "SDL2_mixer",
+    "box2d",
 })
 
 defines({
@@ -243,6 +252,7 @@ links({
     "lua53",
     "SDL2",
     "SDL2_mixer",
+    "box2d",
 })
 
 defines({
@@ -322,6 +332,7 @@ files({
 
 includedirs({
     "Blazr/vendor/spdlog/include",
+    "Blazr/vendor/box2d/include",
     "Blazr/src",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.ImGuiBackends}",
@@ -332,20 +343,22 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
-    "%{IncludeDir.SDL[os.host()]}"
+    "%{IncludeDir.SDL[os.host()]}",
 })
 
 libdirs({
     "%{LibDir.Blazr[os.host()]}",
     "%{LibDir.GLEW[os.host()]}",
     "%{LibDir.Lua[os.host()]}",
-    "%{LibDir.SDL[os.host()]}"
+    "%{LibDir.SDL[os.host()]}",
+    "%{LibDir.box2d[os.host()]}",
 })
 
 -- General Links
 links({
     "ImGui",
     "Blazr",
+    "box2d",
 })
 
 -- Windows-specific configuration
@@ -357,6 +370,7 @@ links({
     "OpenGL32",
     "glew32s",
     "lua53",
+    "box2d",
 })
 
 defines({
@@ -375,6 +389,7 @@ links({
     "GL",
     "GLEW",
     "lua53",
+    "box2d",
 })
 
 defines({
@@ -411,6 +426,7 @@ links({
     "GL",
     "GLEW",
     "lua53",
+    "box2d",
 })
 
 defines({

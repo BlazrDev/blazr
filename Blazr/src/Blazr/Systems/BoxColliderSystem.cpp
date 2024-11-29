@@ -30,19 +30,34 @@ bool Blazr::BoxColliderSystem::isColliding(Entity &entity1, Entity &entity2) {
 	float top1 = transform1.position.y + collider1.offset.y;
 	float bottom1 = top1 + collider1.height;
 
+	BLZR_CORE_INFO(
+		"Collider1: left1: {0}, right1: {1}, top1: {2}, bottom1: {3}", left1,
+		right1, top1, bottom1);
+
+	BLZR_CORE_INFO(
+		"Collider1: x: {0}, y: {1}, colliderWidth: {2}, colliderHeight: {3}, "
+		"colliderOffsetX: {4}, colliderOffsetY: {5}",
+		transform1.position.x, transform1.position.y, collider1.width,
+		collider1.height, collider1.offset.x, collider1.offset.y);
+
 	// Calculate the edges of collider2
 	float left2 = transform2.position.x + collider2.offset.x;
 	float right2 = left2 + collider2.width;
 	float top2 = transform2.position.y + collider2.offset.y;
 	float bottom2 = top2 + collider2.height;
 
-	// Check for overlap between the two colliders
-	bool isColliding =
-		(left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2);
+	BLZR_CORE_INFO(
+		"Collider2: left2: {0}, right2: {1}, top2: {2}, bottom2: {3}", left2,
+		right2, top2, bottom2);
 
-	// Update the colliding state
-	collider1.colliding = isColliding;
-	collider2.colliding = isColliding;
+	// Check for overlap between the two colliders
+	bool isColliding = (left1 < right2 && right1 > left2 && top1 < bottom2 &&
+						bottom1 > top2) &&
+					   collider1.colliding && collider2.colliding;
+
+	// // Update the colliding state
+	// collider1.colliding = isColliding;
+	// collider2.colliding = isColliding;
 
 	return isColliding;
 }

@@ -44,26 +44,26 @@ struct SpriteComponent {
 		object.y = startY * object.height;
 
 		// Set the texture coordinates for the sprite
-		textureCoordinates[0] = {object.coordX * object.width,
+		textureCoordinates[3] = {object.coordX * object.width,
 								 (object.coordY + 1) * object.height};
 
-		textureCoordinates[1] = {(object.coordX + 1) * object.width,
-								 (object.coordY + 1) * object.height};
 		textureCoordinates[2] = {(object.coordX + 1) * object.width,
+								 (object.coordY + 1) * object.height};
+		textureCoordinates[1] = {(object.coordX + 1) * object.width,
 								 object.coordY * object.height};
-		textureCoordinates[3] = {object.coordX * object.width,
+		textureCoordinates[0] = {object.coordX * object.width,
 								 object.coordY * object.height};
 	}
 
 	void generateTextureCoordinates() {
-		textureCoordinates[0] = {object.coordX * object.width,
+		textureCoordinates[3] = {object.coordX * object.width,
 								 (object.coordY + 1) * object.height};
 
-		textureCoordinates[1] = {(object.coordX + 1) * object.width,
-								 (object.coordY + 1) * object.height};
 		textureCoordinates[2] = {(object.coordX + 1) * object.width,
+								 (object.coordY + 1) * object.height};
+		textureCoordinates[1] = {(object.coordX + 1) * object.width,
 								 object.coordY * object.height};
-		textureCoordinates[3] = {object.coordX * object.width,
+		textureCoordinates[0] = {object.coordX * object.width,
 								 object.coordY * object.height};
 	}
 	std::string texturePath;
