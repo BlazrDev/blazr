@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "blzrpch.h"
 #include "Blazr.h"
 #include "Blazr/Renderer/FrameBuffer.h"
@@ -24,11 +24,13 @@ class Editor : public Application {
 	void renderIdentificationComponent(ImVec2 &cursorPos);
 	void renderSpriteComponent(ImVec2 &cursorPos);
 	void renderPhysicsComponent(ImVec2 &cursorPos);
+	void setEventCallback(const Window::EventCallbackFn &callback);
 
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
 	Ref<Scene> m_Scene;
+	Window::EventCallbackFn m_EventCallback;
 };
 
 Application *CreateApplication() { return new Editor(); }

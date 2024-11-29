@@ -106,7 +106,7 @@ local function update()
     end
     if InputSystem.key_repeating(KEY_SPACE) then
         physicsComponent:set_linear_velocity(vec2(velocity.x, 0))
-        physicsComponent:set_linear_impulse(vec2(0, -1000000))
+        physicsComponent:linear_impulse(vec2(0, -1000000))
         skace()
     end
 end

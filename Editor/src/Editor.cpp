@@ -3,6 +3,9 @@
 #include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Events/ApplicationEvent.h"
+#include "Blazr/Events/Event.h"
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
@@ -15,6 +18,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
+#include <memory>
 
 namespace Blazr {
 static float zoomLevel = 1.0f;
@@ -92,6 +97,48 @@ void Editor::InitImGui() {
 		return;
 	}
 
+	glfwSetWindowUserPointer(m_Window->GetWindow(), &m_EventCallback);
+
+	glfwSetScrollCallback(
+		m_Window->GetWindow(),
+		[](GLFWwindow *window, double xOffset, double yOffset) {
+			auto eventCallback = static_cast<std::function<void(Event &)> *>(
+				glfwGetWindowUserPointer(window));
+
+			if (eventCallback) {
+				MouseScrolledEvent event(static_cast<float>(xOffset),
+										 static_cast<float>(yOffset));
+				(*eventCallback)(event);
+			}
+		});
+
+	glfwSetFramebufferSizeCallback(
+		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
+			glViewport(0, 0, width, height);
+		});
+
+	glfwSetWindowSizeCallback(
+		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
+			auto eventCallback = static_cast<std::function<void(Event &)> *>(
+				glfwGetWindowUserPointer(window));
+			if (eventCallback) {
+				WindowResizeEvent event(width, height);
+				(*eventCallback)(event);
+			}
+		});
+
+	glfwSetWindowCloseCallback(m_Window->GetWindow(), [](GLFWwindow *window) {
+		auto eventCallback = static_cast<std::function<void(Event &)> *>(
+			glfwGetWindowUserPointer(window));
+
+		if (eventCallback) {
+			WindowCloseEvent event{};
+			(*eventCallback)(event);
+		}
+	});
+
+	m_EventCallback = [this](Event &e) { m_Scene->onEvent(e); };
+
 	glfwMakeContextCurrent(m_Window->GetWindow());
 	glfwSwapInterval(1);
 
@@ -112,8 +159,13 @@ void Editor::InitImGui() {
 
 void Editor::Run() {
 	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
+		int width;
+		int height;
+		glfwGetWindowSize(m_Window->GetWindow(), &width, &height);
+		m_Window->setWidth(width);
+		m_Window->setHeight(height);
 
-		glfwPollEvents();
+		glfwPollEvents(); // Ako nije pauza, obradi događaje
 		m_Window->onUpdate();
 		// zoomLevel = m_Window->GetCamera()->GetScale();
 
@@ -477,7 +529,8 @@ void Editor::RenderImGui() {
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//---------------------------------------------------------------2. box -
+	//---------------------------------------------------------------2. box
+	//-
 	// Object details---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
 	ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
@@ -558,6 +611,8 @@ void Editor::RenderImGui() {
 								break;
 							case 1:
 								// metoda addBoxCollider
+								// TO DO: dodati sprite details u DETAILS
+								// BOX
 								break;
 							case 2:
 								// metoda Animation
@@ -573,6 +628,8 @@ void Editor::RenderImGui() {
 								break;
 							case 6:
 								showPhysicsComponent = true;
+								// TO DO: dodati animation details u DETAILS
+								// BOX
 								break;
 							}
 							showComponentWindow =
@@ -616,7 +673,8 @@ void Editor::RenderImGui() {
 	}
 	ImGui::End();
 
-	//-----------------------------------------------------------3. box - Camera
+	//-----------------------------------------------------------3. box -
+	// Camera
 	// box with tabs---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
@@ -626,31 +684,35 @@ void Editor::RenderImGui() {
 
 		if (ImGui::BeginTabItem("Scene 1")) {
 			if (ImGui::Button("Play")) {
-				//
+				CameraController::paused = false;
+				// Logika za pokretanje scene
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Stop")) {
-				//
+				CameraController::paused = true;
+				// Logika za zaustavljanje scene
 			}
 			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
 
 			if (ImGui::Button("Code")) {
 				showCodeEditor =
 					!showCodeEditor; // Prikazuje ili skriva prozor za kod
-				// Učitavanje Lua skripte samo prilikom prvog otvaranja editora
+				// Učitavanje Lua skripte samo prilikom prvog otvaranja
+				// editora
 				if (showCodeEditor) {
 					luaScriptContent = "Lua kod\n";
 					strncpy(luaScriptBuffer, luaScriptContent.c_str(),
 							sizeof(luaScriptBuffer));
 				}
 			}
-			// Create a child window within the "Scene 1" tab for the Game View
+			// Create a child window within the "Scene 1" tab for the Game
+			// View
 			ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
 							  ImGuiWindowFlags_NoMove |
 								  ImGuiWindowFlags_NoResize);
 
-			// Get the available space in the child window to render the Game
-			// View ImGui::Begin("Game View");
+			// Get the available space in the child window to render the
+			// Game View ImGui::Begin("Game View");
 			ImVec2 windowSize = ImGui::GetContentRegionAvail();
 			int newWidth = static_cast<int>(windowSize.x);
 			int newHeight = static_cast<int>(windowSize.y);
@@ -784,15 +846,17 @@ void Editor::Shutdown() {
 }
 
 void Editor::RenderSceneToTexture() {
-
 	m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_Scene->Update();
-
+	if (!CameraController::paused)
+		m_Scene->Update();
 	m_Scene->Render();
 
 	m_GameFrameBuffer->Unbind();
+}
+void Blazr::Editor::setEventCallback(const Window::EventCallbackFn &callback) {
+	m_EventCallback = callback;
 }
 
 } // namespace Blazr

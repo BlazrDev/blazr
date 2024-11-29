@@ -14,6 +14,9 @@ class Camera2D {
 
 	glm::vec2 BLZR_API GetPosition() const;
 
+	void BLZR_API SetProjection(float left, float right, float bottom,
+								float top);
+
 	void BLZR_API SetScale(const float &);
 
 	float BLZR_API GetScale() const;

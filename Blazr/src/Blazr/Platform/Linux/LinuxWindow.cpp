@@ -52,6 +52,9 @@ LinuxWindow::~LinuxWindow() { shutdown(); }
 unsigned int LinuxWindow::getHeight() const { return m_Data.height; }
 unsigned int LinuxWindow::getWidth() const { return m_Data.width; }
 
+void LinuxWindow::setHeight(int height) { m_Data.height = height; }
+void LinuxWindow::setWidth(int width) { m_Data.width = width; }
+
 void LinuxWindow::init(const WindowProperties &properties) {
 
 	if (!glfwInit()) {
@@ -89,28 +92,51 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	setVSync(true);
 	Renderer2D::Init();
 
-	glfwSetWindowUserPointer(m_Window, &m_Data);
+	// glfwSetWindowUserPointer(m_Window, &m_Data);
+	//
+	// glfwSetFramebufferSizeCallback(
+	// 	m_Window, [](GLFWwindow *window, int width, int height) {
+	// 		glViewport(0, 0, width, height);
+	// 	});
+	//
+	// glfwSetWindowSizeCallback(
+	// 	m_Window, [](GLFWwindow *window, int width, int height) {
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		data.width = width;
+	// 		data.height = height;
+	//
+	// 		WindowResizeEvent event(width, height);
+	// 		data.eventCallback(event);
+	// 	});
+	//
+	// glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+	// 	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 	WindowCloseEvent event;
+	// 	data.eventCallback(event);
+	// });
 
-	glfwSetFramebufferSizeCallback(
-		m_Window, [](GLFWwindow *window, int width, int height) {
-			glViewport(0, 0, width, height);
-		});
-
-	glfwSetWindowSizeCallback(
-		m_Window, [](GLFWwindow *window, int width, int height) {
-			WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-			data.width = width;
-			data.height = height;
-
-			WindowResizeEvent event(width, height);
-			data.eventCallback(event);
-		});
-
-	glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
-		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-		WindowCloseEvent event;
-		data.eventCallback(event);
-	});
+	// glfwSetWindowUserPointer(m_Window, &m_Data);
+	//
+	// glfwSetFramebufferSizeCallback(
+	// 	m_Window, [](GLFWwindow *window, int width, int height) {
+	// 		glViewport(0, 0, width, height);
+	// 	});
+	//
+	// glfwSetWindowSizeCallback(
+	// 	m_Window, [](GLFWwindow *window, int width, int height) {
+	// 		WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 		data.width = width;
+	// 		data.height = height;
+	//
+	// 		WindowResizeEvent event(width, height);
+	// 		data.eventCallback(event);
+	// 	});
+	//
+	// glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+	// 	WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+	// 	WindowCloseEvent event;
+	// 	data.eventCallback(event);
+	// });
 
 	// glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int
 	// scancode, 								int action, int mods) {
@@ -526,4 +552,5 @@ void Blazr::LinuxWindow::setEventCallback(
 }
 
 GLFWwindow BLZR_API *Blazr::LinuxWindow::GetWindow() const { return m_Window; }
+
 } // namespace Blazr

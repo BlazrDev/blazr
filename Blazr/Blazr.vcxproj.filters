@@ -139,6 +139,9 @@
     <ClInclude Include="src\Blazr\Renderer\Camera2D.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\CameraController.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
@@ -257,6 +260,9 @@
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\CameraController.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
