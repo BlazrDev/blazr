@@ -29,6 +29,14 @@ void Blazr::PhysicsSystem::Update(Registry &registry) {
 
 		const auto &pos = rigidBody->GetPosition();
 
+		// transform.position.x =
+		// 	((scaledWidth / 2.f) + pos.x) * METERS_TO_PIXELS -
+		// 	(collider.width * transform.scale.x) / 2.f;
+		//
+		// transform.position.y =
+		// 	((scaledHeight / 2.f) + pos.y) * METERS_TO_PIXELS -
+		// 	(collider.height * transform.scale.y) / 2.f;
+
 		transform.position.x =
 			(scaledWidth * 0.5f - collider.width * transform.scale.x * 0.5f) +
 			pos.x * METERS_TO_PIXELS;

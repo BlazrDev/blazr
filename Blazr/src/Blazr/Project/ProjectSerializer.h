@@ -12,6 +12,9 @@ class ProjectSerializer {
 						  const std::filesystem::path &filepath);
 
 	static Ref<Project> Deserialize(const std::filesystem::path &filepath);
+	static bool SerializeScene(const Ref<Scene> &scene,
+							   const std::filesystem::path &filepath);
+	static Ref<Scene> DeserializeScene(const std::filesystem::path &filepath);
 };
 
 } // namespace Blazr

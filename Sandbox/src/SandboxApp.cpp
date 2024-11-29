@@ -1,11 +1,13 @@
 #include "Blazr.h"
 #include <iostream>
 
-class Sandbox : public Blazr::Application {
+namespace Blazr {
+class Sandbox : public Application {
   public:
 	Sandbox() {}
 
 	~Sandbox() {}
 };
 
-Blazr::Application *Blazr::CreateApplication() { return new Sandbox(); }
+Application *CreateApplication() { return new Sandbox(); }
+} // namespace Blazr

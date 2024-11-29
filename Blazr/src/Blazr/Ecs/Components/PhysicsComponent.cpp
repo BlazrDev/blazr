@@ -22,8 +22,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	bodyDef.type = static_cast<b2BodyType>(m_Attributes.type);
 	// bodyDef.type = b2BodyType::b2_dynamicBody;
 	//
-	BLZR_CORE_ERROR("PhysicsComponent::init window size: {0} {1}", windowWidth,
-					windowHeight);
 
 	bodyDef.position.Set(
 		(m_Attributes.position.x - (windowWidth * 0.5f) +
@@ -32,9 +30,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 		(m_Attributes.position.y - (windowHeight * 0.5f) +
 		 m_Attributes.boxSize.y * m_Attributes.scale.y * 0.5f) *
 			PIXELS_TO_METERS);
-
-	BLZR_CORE_ERROR("PhysicsComponent::init: {0}, {1}", bodyDef.position.x,
-					bodyDef.position.y);
 
 	bodyDef.gravityScale = m_Attributes.gravityScale;
 	bodyDef.fixedRotation = m_Attributes.isFixedRotation;

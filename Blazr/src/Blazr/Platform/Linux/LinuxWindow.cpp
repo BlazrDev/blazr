@@ -500,38 +500,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 void LinuxWindow::shutdown() { Renderer2D::Shutdown(); }
 
 void LinuxWindow::onUpdate() {
-	// auto &scriptSystem =
-	// 	registry->GetContext<std::shared_ptr<ScriptingSystem>>();
-	//
-	// scriptSystem->Update();
-	// scriptSystem->Render();
-	//
-	// auto &animationSystem =
-	// 	registry->GetContext<std::shared_ptr<AnimationSystem>>();
-	//
-	// animationSystem->Update();
-	//
 	glfwPollEvents();
-	// m_Data.m_Camera.Update();
-	// auto &physicsWor = registry->GetContext<PhysicsWorld>();
-	//
-	// float timeStep = 1.0f / 120.f;
-	// int32_t subSteps = 100;
-	// b2World_Step(physicsWor, timeStep, subSteps);
-	// auto &physicsSys =
-	// registry->GetContext<std::shared_ptr<PhysicsSystem>>();
-	// physicsSys->Update(*registry);
-	//
-	// Renderer2D::BeginScene(m_Data.m_Camera);
-	// auto view =
-	// 	registry->GetRegistry().view<TransformComponent, SpriteComponent>();
-	// for (auto entity : view) {
-	// 	auto &transform = view.get<TransformComponent>(entity);
-	// 	auto &sprite = view.get<SpriteComponent>(entity);
-	// 	Renderer2D::DrawQuad(*registry, entity);
-	// }
-	// Renderer2D::Flush();
-	//
 	glfwSwapBuffers(m_Window);
 }
 

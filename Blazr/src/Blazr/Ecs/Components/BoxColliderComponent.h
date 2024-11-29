@@ -1,7 +1,8 @@
-#include "blzrpch.h"
+#pragma once
 #include "entt.hpp"
 #include "glm.hpp"
 #include "sol.hpp"
+#include <json.hpp>
 
 namespace Blazr {
 struct BoxColliderComponent {
@@ -10,6 +11,10 @@ struct BoxColliderComponent {
 	bool colliding{false};
 
 	static void CreateLuaBoxColliderComponentBind(sol::state &lua);
+	static void from_json(const nlohmann::json &j,
+						  BoxColliderComponent &box_collider);
+	static void to_json(nlohmann::json &j,
+						const BoxColliderComponent &box_collider);
 };
 
 } // namespace Blazr

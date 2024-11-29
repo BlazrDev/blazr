@@ -7,6 +7,7 @@ function getAbsolutePath()
     local relativePath = "Blazr/vendor/lua/linux"
     return path.getabsolute(path.join(projectRoot, relativePath))
 end
+
 local absoluteLuaPath = getAbsolutePath()
 
 configurations({
@@ -231,6 +232,7 @@ links({
     "ImGui",
     "Blazr",
     "lua53",
+    "SDL2",
     "SDL2_mixer",
     "box2d",
 })

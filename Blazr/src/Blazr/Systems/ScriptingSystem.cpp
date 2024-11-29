@@ -7,6 +7,7 @@
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Systems/BoxColliderSystem.h"
 
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Scripting/GlmLuaBindings.h"
@@ -105,11 +106,8 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 
 	GLMBindings::CreateLuaGLMBinding(lua);
 	Registry::CreateLuaRegistryBind(lua, registry);
-
 	InputSystem::CreateInputLuaBind(lua);
 	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
-	BoxColliderSystem::CreateLuaBoxColliderSystemBind(lua);
-	InputSystem::CreateInputLuaBind(lua);
 
 	Entity::CreateLuaEntityBind(lua, registry);
 	TransformComponent::CreateLuaTransformComponentBind(lua);
@@ -117,24 +115,25 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 	PhysicsComponent::CreateLuaPhysicsComponentBind(lua, registry);
 	AnimationComponent::CreateAnimationLuaBind(lua);
-	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
 	Entity::RegisterMetaComponent<BoxColliderComponent>();
 	Entity::RegisterMetaComponent<AnimationComponent>();
-	Entity::RegisterMetaComponent<BoxColliderComponent>();
 	Entity::RegisterMetaComponent<PhysicsComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
 	Registry::RegisterMetaComponent<AnimationComponent>();
 	Registry::RegisterMetaComponent<BoxColliderComponent>();
+	Registry::RegisterMetaComponent<PhysicsComponent>();
+	SoundPlayer::CreateLuaEntityBind(lua);
+
+	Registry::RegisterMetaComponent<BoxColliderComponent>();
 	SoundPlayer::CreateLuaEntityBind(lua);
 	// AssetManager::CreateLuaEntityBind(lua);
 	AssetManager::CreateLuaAssetManager(lua, registry);
 	SoundPlayer::CreateLuaSoundPlayer(lua, registry);
-	Registry::RegisterMetaComponent<PhysicsComponent>();
 }
 
 void ScriptingSystem::RegisterLuaFunctions(sol::state &lua) {

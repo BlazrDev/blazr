@@ -14,6 +14,7 @@ Texture2D::Texture2D(const std::string &filepath)
 
 	if (!m_LocalBuffer) {
 		BLZR_CORE_WARN("Failed to load texture: {0}", filepath);
+		BLZR_CORE_WARN("{0}", stbi_failure_reason());
 		return;
 	}
 

@@ -33,7 +33,7 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 	lua.new_usertype<Entity>(
 		"Entity", sol::call_constructor,
 		sol::factories([&](const std::string &name, const std::string &group) {
-			return Entity{registry, name, group};
+			return CreateRef<Entity>(registry, name, group);
 		}),
 		"name", &Entity::GetName, "group", &Entity::GetGroup, "id",
 		[](Entity &entity) {
@@ -48,9 +48,6 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 
 			const auto component = InvokeMeta(
 				GetIdType(comp), "add_component"_hs, entity, comp, s);
-
-			BLZR_CORE_INFO("Component added to entity: {0}",
-						   component ? "true" : "false");
 
 			return component ? component.cast<sol::reference>()
 							 : sol::lua_nil_t{};
