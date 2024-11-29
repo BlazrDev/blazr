@@ -1,4 +1,5 @@
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
@@ -444,13 +445,29 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Scene", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
-	for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
-		std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
+
+	auto entities = m_Scene->GetRegistry()
+						->GetRegistry()
+						.view<TransformComponent, Identification>();
+
+	for (auto entity : entities) {
+		auto &identification = entities.get<Identification>(entity);
+		// auto& sprite = entities.get<SpriteComponent>(entity);
+		// m_Renderer.DrawQuad(transform.position, transform.scale,
+		// transform.rotation, sprite.color);
+		std::string gameObjectName = identification.name;
 		if (ImGui::Selectable(gameObjectName.c_str())) {
 			selectedGameObject = "ObjectDetails-" + gameObjectName;
 			showGameObjectDetails = true;
 		}
 	}
+	// for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
+	// 	std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
+	// 	if (ImGui::Selectable(gameObjectName.c_str())) {
+	// 		selectedGameObject = "ObjectDetails-" + gameObjectName;
+	// 		showGameObjectDetails = true;
+	// 	}
+	// }
 	ImVec2 scenePos = ImGui::GetWindowPos();
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
