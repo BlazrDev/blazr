@@ -27,13 +27,15 @@ class BLZR_API Window {
 
 	virtual unsigned int getWidth() const = 0;
 	virtual unsigned int getHeight() const = 0;
+	virtual void setHeight(int height) = 0;
+	virtual void setWidth(int width) = 0;
 
 	virtual void setEventCallback(const EventCallbackFn &callback) = 0;
 	virtual void setVSync(bool enabled) = 0;
 	virtual bool isVSync() const = 0;
 
 	virtual GLFWwindow *GetWindow() const = 0;
-	//virtual Camera2D *GetCamera() = 0;
+	// virtual Camera2D *GetCamera() = 0;
 
 	static Window *
 	create(const WindowProperties &properties = WindowProperties());

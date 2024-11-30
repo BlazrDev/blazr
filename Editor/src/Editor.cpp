@@ -1,18 +1,30 @@
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Events/ApplicationEvent.h"
+#include "Blazr/Events/Event.h"
+#include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
+#include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Editor.h"
+#include "box2d/box2d.h"
+#include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
+#include <memory>
 
 namespace Blazr {
 static float zoomLevel = 1.0f;
 // audio
 static float volumeLevel = 0.0f;
-// varijable za backend:
 // transform
 static float positionX = 0.0f;
 static float positionY = 0.0f;
@@ -60,17 +72,13 @@ void Editor::Init() {
 	BLZR_CORE_INFO("Initializing Editor...");
 
 	Renderer2D::Init();
-	m_Scene = CreateRef<Scene>();
-	auto animationSystem =
-		std::make_shared<AnimationSystem>(*(m_Scene->GetRegistry()).get());
-	auto scriptingSystem =
-		std::make_shared<ScriptingSystem>(*(m_Scene->GetRegistry()).get());
-
-	m_Scene->GetRegistry()->AddToContext(animationSystem);
-	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
+	// m_Scene = CreateRef<Scene>();
+	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry.get());
+	auto scriptingSystem = std::make_shared<ScriptingSystem>(*m_Registry.get());
+	m_Registry->AddToContext(animationSystem);
+	m_Registry->AddToContext(scriptingSystem);
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
-
 	InitImGui();
 }
 
@@ -84,6 +92,46 @@ void Editor::InitImGui() {
 		BLZR_CORE_ERROR("GLFW window creation failed!");
 		return;
 	}
+
+	glfwSetWindowUserPointer(m_Window->GetWindow(), &m_EventCallback);
+	glfwSetFramebufferSizeCallback(
+		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
+			glViewport(0, 0, width, height);
+		});
+
+	glfwSetScrollCallback(
+		m_Window->GetWindow(),
+		[](GLFWwindow *window, double xOffset, double yOffset) {
+			auto eventCallback = static_cast<std::function<void(Event &)> *>(
+				glfwGetWindowUserPointer(window));
+
+			if (eventCallback) {
+				MouseScrolledEvent event(static_cast<float>(xOffset),
+										 static_cast<float>(yOffset));
+				(*eventCallback)(event);
+			}
+		});
+
+	glfwSetWindowSizeCallback(
+		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
+			auto eventCallback = static_cast<std::function<void(Event &)> *>(
+				glfwGetWindowUserPointer(window));
+			if (eventCallback) {
+				WindowResizeEvent event(width, height);
+				(*eventCallback)(event);
+			}
+		});
+
+	glfwSetWindowCloseCallback(m_Window->GetWindow(), [](GLFWwindow *window) {
+		auto eventCallback = static_cast<std::function<void(Event &)> *>(
+			glfwGetWindowUserPointer(window));
+
+		if (eventCallback) {
+			WindowCloseEvent event{};
+			(*eventCallback)(event);
+		}
+	});
+	m_EventCallback = [this](Event &e) { m_ActiveScene->onEvent(e); };
 
 	glfwMakeContextCurrent(m_Window->GetWindow());
 	glfwSwapInterval(1);
@@ -105,10 +153,14 @@ void Editor::InitImGui() {
 
 void Editor::Run() {
 	while (!glfwWindowShouldClose(m_Window->GetWindow())) {
+		int width;
+		int height;
+		glfwGetWindowSize(m_Window->GetWindow(), &width, &height);
+		m_Window->setWidth(width);
+		m_Window->setHeight(height);
 
 		glfwPollEvents();
 		m_Window->onUpdate();
-		// zoomLevel = m_Window->GetCamera()->GetScale();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -119,8 +171,6 @@ void Editor::Run() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		// glClear(GL_COLOR_BUFFER_BIT);
-
 		ImGuiIO &io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			GLFWwindow *backupContext = glfwGetCurrentContext();
@@ -129,7 +179,6 @@ void Editor::Run() {
 
 			glfwMakeContextCurrent(backupContext);
 		}
-
 		// glfwSwapBuffers(m_Window->GetWindow());
 	}
 
@@ -199,179 +248,22 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
+	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
+	ImGui::PopItemWidth();
 	cursorPos.x -= 43;
 	cursorPos.y += 25;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("Group");
 	ImGui::SameLine();
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputText("###group", groupName, IM_ARRAYSIZE(groupName));
-	cursorPos.y += 35;
-}
-
-void Editor::renderSpriteComponent(ImVec2 &cursorPos) {
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Sprite");
-	cursorPos.y += 30;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Textures");
-	cursorPos.y -= 3;
-	cursorPos.x += 65;
-	ImGui::SetCursorPos(cursorPos);
-	const char *textures[] = {"Texture1", "Texture2"};
-	static int selectedTextureIndex = -1;
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	if (ImGui::BeginCombo("##TexturesDropdown",
-						  selectedTextureIndex == -1
-							  ? "Choose a component"
-							  : textures[selectedTextureIndex])) {
-		for (int i = 0; i < IM_ARRAYSIZE(textures); i++) {
-			bool isSelected = (selectedTextureIndex == i);
-			if (ImGui::Selectable(textures[i], isSelected)) {
-				selectedTextureIndex = i;
-			}
-			if (isSelected) {
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
-	}
-	// spriteWidth
-	cursorPos.x -= 64;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Width");
-	cursorPos.x += 65;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##spriteWidth", &spriteWidth, 0.1f, 1.0f, "%.1f");
-	// spriteHeight
-	cursorPos.x -= 65;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Height");
-	cursorPos.x += 65;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##spriteHeight", &spriteHeight, 0.1f, 1.0f, "%.1f");
-	// layer
-	cursorPos.x -= 65;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Layer");
-	cursorPos.x += 65;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##layer", &layer, 0.1f, 1.0f, "%.1f");
-	// sprite sheet position
-	cursorPos.x -= 65;
-	cursorPos.y += 30;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Sprite Sheet Position");
-	cursorPos.y += 20;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::PushItemWidth(95);
-	ImGui::Text("X");
-	ImGui::SameLine();
-	ImGui::InputFloat("##sheetX", &sheetX, 0.1f, 1.0f, "%.1f");
-	ImGui::SameLine();
-	ImGui::Text(" Y");
-	ImGui::SameLine();
-	ImGui::InputFloat("##sheetY", &sheetY, 0.1f, 1.0f, "%.1f");
-	// cursorPos.x -= 15;
-	cursorPos.y += 35;
-}
-void Editor::renderPhysicsComponent(ImVec2 &cursorPos) {
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Physics");
-	// type
-	cursorPos.y += 30;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Type");
-	cursorPos.y -= 3;
-	cursorPos.x += 90;
-	ImGui::SetCursorPos(cursorPos);
-	const char *types[] = {"Static", "Dynamic", "Kinematic"};
-	static int selectedTypeIndex = -1;
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
-												 ? "Choose a type"
-												 : types[selectedTypeIndex])) {
-		for (int i = 0; i < IM_ARRAYSIZE(types); i++) {
-			bool isSelected = (selectedTypeIndex == i);
-			if (ImGui::Selectable(types[i], isSelected)) {
-				selectedTypeIndex = i;
-			}
-			if (isSelected) {
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
-	}
-	// density
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Density");
-	cursorPos.x += 90;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##density", &density, 0.1f, 1.0f, "%.1f");
-	// friction
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Friction");
-	cursorPos.x += 90;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##friction", &friction, 0.1f, 1.0f, "%.1f");
-	// restitution
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Restitution");
-	cursorPos.x += 90;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##restitution", &restitution, 0.1f, 1.0f, "%.1f");
-	// gravityScale
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("GravityScale");
-	cursorPos.x += 90;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputFloat("##gravityScale", &gravityScale, 0.1f, 1.0f, "%.1f");
-	// isSensor
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("isSensor");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	ImGui::Checkbox("##isSensorCheckbox", &isSensor);
-	// isFixedRotation
-	cursorPos.y += 25;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("isFixedRotation");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	ImGui::Checkbox("##isFixedRotation", &isFixedRotation);
-
+	ImGui::PopItemWidth();
 	cursorPos.y += 35;
 }
 
 void Editor::RenderImGui() {
-
+	ImVec2 cursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
@@ -464,7 +356,6 @@ void Editor::RenderImGui() {
 					 ImGuiWindowFlags_NoNavFocus);
 	static bool showComponentWindow = false;
 	if (showGameObjectDetails) {
-		ImVec2 cursorPos = ImVec2(10, 55);
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Components")) {
 				if (showTransformComponent) {
@@ -472,12 +363,6 @@ void Editor::RenderImGui() {
 				}
 				if (showIdentificationComponent) {
 					renderIdentificationComponent(cursorPos);
-				}
-				if (showSpriteComponent) {
-					renderSpriteComponent(cursorPos);
-				}
-				if (showPhysicsComponent) {
-					renderPhysicsComponent(cursorPos);
 				}
 
 				if (ImGui::BeginPopupContextWindow(
@@ -531,8 +416,6 @@ void Editor::RenderImGui() {
 							switch (selectedComponentIndex) {
 							case 0:
 								// metoda addSprite
-								showSpriteComponent = true;
-								showColorTab = true;
 								break;
 							case 1:
 								// metoda addBoxCollider
@@ -550,16 +433,18 @@ void Editor::RenderImGui() {
 								showTransformComponent = true;
 								break;
 							case 6:
-								showPhysicsComponent = true;
+								// Physics metoda
 								break;
 							}
 							showComponentWindow =
 								false; // Zatvori prozor nakon dodavanja
 						}
 					}
+
 					ImGui::SameLine();
 					if (ImGui::Button("Cancel", ImVec2(80, 0))) {
-						showComponentWindow = false;
+						showComponentWindow =
+							false; // Zatvori prozor bez dodavanja
 					}
 					ImGui::End();
 				}
@@ -571,9 +456,8 @@ void Editor::RenderImGui() {
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 					if (ImGui::ColorPicker3("Game object\ncolor",
 											(float *)&sceneColor)) {
-						Ref<Registry> registry = m_Scene->GetRegistry();
 						auto view =
-							registry->GetRegistry().view<SpriteComponent>();
+							m_Registry->GetRegistry().view<SpriteComponent>();
 						for (auto entity : view) {
 							auto &sprite = view.get<SpriteComponent>(entity);
 							sprite.color = {sceneColor.x, sceneColor.y,
@@ -604,11 +488,13 @@ void Editor::RenderImGui() {
 
 		if (ImGui::BeginTabItem("Scene 1")) {
 			if (ImGui::Button("Play")) {
-				//
+				// Logika za pokretanje scene
+				CameraController::paused = false;
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Stop")) {
-				//
+				// Logika za zaustavljanje scene
+				CameraController::paused = true;
 			}
 			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
 
@@ -799,6 +685,7 @@ void Editor::RenderImGui() {
 				}
 				ImGui::EndCombo();
 			}
+
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
@@ -845,10 +732,20 @@ void Editor::RenderSceneToTexture() {
 	m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_Scene->Update();
-	m_Scene->Render();
+	if (m_ActiveScene != nullptr) {
+
+		if (!CameraController::paused) {
+			m_ActiveScene->Update();
+		}
+		m_ActiveScene->Render();
+	} else {
+		BLZR_CORE_WARN("Active scene is null");
+	}
 
 	m_GameFrameBuffer->Unbind();
 }
 
+void Blazr::Editor::setEventCallback(const Window::EventCallbackFn &callback) {
+	m_EventCallback = callback;
+}
 } // namespace Blazr

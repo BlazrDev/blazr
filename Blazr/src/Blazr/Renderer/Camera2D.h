@@ -14,9 +14,16 @@ class Camera2D {
 
 	glm::vec2 BLZR_API GetPosition() const;
 
+	void BLZR_API SetProjection(float left, float right, float bottom,
+								float top);
+
 	void BLZR_API SetScale(const float &);
 
 	float BLZR_API GetScale() const;
+
+	float BLZR_API GetRotation() const { return m_Rotation; }
+
+	void BLZR_API SetRotation(float rotation) { m_Rotation = rotation; }
 
 	void BLZR_API Update();
 
@@ -26,7 +33,7 @@ class Camera2D {
 
 	static Ref<Camera2D> BLZR_API &GetInstance() {
 		if (instance == nullptr) {
-			instance = std::make_shared<Camera2D>();
+			instance = std::make_shared<Camera2D>(1280, 720);
 		}
 
 		return instance;
@@ -38,6 +45,7 @@ class Camera2D {
 
 	float m_Scale;
 	int m_Width, m_Height;
+	float m_Rotation{0.0f};
 
 	bool m_bNeedsUpdate;
 

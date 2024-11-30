@@ -57,7 +57,15 @@ class Registry {
 				"exclude_component_from_view"_hs);
 	}
 
+	static Ref<Registry> GetInstance() {
+		if (s_Instance == nullptr) {
+			s_Instance = CreateRef<Registry>();
+		}
+		return s_Instance;
+	}
+
   private:
+	static Ref<Registry> s_Instance;
 	std::unique_ptr<entt::registry> m_Registry;
 };
 } // namespace Blazr

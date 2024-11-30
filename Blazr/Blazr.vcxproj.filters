@@ -19,6 +19,12 @@
     <Filter Include="Blazr\Fonts">
       <UniqueIdentifier>{59F98E76-C5AE-076C-4EA3-0143BA57FE6F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Layers">
+      <UniqueIdentifier>{DF897555-CBEC-04FA-7472-3DB060B4D07C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blazr\Physics">
+      <UniqueIdentifier>{925A6B48-FE1A-E77E-C755-30FC33D52B5B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blazr\Platform">
       <UniqueIdentifier>{7477D451-6045-C857-49D9-387E3546A4BC}</UniqueIdentifier>
     </Filter>
@@ -79,6 +85,9 @@
     <ClInclude Include="src\Blazr\Ecs\Components\Identification.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\PhysicsComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
@@ -115,6 +124,15 @@
     <ClInclude Include="src\Blazr\Fonts\stb_truetype.h">
       <Filter>Blazr\Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Layers\Layer.h">
+      <Filter>Blazr\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Layers\LayerManager.h">
+      <Filter>Blazr\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Physics\Box2DWrapper.h">
+      <Filter>Blazr\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Platform\Linux\LinuxWindow.h">
       <Filter>Blazr\Platform\Linux</Filter>
     </ClInclude>
@@ -128,6 +146,9 @@
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\Camera2D.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\CameraController.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
@@ -178,6 +199,9 @@
     <ClInclude Include="src\Blazr\Systems\InputSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Systems\PhysicsSystem.h">
+      <Filter>Blazr\Systems</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Systems\ScriptingSystem.h">
       <Filter>Blazr\Systems</Filter>
     </ClInclude>
@@ -211,6 +235,9 @@
     <ClCompile Include="src\Blazr\Ecs\Components\BoxColliderComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Ecs\Components\PhysicsComponent.cpp">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Ecs\Components\SpriteComponent.cpp">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClCompile>
@@ -232,8 +259,17 @@
     <ClCompile Include="src\Blazr\Fonts\stb_truetype.cpp">
       <Filter>Blazr\Fonts</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blazr\Layers\Layer.cpp">
+      <Filter>Blazr\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Layers\LayerManager.cpp">
+      <Filter>Blazr\Layers</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blazr\Platform\Linux\LinuxWindow.cpp">
       <Filter>Blazr\Platform\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Project\Project.cpp">
+      <Filter>Blazr\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Project\ProjectSerializer.cpp">
       <Filter>Blazr\Project</Filter>
@@ -242,6 +278,9 @@
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\Camera2D.cpp">
+      <Filter>Blazr\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Renderer\CameraController.cpp">
       <Filter>Blazr\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Renderer\FrameBuffer.cpp">
@@ -290,6 +329,9 @@
       <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\InputSystem.cpp">
+      <Filter>Blazr\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Systems\PhysicsSystem.cpp">
       <Filter>Blazr\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\ScriptingSystem.cpp">

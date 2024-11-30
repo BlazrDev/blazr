@@ -63,4 +63,43 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 	return project;
 }
 
+bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
+									   const std::filesystem::path &filepath) {
+	if (!scene) {
+		BLZR_CORE_ERROR("Cannot serialize a null scene!");
+		return false;
+	}
+
+	json j;
+	scene->Serialize(j);
+
+	std::ofstream ofs(filepath);
+	if (!ofs) {
+		BLZR_CORE_ERROR("Failed to open scene file for serialization: {}",
+						filepath.string());
+		return false;
+	}
+
+	ofs << j.dump(4);
+	return true;
+}
+
+Ref<Scene>
+ProjectSerializer::DeserializeScene(const std::filesystem::path &filepath) {
+	std::ifstream ifs(filepath);
+	if (!ifs) {
+		BLZR_CORE_ERROR("Failed to open scene file for deserialization: {}",
+						filepath.string());
+		return nullptr;
+	}
+
+	json j;
+	ifs >> j;
+
+	auto scene = CreateRef<Scene>();
+	scene->Deserialize(j);
+
+	return scene;
+}
+
 } // namespace Blazr

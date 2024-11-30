@@ -3,6 +3,7 @@
 #include "Blazr/Ecs/Registry.h"
 #include "sol.hpp"
 #include <glm.hpp>
+#include <json.hpp>
 #include <string>
 
 namespace Blazr {
@@ -42,33 +43,38 @@ struct SpriteComponent {
 
 		object.x = startX * object.width;
 		object.y = startY * object.height;
+		object.coordX = startX;
+		object.coordY = startY;
 
 		// Set the texture coordinates for the sprite
-		textureCoordinates[0] = {object.coordX * object.width,
+		textureCoordinates[3] = {object.coordX * object.width,
 								 (object.coordY + 1) * object.height};
 
-		textureCoordinates[1] = {(object.coordX + 1) * object.width,
-								 (object.coordY + 1) * object.height};
 		textureCoordinates[2] = {(object.coordX + 1) * object.width,
+								 (object.coordY + 1) * object.height};
+		textureCoordinates[1] = {(object.coordX + 1) * object.width,
 								 object.coordY * object.height};
-		textureCoordinates[3] = {object.coordX * object.width,
+		textureCoordinates[0] = {object.coordX * object.width,
 								 object.coordY * object.height};
 	}
 
 	void generateTextureCoordinates() {
-		textureCoordinates[0] = {object.coordX * object.width,
+		textureCoordinates[3] = {object.coordX * object.width,
 								 (object.coordY + 1) * object.height};
 
-		textureCoordinates[1] = {(object.coordX + 1) * object.width,
-								 (object.coordY + 1) * object.height};
 		textureCoordinates[2] = {(object.coordX + 1) * object.width,
+								 (object.coordY + 1) * object.height};
+		textureCoordinates[1] = {(object.coordX + 1) * object.width,
 								 object.coordY * object.height};
-		textureCoordinates[3] = {object.coordX * object.width,
+		textureCoordinates[0] = {object.coordX * object.width,
 								 object.coordY * object.height};
 	}
 	std::string texturePath;
 
 	static void CreateLuaSpriteComponentBind(sol::state &lua,
 											 Registry &registry);
+	static void from_json(const nlohmann::json &j, SpriteComponent &sprite);
+	static void to_json(nlohmann::json &j, const SpriteComponent &sprite);
 };
+
 } // namespace Blazr

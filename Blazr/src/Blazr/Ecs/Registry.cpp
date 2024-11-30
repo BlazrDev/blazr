@@ -4,6 +4,8 @@
 #include "Registry.h"
 #include "sol.hpp"
 
+Ref<Blazr::Registry> Blazr::Registry::s_Instance = nullptr;
+
 Blazr::Registry::Registry() { m_Registry = std::make_unique<entt::registry>(); }
 
 void Blazr::Registry::CreateLuaRegistryBind(sol::state_view &lua,

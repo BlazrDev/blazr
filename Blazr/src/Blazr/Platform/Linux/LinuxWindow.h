@@ -15,6 +15,9 @@ class BLZR_API LinuxWindow : public Window {
 	void onUpdate() override;
 	unsigned int getWidth() const override;
 	unsigned int getHeight() const override;
+	void setHeight(int height) override;
+	void setWidth(int width) override;
+
 	void setEventCallback(const EventCallbackFn &callback) override;
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
@@ -31,7 +34,7 @@ class BLZR_API LinuxWindow : public Window {
 	std::shared_ptr<Shader> m_Shader;
 
 	struct WindowData {
-		Camera2D m_Camera{1280, 720};
+		Camera2D m_camera{1280, 720};
 		std::string title;
 		unsigned int width, height;
 		bool vsync;
@@ -92,5 +95,8 @@ class BLZR_API LinuxWindow : public Window {
 	};
 
 	WindowData m_Data;
+
+  public:
+	WindowData &GetWindowData() { return m_Data; }
 };
 } // namespace Blazr
