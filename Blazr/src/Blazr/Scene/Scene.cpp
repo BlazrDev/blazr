@@ -21,6 +21,7 @@ namespace Blazr {
 Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
 	m_Camera.GetCamera().SetScale(1.0f);
 	m_Camera.GetCamera().SetPosition({0.0f, 0.0f});
+	m_Camera.GetCamera().SetRotation(0.0f);
 	m_LayerManager = CreateRef<LayerManager>();
 	m_Registry = Registry::GetInstance();
 }
@@ -53,7 +54,6 @@ void Scene::Update() {
 			m_Registry->GetContext<std::shared_ptr<PhysicsSystem>>()) {
 		physicsSystem->Update(*m_Registry);
 	}
-	BLZR_CORE_INFO("Camera Zoom: {0}", m_Camera.GetCamera().GetScale());
 }
 
 void Scene::onEvent(Event &e) { m_Camera.OnEvent(e); }

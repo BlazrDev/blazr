@@ -16,11 +16,11 @@ Application::Application() {
 Application::~Application() {}
 
 void Application::onEvent(Event &e) {
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(
-		BIND_EVENT_FN(Application::onWindowClose));
-
-	BLZR_CORE_INFO("{0}", e.toString());
+	// EventDispatcher dispatcher(e);
+	// dispatcher.Dispatch<WindowCloseEvent>(
+	// 	BIND_EVENT_FN(Application::onWindowClose));
+	//
+	// BLZR_CORE_INFO("{0}", e.toString());
 }
 
 bool Application::onWindowClose(WindowCloseEvent &e) {

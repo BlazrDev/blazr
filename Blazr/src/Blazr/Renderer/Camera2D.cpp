@@ -9,12 +9,6 @@ Ref<Blazr::Camera2D> Blazr::Camera2D::instance = nullptr;
 Camera2D::Camera2D(int width, int height)
 	: m_Width(width), m_Height(height), m_Scale(1.f), m_Position(glm::vec2{0}),
 	  m_CameraMatrix{1.f}, m_OrthoProjection{1.f}, m_bNeedsUpdate(true) {
-	// m_OrthoProjection = glm::ortho(-static_cast<float>(m_Width / 2),  // Left
-	// 							   static_cast<float>(m_Width / 2),	  // Right
-	// 							   -static_cast<float>(m_Height / 2), // Bottom
-	// 							   static_cast<float>(m_Height / 2),  // Top
-	// 							   -1.f,							  // Near
-	// 							   1.f);
 	m_OrthoProjection = glm::ortho(0.0f,						 // Left
 								   static_cast<float>(m_Width),	 // Right
 								   0.0f,						 // Bottom
@@ -51,6 +45,10 @@ void Camera2D::Update() {
 
 	glm::vec3 translate(-m_Position.x, -m_Position.y, 0.f);
 	m_CameraMatrix = glm::translate(m_OrthoProjection, translate);
+
+	glm::vec3 rotationAxis(0.f, 0.f, 1.f); // Rotacija oko Z ose
+	m_CameraMatrix =
+		glm::rotate(m_CameraMatrix, glm::radians(m_Rotation), rotationAxis);
 
 	glm::vec3 scale{m_Scale, m_Scale, 0.f};
 	m_CameraMatrix *= glm::scale(glm::mat4(1.f), scale);

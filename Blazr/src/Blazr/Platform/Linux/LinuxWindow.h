@@ -34,7 +34,7 @@ class BLZR_API LinuxWindow : public Window {
 	std::shared_ptr<Shader> m_Shader;
 
 	struct WindowData {
-		Camera2D m_Camera{1280, 720};
+		Camera2D m_camera{1280, 720};
 		std::string title;
 		unsigned int width, height;
 		bool vsync;

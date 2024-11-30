@@ -1,13 +1,16 @@
 #include "GLFW/glfw3.h"
 #include "Blazr/Core/KeyCodes.h"
+#include "Blazr/Core/Log.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/MouseEvent.h"
 #include "CameraController.h"
 
 bool Blazr::CameraController::paused = false;
 Blazr::CameraController::CameraController(int width, int height, bool rotation)
-	: m_Width(width), m_Height(height), m_Camera(width, height),
-	  m_Rotation(rotation) {}
+	: m_Width(width), m_Height(height), m_Rotation(rotation) {
+	m_Camera = *Camera2D::GetInstance();
+	BLZR_CORE_INFO("CameraController initialized!");
+}
 void Blazr::CameraController::OnUpdate() {
 	if (!paused)
 		return;
@@ -38,21 +41,24 @@ void Blazr::CameraController::OnUpdate() {
 
 	if (m_Rotation) {
 		if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_Q) == GLFW_PRESS)
-			m_CameraRotation += m_CameraRotationSpeed * ts;
+			m_CameraRotation += 0.5f;
+		// m_CameraRotation += m_CameraRotationSpeed * ts;
 		if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_E) == GLFW_PRESS)
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
+			m_CameraRotation -= 0.5f;
+
+		// m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 		if (m_CameraRotation > 180.0f)
 			m_CameraRotation -= 360.0f;
 		else if (m_CameraRotation <= -180.0f)
 			m_CameraRotation += 360.0f;
 
-		// m_Camera.SetRotation(m_CameraRotation);
+		m_Camera.SetRotation(m_CameraRotation);
 	}
 
 	m_Camera.SetPosition(m_CameraPosition);
 
-	m_CameraTranslationSpeed = m_Zoom;
+	m_CameraTranslationSpeed = 0.25;
 }
 void Blazr::CameraController::OnEvent(Event &e) {
 	if (!paused)
@@ -75,11 +81,8 @@ void Blazr::CameraController::OnResize(float width, float height) {
 bool Blazr::CameraController::OnMouseScrolled(MouseScrolledEvent &e) {
 	m_Zoom -= e.getYOffset() * 0.25f;
 	m_Zoom = std::max(m_Zoom, 0.25f);
-	// m_Camera.SetProjection(-m_Width * m_Zoom, m_Width * m_Zoom,
-	// 					   -m_Height * m_Zoom, m_Height * m_Zoom);
-	m_Camera.SetProjection(m_Zoom, m_Width * m_Zoom, m_Zoom, m_Height * m_Zoom);
+	m_Camera.SetScale(m_Zoom);
 
-	BLZR_CORE_INFO("Zoom: {0}", m_Camera.GetScale());
 	return false;
 }
 

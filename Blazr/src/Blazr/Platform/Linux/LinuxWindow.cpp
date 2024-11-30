@@ -139,8 +139,7 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// });
 
 	// glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int
-	// scancode, 								int action, int mods) {
-	// WindowData &data = *(WindowData
+	// scancode, 								int action, int mods) { 	WindowData &data = *(WindowData
 	// *)glfwGetWindowUserPointer(window);
 	//
 	// 	switch (action) {
@@ -189,7 +188,6 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	// auto mashaTexture = assetManager->GetTexture("masha");
 	// TODO remove tmp code
 	// Creating lua state
-	auto lua = std::make_shared<sol::state>();
 
 	// if (!lua) {
 	// 	BLZR_CORE_ERROR("Failed to create the lua state!");
@@ -429,8 +427,8 @@ void LinuxWindow::init(const WindowProperties &properties) {
 	//	}
 	//});
 
-	m_Data.m_Camera.SetScale(1.0f);
-	m_Data.m_Camera.SetPosition({0.0f, 0.0f});
+	// m_Data.m_Camera.SetScale(1.0f);
+	// m_Data.m_Camera.SetPosition({0.0f, 0.0f});
 	// glm::vec2 pos = {0.f, 0.f};
 	// glm::vec2 size = {200.f, 200.f};
 	// glm::vec4 color = {1.f, 1.f, 1.f, 1.f};

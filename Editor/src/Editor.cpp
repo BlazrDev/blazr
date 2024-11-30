@@ -72,14 +72,11 @@ void Editor::Init() {
 	BLZR_CORE_INFO("Initializing Editor...");
 
 	Renderer2D::Init();
-	m_Scene = CreateRef<Scene>();
-	auto animationSystem =
-		std::make_shared<AnimationSystem>(*(m_Scene->GetRegistry()).get());
-	auto scriptingSystem =
-		std::make_shared<ScriptingSystem>(*(m_Scene->GetRegistry()).get());
-
-	m_Scene->GetRegistry()->AddToContext(animationSystem);
-	m_Scene->GetRegistry()->AddToContext(scriptingSystem);
+	// m_Scene = CreateRef<Scene>();
+	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry.get());
+	auto scriptingSystem = std::make_shared<ScriptingSystem>(*m_Registry.get());
+	m_Registry->AddToContext(animationSystem);
+	m_Registry->AddToContext(scriptingSystem);
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
 	InitImGui();
@@ -97,6 +94,10 @@ void Editor::InitImGui() {
 	}
 
 	glfwSetWindowUserPointer(m_Window->GetWindow(), &m_EventCallback);
+	glfwSetFramebufferSizeCallback(
+		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
+			glViewport(0, 0, width, height);
+		});
 
 	glfwSetScrollCallback(
 		m_Window->GetWindow(),
@@ -109,11 +110,6 @@ void Editor::InitImGui() {
 										 static_cast<float>(yOffset));
 				(*eventCallback)(event);
 			}
-		});
-
-	glfwSetFramebufferSizeCallback(
-		m_Window->GetWindow(), [](GLFWwindow *window, int width, int height) {
-			glViewport(0, 0, width, height);
 		});
 
 	glfwSetWindowSizeCallback(
@@ -135,8 +131,7 @@ void Editor::InitImGui() {
 			(*eventCallback)(event);
 		}
 	});
-
-	m_EventCallback = [this](Event &e) { m_Scene->onEvent(e); };
+	m_EventCallback = [this](Event &e) { m_ActiveScene->onEvent(e); };
 
 	glfwMakeContextCurrent(m_Window->GetWindow());
 	glfwSwapInterval(1);
@@ -164,7 +159,7 @@ void Editor::Run() {
 		m_Window->setWidth(width);
 		m_Window->setHeight(height);
 
-		glfwPollEvents(); // Ako nije pauza, obradi događaje
+		glfwPollEvents();
 		m_Window->onUpdate();
 
 		ImGui_ImplOpenGL3_NewFrame();
