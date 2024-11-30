@@ -53,6 +53,7 @@ void Scene::Update() {
 			m_Registry->GetContext<std::shared_ptr<PhysicsSystem>>()) {
 		physicsSystem->Update(*m_Registry);
 	}
+	BLZR_CORE_INFO("Camera Zoom: {0}", m_Camera.GetCamera().GetScale());
 }
 
 void Scene::onEvent(Event &e) { m_Camera.OnEvent(e); }

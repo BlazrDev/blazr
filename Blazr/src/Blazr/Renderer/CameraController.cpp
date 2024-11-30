@@ -11,7 +11,7 @@ Blazr::CameraController::CameraController(int width, int height, bool rotation)
 void Blazr::CameraController::OnUpdate() {
 	if (!paused)
 		return;
-	int ts = 10;
+	int ts = 30;
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
 		m_CameraPosition.x -=
 			cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
@@ -75,8 +75,11 @@ void Blazr::CameraController::OnResize(float width, float height) {
 bool Blazr::CameraController::OnMouseScrolled(MouseScrolledEvent &e) {
 	m_Zoom -= e.getYOffset() * 0.25f;
 	m_Zoom = std::max(m_Zoom, 0.25f);
-	m_Camera.SetProjection(-m_Width * m_Zoom, m_Width * m_Zoom,
-						   -m_Height * m_Zoom, m_Height * m_Zoom);
+	// m_Camera.SetProjection(-m_Width * m_Zoom, m_Width * m_Zoom,
+	// 					   -m_Height * m_Zoom, m_Height * m_Zoom);
+	m_Camera.SetProjection(m_Zoom, m_Width * m_Zoom, m_Zoom, m_Height * m_Zoom);
+
+	BLZR_CORE_INFO("Zoom: {0}", m_Camera.GetScale());
 	return false;
 }
 
