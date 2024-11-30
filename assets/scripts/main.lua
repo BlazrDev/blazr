@@ -47,8 +47,23 @@ local function trci()
 end
 -- local am = AssetManager:get_instance()
 AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
--- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
-SoundPlayer.play_music("masa", 0, 0)
+AssetManager.load_music("metak", "assets/sounds/METAK.mp3", "dess")
+AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg", 1)
+AssetManager.load_effect("bigben", "assets/sounds/bigben.wav", "biggg", 2)
+AssetManager.load_effect("masaa", "assets/sounds/masa.wav", "masah", 3)
+AssetManager.load_effect("sample", "assets/sounds/sample.wav", "sampleh", 4)
+AssetManager.load_effect("ahem", "assets/sounds/ahem_x.wav", "ahem", 5)
+AssetManager.load_effect("arrow", "assets/sounds/arrow_x.wav", "arrow", 6)
+AssetManager.load_effect("bllop", "assets/sounds/bloop_x.wav", "blooper", 7)
+AssetManager.load_effect("blurp", "assets/sounds/blurp_x.wav", "blurper", 8)
+AssetManager.load_effect("bottle", "assets/sounds/bottle_x.wav", "bottlded", 9)
+AssetManager.load_effect("carpentry", "assets/sounds/carpentry.wav", "carpet", 10)
+AssetManager.load_effect("floop", "assets/sounds/floop2_x.wav", "floop", 11)
+AssetManager.load_effect("gun", "assets/sounds/gun_44mag_11.wav", "pistol", 12)
+AssetManager.load_effect("gurgle", "assets/sounds/gurgle_x.wav", "gurggle", 13)
+AssetManager.load_effect("hammer", "assets/sounds/hammer_anvil3.wav", "cekic", 14)
+AssetManager.load_effect("jump", "assets/sounds/jump.wav", "skae", 15)
+-- SoundPlayer.play_music("masa", 0, 0)
 -- run_script("assets/scripts/test.lua")
 
 main = {
@@ -67,8 +82,8 @@ main = {
 				stoji()
 			end
 			if InputSystem.key_repeating(KEY_SPACE) then
+				SoundPlayer.play_effect("boing", 0)
 				udara()
-				SoundPlayer.play_effect("boing", 0, 1)
 			end
 
 			if BoxColliderSystem.is_colliding(playerEntity, mashaEntity) then

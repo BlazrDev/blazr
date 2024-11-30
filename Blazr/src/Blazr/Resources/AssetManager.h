@@ -3,12 +3,12 @@
 #include <memory>
 #include <string>
 
+#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Renderer/Shader.h"
 #include "Blazr/Renderer/Texture2D.h"
+#include "Blazr/Systems/Sounds/Effect.h"
 #include "Blazr/Systems/Sounds/Music.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
-#include "Blazr/Systems/Sounds/Effect.h"
-#include "Blazr/Ecs/Registry.h"
 #include "sol.hpp"
 
 namespace Blazr {
@@ -46,8 +46,11 @@ class AssetManager {
 	Ref<Blazr::Music> GetMusic(const std::string &name);
 
 	bool LoadEffect(const std::string &name, const std::string &effectPath,
-					const std::string &effectDescription);
+					const std::string &effectDescription, int channel);
 	Ref<Blazr::Effect> GetEffect(const std::string &name);
+
+	std::map<std::string, Ref<Blazr::Music>> getAllMusic() const;
+	std::map<std::string, Ref<Blazr::Effect>> getAllEffects() const;
 
   private:
 	static Ref<AssetManager> instance;

@@ -690,20 +690,100 @@ void Editor::RenderImGui() {
 	if (ImGui::BeginTabBar("Tabs")) {
 
 		if (ImGui::BeginTabItem("Audio")) {
+			if (ImGui::BeginTabBar("AudioSettingsTabBar")) {
 
-			ImGui::SetCursorPos(ImVec2(35, 53));
-			ImGui::Text("Volume");
+				if (ImGui::BeginTabItem("Music")) {
 
-			ImGui::SetCursorPos(ImVec2(39, 68));
-			ImGui::Text("%.3f", volumeLevel);
+					// ImGui::SetCursorPos(ImVec2(35, 63));
+					ImGui::BeginChild("MusicContainer", ImVec2(0, 220), false,
+									  ImGuiWindowFlags_HorizontalScrollbar);
+					ImGui::SetCursorPosX(35);
+					ImGui::SetCursorPosY(16);
+					for (const auto &pair : assetManager->getAllMusic()) {
+						ImGui::BeginGroup();
+						float groupWidth = 68.0f;
+						float textOffset =
+							(groupWidth -
+							 ImGui::CalcTextSize(pair.first.c_str()).x) /
+							2.0f;
+						ImGui::SetCursorPosX(ImGui::GetCursorPosX() +
+											 textOffset);
+						ImGui::Text(pair.first.c_str());
+						ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5.0f);
+						std::string label = "##" + pair.first;
+						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
+											  &soundPlayer->musicVolume, 0, 100,
+											  "%d")) {
+							soundPlayer->MusicVolume(soundPlayer->musicVolume);
+						}
+						ImGui::EndGroup();
+						ImGui::SameLine();
+						ImGui::SetCursorPosY(13);
+					}
+					ImGui::EndChild();
+					ImGui::EndTabItem();
+				}
 
-			ImGui::SetCursorPos(ImVec2(22, 90));
-			if (ImGui::VSliderFloat("###volume", ImVec2(68, 180), &volumeLevel,
-									0.0f, 1.0f, "")) {
-				soundPlayer->MusicVolume(volumeLevel * 100);
+				if (ImGui::BeginTabItem("Effects")) {
+
+					ImGui::BeginChild("EfffectsContainer", ImVec2(0, 220),
+									  false,
+									  ImGuiWindowFlags_HorizontalScrollbar);
+					ImGui::SetCursorPos(ImVec2(35, 16));
+					for (const auto &pair : assetManager->getAllEffects()) {
+						ImGui::BeginGroup();
+						float groupWidth = 68.0f;
+						float textOffset =
+							(groupWidth -
+							 ImGui::CalcTextSize(pair.first.c_str()).x) /
+							2.0f;
+
+						ImGui::SetCursorPosX(ImGui::GetCursorPosX() +
+											 textOffset);
+						ImGui::Text(pair.first.c_str());
+						ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5.0f);
+						std::string label = "##" + pair.first;
+						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
+											  &soundPlayer->channelVolumes
+												   [pair.second->getChannel()],
+											  0, 100, "%d")) {
+							soundPlayer->EffectVolume(
+								pair.second->getChannel(),
+								soundPlayer->channelVolumes
+									[pair.second->getChannel()]);
+						}
+						ImGui::EndGroup();
+						ImGui::SameLine();
+						ImGui::SetCursorPosY(13);
+					}
+					ImGui::EndChild();
+					ImGui::EndTabItem();
+				}
+				ImGui::EndTabBar();
 			}
 
-			// Backend: varijable volumeLevel
+			// ImGui::SetCursorPos(ImVec2(35, 53));
+			// ImGui::Text("Volume");
+
+			// 	// ImGui::SetCursorPos(ImVec2(39, 68));
+			// 	// ImGui::Text("%d", soundPlayer->musicVolume);
+			// 	ImGui::SetCursorPos(ImVec2(22, 90));
+			// 	if (ImGui::VSliderInt("###volume", ImVec2(68, 180),
+			// 						  &soundPlayer->musicVolume, 0, 100, "%d"))
+			// { 		soundPlayer->MusicVolume(soundPlayer->musicVolume);
+			// 	}
+			// 	ImGui::SameLine();
+			// 	ImGui::BeginGroup();
+			// 	ImGui::SetCursorPosY(53);
+			// 	ImGui::Text("Njesto");
+			// 	// ImGui::SetCursorPosY(68);
+			// 	// ImGui::Text("%d", soundPlayer->musicVolume);
+			// 	ImGui::SetCursorPosY(90);
+			// 	ImGui::VSliderInt("##slider1", ImVec2(68, 180),
+			// 					  &soundPlayer->musicVolume, 0, 100, "");
+			// 	ImGui::EndGroup();
+			//
+			// 	// Backend: varijable volumeLevel
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Assets")) {

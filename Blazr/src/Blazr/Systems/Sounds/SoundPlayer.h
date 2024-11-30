@@ -14,10 +14,10 @@ class SoundPlayer {
 	static Ref<SoundPlayer> instance;
 	static int NUM_OF_CHANNELS;
 	std::unordered_map<int, bool> channelMuted;
-	std::unordered_map<int, int> channelVolumes;
-	int musicVolume;
 
   public:
+	std::unordered_map<int, int> channelVolumes;
+	int musicVolume;
 	BLZR_API static Ref<SoundPlayer> &GetInstance() {
 		// BLZR_CORE_INFO("Sound player reference");
 		if (instance == nullptr) {
@@ -39,7 +39,7 @@ class SoundPlayer {
 	void MuteMusic();
 	void ToggleMusicMute();
 	void ToggleMusic(const std::string &name);
-	void PlayEffect(const std::string &name, int loop, int channel);
+	void PlayEffect(const std::string &name, int loop);
 	void ToggleEffect(int channel);
 	void EffectVolume(const int channel, const int volume);
 	void MuteEffect(int channel);

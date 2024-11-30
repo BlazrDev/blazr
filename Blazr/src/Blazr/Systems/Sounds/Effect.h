@@ -1,17 +1,18 @@
 #pragma once
-#include <SDL_mixer.h>
 #include "SoundProperties.h"
+#include <SDL_mixer.h>
 
 namespace Blazr {
-    class Effect {
-        private:
-            SoundProperties m_Params{};
-            Mix_Chunk* sample;
-        
-        public:
-            Effect(const SoundProperties& params, Mix_Chunk* s);
-            ~Effect() = default;
+class Effect {
+  private:
+	SoundProperties m_Params{};
+	Mix_Chunk *sample;
+	int channel;
 
-            Mix_Chunk* getSample();
-    };
-}
+  public:
+	Effect(const SoundProperties &params, Mix_Chunk *s, int channel);
+	~Effect() = default;
+	int getChannel() const;
+	Mix_Chunk *getSample();
+};
+} // namespace Blazr
