@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/PhysicsComponent.h"

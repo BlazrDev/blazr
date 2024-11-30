@@ -36,7 +36,7 @@ IncludeDir["SDL"] = {
     linux = "Blazr/vendor/sdl/linux/include",
     windows = "Blazr/vendor/sdl/windows/include",
 }
-
+IncludeDir["box2d"] = "Blazr/vendor/box2d/include"
 LibDir = {}
 LibDir["GLFW"] = {
     linux = "Blazr/vendor/GLFW/bin/Debug-linux-x86_64/GLFW",
@@ -105,6 +105,7 @@ includedirs({
     "%{IncludeDir.EnTT}",
     "%{IncludeDir.Json}",
     "%{IncludeDir.SDL[os.host()]}",
+    "%{IncludeDir.box2d}",
 })
 
 libdirs({
@@ -211,6 +212,7 @@ includedirs({
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
     "%{IncludeDir.SDL[os.host()]}",
+    "%{IncludeDir.box2d}",
 })
 
 libdirs({
@@ -346,6 +348,7 @@ includedirs({
     "%{IncludeDir.GLEW[os.host()]}",
     "%{IncludeDir.Lua[os.host()]}",
     "%{IncludeDir.SDL[os.host()]}",
+    "%{IncludeDir.box2d}",
 })
 
 libdirs({

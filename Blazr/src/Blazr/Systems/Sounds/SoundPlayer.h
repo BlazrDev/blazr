@@ -34,14 +34,14 @@ class SoundPlayer {
 
 	void PlayMusic(const std::string &name, int loop);
 	void PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect);
-	void MusicVolume(const int volume);
+	void BLZR_API MusicVolume(const int volume);
 	int GetCurrentMusicVolume();
 	void MuteMusic();
 	void ToggleMusicMute();
 	void ToggleMusic(const std::string &name);
 	void PlayEffect(const std::string &name, int loop);
 	void ToggleEffect(int channel);
-	void EffectVolume(const int channel, const int volume);
+	void BLZR_API EffectVolume(const int channel, const int volume);
 	void MuteEffect(int channel);
 	void ToggleMuteEffect(int channel);
 	void ToggleMuteAllEffects();

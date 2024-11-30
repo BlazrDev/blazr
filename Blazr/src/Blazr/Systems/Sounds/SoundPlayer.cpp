@@ -138,7 +138,6 @@ void Blazr::SoundPlayer::EffectVolume(const int channel, const int volume) {
 	int scaledVolume = static_cast<int>(volume * (MIX_MAX_VOLUME / 100.0));
 	int clampedVolume = std::max(0, std::min(scaledVolume, MIX_MAX_VOLUME));
 	int res = Mix_Volume(channel, clampedVolume);
-	BLZR_CORE_INFO("test {0}", res);
 	channelVolumes[channel] = volume;
 }
 

@@ -28,7 +28,7 @@ class Scene {
 	void BLZR_API Update();
 	void BLZR_API Render();
 
-	void onEvent(Event &e);
+	void BLZR_API onEvent(Event &e);
 
 	void Serialize(json &j) const;
 	void Deserialize(const json &j);

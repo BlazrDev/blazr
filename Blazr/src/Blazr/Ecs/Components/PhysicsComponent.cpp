@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Physics/Box2DWrapper.h"

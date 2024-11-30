@@ -9,7 +9,7 @@
 namespace Blazr {
 class CameraController {
   public:
-	static bool paused;
+	static bool BLZR_API paused;
 
 	CameraController(int width, int height, bool rotation = true);
 	void OnUpdate();

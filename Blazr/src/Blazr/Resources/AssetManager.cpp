@@ -97,8 +97,8 @@ Ref<Blazr::Music> Blazr::AssetManager::GetMusic(const std::string &name) {
 
 	return musicIterator->second;
 }
-std::map<std::string, Ref<Blazr::Music>>
-Blazr::AssetManager::getAllMusic() const {
+std::map<std::string, Ref<Blazr::Music>>&
+Blazr::AssetManager::getAllMusic() {
 	return m_mapMusic;
 }
 
@@ -150,8 +150,8 @@ Ref<Blazr::Effect> Blazr::AssetManager::GetEffect(const std::string &name) {
 
 	return effectIterator->second;
 }
-std::map<std::string, Ref<Blazr::Effect>>
-Blazr::AssetManager::getAllEffects() const {
+std::map<std::string, Ref<Blazr::Effect>>&
+Blazr::AssetManager::getAllEffects() {
 	return m_mapEffect;
 }
 

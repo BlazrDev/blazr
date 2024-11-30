@@ -22,6 +22,7 @@
 #include <memory>
 
 namespace Blazr {
+static bool mapflag = true;
 static float zoomLevel = 1.0f;
 // audio
 static float volumeLevel = 0.0f;
@@ -157,8 +158,7 @@ void Editor::Run() {
 		int height;
 		glfwGetWindowSize(m_Window->GetWindow(), &width, &height);
 		m_Window->setWidth(width);
-		m_Window->setHeight(height);
-
+		m_Window->setHeight(height); 
 		glfwPollEvents();
 		m_Window->onUpdate();
 
@@ -580,7 +580,7 @@ void Editor::RenderImGui() {
 
 				if (ImGui::BeginTabItem("Music")) {
 
-					// ImGui::SetCursorPos(ImVec2(35, 63));
+					 ImGui::SetCursorPos(ImVec2(35, 63));
 					ImGui::BeginChild("MusicContainer", ImVec2(0, 220), false,
 									  ImGuiWindowFlags_HorizontalScrollbar);
 					ImGui::SetCursorPosX(35);
@@ -638,38 +638,19 @@ void Editor::RenderImGui() {
 								soundPlayer->channelVolumes
 									[pair.second->getChannel()]);
 						}
+
+
 						ImGui::EndGroup();
 						ImGui::SameLine();
 						ImGui::SetCursorPosY(13);
 					}
+			
 					ImGui::EndChild();
 					ImGui::EndTabItem();
 				}
 				ImGui::EndTabBar();
 			}
 
-			// ImGui::SetCursorPos(ImVec2(35, 53));
-			// ImGui::Text("Volume");
-
-			// 	// ImGui::SetCursorPos(ImVec2(39, 68));
-			// 	// ImGui::Text("%d", soundPlayer->musicVolume);
-			// 	ImGui::SetCursorPos(ImVec2(22, 90));
-			// 	if (ImGui::VSliderInt("###volume", ImVec2(68, 180),
-			// 						  &soundPlayer->musicVolume, 0, 100, "%d"))
-			// { 		soundPlayer->MusicVolume(soundPlayer->musicVolume);
-			// 	}
-			// 	ImGui::SameLine();
-			// 	ImGui::BeginGroup();
-			// 	ImGui::SetCursorPosY(53);
-			// 	ImGui::Text("Njesto");
-			// 	// ImGui::SetCursorPosY(68);
-			// 	// ImGui::Text("%d", soundPlayer->musicVolume);
-			// 	ImGui::SetCursorPosY(90);
-			// 	ImGui::VSliderInt("##slider1", ImVec2(68, 180),
-			// 					  &soundPlayer->musicVolume, 0, 100, "");
-			// 	ImGui::EndGroup();
-			//
-			// 	// Backend: varijable volumeLevel
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Assets")) {
