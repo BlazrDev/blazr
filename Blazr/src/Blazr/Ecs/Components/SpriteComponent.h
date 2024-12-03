@@ -25,6 +25,8 @@ struct SpriteComponent {
 	int startX = -1;
 	int startY = -1;
 
+	std::string layer = "";
+
 	glm::vec2 textureCoordinates[4] = {
 		{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
 

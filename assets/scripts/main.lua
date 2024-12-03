@@ -1,74 +1,74 @@
 -- Main Script
 if run_script("assets/scripts/utilities.lua") then
-	print("Utilities script has been executed")
+    print("Utilities script has been executed")
 end
 if run_script("assets/tiled_maps/testmap.lua") then
-	print("Testmap script has been executed")
+    print("Testmap script has been executed")
 end
 Masha = {
-	tag = "Masha",
-	group = "Character2",
-	components = {
-		transform = {
-			position = { x = 0, y = 0 },
-			scale = { x = 0.3, y = 0.3 },
-			rotation = 0,
-		},
-		sprite = {
-			width = 472.0,
-			height = 617.0,
-			texture_path = "masha",
-			start = { x = 0, y = 0 },
-			layer = 0,
-		},
-		box_collider = {
-			width = 472,
-			height = 617,
-			offset = { x = 0, y = 0 },
-		},
-	},
+    tag = "Masha",
+    group = "Character2",
+    components = {
+        transform = {
+            position = { x = 0, y = 0 },
+            scale = { x = 0.3, y = 0.3 },
+            rotation = 0,
+        },
+        sprite = {
+            width = 472.0,
+            height = 617.0,
+            texture_path = "masha",
+            start = { x = 0, y = 0 },
+            layer = 0,
+        },
+        box_collider = {
+            width = 472,
+            height = 617,
+            offset = { x = 0, y = 0 },
+        },
+    },
 }
 Player = {
-	tag = "Player",
-	group = "Character",
-	components = {
-		transform = {
-			position = { x = 100, y = 100 },
-			scale = { x = 3, y = 3 },
-			rotation = 0,
-		},
-		sprite = {
-			width = 32.0,
-			height = 32.0,
-			texture_path = "player",
-			start = { x = 0, y = 0 },
-			layer = 0,
-		},
-		box_collider = {
-			width = 20,
-			height = 24,
-			offset = { x = 15, y = 0 },
-		},
-		animation = {
-			num_frames = 10,
-			frame_rate = 1,
-			frame_offset = 10,
-			b_vertical = false,
-		},
-	},
+    tag = "Player",
+    group = "Character",
+    components = {
+        transform = {
+            position = { x = 100, y = 100 },
+            scale = { x = 3, y = 3 },
+            rotation = 0,
+        },
+        sprite = {
+            width = 32.0,
+            height = 32.0,
+            texture_path = "player",
+            start = { x = 0, y = 0 },
+            layer = 0,
+        },
+        box_collider = {
+            width = 20,
+            height = 24,
+            offset = { x = 15, y = 0 },
+        },
+        animation = {
+            num_frames = 10,
+            frame_rate = 10,
+            frame_offset = 10,
+            b_vertical = false,
+        },
+    },
 }
 local attributes = PhysicsAttributes({
-	type = RigidBodyType.Dynamic,
-	density = 80,
-	friction = 1000,
-	restitution = 0.3,
-	gravityScale = 0.0,
-	position = vec2(100, 300),
-	scale = vec2(3, 3),
-	boxSize = vec2(20, 24),
-	offset = vec2(15, 0),
-	isSensor = false,
-	isFixedRotation = true,
+    type = RigidBodyType.Dynamic,
+    density = 80,
+    friction = 1000,
+    restitution = 0.3,
+    gravityScale = 0.0,
+    position = vec2(100, 300),
+    scale = vec2(3, 3),
+    boxSize = vec2(20, 24),
+    offset = vec2(15, 0),
+    isSensor = false,
+    isFixedRotation = true,
 })
 local physics = PhysicsComponent(attributes)
 
@@ -82,20 +82,20 @@ editor:SetActiveScene(scene)
 -- playerEntity = Entity("Player", "Character")
 --
 Assets = {
-	music = {
-		{ name = "masa", path = "assets/sounds/masa.mp3", desc = "Masa background music" },
-		{ name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
-	},
-	sound_effects = {
-		-- { name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
-	},
-	textures = {
-		{ name = "masha", path = "assets/masha.png", pixelArt = false },
-		{ name = "chammy", path = "assets/chammy.png", pixelArt = false },
-		{ name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
-		{ name = "map", path = "assets/map_assets/map.png", pixelArt = true },
-		{ name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
-	},
+    music = {
+        { name = "masa", path = "assets/sounds/masa.mp3", desc = "Masa background music" },
+        { name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
+    },
+    sound_effects = {
+        { name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
+    },
+    textures = {
+        { name = "masha", path = "assets/masha.png", pixelArt = false },
+        { name = "chammy", path = "assets/chammy.png", pixelArt = false },
+        { name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
+        { name = "map", path = "assets/map_assets/map.png", pixelArt = true },
+        { name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
+    },
 }
 
 local tileset = CreateMap()
@@ -134,81 +134,66 @@ mashaCollider.colliding = true
 -- collider2.colliding = true
 
 local function stoji()
-	playerAnimation.frame_offset = 7
-	playerAnimation.current_frame = 0
-	playerAnimation.num_frames = 11
+    playerAnimation.frame_offset = 7
+    playerAnimation.current_frame = 0
+    playerAnimation.num_frames = 11
 end
 
 local function udara()
-	playerAnimation.frame_offset = 4
+    playerAnimation.frame_offset = 4
 
-	playerAnimation.current_frame = 2
-	playerAnimation.num_frames = 10
+    playerAnimation.current_frame = 2
+    playerAnimation.num_frames = 10
 end
 
 local function trci()
-	playerAnimation.frame_offset = 6
-	playerAnimation.current_frame = 0
-	playerAnimation.num_frames = 8
-	-- sprite2.color.x = 1.0
-	-- sprite2.color.y = 1.0
-	-- sprite2.color.z = 1.0
+    playerAnimation.frame_offset = 6
+    playerAnimation.current_frame = 0
+    playerAnimation.num_frames = 8
+    -- sprite2.color.x = 1.0
+    -- sprite2.color.y = 1.0
+    -- sprite2.color.z = 1.0
 end
 -- local am = AssetManager:get_instance()
-AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
-AssetManager.load_music("metak", "assets/sounds/METAK.mp3", "dess")
-AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg", 1)
-AssetManager.load_effect("bigben", "assets/sounds/bigben.wav", "biggg", 2)
-AssetManager.load_effect("masaa", "assets/sounds/masa.wav", "masah", 3)
-AssetManager.load_effect("sample", "assets/sounds/sample.wav", "sampleh", 4)
-AssetManager.load_effect("ahem", "assets/sounds/ahem_x.wav", "ahem", 5)
-AssetManager.load_effect("arrow", "assets/sounds/arrow_x.wav", "arrow", 6)
-AssetManager.load_effect("bllop", "assets/sounds/bloop_x.wav", "blooper", 7)
-AssetManager.load_effect("blurp", "assets/sounds/blurp_x.wav", "blurper", 8)
-AssetManager.load_effect("bottle", "assets/sounds/bottle_x.wav", "bottlded", 9)
-AssetManager.load_effect("carpentry", "assets/sounds/carpentry.wav", "carpet", 10)
-AssetManager.load_effect("floop", "assets/sounds/floop2_x.wav", "floop", 11)
-AssetManager.load_effect("gun", "assets/sounds/gun_44mag_11.wav", "pistol", 12)
-AssetManager.load_effect("gurgle", "assets/sounds/gurgle_x.wav", "gurggle", 13)
-AssetManager.load_effect("hammer", "assets/sounds/hammer_anvil3.wav", "cekic", 14)
-AssetManager.load_effect("jump", "assets/sounds/jump.wav", "skae", 15)
+-- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
+-- AssetManager.load_effect("boing", "assets/sounds/boing.wav", "binggg")
 -- SoundPlayer.play_music("masa", 0, 0)
 -- run_script("assets/scripts/test.lua")
 local x = 5
 local y = 5
 local function update()
-	local velocity = physicsComponent:get_linear_velocity()
-	if InputSystem.key_repeating(KEY_A) then
-		physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
-		trci()
-	elseif InputSystem.key_repeating(KEY_D) then
-		physicsComponent:set_linear_velocity(vec2(x, velocity.y))
-		trci()
-	else
-		local new_velocity_x = (velocity.x < 0) and (velocity.x + x / 10) or (velocity.x - x / 10)
-		physicsComponent:set_linear_velocity(vec2(new_velocity_x, velocity.y))
-		trci()
-	end
-	if InputSystem.key_repeating(KEY_W) then
-		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
-		trci()
-	end
-	if InputSystem.key_repeating(KEY_S) then
-		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
-		trci()
-	end
+    local velocity = physicsComponent:get_linear_velocity()
+    if InputSystem.key_repeating(KEY_A) then
+        physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
+        trci()
+    elseif InputSystem.key_repeating(KEY_D) then
+        physicsComponent:set_linear_velocity(vec2(x, velocity.y))
+        trci()
+    else
+        local new_velocity_x = (velocity.x < 0) and (velocity.x + x / 10) or (velocity.x - x / 10)
+        physicsComponent:set_linear_velocity(vec2(new_velocity_x, velocity.y))
+        trci()
+    end
+    if InputSystem.key_repeating(KEY_W) then
+        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
+        trci()
+    end
+    if InputSystem.key_repeating(KEY_S) then
+        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
+        trci()
+    end
 end
 
 main = {
-	[1] = {
-		update = function()
-			update()
-			-- scene:Update()
-		end,
-	},
-	[2] = {
-		render = function()
-			-- scene:Render()
-		end,
-	},
+    [1] = {
+        update = function()
+            update()
+            -- scene:Update()
+        end,
+    },
+    [2] = {
+        render = function()
+            -- scene:Render()
+        end,
+    },
 }

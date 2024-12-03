@@ -40,6 +40,8 @@ class PhysicsComponent {
 	void init(int windowWidth, int windowHeight);
 	b2Body *GetRigidBody() const { return m_RigidBody.get(); }
 
+	PhysicsAttributes &GetAttributes() { return m_Attributes; }
+
 	static void CreateLuaPhysicsComponentBind(sol::state_view &lua,
 											  Blazr::Registry &registry);
 };

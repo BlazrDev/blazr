@@ -1,6 +1,7 @@
 #pragma once
 #include "blzrpch.h"
 #include "Blazr.h"
+#include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
 #include "imgui.h"
@@ -20,10 +21,12 @@ class Editor : public Application {
 	void End();
 	void Begin();
 	void RenderSceneToTexture();
-	void renderTransformComponent(ImVec2 &cursorPos);
-	void renderIdentificationComponent(ImVec2 &cursorPos);
-	void renderSpriteComponent(ImVec2 &cursorPos);
-	void renderPhysicsComponent(ImVec2 &cursorPos);
+	void renderTransformComponent(ImVec2 &cursorPos,
+								  TransformComponent &transform);
+	void renderIdentificationComponent(ImVec2 &cursorPos,
+									   Identification &identification);
+	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite);
+	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
   private:

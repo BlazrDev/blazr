@@ -173,6 +173,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Ecs\Components\PhysicsComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\ScriptComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h" />
+    <ClInclude Include="src\Blazr\Ecs\Components\TileComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h" />
     <ClInclude Include="src\Blazr\Ecs\Entity.h" />
     <ClInclude Include="src\Blazr\Ecs\MetaUtil.h" />
