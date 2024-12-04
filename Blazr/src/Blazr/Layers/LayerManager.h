@@ -10,6 +10,7 @@ class LayerManager {
 	void RemoveLayer(const std::string &name);
 	void SortLayers();
 	void Render(Registry &registry);
+	void AddLayer(Ref<Layer> layer);
 	std::vector<Ref<Layer>> GetAllLayers() const;
 
 	static void BindLayerManager(sol::state &lua);

@@ -297,7 +297,58 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 				return false;
 			}
 			return body->IsBullet();
-		}
+		});
+}
 
-	);
+void Blazr::PhysicsComponent::to_json(nlohmann::json &j,
+									  PhysicsComponent component) {
+	const auto &attributes = component.m_Attributes;
+
+	j = nlohmann::json{
+		{"type", static_cast<int>(attributes.type)},
+		{"density", attributes.density},
+		{"friction", attributes.friction},
+		{"restitution", attributes.restitution},
+		{"restitutionThreshold", attributes.restitutionThreshold},
+		{"gravityScale", attributes.gravityScale},
+		{"position", {attributes.position.x, attributes.position.y}},
+		{"scale", {attributes.scale.x, attributes.scale.y}},
+		{"boxSize", {attributes.boxSize.x, attributes.boxSize.y}},
+		{"offset", {attributes.offset.x, attributes.offset.y}},
+		{"isSensor", attributes.isSensor},
+		{"isFixedRotation", attributes.isFixedRotation},
+		{"filterCategory", attributes.filterCategory},
+		{"filterMask", attributes.filterMask},
+		{"filterGroup", attributes.filterGroup}};
+}
+
+void Blazr::PhysicsComponent::from_json(const nlohmann::json &j,
+										PhysicsComponent &component) {
+	auto &attributes = component.m_Attributes;
+
+	attributes.type = static_cast<RigidBodyType>(j.at("type").get<int>());
+	attributes.density = j.at("density").get<float>();
+	attributes.friction = j.at("friction").get<float>();
+	attributes.restitution = j.at("restitution").get<float>();
+	attributes.restitutionThreshold = j.at("restitutionThreshold").get<float>();
+	attributes.gravityScale = j.at("gravityScale").get<float>();
+
+	auto position = j.at("position").get<std::vector<float>>();
+	attributes.position = glm::vec2(position[0], position[1]);
+
+	auto scale = j.at("scale").get<std::vector<float>>();
+	attributes.scale = glm::vec2(scale[0], scale[1]);
+
+	auto boxSize = j.at("boxSize").get<std::vector<float>>();
+	attributes.boxSize = glm::vec2(boxSize[0], boxSize[1]);
+
+	auto offset = j.at("offset").get<std::vector<float>>();
+	attributes.offset = glm::vec2(offset[0], offset[1]);
+
+	attributes.isSensor = j.at("isSensor").get<bool>();
+	attributes.isFixedRotation = j.at("isFixedRotation").get<bool>();
+
+	attributes.filterCategory = j.at("filterCategory").get<uint16_t>();
+	attributes.filterMask = j.at("filterMask").get<uint16_t>();
+	attributes.filterGroup = j.at("filterGroup").get<int16_t>();
 }

@@ -57,4 +57,9 @@ void LayerManager::BindLayerManager(sol::state &lua) {
 		&LayerManager::GetLayerByName);
 }
 
+void LayerManager::AddLayer(Ref<Layer> layer) {
+	m_Layers.push_back(layer);
+	SortLayers();
+}
+
 } // namespace Blazr

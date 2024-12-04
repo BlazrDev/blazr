@@ -1,5 +1,6 @@
 
 #include "blzrpch.h"
+#include "Blazr/Resources/AssetManager.h"
 #include "ProjectSerializer.h"
 #include <fstream>
 
@@ -10,7 +11,7 @@ json ProjectConfigToJson(const ProjectConfig &config) {
 	return json{{"name", config.name},
 				{"StartScene", config.StartScene.string()},
 				{"AssetDirectory", config.AssetDirectory.string()},
-				{"ScriptPath", config.ScriptPath.string()}};
+				{"ScriptPath", config.ScriptDirectory.string()}};
 }
 
 ProjectConfig ProjectConfigFromJson(const json &j) {
@@ -18,7 +19,7 @@ ProjectConfig ProjectConfigFromJson(const json &j) {
 	config.name = j.at("name").get<std::string>();
 	config.StartScene = j.at("StartScene").get<std::string>();
 	config.AssetDirectory = j.at("AssetDirectory").get<std::string>();
-	config.ScriptPath = j.at("ScriptPath").get<std::string>();
+	config.ScriptDirectory = j.at("ScriptPath").get<std::string>();
 	return config;
 }
 
@@ -32,19 +33,28 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 	json j;
 	j["ProjectDirectory"] = project->GetProjectDirectory().string();
 	j["Config"] = ProjectConfigToJson(project->GetConfig());
+	nlohmann::json assetJson;
+	AssetManager::to_json(assetJson, AssetManager::GetInstance());
+	j["AssetManager"] = assetJson;
 
+	std::filesystem::create_directories(filepath.parent_path());
 	std::ofstream ofs(filepath);
 	if (!ofs) {
 		BLZR_CORE_ERROR("Failed to open file for serialization: {}",
 						filepath.string());
 		return false;
 	}
-	ofs << j.dump(4); // Pretty-print JSON with indentation
+	ofs << j.dump(4);
 	return true;
 }
 
 Ref<Project>
 ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
+	if (!std::filesystem::exists(filepath)) {
+		BLZR_CORE_ERROR("File does not exist: {}", filepath.string());
+		return nullptr;
+	}
+
 	std::ifstream ifs(filepath);
 	if (!ifs) {
 		BLZR_CORE_ERROR("Failed to open file for deserialization: {}",
@@ -53,12 +63,44 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 	}
 
 	json j;
-	ifs >> j;
+	try {
+		ifs >> j;
+	} catch (const std::exception &e) {
+		BLZR_CORE_ERROR("Error parsing JSON from file: {} - {}",
+						filepath.string(), e.what());
+		return nullptr;
+	}
 
 	auto project = CreateRef<Project>();
-	project->SetProjectDirectory(j.at("ProjectDirectory").get<std::string>());
-	Project::SetActive(project);
-	project->GetConfig() = ProjectConfigFromJson(j.at("Config"));
+
+	try {
+
+		if (j.contains("ProjectDirectory")) {
+			project->SetProjectDirectory(
+				j.at("ProjectDirectory").get<std::string>());
+		} else {
+			BLZR_CORE_WARN("Missing 'ProjectDirectory' in the JSON file.");
+		}
+
+		if (j.contains("Config")) {
+			project->GetConfig() = ProjectConfigFromJson(j.at("Config"));
+		} else {
+			BLZR_CORE_WARN("Missing 'Config' in the JSON file.");
+		}
+
+		Project::SetActive(project);
+
+		if (j.contains("AssetManager")) {
+			AssetManager::from_json(j.at("AssetManager"),
+									AssetManager::GetInstance());
+		} else {
+			BLZR_CORE_WARN("Missing 'AssetManager' in the JSON file.");
+		}
+	} catch (const std::exception &e) {
+		BLZR_CORE_ERROR("Failed to deserialize project: {} - {}",
+						filepath.string(), e.what());
+		return nullptr;
+	}
 
 	return project;
 }
@@ -73,6 +115,7 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 	json j;
 	scene->Serialize(j);
 
+	std::filesystem::create_directories(filepath.parent_path());
 	std::ofstream ofs(filepath);
 	if (!ofs) {
 		BLZR_CORE_ERROR("Failed to open scene file for serialization: {}",

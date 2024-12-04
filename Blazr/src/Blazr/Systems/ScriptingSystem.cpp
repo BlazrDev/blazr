@@ -50,8 +50,8 @@ bool ScriptingSystem::LoadMainScript(sol::state &lua) {
 	sol::function render = render_script["render"];
 
 	Entity mainLuaScript(m_Registry, "main_script", "");
-	mainLuaScript.AddComponent<Bazr::ScriptComponent>(
-		Bazr::ScriptComponent{.update = update, .render = render});
+	mainLuaScript.AddComponent<Blazr::ScriptComponent>(
+		Blazr::ScriptComponent{.update = update, .render = render});
 
 	m_bMainLoaded = true;
 
@@ -63,7 +63,7 @@ void ScriptingSystem::Update() {
 		return;
 	}
 
-	auto view = m_Registry.GetRegistry().view<Bazr::ScriptComponent>();
+	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
 	for (const auto &entity : view) {
 		Entity ent{m_Registry, entity};
@@ -71,7 +71,7 @@ void ScriptingSystem::Update() {
 			continue;
 		}
 
-		auto &script = ent.GetComponent<Bazr::ScriptComponent>();
+		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
 		auto error = script.update(entity);
 		if (!error.valid()) {
 			sol::error err = error;
@@ -85,7 +85,7 @@ void ScriptingSystem::Render() {
 		return;
 	}
 
-	auto view = m_Registry.GetRegistry().view<Bazr::ScriptComponent>();
+	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
 	for (const auto &entity : view) {
 		Entity ent{m_Registry, entity};
@@ -93,7 +93,7 @@ void ScriptingSystem::Render() {
 			continue;
 		}
 
-		auto &script = ent.GetComponent<Bazr::ScriptComponent>();
+		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
 		auto error = script.render(entity);
 		if (!error.valid()) {
 			sol::error err = error;

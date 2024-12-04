@@ -24,6 +24,8 @@ class Texture2D {
 		return m_RendererID == other.GetRendererID();
 	}
 
+	std::string GetPath() const { return m_FilePath; }
+
 	static Ref<Texture2D> Create(const std::string &filepath);
 	static Ref<Texture2D> Create(int width, int height,
 								 const unsigned char *data);

@@ -19,6 +19,7 @@ class Layer {
 
 	static void BindLayer(sol::state &lua);
 
-	// TODO add serialization and deserialization
+	static void to_json(nlohmann::json &j, const Ref<Layer> layer);
+	static void from_json(const nlohmann::json &j, Ref<Layer> layer);
 };
 } // namespace Blazr

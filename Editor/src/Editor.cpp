@@ -7,6 +7,7 @@
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/Event.h"
 #include "Blazr/Physics/Box2DWrapper.h"
+#include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
@@ -158,7 +159,7 @@ void Editor::Run() {
 		int height;
 		glfwGetWindowSize(m_Window->GetWindow(), &width, &height);
 		m_Window->setWidth(width);
-		m_Window->setHeight(height); 
+		m_Window->setHeight(height);
 		glfwPollEvents();
 		m_Window->onUpdate();
 
@@ -580,7 +581,7 @@ void Editor::RenderImGui() {
 
 				if (ImGui::BeginTabItem("Music")) {
 
-					 ImGui::SetCursorPos(ImVec2(35, 63));
+					ImGui::SetCursorPos(ImVec2(35, 63));
 					ImGui::BeginChild("MusicContainer", ImVec2(0, 220), false,
 									  ImGuiWindowFlags_HorizontalScrollbar);
 					ImGui::SetCursorPosX(35);
@@ -639,12 +640,11 @@ void Editor::RenderImGui() {
 									[pair.second->getChannel()]);
 						}
 
-
 						ImGui::EndGroup();
 						ImGui::SameLine();
 						ImGui::SetCursorPosY(13);
 					}
-			
+
 					ImGui::EndChild();
 					ImGui::EndTabItem();
 				}

@@ -3,14 +3,15 @@
 #include <memory>
 #include <string>
 
-#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Core/Core.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Blazr/Renderer/Shader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "Blazr/Systems/Sounds/Effect.h"
 #include "Blazr/Systems/Sounds/Music.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
 #include "sol.hpp"
+#include <json.hpp>
 
 namespace Blazr {
 class AssetManager {
@@ -21,6 +22,7 @@ class AssetManager {
 	std::map<std::string, Ref<Music>> m_mapMusic;
 
 	std::map<std::string, Ref<Effect>> m_mapEffect;
+
   public:
 	AssetManager() = default;
 	~AssetManager() = default;
@@ -51,7 +53,11 @@ class AssetManager {
 	Ref<Blazr::Effect> GetEffect(const std::string &name);
 
 	BLZR_API std::map<std::string, Ref<Blazr::Music>> &getAllMusic();
-	BLZR_API std::map<std::string, Ref<Blazr::Effect>>& getAllEffects();
+	BLZR_API std::map<std::string, Ref<Blazr::Effect>> &getAllEffects();
+
+	static void to_json(nlohmann::json &j, Ref<AssetManager> assetManager);
+	static void from_json(const nlohmann::json &j,
+						  Ref<AssetManager> assetManager);
 
   private:
 	static Ref<AssetManager> instance;

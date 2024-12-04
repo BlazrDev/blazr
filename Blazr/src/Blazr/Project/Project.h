@@ -8,8 +8,11 @@ namespace Blazr {
 struct ProjectConfig {
 	std::string name = "Untitled";
 	std::filesystem::path StartScene;
+
+	// Useless for now, will later be used for dynamic asset directory
+	// management
 	std::filesystem::path AssetDirectory;
-	std::filesystem::path ScriptPath;
+	std::filesystem::path ScriptDirectory;
 };
 class Project {
   public:
@@ -44,19 +47,19 @@ class Project {
 		m_ProjectDirectory = directory;
 	}
 
-	const std::unordered_map<std::string, Ref<Scene>> &GetLoadedScenes() const {
-		return m_LoadedScenes;
+	const std::unordered_map<std::string, Ref<Scene>> &GetScenes() const {
+		return m_Scenes;
 	}
 
 	void AddScene(const std::string &name, const Ref<Scene> &scene) {
-		m_LoadedScenes[name] = scene;
+		m_Scenes[name] = scene;
 	}
 
-	void RemoveScene(const std::string &name) { m_LoadedScenes.erase(name); }
+	void RemoveScene(const std::string &name) { m_Scenes.erase(name); }
 
 	Ref<Scene> GetScene(const std::string &name) const {
-		auto it = m_LoadedScenes.find(name);
-		if (it != m_LoadedScenes.end()) {
+		auto it = m_Scenes.find(name);
+		if (it != m_Scenes.end()) {
 			return it->second;
 		}
 		return nullptr;
@@ -67,7 +70,7 @@ class Project {
 	}
 
   private:
-	std::unordered_map<std::string, Ref<Scene>> m_LoadedScenes;
+	std::unordered_map<std::string, Ref<Scene>> m_Scenes;
 	ProjectConfig m_Config;
 	std::filesystem::path m_ProjectDirectory;
 
