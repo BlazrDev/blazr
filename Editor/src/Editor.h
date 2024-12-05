@@ -27,6 +27,9 @@ class Editor : public Application {
 									   Identification &identification);
 	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite);
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
+	void renderBoxColliderComponent(ImVec2 &cursorPos,
+									BoxColliderComponent &boxCollider);
+
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
   private:

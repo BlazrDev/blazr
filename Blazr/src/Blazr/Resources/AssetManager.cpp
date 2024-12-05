@@ -153,6 +153,10 @@ std::map<std::string, Ref<Blazr::Effect>> &
 Blazr::AssetManager::getAllEffects() {
 	return m_mapEffect;
 }
+std::map<std::string, Ref<Blazr::Texture2D>> &
+Blazr::AssetManager::getAllTextures() {
+	return m_mapTextures;
+}
 
 // void Blazr::AssetManager::CreateLuaEntityBind(sol::state_view &lua) {
 // 	lua.new_usertype<AssetManager>(

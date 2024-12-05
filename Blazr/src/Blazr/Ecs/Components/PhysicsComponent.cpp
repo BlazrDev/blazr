@@ -9,20 +9,25 @@
 
 Blazr::PhysicsComponent::PhysicsComponent(std::shared_ptr<b2World> world,
 										  const PhysicsAttributes &atributes)
-	: m_World(world), m_Attributes(atributes), m_RigidBody(nullptr) {}
+	: m_World(world), m_Attributes(atributes), m_RigidBody(nullptr) {
+	init(1280, 720);
+}
 
 Blazr::PhysicsComponent::PhysicsComponent()
-	: m_Attributes(PhysicsAttributes{}) {}
+	: m_Attributes(PhysicsAttributes{}), m_RigidBody(nullptr) {}
 void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	if (!m_World) {
 		BLZR_CORE_ERROR("PhysicsComponent::init: PhysicsWorld is nullptr");
 		return;
 	}
 
+	if (m_RigidBody != nullptr) {
+		m_RigidBody.reset();
+		m_RigidBody = nullptr;
+	}
+
 	b2BodyDef bodyDef{};
 	bodyDef.type = static_cast<b2BodyType>(m_Attributes.type);
-	// bodyDef.type = b2BodyType::b2_dynamicBody;
-	//
 
 	bodyDef.position.Set(
 		(m_Attributes.position.x - (windowWidth * 0.5f) +
@@ -66,6 +71,33 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 		BLZR_CORE_ERROR("Failed to create the rigid body fixture!");
 	}
 }
+
+void Blazr::PhysicsComponent::setTransform(const glm::vec2 &position) {
+	const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
+	const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
+
+	auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
+	auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
+
+	// auto bx = position.x;
+	// auto by = position.y;
+
+	m_RigidBody->SetTransform(b2Vec2{bx, by}, 0.f);
+}
+void Blazr::PhysicsComponent::setTransform(const glm::vec2 &position,
+										   float angle) {
+	const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
+	const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
+
+	auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
+	auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
+
+	// auto bx = position.x;
+	// auto by = position.y;
+
+	m_RigidBody->SetTransform(b2Vec2{bx, by}, angle);
+}
+
 void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 	sol::state_view &lua, Blazr::Registry &registry) {
 	lua.new_enum<Blazr::RigidBodyType>(
@@ -118,25 +150,7 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 		&Blazr::PhysicsAttributes::filterMask, "filterGroup",
 		&Blazr::PhysicsAttributes::filterGroup, "set_transform",
 		[](PhysicsComponent &pc, const glm::vec2 &position) {
-			auto body = pc.GetRigidBody();
-			if (!body) {
-				// TODO: Add Error
-				return;
-			}
-
-			// auto &engineData = CoreEngineData::GetInstance();
-			// const auto p2m = engineData.PixelsToMeters();
-
-			const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
-			const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
-
-			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
-			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
-
-			// auto bx = position.x;
-			// auto by = position.y;
-
-			body->SetTransform(b2Vec2{bx, by}, 0.f);
+			pc.setTransform(position);
 		});
 
 	auto &physicsWorld = registry.GetContext<std::shared_ptr<b2World>>();
@@ -242,11 +256,13 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 				return;
 			}
 
-			const auto scaleHalfHeight = 1280 * PIXELS_TO_METERS * 0.5f;
-			const auto scaleHalfWidth = 720 * PIXELS_TO_METERS * 0.5f;
+			const auto scaleHalfHeight = 1224 * PIXELS_TO_METERS / 2;
+			const auto scaleHalfWidth = 648 * PIXELS_TO_METERS / 2;
 
-			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
-			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
+			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfHeight;
+			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfWidth;
+
+			BLZR_CORE_INFO("Setting position to: {0}, {1}", bx, by);
 
 			body->SetTransform(b2Vec2{bx, by}, 0.f);
 		},
@@ -277,7 +293,6 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 			default:
 				break;
 			}
-
 			body->SetType(bodyType);
 		},
 		"set_bullet",
