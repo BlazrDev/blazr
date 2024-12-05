@@ -1,8 +1,11 @@
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/Event.h"
@@ -15,6 +18,7 @@
 #include "Blazr/Systems/ScriptingSystem.h"
 #include "Blazr/Systems/Sounds/SoundPlayer.h"
 #include "Editor.h"
+#include "box2d/b2_body.h"
 #include "box2d/box2d.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -23,6 +27,7 @@
 #include <memory>
 
 namespace Blazr {
+static float pos = 0;
 static bool mapflag = true;
 static float zoomLevel = 1.0f;
 // audio
@@ -30,9 +35,16 @@ static float volumeLevel = 0.0f;
 // transform
 static float positionX = 0.0f;
 static float positionY = 0.0f;
+
+static float newPositionX = 0.0f;
+static float newPositionY = 0.0f;
+
 static float scaleX = 1.0f;
 static float scaleY = 1.0f;
-static float rotation = 0.0f;
+
+static float newScaleX = 1.0f;
+static float newScaleY = 1.0f;
+
 // identification
 static char name[128] = "";
 static char groupName[128] = "";
@@ -42,6 +54,14 @@ static float spriteHeight = 0.0f;
 static float layer = 0.0f;
 static float sheetX = 0.0f;
 static float sheetY = 0.0f;
+
+// BoxCollider
+static int widthBoxCollider = 0, heightBoxCollider = 0;
+static float offsetX = 0, offsetY = 0;
+
+static int newWidthBoxCollider = 0, newHeightBoxCollider = 0;
+static float newOffsetX = 0, newOffsetY = 0;
+
 // physics
 static float density = 0.0f;
 static float friction = 0.0f;
@@ -85,6 +105,7 @@ void Editor::Init() {
 }
 
 void Editor::InitImGui() {
+
 	if (!glfwInit()) {
 		BLZR_CORE_ERROR("GLFW initialization failed!");
 		return;
@@ -186,83 +207,7 @@ void Editor::Run() {
 	glfwSwapBuffers(m_Window->GetWindow());
 }
 
-void Editor::renderTransformComponent(ImVec2 &cursorPos) {
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Transform");
-	ImGui::SameLine();
-	cursorPos.y += 28;
-
-	// Pozicija (Position)
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Position");
-	cursorPos.y += 18;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::PushItemWidth(105);
-	ImGui::Text("X");
-	ImGui::SameLine();
-	ImGui::InputFloat("##PositionX", &positionX, 0.1f, 1.0f, "%.1f");
-	ImGui::SameLine();
-	ImGui::Text("Y");
-	ImGui::SameLine();
-	ImGui::InputFloat("##PositionY", &positionY, 0.1f, 1.0f, "%.1f");
-	ImGui::PopItemWidth();
-	cursorPos.y += 25;
-
-	// Skaliranje (Scale)
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Scale");
-	cursorPos.y += 18;
-
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::PushItemWidth(105);
-	ImGui::Text("X");
-	ImGui::SameLine();
-	ImGui::InputFloat("##ScaleX", &scaleX, 0.1f, 1.0f, "%.1f");
-	ImGui::SameLine();
-	ImGui::Text("Y");
-	ImGui::SameLine();
-	ImGui::InputFloat("##ScaleY", &scaleY, 0.1f, 1.0f, "%.1f");
-	ImGui::PopItemWidth();
-	cursorPos.y += 30;
-
-	// Rotacija (Rotation)
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Rotation");
-	cursorPos.x += 15;
-	cursorPos.y += 20;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::InputFloat("##Rotation", &rotation, 0.1f, 1.0f, "%.1f");
-	cursorPos.x -= 15;
-	cursorPos.y += 35;
-}
-
-void Editor::renderIdentificationComponent(ImVec2 &cursorPos) {
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Identification");
-	cursorPos.y += 30;
-
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Name");
-	cursorPos.x += 43;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
-	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
-	ImGui::PopItemWidth();
-	cursorPos.x -= 43;
-	cursorPos.y += 25;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Group");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###group", groupName, IM_ARRAYSIZE(groupName));
-	ImGui::PopItemWidth();
-	cursorPos.y += 35;
-}
-
+static std::string selectedGameObject = "ObjectDetails";
 void Editor::RenderImGui() {
 	ImVec2 cursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
@@ -285,7 +230,6 @@ void Editor::RenderImGui() {
 	ImGui::DockSpace(ImGui::GetID("MainDockSpace"), ImVec2(0.0f, 0.0f));
 
 	static bool showGameObjectDetails = false;
-	static std::string selectedGameObject = "ObjectDetails";
 	int numberOfComponents = 3;
 
 	// Menu bar
@@ -337,8 +281,13 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Scene", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
-	for (int objIdx = 0; objIdx < numberOfComponents; ++objIdx) {
-		std::string gameObjectName = "GameObject" + std::to_string(objIdx + 1);
+	auto view = m_Registry->GetRegistry().view<entt::entity>(
+		entt::exclude<TileComponent, Blazr::ScriptComponent>);
+
+	for (auto entity : view) {
+		auto &identification =
+			m_Registry->GetRegistry().get<Identification>(entity);
+		std::string gameObjectName = identification.name;
 		if (ImGui::Selectable(gameObjectName.c_str())) {
 			selectedGameObject = "ObjectDetails-" + gameObjectName;
 			showGameObjectDetails = true;
@@ -359,11 +308,65 @@ void Editor::RenderImGui() {
 	if (showGameObjectDetails) {
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Components")) {
-				if (showTransformComponent) {
-					renderTransformComponent(cursorPos);
-				}
-				if (showIdentificationComponent) {
-					renderIdentificationComponent(cursorPos);
+
+				for (auto entity : view) {
+					std::string entityName =
+						"ObjectDetails-" + m_Registry->GetRegistry()
+											   .get<Identification>(entity)
+											   .name;
+					if (m_Registry->GetRegistry().all_of<TransformComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &transform =
+							m_Registry->GetRegistry().get<TransformComponent>(
+								entity);
+
+						renderTransformComponent(cursorPos, transform);
+					}
+					if (m_Registry->GetRegistry().all_of<SpriteComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &sprite =
+							m_Registry->GetRegistry().get<SpriteComponent>(
+								entity);
+						showColorTab = true;
+
+						renderSpriteComponent(cursorPos, sprite);
+					}
+					if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &physics =
+							m_Registry->GetRegistry().get<PhysicsComponent>(
+								entity);
+						renderPhysicsComponent(cursorPos, physics);
+					}
+
+					if (m_Registry->GetRegistry().all_of<AnimationComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &animation =
+							m_Registry->GetRegistry().get<AnimationComponent>(
+								entity);
+						// renderTransformComponent(cursorPos);
+					}
+					if (m_Registry->GetRegistry().all_of<BoxColliderComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &boxCollider =
+							m_Registry->GetRegistry().get<BoxColliderComponent>(
+								entity);
+						// renderTransformComponent(cursorPos);
+					}
+					if (m_Registry->GetRegistry().all_of<Identification>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &identification =
+							m_Registry->GetRegistry().get<Identification>(
+								entity);
+						renderIdentificationComponent(cursorPos,
+													  identification);
+					}
 				}
 
 				if (ImGui::BeginPopupContextWindow(
@@ -385,10 +388,8 @@ void Editor::RenderImGui() {
 					ImGui::Text("CHOOSE COMPONENT TO ADD");
 					ImGui::Dummy(ImVec2(0.0f, 10.0f));
 					const char *components[] = {
-						"Sprite Component", "Box Collider",
-						"Animation",		"Identification",
-						"RigidBody",		"Transform Component",
-						"Physics"};
+						"Sprite Component", "Box Collider",		   "Animation",
+						"Identification",	"Transform Component", "Physics"};
 					static int selectedComponentIndex =
 						-1; // -1 znači da nijedna komponenta nije izabrana
 					ImGui::SetNextItemWidth(170.0f);
@@ -428,13 +429,39 @@ void Editor::RenderImGui() {
 								showIdentificationComponent = true;
 								break;
 							case 4:
-								// RigidBody
-								break;
-							case 5:
 								showTransformComponent = true;
 								break;
-							case 6:
+							case 5:
 								// Physics metoda
+								for (auto entity : view) {
+									std::string entityName =
+										"ObjectDetails-" +
+										m_Registry->GetRegistry()
+											.get<Identification>(entity)
+											.name;
+
+									if (!m_Registry->GetRegistry()
+											 .all_of<PhysicsComponent>(
+												 entity) &&
+										selectedGameObject == entityName) {
+										PhysicsAttributes attributes =
+											PhysicsAttributes({
+												.type = RigidBodyType::STATIC,
+												.position = {0.0f, 0.0f},
+											});
+
+										auto &physicsWorld =
+											m_Registry->GetContext<
+												std::shared_ptr<b2World>>();
+										m_Registry->GetRegistry()
+											.emplace<PhysicsComponent>(
+												entity,
+												std::forward<PhysicsComponent>(
+													PhysicsComponent(
+														physicsWorld,
+														attributes)));
+									}
+								}
 								break;
 							}
 							showComponentWindow =
@@ -457,12 +484,21 @@ void Editor::RenderImGui() {
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 					if (ImGui::ColorPicker3("Game object\ncolor",
 											(float *)&sceneColor)) {
-						auto view =
-							m_Registry->GetRegistry().view<SpriteComponent>();
 						for (auto entity : view) {
-							auto &sprite = view.get<SpriteComponent>(entity);
-							sprite.color = {sceneColor.x, sceneColor.y,
-											sceneColor.z, sceneColor.w};
+							std::string entityName =
+								"ObjectDetails-" +
+								m_Registry->GetRegistry()
+									.get<Identification>(entity)
+									.name;
+							if (m_Registry->GetRegistry()
+									.all_of<SpriteComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &sprite =
+									m_Registry->GetRegistry()
+										.get<SpriteComponent>(entity);
+								sprite.color = {sceneColor.x, sceneColor.y,
+												sceneColor.z, sceneColor.w};
+							}
 						}
 					}
 					ImGui::EndTabItem();
@@ -479,7 +515,9 @@ void Editor::RenderImGui() {
 	}
 	ImGui::End();
 
-	//-----------------------------------------------------------3. box - Camera
+	//-----------------------------------------------------------3. box
+	//-
+	// Camera
 	// box with tabs---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
@@ -500,22 +538,24 @@ void Editor::RenderImGui() {
 			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
 
 			if (ImGui::Button("Code")) {
-				showCodeEditor =
-					!showCodeEditor; // Prikazuje ili skriva prozor za kod
-				// Učitavanje Lua skripte samo prilikom prvog otvaranja editora
+				showCodeEditor = !showCodeEditor; // Prikazuje ili skriva
+												  // prozor za kod
+				// Učitavanje Lua skripte samo prilikom prvog otvaranja
+				// editora
 				if (showCodeEditor) {
 					luaScriptContent = "Lua kod\n";
 					strncpy(luaScriptBuffer, luaScriptContent.c_str(),
 							sizeof(luaScriptBuffer));
 				}
 			}
-			// Create a child window within the "Scene 1" tab for the Game View
+			// Create a child window within the "Scene 1" tab for the
+			// Game View
 			ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
 							  ImGuiWindowFlags_NoMove |
 								  ImGuiWindowFlags_NoResize);
 
-			// Get the available space in the child window to render the Game
-			// View ImGui::Begin("Game View");
+			// Get the available space in the child window to render the
+			// Game View ImGui::Begin("Game View");
 			ImVec2 windowSize = ImGui::GetContentRegionAvail();
 			int newWidth = static_cast<int>(windowSize.x);
 			int newHeight = static_cast<int>(windowSize.y);
@@ -564,7 +604,8 @@ void Editor::RenderImGui() {
 	ImVec2 cameraSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//-------------------------------------------------------------4. box -
+	//-------------------------------------------------------------4.
+	// box -
 	// audio/templates---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, 300));
 	ImGui::SetNextWindowPos(ImVec2(270, heightSize - 281));
@@ -729,4 +770,332 @@ void Editor::RenderSceneToTexture() {
 void Blazr::Editor::setEventCallback(const Window::EventCallbackFn &callback) {
 	m_EventCallback = callback;
 }
+void Editor::renderTransformComponent(ImVec2 &cursorPos,
+									  TransformComponent &transform) {
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Transform");
+	ImGui::SameLine();
+	cursorPos.y += 28;
+	// Pozicija (Position)
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Position");
+	cursorPos.y += 18;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushItemWidth(105);
+	ImGui::Text("X");
+	ImGui::SameLine();
+	ImGui::InputFloat("##PositionX", &positionX, 0.1f, 1.0f, "%.1f");
+	ImGui::SameLine();
+	ImGui::Text("Y");
+	ImGui::SameLine();
+	ImGui::InputFloat("##PositionY", &positionY, 0.1f, 1.0f, "%.1f");
+	ImGui::PopItemWidth();
+	cursorPos.y += 25;
+	transform.position = {positionX, positionY};
+
+	// Skaliranje (Scale)
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Scale");
+	cursorPos.y += 18;
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushItemWidth(105);
+	ImGui::Text("X");
+	ImGui::SameLine();
+	ImGui::InputFloat("##ScaleX", &scaleX, 0.1f, 1.0f, "%.1f");
+	ImGui::SameLine();
+	ImGui::Text("Y");
+	ImGui::SameLine();
+	ImGui::InputFloat("##ScaleY", &scaleY, 0.1f, 1.0f, "%.1f");
+	ImGui::PopItemWidth();
+	cursorPos.y += 30;
+
+	transform.scale = {scaleX, scaleY};
+
+	// Rotacija (Rotation)
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Rotation");
+	cursorPos.x += 15;
+	cursorPos.y += 20;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::InputFloat("##Rotation", &transform.rotation, 0.1f, 1.0f, "%.1f");
+	cursorPos.x -= 15;
+	cursorPos.y += 35;
+}
+
+void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
+										   Identification &identification) {
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Identification");
+	cursorPos.y += 30;
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Name");
+	cursorPos.x += 43;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputText("###nameObject", identification.name.data(),
+					 IM_ARRAYSIZE(identification.group.data()));
+	cursorPos.x -= 43;
+	cursorPos.y += 25;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Group");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputText("###group", identification.group.data(),
+					 IM_ARRAYSIZE(identification.group.data()));
+	ImGui::PopItemWidth();
+	cursorPos.y += 35;
+}
+
+void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Sprite");
+	cursorPos.y += 30;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Textures");
+	cursorPos.y -= 3;
+	cursorPos.x += 65;
+	ImGui::SetCursorPos(cursorPos);
+	auto assetManager = AssetManager::GetInstance();
+	std::map<std::string, Ref<Texture2D>> loadedTexture =
+		assetManager->getAllTextures();
+
+	// Kreiraj vektor stringova za čuvanje svih ključeva iz mape
+	std::vector<std::string> textures;
+
+	// Iteriraj kroz mapu i dodaj sve ključeve u vektor
+	for (const auto &pair : loadedTexture) {
+		textures.push_back(pair.first);
+	}
+
+	static int selectedTextureIndex = -1;
+
+	// Proveri da li ima tekstura u vektoru
+	if (!textures.empty()) {
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+
+		// Odredi ime koje će se prikazati u Combo kada ništa nije
+		// selektovano
+		const char *currentTexture =
+			selectedTextureIndex == -1 ? "Choose a texture"
+									   : textures[selectedTextureIndex].c_str();
+
+		// Dropdown meni
+		if (ImGui::BeginCombo("##TexturesDropdown", currentTexture)) {
+			for (int i = 0; i < textures.size(); i++) {
+				bool isSelected = (selectedTextureIndex == i);
+
+				// Selektovanje teksture
+				if (ImGui::Selectable(textures[i].c_str(), isSelected)) {
+					selectedTextureIndex = i;
+					sprite.texturePath = textures[i];
+				}
+
+				// Fokusiraj trenutno selektovani element
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+	} else {
+		ImGui::Text("No textures available");
+	}
+	// spriteWidth
+	cursorPos.x -= 64;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Width");
+	cursorPos.x += 65;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##spriteWidth", &sprite.width, 0.1f, 1.0f, "%.1f");
+	// spriteHeight
+	cursorPos.x -= 65;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Height");
+	cursorPos.x += 65;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##spriteHeight", &sprite.height, 0.1f, 1.0f, "%.1f");
+	// layer
+	cursorPos.x -= 65;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Layer");
+	cursorPos.x += 65;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputText("##layer", sprite.layer.data(),
+					 IM_ARRAYSIZE(sprite.layer.data()));
+	cursorPos.x -= 65;
+	cursorPos.y += 35;
+}
+
+void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
+										BoxColliderComponent &boxCollider) {
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("BoxCollider");
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Width");
+	// ImGui::SameLine();
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
+	ImGui::InputInt("##widthBoxCollider", &widthBoxCollider);
+	ImGui::Text("Height");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
+	ImGui::InputInt("##heightBoxCollider", &heightBoxCollider);
+
+	boxCollider.width = widthBoxCollider;
+	boxCollider.height = heightBoxCollider;
+
+	ImGui::Text("OffsetX");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
+	ImGui::InputFloat("##offsetX", &offsetX, 0.1f, 1.0f, "%.1f");
+	ImGui::Text("OffsetY");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
+	ImGui::InputFloat("##offsetY", &offsetY, 0.1f, 1.0f, "%.1f");
+
+	boxCollider.offset = {offsetX, offsetY};
+
+	ImGui::Text("isColliding");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 10);
+	ImGui::Checkbox("##bVertical", &boxCollider.colliding);
+
+	cursorPos.y += 120;
+}
+
+void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
+									PhysicsComponent &physics) {
+
+	auto body = physics.GetRigidBody();
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Physics");
+	// type
+	cursorPos.y += 30;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Type");
+	cursorPos.y -= 3;
+	cursorPos.x += 90;
+	ImGui::SetCursorPos(cursorPos);
+	const char *types[] = {"Static", "Kinematic", "Dynamic"};
+	static int selectedTypeIndex = -1;
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
+												 ? "Choose a type"
+												 : types[selectedTypeIndex])) {
+		for (int i = 0; i < IM_ARRAYSIZE(types); i++) {
+			bool isSelected = (selectedTypeIndex == i);
+			if (ImGui::Selectable(types[i], isSelected)) {
+				physics.GetAttributes().type = static_cast<RigidBodyType>(i);
+				// attributes.type = static_cast<RigidBodyType>(i);
+				// body->SetType(static_cast<b2BodyType>(i));
+				selectedTypeIndex = i;
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	// density
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Density");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##density", &physics.GetAttributes().density, 0.1f, 1.0f,
+					  "%.1f");
+	// friction
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Friction");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##friction", &physics.GetAttributes().friction, 0.1f,
+					  1.0f, "%.1f");
+	// restitution
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Restitution");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##restitution", &physics.GetAttributes().restitution,
+					  0.1f, 1.0f, "%.1f");
+	// gravityScale
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("GravityScale");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputFloat("##gravityScale", &physics.GetAttributes().gravityScale,
+					  0.1f, 1.0f, "%.1f");
+	// body->SetGravityScale(physics.GetAttributes().gravityScale);
+	// isSensor
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("isSensor");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
+	ImGui::Checkbox("##isSensorCheckbox", &physics.GetAttributes().isSensor);
+
+	// isFixedRotation
+	cursorPos.y += 25;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("isFixedRotation");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
+	ImGui::Checkbox("##isFixedRotation",
+					&physics.GetAttributes().isFixedRotation);
+
+	// body->SetFixedRotation(physics.GetAttributes().isFixedRotation);
+
+	cursorPos.y += 35;
+
+	// for (b2Fixture *fixture = body->GetFixtureList(); fixture != nullptr;
+	// 	 fixture = fixture->GetNext()) {
+	// 	fixture->SetDensity(physics.GetAttributes().density);
+	// 	fixture->SetRestitution(physics.GetAttributes().restitution);
+	// 	fixture->SetFriction(physics.GetAttributes().friction);
+	// 	fixture->SetSensor(physics.GetAttributes().isSensor);
+	//
+	// }
+
+	// TODO: Napraviti metodu za transform u rigidBody
+	if (newPositionX != positionX || newPositionY != positionY ||
+		newScaleX != scaleX || newScaleY != scaleY) {
+		/* physics.setTransform({positionX, positionY}); */
+		physics.init(1280, 720);
+
+		newPositionX = positionX;
+		newPositionY = positionY;
+
+		newScaleX = scaleX;
+		newScaleY = scaleY;
+	}
+}
+
 } // namespace Blazr

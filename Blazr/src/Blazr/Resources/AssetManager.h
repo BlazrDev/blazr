@@ -58,6 +58,7 @@ class AssetManager {
 	static void to_json(nlohmann::json &j, Ref<AssetManager> assetManager);
 	static void from_json(const nlohmann::json &j,
 						  Ref<AssetManager> assetManager);
+	BLZR_API std::map<std::string, Ref<Blazr::Texture2D>> &getAllTextures();
 
   private:
 	static Ref<AssetManager> instance;

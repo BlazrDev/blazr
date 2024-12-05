@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Systems/BoxColliderSystem.h"
 
@@ -115,18 +116,21 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 	BoxColliderComponent::CreateLuaBoxColliderComponentBind(lua);
 	PhysicsComponent::CreateLuaPhysicsComponentBind(lua, registry);
 	AnimationComponent::CreateAnimationLuaBind(lua);
+	TileComponent::CreateLuaTileComponentBind(lua);
 
 	Entity::RegisterMetaComponent<TransformComponent>();
 	Entity::RegisterMetaComponent<SpriteComponent>();
 	Entity::RegisterMetaComponent<BoxColliderComponent>();
 	Entity::RegisterMetaComponent<AnimationComponent>();
 	Entity::RegisterMetaComponent<PhysicsComponent>();
+	Entity::RegisterMetaComponent<TileComponent>();
 
 	Registry::RegisterMetaComponent<TransformComponent>();
 	Registry::RegisterMetaComponent<SpriteComponent>();
 	Registry::RegisterMetaComponent<AnimationComponent>();
 	Registry::RegisterMetaComponent<BoxColliderComponent>();
 	Registry::RegisterMetaComponent<PhysicsComponent>();
+	Registry::RegisterMetaComponent<TileComponent>();
 	SoundPlayer::CreateLuaEntityBind(lua);
 
 	Registry::RegisterMetaComponent<BoxColliderComponent>();
