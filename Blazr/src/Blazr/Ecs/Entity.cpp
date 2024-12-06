@@ -5,9 +5,12 @@
 #include "Entity.h"
 #include "MetaUtil.h"
 #include "sol.hpp"
+#include <string>
+
+int Blazr::Entity::ID = 0;
 
 Blazr::Entity::Entity(Registry &registry)
-	: Blazr::Entity(registry, "GameObject", "") {}
+	: Blazr::Entity(registry, "GameObject " + std::to_string(++ID), "") {}
 
 Blazr::Entity::Entity(Registry &registry, const std::string &name,
 					  const std::string &group)
@@ -41,7 +44,8 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 		[](Entity &entity) {
 			return static_cast<int32_t>(entity.GetEntityHandler());
 		},
-		"destroy", &Entity::destroy, "add_component",
+		"destroy", &Entity::destroy, "set_name", &Entity::SetName,
+		"add_component",
 		[](Entity &entity, const sol::table &comp,
 		   sol::this_state s) -> sol::object {
 			if (!comp.valid()) {

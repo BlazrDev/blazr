@@ -7,6 +7,7 @@
 #include "CameraController.h"
 
 bool Blazr::CameraController::paused = false;
+bool Blazr::CameraController::gameViewWindow = false;
 Blazr::CameraController::CameraController(int width, int height, bool rotation)
 	: m_Width(width), m_Height(height), m_Rotation(rotation) {
 	m_Camera = *Camera2D::GetInstance();
@@ -15,6 +16,9 @@ Blazr::CameraController::CameraController(int width, int height, bool rotation)
 void Blazr::CameraController::OnUpdate() {
 	if (!paused)
 		return;
+	if (!gameViewWindow)
+		return;
+
 	int ts = 30;
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
 		m_CameraPosition.x -=
@@ -64,6 +68,9 @@ void Blazr::CameraController::OnUpdate() {
 void Blazr::CameraController::OnEvent(Event &e) {
 	if (!paused)
 		return;
+	if (!gameViewWindow)
+		return;
+
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<MouseScrolledEvent>(
 		[this](MouseScrolledEvent &event) { return OnMouseScrolled(event); });

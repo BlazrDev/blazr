@@ -87,7 +87,7 @@ Assets = {
         { name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
     },
     sound_effects = {
-        { name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
+        { name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg", channel = 1 },
     },
     textures = {
         { name = "masha", path = "assets/masha.png", pixelArt = false },
@@ -118,8 +118,8 @@ local mashaCollider = mashaEntity:get_component(BoxColliderComponent)
 local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
 
-layerManager:AddEntityToLayer("0", mashaEntity)
-layerManager:AddEntityToLayer("1", playerEntity)
+-- layerManager:AddEntityToLayer("0", mashaEntity)
+-- layerManager:AddEntityToLayer("1", playerEntity)
 -- explosionntity = Entity("Explosion", "e")
 -- local transform3 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
 -- local sprite3 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))

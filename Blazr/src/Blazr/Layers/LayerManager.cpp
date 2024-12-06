@@ -2,6 +2,7 @@
 #include "LayerManager.h"
 
 namespace Blazr {
+
 Ref<Layer> LayerManager::CreateLayer(const std::string &name, int zIndex) {
 	Ref<Layer> layer = CreateRef<Layer>(name, zIndex);
 	m_Layers.push_back(layer);

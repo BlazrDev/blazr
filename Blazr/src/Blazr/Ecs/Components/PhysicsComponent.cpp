@@ -3,6 +3,7 @@
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "PhysicsComponent.h"
+#include "box2d/b2_body.h"
 #include "box2d/b2_circle_shape.h"
 #include "box2d/box2d.h"
 #include "sol.hpp"
@@ -72,32 +73,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	}
 }
 
-void Blazr::PhysicsComponent::setTransform(const glm::vec2 &position) {
-	const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
-	const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
-
-	auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
-	auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
-
-	// auto bx = position.x;
-	// auto by = position.y;
-
-	m_RigidBody->SetTransform(b2Vec2{bx, by}, 0.f);
-}
-void Blazr::PhysicsComponent::setTransform(const glm::vec2 &position,
-										   float angle) {
-	const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
-	const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
-
-	auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
-	auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
-
-	// auto bx = position.x;
-	// auto by = position.y;
-
-	m_RigidBody->SetTransform(b2Vec2{bx, by}, angle);
-}
-
 void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 	sol::state_view &lua, Blazr::Registry &registry) {
 	lua.new_enum<Blazr::RigidBodyType>(
@@ -121,10 +96,10 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 					.gravityScale = phyAttr["gravityScale"].get_or(1.f),
 					.position = glm::vec2{phyAttr["position"]["x"].get_or(0.f),
 										  phyAttr["position"]["y"].get_or(0.f)},
-					.scale = glm::vec2{phyAttr["scale"]["x"].get_or(0.f),
-									   phyAttr["scale"]["y"].get_or(0.f)},
-					.boxSize = glm::vec2{phyAttr["boxSize"]["x"].get_or(0.f),
-										 phyAttr["boxSize"]["y"].get_or(0.f)},
+					.scale = glm::vec2{phyAttr["scale"]["x"].get_or(1.f),
+									   phyAttr["scale"]["y"].get_or(1.f)},
+					.boxSize = glm::vec2{phyAttr["boxSize"]["x"].get_or(16.f),
+										 phyAttr["boxSize"]["y"].get_or(16.f)},
 					.offset = glm::vec2{phyAttr["offset"]["x"].get_or(0.f),
 										phyAttr["offset"]["y"].get_or(0.f)},
 					.isSensor = phyAttr["isSensor"].get_or(false),
@@ -150,7 +125,17 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 		&Blazr::PhysicsAttributes::filterMask, "filterGroup",
 		&Blazr::PhysicsAttributes::filterGroup, "set_transform",
 		[](PhysicsComponent &pc, const glm::vec2 &position) {
-			pc.setTransform(position);
+			auto body = pc.GetRigidBody();
+			const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
+			const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
+
+			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
+			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
+
+			// auto bx = position.x;
+			// auto by = position.y;
+
+			body->SetTransform(b2Vec2{bx, by}, 0.f);
 		});
 
 	auto &physicsWorld = registry.GetContext<std::shared_ptr<b2World>>();
@@ -163,7 +148,7 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 		&entt::type_hash<Blazr::PhysicsComponent>::value, sol::call_constructor,
 		sol::factories([&](const Blazr::PhysicsAttributes &attr) {
 			Blazr::PhysicsComponent pc{physicsWorld, attr};
-			pc.init(1280, 720); // TODO: Change based on window values
+			// pc.init(1280, 720); // TODO: Change based on window values
 			return pc;
 		}),
 

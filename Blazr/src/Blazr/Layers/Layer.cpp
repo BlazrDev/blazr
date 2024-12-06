@@ -10,6 +10,8 @@
 #include "Layer.h"
 
 namespace Blazr {
+bool Layer::showColliders = false;
+
 void Layer::AddEntity(Ref<Entity> entity) { entities.push_back(entity); }
 void Layer::RemoveEntity(Ref<Entity> entity) {
 	entities.erase(std::remove(entities.begin(), entities.end(), entity),
@@ -26,15 +28,21 @@ void Layer::Render(Registry &registry) {
 
 			sprite.generateTextureCoordinates();
 
-			Renderer2D::DrawQuad(registry, entityHandler);
-			if (entity->HasComponent<BoxColliderComponent>()) {
-				auto &collider = entity->GetComponent<BoxColliderComponent>();
-				Renderer2D::DrawQuad(entt::null,
-									 {transform.position.x + collider.offset.x,
-									  transform.position.y + collider.offset.y},
-									 {collider.width * transform.scale.x,
-									  collider.height * transform.scale.y},
-									 {255, 0, 0, 0.6});
+			if (entity->GetName() != "collider")
+				Renderer2D::DrawQuad(registry, entityHandler);
+
+			if (showColliders) {
+				if (entity->HasComponent<BoxColliderComponent>()) {
+					auto &collider =
+						entity->GetComponent<BoxColliderComponent>();
+					Renderer2D::DrawQuad(
+						entt::null,
+						{transform.position.x + collider.offset.x,
+						 transform.position.y + collider.offset.y},
+						{collider.width * transform.scale.x,
+						 collider.height * transform.scale.y},
+						{255, 0, 0, 0.4});
+				}
 			}
 		}
 	}

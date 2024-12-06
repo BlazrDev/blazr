@@ -9,6 +9,7 @@ class Layer {
 	std::string name;
 	int zIndex; // rendering order
 	std::vector<Ref<Entity>> entities;
+	static bool showColliders;
 
 	Layer(const std::string &name, int zIndex) : name(name), zIndex(zIndex) {}
 
