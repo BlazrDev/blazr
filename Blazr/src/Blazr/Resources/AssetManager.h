@@ -54,7 +54,6 @@ class AssetManager {
 	BLZR_API std::map<std::string, Ref<Blazr::Music>> &getAllMusic();
 	BLZR_API std::map<std::string, Ref<Blazr::Effect>> &getAllEffects();
 	BLZR_API std::map<std::string, Ref<Blazr::Texture2D>> &getAllTextures();
-	// BLZR_API std::map<std::string, Ref<Blazr::Effect>>& getAllEffects();
 
   private:
 	static Ref<AssetManager> instance;

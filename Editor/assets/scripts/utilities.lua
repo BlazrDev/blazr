@@ -78,15 +78,15 @@ function LoadAssets(def)
             end
         end
     end
-    if def.sound_effects then
-        for k, v in pairs(def.sound_effects) do
-            if not AssetManager.load_effect(v.name, v.path, v.desc, v.channel) then
-                print("Failed to load sound effect " .. v.name)
-            else
-                print("Sound effect loaded " .. v.name)
-            end
-        end
-    end
+    -- if def.sound_effects then
+    -- 	for k, v in pairs(def.sound_effects) do
+    -- 		if not AssetManager.load_effect(v.name, v.path, v.desc, v.channel) then
+    -- 			print("Failed to load sound effect " .. v.name)
+    -- 		else
+    -- 			print("Sound effect loaded " .. v.name)
+    -- 		end
+    -- 	end
+    -- end
     if def.textures then
         for k, v in pairs(def.textures) do
             if not AssetManager.load_texture(v.name, v.path, v.pixelArt) then
@@ -185,13 +185,13 @@ function LoadMap(mapDef, scene)
                 sprite:generate_object()
                 if tileset.name == "collider" then
                     tile:add_component(BoxColliderComponent(tileset.tilewidth, tileset.tileheight, vec2(0, 0)))
-                    -- tile:add_component(PhysicsComponent(PhysicsAttributes({
-                    -- 	position = vec2(
-                    -- 		((col - 1 / 2) * tileset.tilewidth * scale),
-                    -- 		((rows - row + 1 / 2) * tileset.tileheight * scale)
-                    -- 	),
-                    -- 	boxSize = vec2(tileset.tilewidth, tileset.tileheight),
-                    -- })))
+                    tile:add_component(PhysicsComponent(PhysicsAttributes({
+                        position = vec2(
+                            ((col - 1 / 2) * tileset.tilewidth * scale),
+                            ((rows - row + 1 / 2) * tileset.tileheight * scale)
+                        ),
+                        boxSize = vec2(tileset.tilewidth, tileset.tileheight),
+                    })))
                 end
 
                 local layerManager = scene:GetLayerManager()
