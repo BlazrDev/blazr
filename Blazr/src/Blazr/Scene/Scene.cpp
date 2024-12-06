@@ -25,6 +25,7 @@ Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
 	m_Camera.GetCamera().SetRotation(0.0f);
 	m_LayerManager = CreateRef<LayerManager>();
 	m_Registry = Registry::GetInstance();
+	m_LayerManager->CreateLayer("Layer 1", 0);
 }
 
 Scene::~Scene() {}

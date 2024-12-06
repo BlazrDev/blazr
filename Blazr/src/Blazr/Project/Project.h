@@ -36,28 +36,31 @@ class Project {
 
 	ProjectConfig &GetConfig() { return m_Config; }
 
-	static Ref<Project> GetActive() { return s_ActiveProject; }
-	static void SetActive(Ref<Project> project) { s_ActiveProject = project; }
+	static BLZR_API Ref<Project> GetActive() { return s_ActiveProject; }
+	static BLZR_API void SetActive(Ref<Project> project) {
+		s_ActiveProject = project;
+	}
 
-	static Ref<Project> New();
-	static Ref<Project> Load(const std::filesystem::path &path);
-	static bool SaveActive(const std::filesystem::path &path);
+	static BLZR_API Ref<Project> New();
+	static BLZR_API Ref<Project> Load(const std::filesystem::path &path);
+	static BLZR_API bool SaveActive(const std::filesystem::path &path);
 
-	void SetProjectDirectory(const std::filesystem::path &directory) {
+	void BLZR_API SetProjectDirectory(const std::filesystem::path &directory) {
 		m_ProjectDirectory = directory;
 	}
 
-	const std::unordered_map<std::string, Ref<Scene>> &GetScenes() const {
+	const BLZR_API std::unordered_map<std::string, Ref<Scene>> &
+	GetScenes() const {
 		return m_Scenes;
 	}
 
-	void AddScene(const std::string &name, const Ref<Scene> &scene) {
+	void BLZR_API AddScene(const std::string &name, const Ref<Scene> &scene) {
 		m_Scenes[name] = scene;
 	}
 
-	void RemoveScene(const std::string &name) { m_Scenes.erase(name); }
+	void BLZR_API RemoveScene(const std::string &name) { m_Scenes.erase(name); }
 
-	Ref<Scene> GetScene(const std::string &name) const {
+	Ref<Scene> BLZR_API GetScene(const std::string &name) const {
 		auto it = m_Scenes.find(name);
 		if (it != m_Scenes.end()) {
 			return it->second;
@@ -65,9 +68,12 @@ class Project {
 		return nullptr;
 	}
 
-	std::filesystem::path GetSceneFilePath(const std::string &name) const {
+	std::filesystem::path BLZR_API
+	GetSceneFilePath(const std::string &name) const {
 		return GetProjectDirectory() / "Scenes" / (name + ".bsc");
 	}
+	bool BLZR_API RenameScene(const std::string &oldName,
+							  const std::string &newName);
 
   private:
 	std::unordered_map<std::string, Ref<Scene>> m_Scenes;

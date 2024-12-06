@@ -38,13 +38,29 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 	j["AssetManager"] = assetJson;
 
 	std::filesystem::create_directories(filepath.parent_path());
-	std::ofstream ofs(filepath);
+	std::ofstream ofs(
+		const_cast<std::filesystem::path &>(filepath).replace_extension(
+			".blzrproj"));
 	if (!ofs) {
-		BLZR_CORE_ERROR("Failed to open file for serialization: {}",
-						filepath.string());
+		BLZR_CORE_ERROR("Failed to save project: {}", filepath.string());
 		return false;
 	}
 	ofs << j.dump(4);
+
+	for (const auto &pair : project->GetScenes()) {
+		std::string sceneName = pair.first;
+		sceneName.resize(std::distance(
+			sceneName.begin(),
+			std::remove_if(sceneName.begin(), sceneName.end(),
+						   [](char c) { return c == ' ' || c == '\''; })));
+		if (!SerializeScene(pair.second,
+							project->GetProjectDirectory() / pair.first)) {
+			BLZR_CORE_ERROR(
+				"Unable to save scene {0}. Aborting saving process!",
+				pair.first);
+		}
+	}
+
 	return true;
 }
 
@@ -116,7 +132,9 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 	scene->Serialize(j);
 
 	std::filesystem::create_directories(filepath.parent_path());
-	std::ofstream ofs(filepath);
+	std::ofstream ofs(
+		const_cast<std::filesystem::path &>(filepath).replace_extension(
+			".blzrscn"));
 	if (!ofs) {
 		BLZR_CORE_ERROR("Failed to open scene file for serialization: {}",
 						filepath.string());

@@ -235,6 +235,17 @@ void Editor::RenderImGui() {
 	// Menu bar
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("New Project")) {
+				Ref<Project> newProject = Project::New();
+				// TODO temporary path setting, should use file explorer later.
+				newProject->SetProjectDirectory("UntitledProj");
+				Ref<Scene> newScene = CreateRef<Scene>();
+				newProject->AddScene("Scene1", newScene);
+				m_ActiveScene = newScene;
+				ProjectSerializer::Serialize(newProject,
+											 newProject->GetProjectDirectory() /
+												 newProject->GetConfig().name);
+			}
 			if (ImGui::MenuItem("Open...")) {
 				// Open file logic here
 			}
@@ -524,8 +535,20 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Camera", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 	if (ImGui::BeginTabBar("##DetailsTabs")) {
+		if (ImGui::Button("+")) {
+
+			Ref<Scene> newScene = CreateRef<Scene>();
+
+			Project::GetActive()->AddScene("Untitled", newScene);
+
+			ProjectSerializer::Serialize(
+				Project::GetActive(),
+				Project::GetActive()->GetProjectDirectory() /
+					Project::GetActive()->GetConfig().name);
+		}
 
 		if (ImGui::BeginTabItem("Scene 1")) {
+
 			if (ImGui::Button("Play")) {
 				// Logika za pokretanje scene
 				CameraController::paused = false;
@@ -571,10 +594,6 @@ void Editor::RenderImGui() {
 						 windowSize, ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::EndChild();	 // End the Game View child window
 			ImGui::EndTabItem(); // End "Scene 1" tab item
-		}
-		if (ImGui::BeginTabItem("+")) {
-			// TO DO
-			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
 	}
@@ -748,23 +767,6 @@ void Editor::Shutdown() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-}
-
-void Editor::RenderSceneToTexture() {
-	m_GameFrameBuffer->Bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (m_ActiveScene != nullptr) {
-
-		if (!CameraController::paused) {
-			m_ActiveScene->Update();
-		}
-		m_ActiveScene->Render();
-	} else {
-		BLZR_CORE_WARN("Active scene is null");
-	}
-
-	m_GameFrameBuffer->Unbind();
 }
 
 void Blazr::Editor::setEventCallback(const Window::EventCallbackFn &callback) {

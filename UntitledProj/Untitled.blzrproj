@@ -1,0 +1,50 @@
+{
+    "AssetManager": {
+        "Effects": {},
+        "Music": {
+            "masa": {
+                "path": "assets/sounds/masa.mp3",
+                "properties": {
+                    "description": "Masa background music",
+                    "duration": 120.25614512471655,
+                    "filename": "assets/sounds/masa.mp3",
+                    "name": "masa"
+                }
+            },
+            "metak": {
+                "path": "assets/sounds/METAK.mp3",
+                "properties": {
+                    "description": "Metak background music",
+                    "duration": 168.34467120181407,
+                    "filename": "assets/sounds/METAK.mp3",
+                    "name": "metak"
+                }
+            }
+        },
+        "Shaders": {},
+        "Textures": {
+            "chammy": {
+                "path": "assets/chammy.png"
+            },
+            "collider": {
+                "path": "assets/map_assets/collider.png"
+            },
+            "map": {
+                "path": "assets/map_assets/map.png"
+            },
+            "masha": {
+                "path": "assets/masha.png"
+            },
+            "player": {
+                "path": "assets/sprite_sheet.png"
+            }
+        }
+    },
+    "Config": {
+        "AssetDirectory": "",
+        "ScriptPath": "",
+        "StartScene": "",
+        "name": "Untitled"
+    },
+    "ProjectDirectory": "UntitledProj"
+}
