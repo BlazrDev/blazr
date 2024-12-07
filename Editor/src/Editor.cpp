@@ -27,10 +27,19 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "parts/SceneControls.h"
+#include "parts/SceneTabs.h"
+#include "utils/FileDialog.h"
 #include <GLFW/glfw3.h>
 #include <memory>
 
 namespace Blazr {
+// layers
+static int selectedLayerIndex = 0;
+static bool showAddLayerPopup = false;
+static char newLayerName[256] = "New Layer";
+static int newLayerZIndex = 0;
+
 static bool mapflag = true;
 static float zoomLevel = 1.0f;
 // audio
@@ -100,6 +109,12 @@ void Editor::Init() {
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
 	InitImGui();
+	Ref<Project> newProject = Project::New("StartProject");
+	Ref<Scene> newScene = CreateRef<Scene>();
+	newProject->AddScene("Scene1", newScene);
+	m_ActiveScene = newScene;
+	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
+												 newProject->GetConfig().name);
 }
 
 void Editor::InitImGui() {
@@ -239,21 +254,56 @@ void Editor::RenderImGui() {
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("New Project")) {
-				Ref<Project> newProject = Project::New();
-				// TODO temporary path setting, should use file explorer later.
-				newProject->SetProjectDirectory("UntitledProj");
-				Ref<Scene> newScene = CreateRef<Scene>();
-				newProject->AddScene("Scene1", newScene);
-				m_ActiveScene = newScene;
-				ProjectSerializer::Serialize(newProject,
-											 newProject->GetProjectDirectory() /
-												 newProject->GetConfig().name);
+				std::string savePath = Blazr::FileDialog::SaveFile(
+					"Blazr Project (*.blzr)\0*.blzr\0");
+				if (!savePath.empty()) {
+					Ref<Project> newProject = Project::New("UntitledProject");
+					Ref<Scene> newScene = CreateRef<Scene>();
+					newProject->AddScene("Scene1", newScene);
+					newProject->GetConfig().StartSceneName = "Scene1";
+					m_ActiveScene = newScene;
+
+					newProject->SetProjectDirectory(
+						std::filesystem::path(savePath).parent_path());
+					newProject->GetConfig().name =
+						std::filesystem::path(savePath).stem().string();
+
+					ProjectSerializer::Serialize(newProject, savePath);
+				}
 			}
+
 			if (ImGui::MenuItem("Open...")) {
-				// Open file logic here
+				std::string openPath = Blazr::FileDialog::OpenFile(
+					"Blazr Project (*.blzr)\0*.blzr\0");
+				if (!openPath.empty()) {
+					Ref<Project> loadedProject = Project::Load(openPath);
+					if (loadedProject) {
+						Project::SetActive(loadedProject);
+						m_ActiveScene = loadedProject->GetScene(
+							loadedProject->GetConfig().StartSceneName);
+					} else {
+						BLZR_CORE_ERROR("Failed to load project from: {}",
+										openPath);
+					}
+				}
 			}
+
 			if (ImGui::MenuItem("Save As...")) {
-				// Save file logic here
+				std::string savePath = Blazr::FileDialog::SaveFile(
+					"Blazr Project (*.blzr)\0*.blzr\0");
+				if (!savePath.empty()) {
+					Ref<Project> active = Project::GetActive();
+					if (active) {
+						active->SetProjectDirectory(
+							std::filesystem::path(savePath).parent_path());
+						active->GetConfig().name =
+							std::filesystem::path(savePath).stem().string();
+
+						ProjectSerializer::Serialize(active, savePath);
+					} else {
+						BLZR_CORE_ERROR("No active project to save.");
+					}
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -357,20 +407,14 @@ void Editor::RenderImGui() {
 						showColorTab = true;
 						renderSpriteComponent(cursorPos, sprite);
 
-						if ((layer != sprite.layer) &&
-							glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) ==
-								GLFW_PRESS) {
-
-							BLZR_CORE_INFO("Layer changed from {0} to {1}",
-										   sprite.layer, layer);
-
-							auto l =
-								m_ActiveScene->GetLayerByName(sprite.layer);
-							if (l) {
-								l->AddEntity(
-									CreateRef<Entity>(*m_Registry, entity));
-								sprite.layer = layer;
-							}
+						std::vector<Ref<Layer>> layers =
+							m_ActiveScene->GetLayerManager()->GetAllLayers();
+						auto l = m_ActiveScene->GetLayerByName(
+							layers[selectedLayerIndex]->name);
+						if (l) {
+							l->AddEntity(
+								CreateRef<Entity>(*m_Registry, entity));
+							sprite.layer = layer;
 						}
 					}
 					if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
@@ -623,93 +667,10 @@ void Editor::RenderImGui() {
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
 	ImGui::Begin("Camera", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-	if (ImGui::BeginTabBar("##DetailsTabs")) {
-		if (ImGui::Button("+")) {
 
-			Ref<Scene> newScene = CreateRef<Scene>();
-
-			Project::GetActive()->AddScene("Untitled", newScene);
-
-			ProjectSerializer::Serialize(
-				Project::GetActive(),
-				Project::GetActive()->GetProjectDirectory() /
-					Project::GetActive()->GetConfig().name);
-		}
-
-		if (ImGui::BeginTabItem("Scene 1")) {
-
-			if (ImGui::Button("Play")) {
-				// Logika za pokretanje scene
-				CameraController::paused = false;
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Stop")) {
-				// Logika za zaustavljanje scene
-				CameraController::paused = true;
-			}
-			ImGui::SameLine(ImGui::GetContentRegionAvail().x - 30);
-
-			if (ImGui::Button("Code")) {
-				showCodeEditor = !showCodeEditor; // Prikazuje ili skriva
-												  // prozor za kod
-				// Učitavanje Lua skripte samo prilikom prvog otvaranja
-				// editora
-				if (showCodeEditor) {
-					luaScriptContent = "Lua kod\n";
-					strncpy(luaScriptBuffer, luaScriptContent.c_str(),
-							sizeof(luaScriptBuffer));
-				}
-			}
-			// Create a child window within the "Scene 1" tab for the
-			// Game View
-			ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
-							  ImGuiWindowFlags_NoMove |
-								  ImGuiWindowFlags_NoResize);
-
-			// Get the available space in the child window to render the
-			// Game View ImGui::Begin("Game View");
-
-			CameraController::gameViewWindow = ImGui::IsWindowHovered();
-
-			ImVec2 windowSize = ImGui::GetContentRegionAvail();
-			int newWidth = static_cast<int>(windowSize.x);
-			int newHeight = static_cast<int>(windowSize.y);
-
-			if (newWidth != m_GameFrameBuffer->GetWidth() ||
-				newHeight != m_GameFrameBuffer->GetHeight()) {
-				m_GameFrameBuffer->Resize(newWidth, newHeight);
-			}
-			// Render the scene to texture
-			RenderSceneToTexture();
-			// Display the framebuffer texture in the Game View
-			ImGui::Image((intptr_t)m_GameFrameBuffer->GetTextureID(),
-						 windowSize, ImVec2(0, 1), ImVec2(1, 0));
-			ImGui::EndChild();	 // End the Game View child window
-			ImGui::EndTabItem(); // End "Scene 1" tab item
-		}
-		ImGui::EndTabBar();
-	}
-	if (showCodeEditor) {
-		ImGui::Begin("Lua Script Editor", &showCodeEditor,
-					 ImGuiWindowFlags_AlwaysAutoResize);
-
-		// Prikaz editora za unos Lua koda
-		ImGui::InputTextMultiline(
-			"##luaScript", luaScriptBuffer, sizeof(luaScriptBuffer),
-			ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16),
-			ImGuiInputTextFlags_AllowTabInput);
-
-		if (ImGui::Button("Save")) {
-			// Logika za čuvanje Lua koda u fajl
-			luaScriptContent = luaScriptBuffer;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Close")) {
-			showCodeEditor = false; // Zatvara editor
-		}
-
-		ImGui::End();
-	}
+	RenderSceneTabs(*this);
+	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer);
+	RenderActiveScene(m_ActiveScene, m_GameFrameBuffer);
 
 	ImVec2 cameraPos = ImGui::GetWindowPos();
 	ImVec2 cameraSize = ImGui::GetWindowSize();
@@ -1064,12 +1025,70 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 	cursorPos.x -= 65;
 	cursorPos.y += 28;
 	ImGui::SetCursorPos(cursorPos);
+
 	ImGui::Text("Layer");
 	cursorPos.x += 65;
 	cursorPos.y -= 3;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("##layer", layer, IM_ARRAYSIZE(layer));
+	std::vector<Ref<Layer>> layers =
+		m_ActiveScene->GetLayerManager()->GetAllLayers();
+
+	if (ImGui::BeginCombo("##LayerDropdown",
+						  selectedLayerIndex == -1
+							  ? "Select a layer:"
+							  : layers[selectedLayerIndex]->name.c_str())) {
+
+		if (ImGui::Selectable("Add New Layer", false)) {
+			showAddLayerPopup = true;
+			strncpy(newLayerName, "New Layer", sizeof(newLayerName));
+			newLayerZIndex = 0;
+		}
+
+		for (int i = 0; i < layers.size(); i++) {
+			bool isSelected = (selectedLayerIndex == i);
+			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
+				selectedLayerIndex = i;
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (showAddLayerPopup) {
+		ImGui::OpenPopup("Create New Layer");
+	}
+
+	if (ImGui::BeginPopupModal("Create New Layer", &showAddLayerPopup,
+							   ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("Enter Layer Details:");
+		ImGui::Separator();
+
+		ImGui::InputText("Layer Name", newLayerName, sizeof(newLayerName));
+
+		ImGui::InputInt("zIndex", &newLayerZIndex);
+
+		if (ImGui::Button("Create", ImVec2(120, 0))) {
+			Ref<Layer> newLayer =
+				CreateRef<Layer>(newLayerName, newLayerZIndex);
+			m_ActiveScene->GetLayerManager()->AddLayer(newLayer);
+
+			layers = m_ActiveScene->GetLayerManager()->GetAllLayers();
+			selectedLayerIndex = layers.size() - 1;
+
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 
 	cursorPos.x -= 65;
 	cursorPos.y += 35;

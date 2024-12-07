@@ -1,6 +1,17 @@
 {
     "AssetManager": {
-        "Effects": {},
+        "Effects": {
+            "boing": {
+                "channel": 1,
+                "path": "assets/sounds/boing.wav",
+                "properties": {
+                    "description": "boingggggggggg",
+                    "duration": 0.6980498866213152,
+                    "filename": "assets/sounds/boing.wav",
+                    "name": "boing"
+                }
+            }
+        },
         "Music": {
             "masa": {
                 "path": "assets/sounds/masa.mp3",
@@ -46,5 +57,5 @@
         "StartScene": "",
         "name": "Untitled"
     },
-    "ProjectDirectory": "UntitledProj"
+    "ProjectDirectory": "StartProject"
 }

@@ -9,7 +9,7 @@ using json = nlohmann::json;
 
 json ProjectConfigToJson(const ProjectConfig &config) {
 	return json{{"name", config.name},
-				{"StartScene", config.StartScene.string()},
+				{"StartScene", config.StartSceneName},
 				{"AssetDirectory", config.AssetDirectory.string()},
 				{"ScriptPath", config.ScriptDirectory.string()}};
 }
@@ -17,7 +17,7 @@ json ProjectConfigToJson(const ProjectConfig &config) {
 ProjectConfig ProjectConfigFromJson(const json &j) {
 	ProjectConfig config;
 	config.name = j.at("name").get<std::string>();
-	config.StartScene = j.at("StartScene").get<std::string>();
+	config.StartSceneName = j.at("StartScene").get<std::string>();
 	config.AssetDirectory = j.at("AssetDirectory").get<std::string>();
 	config.ScriptDirectory = j.at("ScriptPath").get<std::string>();
 	return config;

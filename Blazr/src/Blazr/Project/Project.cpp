@@ -4,8 +4,11 @@
 #include "ProjectSerializer.h"
 
 namespace Blazr {
-Ref<Project> Project::New() {
+Ref<Project> Project::New(const std::filesystem::path &path,
+						  const std::string &name) {
 	s_ActiveProject = CreateRef<Project>();
+	s_ActiveProject->GetConfig().name = name;
+	s_ActiveProject->SetProjectDirectory(path);
 	return s_ActiveProject;
 }
 

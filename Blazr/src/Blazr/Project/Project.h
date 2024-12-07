@@ -7,7 +7,7 @@
 namespace Blazr {
 struct ProjectConfig {
 	std::string name = "Untitled";
-	std::filesystem::path StartScene;
+	std::string StartSceneName;
 
 	// Useless for now, will later be used for dynamic asset directory
 	// management
@@ -41,9 +41,11 @@ class Project {
 		s_ActiveProject = project;
 	}
 
-	static BLZR_API Ref<Project> New();
+	static BLZR_API Ref<Project> New(const std::filesystem::path &path,
+									 const std::string &name = "Untitled");
 	static BLZR_API Ref<Project> Load(const std::filesystem::path &path);
-	static BLZR_API bool SaveActive(const std::filesystem::path &path);
+	static BLZR_API bool SaveActive(const std::filesystem::path &path =
+										s_ActiveProject->GetProjectDirectory());
 
 	void BLZR_API SetProjectDirectory(const std::filesystem::path &directory) {
 		m_ProjectDirectory = directory;

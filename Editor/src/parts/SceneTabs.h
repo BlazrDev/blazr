@@ -6,26 +6,17 @@
 namespace Blazr {
 void RenderSceneTabs(Editor &editor) {
 	if (ImGui::BeginTabBar("SceneTabs")) {
+
+		if (Project::GetActive() == nullptr) {
+			ImGui::EndTabBar();
+			return;
+		}
 		for (const auto &[name, scene] : Project::GetActive()->GetScenes()) {
 			if (ImGui::BeginTabItem(name.c_str())) {
 				editor.SetActiveScene(scene);
 				ImGui::EndTabItem();
 			}
 		}
-
-		if (ImGui::Button("+")) {
-			std::string newSceneName =
-				"Untitled " +
-				std::to_string(Project::GetActive()->GetScenes().size() + 1);
-			Ref<Scene> newScene = CreateRef<Scene>();
-			Project::GetActive()->AddScene(newSceneName, newScene);
-
-			ProjectSerializer::Serialize(
-				Project::GetActive(),
-				Project::GetActive()->GetProjectDirectory() /
-					Project::GetActive()->GetConfig().name);
-		}
-
 		ImGui::EndTabBar();
 	}
 }

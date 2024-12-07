@@ -7,6 +7,18 @@
 namespace Blazr {
 void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 						 char *luaScriptBuffer) {
+	if (ImGui::Button("+")) {
+		std::string newSceneName =
+			"Untitled " +
+			std::to_string(Project::GetActive()->GetScenes().size() + 1);
+		Ref<Scene> newScene = CreateRef<Scene>();
+		Project::GetActive()->AddScene(newSceneName, newScene);
+
+		ProjectSerializer::Serialize(
+			Project::GetActive(), Project::GetActive()->GetProjectDirectory() /
+									  Project::GetActive()->GetConfig().name);
+	}
+	ImGui::SameLine();
 	if (ImGui::Button("Play")) {
 		CameraController::paused = false;
 	}
