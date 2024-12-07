@@ -58,7 +58,6 @@ static float newScaleY = 1.0f;
 static char name[128] = "";
 static char groupName[128] = "";
 // sprite
-static char layer[128] = "";
 static float spriteWidth = 0.0f;
 static float spriteHeight = 0.0f;
 static float sheetX = 0.0f;
@@ -409,12 +408,10 @@ void Editor::RenderImGui() {
 
 						std::vector<Ref<Layer>> layers =
 							m_ActiveScene->GetLayerManager()->GetAllLayers();
-						auto l = m_ActiveScene->GetLayerByName(
-							layers[selectedLayerIndex]->name);
+						auto l = m_ActiveScene->GetLayerByName(sprite.layer);
 						if (l) {
 							l->AddEntity(
 								CreateRef<Entity>(*m_Registry, entity));
-							sprite.layer = layer;
 						}
 					}
 					if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
@@ -944,8 +941,6 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 }
 
 void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
-	std::copy(sprite.layer.begin(), sprite.layer.end(), layer);
-	name[sprite.layer.size()] = '\0';
 
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
@@ -1031,8 +1026,30 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 	cursorPos.y -= 3;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+
+	static std::unordered_map<SpriteComponent *, int>
+		previousSelectedLayerIndices;
+
 	std::vector<Ref<Layer>> layers =
 		m_ActiveScene->GetLayerManager()->GetAllLayers();
+
+	// Ensure the sprite has a valid current layer and selectedLayerIndex
+	if (!sprite.layer.empty()) {
+		for (int i = 0; i < layers.size(); i++) {
+			if (layers[i]->name == sprite.layer) {
+				selectedLayerIndex = i;
+				break;
+			}
+		}
+	} else {
+		sprite.layer = layers[0]->name;
+		selectedLayerIndex = 0;
+	}
+
+	int &previousSelectedLayerIndex = previousSelectedLayerIndices[&sprite];
+	if (previousSelectedLayerIndex == 0 && selectedLayerIndex != 0) {
+		previousSelectedLayerIndex = selectedLayerIndex;
+	}
 
 	if (ImGui::BeginCombo("##LayerDropdown",
 						  selectedLayerIndex == -1
@@ -1048,7 +1065,11 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 		for (int i = 0; i < layers.size(); i++) {
 			bool isSelected = (selectedLayerIndex == i);
 			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
-				selectedLayerIndex = i;
+				if (previousSelectedLayerIndex != i) {
+					previousSelectedLayerIndex = i;
+					selectedLayerIndex = i;
+					sprite.layer = layers[i]->name;
+				}
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -1067,7 +1088,6 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 		ImGui::Separator();
 
 		ImGui::InputText("Layer Name", newLayerName, sizeof(newLayerName));
-
 		ImGui::InputInt("zIndex", &newLayerZIndex);
 
 		if (ImGui::Button("Create", ImVec2(120, 0))) {
