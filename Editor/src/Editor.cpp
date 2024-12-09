@@ -60,8 +60,8 @@ static char groupName[128] = "";
 // sprite
 static float spriteWidth = 0.0f;
 static float spriteHeight = 0.0f;
-static float sheetX = 0.0f;
-static float sheetY = 0.0f;
+static float newSpriteWidth = 0.0f;
+static float newSpriteHeight = 0.0f;
 
 // box collider
 static int widthBoxCollider = 16, heightBoxCollider = 16;
@@ -513,6 +513,12 @@ void Editor::RenderImGui() {
 										selectedGameObject == entityName) {
 										m_Registry->GetRegistry()
 											.emplace<SpriteComponent>(entity);
+
+										auto &sprite =
+											m_Registry->GetRegistry()
+												.get<SpriteComponent>(entity);
+										sprite.generateObject(sprite.width,
+															  sprite.height);
 									}
 								}
 
@@ -1016,6 +1022,13 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputFloat("##spriteHeight", &sprite.height, 0.1f, 1.0f, "%.1f");
+
+	if ((sprite.width != spriteWidth || sprite.height != spriteHeight) &&
+		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		spriteWidth = sprite.width;
+		spriteHeight = sprite.height;
+		sprite.generateObject(sprite.width, sprite.height);
+	}
 	// layer
 	cursorPos.x -= 65;
 	cursorPos.y += 28;

@@ -29,8 +29,9 @@ const Ref<Blazr::Texture2D>
 Blazr::AssetManager::GetTexture(const std::string &name) {
 	auto textureIterator = m_mapTextures.find(name);
 	if (textureIterator == m_mapTextures.end()) {
-		BLZR_CORE_ERROR("Texture not found: {0}", name);
-		return nullptr;
+		// BLZR_CORE_ERROR("Texture not found: {0}", name);
+		auto texture = std::make_shared<Texture2D>("assets/white_texture.png");
+		return texture;
 	}
 
 	return textureIterator->second;
