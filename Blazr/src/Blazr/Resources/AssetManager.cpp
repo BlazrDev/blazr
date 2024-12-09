@@ -217,7 +217,9 @@ void Blazr::AssetManager::to_json(nlohmann::json &j,
 	j["Textures"] = nlohmann::json::object();
 	for (const auto &[name, texture] : assetManager->m_mapTextures) {
 		if (texture) {
-			j["Textures"][name] = {{"path", texture->GetPath()}};
+			// TODO pixel art hardcoded value for now
+			j["Textures"][name] = {{"path", texture->GetPath()},
+								   {"pixelArt", true}};
 		}
 	}
 

@@ -35,19 +35,24 @@
         "Shaders": {},
         "Textures": {
             "chammy": {
-                "path": "assets/chammy.png"
+                "path": "assets/chammy.png",
+                "pixelArt": true
             },
             "collider": {
-                "path": "assets/map_assets/collider.png"
+                "path": "assets/map_assets/collider.png",
+                "pixelArt": true
             },
             "map": {
-                "path": "assets/map_assets/map.png"
+                "path": "assets/map_assets/map.png",
+                "pixelArt": true
             },
             "masha": {
-                "path": "assets/masha.png"
+                "path": "assets/masha.png",
+                "pixelArt": true
             },
             "player": {
-                "path": "assets/sprite_sheet.png"
+                "path": "assets/sprite_sheet.png",
+                "pixelArt": true
             }
         }
     },
