@@ -351,13 +351,13 @@ void Editor::RenderImGui() {
 
 							BLZR_CORE_INFO("Layer changed from {0} to {1}",
 										   sprite.layer, layer);
+							sprite.layer = layer;
 
 							auto l =
 								m_ActiveScene->GetLayerByName(sprite.layer);
 							if (l) {
 								l->AddEntity(
 									CreateRef<Entity>(*m_Registry, entity));
-								sprite.layer = layer;
 							}
 						}
 					}
@@ -946,11 +946,14 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 										   Identification &identification) {
 
-	std::copy(identification.name.begin(), identification.name.end(), name);
-	name[identification.name.size()] = '\0';
-	std::copy(identification.group.begin(), identification.group.end(),
-			  groupName);
-	name[identification.group.size()] = '\0';
+	if (name != identification.name || groupName != identification.group) {
+		std::copy(identification.name.begin(), identification.name.end(), name);
+		name[identification.name.size()] = '\0';
+		std::copy(identification.group.begin(), identification.group.end(),
+				  groupName);
+		name[identification.group.size()] = '\0';
+	}
+
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Identification");
@@ -974,6 +977,11 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 
 	if ((name != identification.name || groupName != identification.group) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		BLZR_CORE_INFO("Name changed from {0} to {1}", identification.name,
+					   name);
+		BLZR_CORE_INFO("Group changed from {0} to {1}", identification.group,
+					   groupName);
+
 		identification.name = name;
 		identification.group = groupName;
 	}
