@@ -131,6 +131,8 @@ links({
     "box2d",
 })
 
+buildoptions({ "/utf-8" })
+
 defines({
     "BLZR_PLATFORM_WINDOWS",
     "BLZR_BUILD_DLL",
@@ -228,6 +230,8 @@ cppdialect("C++20")
 staticruntime("On")
 systemversion("latest")
 
+buildoptions({ "/utf-8" })
+
 links({
     "OpenGL32",
     "glew32s",
@@ -310,6 +314,8 @@ filter("system:windows")
 defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
 links({ "opengl32", "glfw" })
 
+buildoptions({ "/utf-8" })
+
 filter("system:linux")
 links({ "GL", "glfw", "GLEW" })
 
@@ -377,6 +383,8 @@ links({
     "lua53",
     "box2d",
 })
+
+buildoptions({ "/utf-8" })
 
 defines({
     "BLZR_PLATFORM_WINDOWS",
