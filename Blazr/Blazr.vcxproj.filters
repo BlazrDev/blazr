@@ -94,6 +94,9 @@
     <ClInclude Include="src\Blazr\Ecs\Components\SpriteComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Ecs\Components\TileComponent.h">
+      <Filter>Blazr\Ecs\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Ecs\Components\TransformComponent.h">
       <Filter>Blazr\Ecs\Components</Filter>
     </ClInclude>

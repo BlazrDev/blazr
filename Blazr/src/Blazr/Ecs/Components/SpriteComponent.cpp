@@ -2,7 +2,7 @@
 #include "Blazr/Core/Log.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "SpriteComponent.h"
-#include <memory>
+#include "json.hpp"
 
 void Blazr::SpriteComponent::CreateLuaSpriteComponentBind(sol::state &lua,
 														  Registry &registry) {
@@ -11,28 +11,24 @@ void Blazr::SpriteComponent::CreateLuaSpriteComponentBind(sol::state &lua,
 		sol::call_constructor,
 		sol::factories(
 			[](float width, float height, const std::string &texturePath,
-			   int start_x, int start_y, int layer) {
-				return SpriteComponent{
-					.width = width,
-					.height = height,
-					.object = Object{},
-					.startX = start_x,
-					.startY = start_y,
-					.texturePath = texturePath
-					// .layer = layer;
-				};
+			   int start_x, int start_y, std::string layer) {
+				return SpriteComponent{.width = width,
+									   .height = height,
+									   .object = Object{},
+									   .startX = start_x,
+									   .startY = start_y,
+									   .layer = layer,
+									   .texturePath = texturePath};
 			},
 			[](glm::vec2 size, const std::string &texturePath, int startX,
-			   int startY, int layer) {
-				return SpriteComponent{
-					.width = size.x,
-					.height = size.y,
-					.object = Object{},
-					.startX = startX,
-					.startY = startY,
-					.texturePath = texturePath
-					// .layer = layer;
-				};
+			   int startY, std::string layer) {
+				return SpriteComponent{.width = size.x,
+									   .height = size.y,
+									   .object = Object{},
+									   .startX = startX,
+									   .startY = startY,
+									   .layer = layer,
+									   .texturePath = texturePath};
 			}),
 		"texture_path", &SpriteComponent::texturePath, "width",
 		&SpriteComponent::width, "height", &SpriteComponent::height, "start_x",

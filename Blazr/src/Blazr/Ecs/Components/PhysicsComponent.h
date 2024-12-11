@@ -32,15 +32,28 @@ class PhysicsComponent {
 	PhysicsAttributes m_Attributes;
 
   public:
-	PhysicsComponent();
-	PhysicsComponent(std::shared_ptr<b2World> world,
+	BLZR_API PhysicsComponent();
+	BLZR_API PhysicsComponent(std::shared_ptr<b2World> world,
 					 const PhysicsAttributes &atributes);
 	~PhysicsComponent() = default;
 
-	void init(int windowWidth, int windowHeight);
+	void BLZR_API init(int windowWidth, int windowHeight);
 	b2Body *GetRigidBody() const { return m_RigidBody.get(); }
+
+	PhysicsAttributes &GetAttributes() { return m_Attributes; }
+
+	// void SetRigidBody(b2Body *body) { m_RigidBody.reset(body); }
+
+	void SetAttributes(const PhysicsAttributes &attributes) {
+		m_Attributes = attributes;
+	}
+
+	b2World *GetWorld() const { return m_World.get(); }
 
 	static void CreateLuaPhysicsComponentBind(sol::state_view &lua,
 											  Blazr::Registry &registry);
+
+	void setTransform(const glm::vec2 &position);
+	void setTransform(const glm::vec2 &position, float angle);
 };
 } // namespace Blazr

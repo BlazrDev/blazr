@@ -5,6 +5,7 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
+#include "Blazr/Renderer/CameraController.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"

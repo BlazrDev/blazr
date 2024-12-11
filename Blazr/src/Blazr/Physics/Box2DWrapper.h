@@ -4,7 +4,6 @@
 #include <memory>
 
 namespace Blazr {
-using PhysicsWorld = std::shared_ptr<b2World>();
 
 struct BodyDestroyer {
 	void operator()(b2Body *body) const { body->GetWorld()->DestroyBody(body); }

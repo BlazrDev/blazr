@@ -18,7 +18,7 @@ class Texture2D {
 
 	int GetWidth() const { return m_Width; }
 	int GetHeight() const { return m_Height; }
-	GLuint GetRendererID() const;
+	GLuint BLZR_API GetRendererID() const;
 	uint32_t GetID() const { return m_RendererID; }
 	bool operator==(const Texture2D &other) const {
 		return m_RendererID == other.GetRendererID();

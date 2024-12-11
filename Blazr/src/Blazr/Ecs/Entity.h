@@ -9,15 +9,17 @@
 namespace Blazr {
 class Entity {
   public:
-	Entity(Registry &registry);
-	BLZR_API Entity(Registry &registry, const std::string &name = "",
-		   const std::string &group = "");
+	BLZR_API Entity(Registry &registry);
+	BLZR_API Entity(Registry &registry, const std::string &name,
+					const std::string &group);
 
 	Entity(Registry &registry, const entt::entity &entity);
 	~Entity() = default;
 
 	inline const std::string &GetName() const { return m_Name; }
 	inline const std::string &GetGroup() const { return m_Group; }
+
+	inline void SetName(const std::string &name) { m_Name = name; }
 
 	inline entt::registry &GetRegistry() { return m_Registry.GetRegistry(); }
 
@@ -100,5 +102,6 @@ class Entity {
 	entt::entity m_EntityHandler;
 	std::string m_Name;
 	std::string m_Group;
+	static int ID;
 };
 } // namespace Blazr

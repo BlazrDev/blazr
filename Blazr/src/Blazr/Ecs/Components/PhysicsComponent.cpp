@@ -3,26 +3,32 @@
 #include "Blazr/Ecs/Registry.h"
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "PhysicsComponent.h"
+#include "box2d/b2_body.h"
 #include "box2d/b2_circle_shape.h"
 #include "box2d/box2d.h"
 #include "sol.hpp"
 
 Blazr::PhysicsComponent::PhysicsComponent(std::shared_ptr<b2World> world,
 										  const PhysicsAttributes &atributes)
-	: m_World(world), m_Attributes(atributes), m_RigidBody(nullptr) {}
+	: m_World(world), m_Attributes(atributes), m_RigidBody(nullptr) {
+	init(1280, 720);
+}
 
 Blazr::PhysicsComponent::PhysicsComponent()
-	: m_Attributes(PhysicsAttributes{}) {}
+	: m_Attributes(PhysicsAttributes{}), m_RigidBody(nullptr) {}
 void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	if (!m_World) {
 		BLZR_CORE_ERROR("PhysicsComponent::init: PhysicsWorld is nullptr");
 		return;
 	}
 
+	if (m_RigidBody != nullptr) {
+		m_RigidBody.reset();
+		m_RigidBody = nullptr;
+	}
+
 	b2BodyDef bodyDef{};
 	bodyDef.type = static_cast<b2BodyType>(m_Attributes.type);
-	// bodyDef.type = b2BodyType::b2_dynamicBody;
-	//
 
 	bodyDef.position.Set(
 		(m_Attributes.position.x - (windowWidth * 0.5f) +
@@ -66,6 +72,7 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 		BLZR_CORE_ERROR("Failed to create the rigid body fixture!");
 	}
 }
+
 void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 	sol::state_view &lua, Blazr::Registry &registry) {
 	lua.new_enum<Blazr::RigidBodyType>(
@@ -89,10 +96,10 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 					.gravityScale = phyAttr["gravityScale"].get_or(1.f),
 					.position = glm::vec2{phyAttr["position"]["x"].get_or(0.f),
 										  phyAttr["position"]["y"].get_or(0.f)},
-					.scale = glm::vec2{phyAttr["scale"]["x"].get_or(0.f),
-									   phyAttr["scale"]["y"].get_or(0.f)},
-					.boxSize = glm::vec2{phyAttr["boxSize"]["x"].get_or(0.f),
-										 phyAttr["boxSize"]["y"].get_or(0.f)},
+					.scale = glm::vec2{phyAttr["scale"]["x"].get_or(1.f),
+									   phyAttr["scale"]["y"].get_or(1.f)},
+					.boxSize = glm::vec2{phyAttr["boxSize"]["x"].get_or(16.f),
+										 phyAttr["boxSize"]["y"].get_or(16.f)},
 					.offset = glm::vec2{phyAttr["offset"]["x"].get_or(0.f),
 										phyAttr["offset"]["y"].get_or(0.f)},
 					.isSensor = phyAttr["isSensor"].get_or(false),
@@ -119,14 +126,6 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 		&Blazr::PhysicsAttributes::filterGroup, "set_transform",
 		[](PhysicsComponent &pc, const glm::vec2 &position) {
 			auto body = pc.GetRigidBody();
-			if (!body) {
-				// TODO: Add Error
-				return;
-			}
-
-			// auto &engineData = CoreEngineData::GetInstance();
-			// const auto p2m = engineData.PixelsToMeters();
-
 			const auto scaleHalfHeight = 1280 * 0.5f / METERS_TO_PIXELS;
 			const auto scaleHalfWidth = 720 * 0.5f / METERS_TO_PIXELS;
 
@@ -149,7 +148,7 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 		&entt::type_hash<Blazr::PhysicsComponent>::value, sol::call_constructor,
 		sol::factories([&](const Blazr::PhysicsAttributes &attr) {
 			Blazr::PhysicsComponent pc{physicsWorld, attr};
-			pc.init(1280, 720); // TODO: Change based on window values
+			// pc.init(1280, 720); // TODO: Change based on window values
 			return pc;
 		}),
 
@@ -242,11 +241,13 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 				return;
 			}
 
-			const auto scaleHalfHeight = 1280 * PIXELS_TO_METERS * 0.5f;
-			const auto scaleHalfWidth = 720 * PIXELS_TO_METERS * 0.5f;
+			const auto scaleHalfHeight = 1224 * PIXELS_TO_METERS / 2;
+			const auto scaleHalfWidth = 648 * PIXELS_TO_METERS / 2;
 
-			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfWidth;
-			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfHeight;
+			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfHeight;
+			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfWidth;
+
+			BLZR_CORE_INFO("Setting position to: {0}, {1}", bx, by);
 
 			body->SetTransform(b2Vec2{bx, by}, 0.f);
 		},
@@ -277,7 +278,6 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 			default:
 				break;
 			}
-
 			body->SetType(bodyType);
 		},
 		"set_bullet",
