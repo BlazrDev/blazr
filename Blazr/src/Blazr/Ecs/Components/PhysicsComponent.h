@@ -33,12 +33,12 @@ class PhysicsComponent {
 	PhysicsAttributes m_Attributes;
 
   public:
-	PhysicsComponent();
-	PhysicsComponent(std::shared_ptr<b2World> world,
+	BLZR_API PhysicsComponent();
+	BLZR_API PhysicsComponent(std::shared_ptr<b2World> world,
 					 const PhysicsAttributes &atributes);
 	~PhysicsComponent() = default;
 
-	void init(int windowWidth, int windowHeight);
+	void BLZR_API init(int windowWidth, int windowHeight);
 	b2Body *GetRigidBody() const { return m_RigidBody.get(); }
 
 	PhysicsAttributes &GetAttributes() { return m_Attributes; }

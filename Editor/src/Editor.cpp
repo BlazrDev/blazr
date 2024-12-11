@@ -1,4 +1,3 @@
-#include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
@@ -8,10 +7,8 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
-#include "Blazr/Ecs/Entity.h"
 #include "Blazr/Events/ApplicationEvent.h"
 #include "Blazr/Events/Event.h"
-#include "Blazr/Layers/Layer.h"
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/CameraController.h"
@@ -40,20 +37,24 @@ static bool showAddLayerPopup = false;
 static char newLayerName[256] = "New Layer";
 static int newLayerZIndex = 0;
 
+static float pos = 0;
 static bool mapflag = true;
 static float zoomLevel = 1.0f;
 // audio
 static float volumeLevel = 0.0f;
 // transform
-static int posX = 0;
-static int posY = 0;
-static int newPosX = 0;
-static int newPosY = 0;
+static float positionX = 0.0f;
+static float positionY = 0.0f;
+
+static float newPositionX = 0.0f;
+static float newPositionY = 0.0f;
 
 static float scaleX = 1.0f;
 static float scaleY = 1.0f;
+
 static float newScaleX = 1.0f;
 static float newScaleY = 1.0f;
+
 // identification
 static char name[128] = "";
 static char groupName[128] = "";
@@ -62,12 +63,17 @@ static float spriteWidth = 0.0f;
 static float spriteHeight = 0.0f;
 static float newSpriteWidth = 0.0f;
 static float newSpriteHeight = 0.0f;
+static float layer = 0.0f;
+static float sheetX = 0.0f;
+static float sheetY = 0.0f;
 
-// box collider
-static int widthBoxCollider = 16, heightBoxCollider = 16;
-static int newWidthBoxCollider = 16, newHeightBoxCollider = 16;
+// BoxCollider
+static int widthBoxCollider = 0, heightBoxCollider = 0;
 static float offsetX = 0, offsetY = 0;
+
+static int newWidthBoxCollider = 0, newHeightBoxCollider = 0;
 static float newOffsetX = 0, newOffsetY = 0;
+
 // physics
 static float density = 0.0f;
 static float friction = 0.0f;
@@ -166,12 +172,7 @@ void Editor::InitImGui() {
 			(*eventCallback)(event);
 		}
 	});
-	m_EventCallback = [this](Event &e) {
-		// if (ImGui::GetIO().WantCaptureMouse) {
-		// 	return;
-		// }
-		m_ActiveScene->onEvent(e);
-	};
+	m_EventCallback = [this](Event &e) { m_ActiveScene->onEvent(e); };
 
 	glfwMakeContextCurrent(m_Window->GetWindow());
 	glfwSwapInterval(1);
@@ -317,8 +318,6 @@ void Editor::RenderImGui() {
 		}
 		if (ImGui::BeginMenu("Tools")) {
 			// Tools action
-
-			ImGui::MenuItem("Show Colliders", nullptr, &Layer::showColliders);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Settings")) {
@@ -346,13 +345,6 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Scene", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
-	if (ImGui::BeginPopupContextWindow("AddGameObject",
-									   ImGuiPopupFlags_MouseButtonRight)) {
-		if (ImGui::MenuItem("AddGameObject")) {
-			Entity entity(*m_Registry);
-		}
-		ImGui::EndPopup();
-	}
 	auto view = m_Registry->GetRegistry().view<entt::entity>(
 		entt::exclude<TileComponent>);
 
@@ -380,8 +372,6 @@ void Editor::RenderImGui() {
 	if (showGameObjectDetails) {
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Components")) {
-				if (!CameraController::paused)
-					ImGui::BeginDisabled(true);
 
 				for (auto entity : view) {
 					std::string entityName =
@@ -404,6 +394,7 @@ void Editor::RenderImGui() {
 							m_Registry->GetRegistry().get<SpriteComponent>(
 								entity);
 						showColorTab = true;
+
 						renderSpriteComponent(cursorPos, sprite);
 
 						std::vector<Ref<Layer>> layers =
@@ -429,7 +420,7 @@ void Editor::RenderImGui() {
 						auto &animation =
 							m_Registry->GetRegistry().get<AnimationComponent>(
 								entity);
-						renderAnimationComponent(cursorPos, animation);
+						// renderTransformComponent(cursorPos);
 					}
 					if (m_Registry->GetRegistry().all_of<BoxColliderComponent>(
 							entity) &&
@@ -437,7 +428,7 @@ void Editor::RenderImGui() {
 						auto &boxCollider =
 							m_Registry->GetRegistry().get<BoxColliderComponent>(
 								entity);
-						renderBoxColliderComponent(cursorPos, boxCollider);
+						// renderTransformComponent(cursorPos);
 					}
 					if (m_Registry->GetRegistry().all_of<Identification>(
 							entity) &&
@@ -458,8 +449,6 @@ void Editor::RenderImGui() {
 						renderScriptComponent(cursorPos, script);
 					}
 				}
-				if (!CameraController::paused)
-					ImGui::EndDisabled();
 
 				if (ImGui::BeginPopupContextWindow(
 						"AddComponentPopup",
@@ -649,8 +638,6 @@ void Editor::RenderImGui() {
 				ImGui::EndTabItem();
 			}
 			if (showColorTab) {
-				if (!CameraController::paused)
-					ImGui::BeginDisabled(true);
 				if (ImGui::BeginTabItem("Color")) {
 					ImGui::Text("Color settings");
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
@@ -675,8 +662,6 @@ void Editor::RenderImGui() {
 					}
 					ImGui::EndTabItem();
 				}
-				if (!CameraController::paused)
-					ImGui::EndDisabled();
 			}
 			ImGui::EndTabBar();
 		}
@@ -871,26 +856,14 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::PushItemWidth(105);
 	ImGui::Text("X");
 	ImGui::SameLine();
-	ImGui::InputInt("##PositionX", &posX, 5, 10);
-	if (posX > 1280) {
-		posX = 1280;
-	}
-	if (posX < 0) {
-		posX = 0;
-	}
+	ImGui::InputFloat("##PositionX", &positionX, 0.1f, 1.0f, "%.1f");
 	ImGui::SameLine();
 	ImGui::Text("Y");
 	ImGui::SameLine();
-	ImGui::InputInt("##PositionY", &posY, 5, 10);
-	if (posY > 720) {
-		posY = 720;
-	}
-	if (posY < 0) {
-		posY = 0;
-	}
+	ImGui::InputFloat("##PositionY", &positionY, 0.1f, 1.0f, "%.1f");
 	ImGui::PopItemWidth();
 	cursorPos.y += 25;
-	transform.position = {posX, posY};
+	transform.position = {positionX, positionY};
 
 	// Skaliranje (Scale)
 	ImGui::SetCursorPos(cursorPos);
@@ -901,26 +874,11 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::PushItemWidth(105);
 	ImGui::Text("X");
 	ImGui::SameLine();
-	ImGui::InputFloat("##ScaleX", &transform.scale.x, 0.2f, 1.f, "%.1f");
-	if (scaleX < 0.1f) {
-		scaleX = 0.1f;
-	}
-	if (scaleX > 10.0f) {
-		scaleX = 10.0f;
-	}
+	ImGui::InputFloat("##ScaleX", &scaleX, 0.1f, 1.0f, "%.1f");
 	ImGui::SameLine();
 	ImGui::Text("Y");
 	ImGui::SameLine();
-	ImGui::InputFloat("##ScaleY", &transform.scale.y, 0.2f, 1.f, "%.1f");
-	if (scaleY < 0.1f) {
-		scaleY = 0.1f;
-	}
-	if (scaleY > 10.0f) {
-		scaleY = 10.0f;
-	}
-	scaleY = transform.scale.y;
-	scaleX = transform.scale.x;
-
+	ImGui::InputFloat("##ScaleY", &scaleY, 0.1f, 1.0f, "%.1f");
 	ImGui::PopItemWidth();
 	cursorPos.y += 30;
 
@@ -932,22 +890,13 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	cursorPos.x += 15;
 	cursorPos.y += 20;
 	ImGui::SetCursorPos(cursorPos);
-	ImGui::InputFloat("##Rotation", &transform.rotation, 1.0f, 10.0f, "%.1f");
+	ImGui::InputFloat("##Rotation", &transform.rotation, 0.1f, 1.0f, "%.1f");
 	cursorPos.x -= 15;
 	cursorPos.y += 35;
 }
 
 void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 										   Identification &identification) {
-
-	if (name != identification.name || groupName != identification.group) {
-		std::copy(identification.name.begin(), identification.name.end(), name);
-		name[identification.name.size()] = '\0';
-		std::copy(identification.group.begin(), identification.group.end(),
-				  groupName);
-		name[identification.group.size()] = '\0';
-	}
-
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Identification");
@@ -958,27 +907,18 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	cursorPos.x += 43;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
+	ImGui::InputText("###nameObject", identification.name.data(),
+					 IM_ARRAYSIZE(identification.group.data()));
 	cursorPos.x -= 43;
 	cursorPos.y += 25;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("Group");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###group", groupName, IM_ARRAYSIZE(groupName));
+	ImGui::InputText("###group", identification.group.data(),
+					 IM_ARRAYSIZE(identification.group.data()));
 	ImGui::PopItemWidth();
 	cursorPos.y += 35;
-
-	if ((name != identification.name || groupName != identification.group) &&
-		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
-		BLZR_CORE_INFO("Name changed from {0} to {1}", identification.name,
-					   name);
-		BLZR_CORE_INFO("Group changed from {0} to {1}", identification.group,
-					   groupName);
-
-		identification.name = name;
-		identification.group = groupName;
-	}
 }
 
 void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
@@ -1161,38 +1101,7 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 	cursorPos.x -= 65;
 	cursorPos.y += 35;
 }
-void Editor::renderAnimationComponent(ImVec2 &cursorPos,
-									  AnimationComponent &animation) {
 
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Animation");
-	// numberr of frames
-	cursorPos.y += 30;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Number of frames");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 120);
-	ImGui::PushItemWidth(130);
-	ImGui::InputInt("##numFrames", &animation.numFrames);
-	// frame rate
-	ImGui::Text("Frame Rate");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 120);
-	ImGui::PushItemWidth(130);
-	ImGui::InputInt("##frameRate", &animation.frameRate);
-	ImGui::PopItemWidth();
-	// frame offset
-	ImGui::Text("Frame Offset");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 120);
-	ImGui::PushItemWidth(130);
-	ImGui::InputInt("##frameOffset", &animation.frameOffset);
-	ImGui::PopItemWidth();
-	// bVertical
-	ImGui::Text("bVertical");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 10);
-	ImGui::Checkbox("##bVertical", &animation.bVertical);
-
-	cursorPos.y += 100;
-}
 void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
 										BoxColliderComponent &boxCollider) {
 
@@ -1208,13 +1117,6 @@ void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
 	ImGui::Text("Height");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
 	ImGui::InputInt("##heightBoxCollider", &heightBoxCollider);
-
-	if (widthBoxCollider < 16) {
-		widthBoxCollider = 16;
-	}
-	if (heightBoxCollider < 16) {
-		heightBoxCollider = 16;
-	}
 
 	boxCollider.width = widthBoxCollider;
 	boxCollider.height = heightBoxCollider;
@@ -1250,7 +1152,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	cursorPos.x += 90;
 	ImGui::SetCursorPos(cursorPos);
 	const char *types[] = {"Static", "Kinematic", "Dynamic"};
-	static int selectedTypeIndex = body->GetType();
+	static int selectedTypeIndex = -1;
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
 												 ? "Choose a type"
@@ -1259,7 +1161,9 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			bool isSelected = (selectedTypeIndex == i);
 			if (ImGui::Selectable(types[i], isSelected)) {
 				physics.GetAttributes().type = static_cast<RigidBodyType>(i);
-				body->SetType(b2BodyType(i));
+				// attributes.type = static_cast<RigidBodyType>(i);
+				// body->SetType(static_cast<b2BodyType>(i));
+				selectedTypeIndex = i;
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -1311,7 +1215,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputFloat("##gravityScale", &physics.GetAttributes().gravityScale,
 					  0.1f, 1.0f, "%.1f");
-	body->SetGravityScale(physics.GetAttributes().gravityScale);
+	// body->SetGravityScale(physics.GetAttributes().gravityScale);
 	// isSensor
 	cursorPos.x -= 90;
 	cursorPos.y += 28;
@@ -1328,41 +1232,30 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	ImGui::Checkbox("##isFixedRotation",
 					&physics.GetAttributes().isFixedRotation);
 
-	body->SetFixedRotation(physics.GetAttributes().isFixedRotation);
+	// body->SetFixedRotation(physics.GetAttributes().isFixedRotation);
 
 	cursorPos.y += 35;
-	if (CameraController::paused) {
 
-		for (b2Fixture *fixture = body->GetFixtureList(); fixture != nullptr;
-			 fixture = fixture->GetNext()) {
-			fixture->SetDensity(physics.GetAttributes().density);
-			fixture->SetRestitution(physics.GetAttributes().restitution);
-			fixture->SetFriction(physics.GetAttributes().friction);
-			fixture->SetSensor(physics.GetAttributes().isSensor);
-		}
-	}
+	// for (b2Fixture *fixture = body->GetFixtureList(); fixture != nullptr;
+	// 	 fixture = fixture->GetNext()) {
+	// 	fixture->SetDensity(physics.GetAttributes().density);
+	// 	fixture->SetRestitution(physics.GetAttributes().restitution);
+	// 	fixture->SetFriction(physics.GetAttributes().friction);
+	// 	fixture->SetSensor(physics.GetAttributes().isSensor);
+	//
+	// }
 
-	if ((posX != newPosX || posY != newPosY || scaleX != newScaleX ||
-		 scaleY != newScaleY || widthBoxCollider != newWidthBoxCollider ||
-		 heightBoxCollider != newHeightBoxCollider || offsetX != newOffsetX ||
-		 offsetY != newOffsetY) &&
-		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
-		physics.GetAttributes().position = {posX, posY};
-		physics.GetAttributes().scale = {scaleX, scaleY};
-		physics.GetAttributes().boxSize = {widthBoxCollider, heightBoxCollider};
-		physics.GetAttributes().offset = {offsetX, offsetY};
-		if (CameraController::paused) {
-			physics.init(1280, 720);
-		}
+	// TODO: Napraviti metodu za transform u rigidBody
+	if (newPositionX != positionX || newPositionY != positionY ||
+		newScaleX != scaleX || newScaleY != scaleY) {
+		/* physics.setTransform({positionX, positionY}); */
+		physics.init(1280, 720);
 
-		newPosX = posX;
-		newPosY = posY;
+		newPositionX = positionX;
+		newPositionY = positionY;
+
 		newScaleX = scaleX;
 		newScaleY = scaleY;
-		newWidthBoxCollider = widthBoxCollider;
-		newHeightBoxCollider = heightBoxCollider;
-		newOffsetX = offsetX;
-		newOffsetY = offsetY;
 	}
 }
 
