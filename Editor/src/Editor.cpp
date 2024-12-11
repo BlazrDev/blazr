@@ -354,7 +354,7 @@ void Editor::RenderImGui() {
 		ImGui::EndPopup();
 	}
 	auto view = m_Registry->GetRegistry().view<entt::entity>(
-		entt::exclude<TileComponent, Blazr::ScriptComponent>);
+		entt::exclude<TileComponent>);
 
 	for (auto entity : view) {
 		auto &identification =
@@ -448,6 +448,15 @@ void Editor::RenderImGui() {
 						renderIdentificationComponent(cursorPos,
 													  identification);
 					}
+
+					if (m_Registry->GetRegistry().all_of<ScriptComponent>(
+							entity) &&
+						selectedGameObject == entityName) {
+						auto &script =
+							m_Registry->GetRegistry().get<ScriptComponent>(
+								entity);
+						renderScriptComponent(cursorPos, script);
+					}
 				}
 				if (!CameraController::paused)
 					ImGui::EndDisabled();
@@ -471,8 +480,8 @@ void Editor::RenderImGui() {
 					ImGui::Text("CHOOSE COMPONENT TO ADD");
 					ImGui::Dummy(ImVec2(0.0f, 10.0f));
 					const char *components[] = {
-						"Sprite Component", "Box Collider", "Animation",
-						"Transform Component", "Physics"};
+						"Sprite Component",	   "Box Collider", "Animation",
+						"Transform Component", "Physics",	   "Script"};
 					static int selectedComponentIndex =
 						-1; // -1 znači da nijedna komponenta nije izabrana
 					ImGui::SetNextItemWidth(170.0f);
@@ -603,6 +612,24 @@ void Editor::RenderImGui() {
 													PhysicsComponent(
 														physicsWorld,
 														PhysicsAttributes{})));
+									}
+								}
+								break;
+
+							case 5:
+								for (auto entity : view) {
+									std::string entityName =
+										"ObjectDetails-" +
+										m_Registry->GetRegistry()
+											.get<Identification>(entity)
+											.name;
+
+									if (!m_Registry->GetRegistry()
+											 .all_of<ScriptComponent>(entity) &&
+										selectedGameObject == entityName) {
+										m_Registry->GetRegistry()
+											.emplace<ScriptComponent>(
+												entity, ScriptComponent{});
 									}
 								}
 								break;
@@ -1339,4 +1366,81 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	}
 }
 
+void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Script Component");
+
+	// Script Path
+	cursorPos.y += 30;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Script Path");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+
+	static char scriptPathBuffer[256];
+	strcpy(scriptPathBuffer, script.scriptPath.c_str());
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	if (ImGui::InputText("##ScriptPathInput", scriptPathBuffer,
+						 sizeof(scriptPathBuffer))) {
+		script.scriptPath = scriptPathBuffer;
+	}
+
+	cursorPos.x -= 90;
+	cursorPos.y += 28;
+
+	// Update Function Check
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Has Update Function");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
+	bool hasUpdate = script.update.valid();
+	ImGui::Checkbox("##UpdateFunctionCheckbox", &hasUpdate);
+
+	cursorPos.y += 25;
+
+	// Render Function Check
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Has Render Function");
+	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
+	bool hasRender = script.render.valid();
+	ImGui::Checkbox("##RenderFunctionCheckbox", &hasRender);
+
+	cursorPos.y += 35;
+
+	// Reload Script Button
+	ImGui::SetCursorPos(cursorPos);
+	if (ImGui::Button("Reload Script")) {
+		// Trigger a script reload process
+		sol::state lua;
+		try {
+			auto result = lua.safe_script_file(script.scriptPath);
+			if (result.valid()) {
+				std::string scriptName = script.scriptPath.substr(
+					script.scriptPath.find_last_of("/\\") + 1);
+				scriptName = scriptName.substr(0, scriptName.find_last_of('.'));
+
+				sol::table scriptTable = lua[scriptName];
+				if (scriptTable.valid()) {
+					if (scriptTable["on_update"].valid()) {
+						script.update = scriptTable["on_update"];
+					}
+					if (scriptTable["on_render"].valid()) {
+						script.render = scriptTable["on_render"];
+					}
+				} else {
+					BLZR_CORE_ERROR("Failed to load script table for %s",
+									scriptName.c_str());
+				}
+			} else {
+				sol::error err = result;
+				BLZR_CORE_ERROR("Error loading script: %s", err.what());
+			}
+		} catch (const std::exception &e) {
+			BLZR_CORE_ERROR("Exception while reloading script: %s", e.what());
+		}
+	}
+
+	cursorPos.y += 35;
+}
 } // namespace Blazr

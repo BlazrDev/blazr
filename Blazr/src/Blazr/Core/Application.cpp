@@ -118,6 +118,8 @@ void Application::Initialize() {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
 		return;
 	}
+	// TODO should also initialize entity script when a new entity is created
+	scriptSystem->InitializeEntityScripts(*m_LuaState);
 
 	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry);
 	if (!animationSystem) {

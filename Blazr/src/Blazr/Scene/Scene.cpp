@@ -73,6 +73,8 @@ void Scene::Render() {
 }
 
 void Scene::Serialize(nlohmann::json &j) const {
+	j["Name"] = m_Name; // Serialize the name of the scene
+
 	j["Layers"] = nlohmann::json::array();
 	auto layers = m_LayerManager->GetAllLayers();
 	std::for_each(layers.begin(), layers.end(), [&](Ref<Layer> layer) {
@@ -83,6 +85,13 @@ void Scene::Serialize(nlohmann::json &j) const {
 }
 
 void Scene::Deserialize(const nlohmann::json &j) {
+	if (j.contains("Name")) {
+		m_Name = j.at("Name").get<std::string>();
+	} else {
+		BLZR_CORE_WARN(
+			"Scene JSON does not contain 'Name'. Using default name.");
+	}
+
 	if (j.contains("Layers")) {
 		for (const auto &layerJson : j.at("Layers")) {
 			for (const auto &[layerName, layerData] : layerJson.items()) {

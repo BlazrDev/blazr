@@ -3,6 +3,7 @@
 #include "Blazr.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
 #include "imgui.h"
@@ -33,6 +34,7 @@ class Editor : public Application {
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
+	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script);
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 

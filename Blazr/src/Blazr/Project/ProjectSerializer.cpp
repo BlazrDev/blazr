@@ -112,6 +112,27 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 		} else {
 			BLZR_CORE_WARN("Missing 'AssetManager' in the JSON file.");
 		}
+
+		auto scenesPath =
+			std::filesystem::path(project->GetProjectDirectory()) / "scenes";
+
+		if (std::filesystem::exists(scenesPath) &&
+			std::filesystem::is_directory(scenesPath)) {
+			for (const auto &entry :
+				 std::filesystem::directory_iterator(scenesPath)) {
+				if (entry.is_regular_file() &&
+					entry.path().extension() == ".blzrscn") {
+					auto scene = DeserializeScene(entry.path());
+					if (scene) {
+						project->AddScene(scene->GetName(), scene);
+					} else {
+						BLZR_CORE_WARN("FAILED TO DESERIALIZE SCENE:{}",
+									   entry.path().string());
+					}
+				}
+			}
+		}
+
 	} catch (const std::exception &e) {
 		BLZR_CORE_ERROR("Failed to deserialize project: {} - {}",
 						filepath.string(), e.what());
@@ -133,6 +154,7 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 
 	std::filesystem::create_directories(filepath.parent_path());
 	std::ofstream ofs(
+		Project::GetActive()->GetProjectDirectory() / "scenes/" /
 		const_cast<std::filesystem::path &>(filepath).replace_extension(
 			".blzrscn"));
 	if (!ofs) {

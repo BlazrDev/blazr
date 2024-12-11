@@ -46,7 +46,11 @@ class Scene {
 
 	static void BindScene(sol::state &lua);
 
+	void SetName(const std::string &name) { m_Name = name; }
+	std::string GetName() const { return m_Name; }
+
   private:
+	std::string m_Name = "Untitled";
 	CameraController m_Camera;
 	std::shared_ptr<Blazr::Registry> m_Registry;
 	Ref<LayerManager> m_LayerManager;
