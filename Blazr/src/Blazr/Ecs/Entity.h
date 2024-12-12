@@ -13,7 +13,7 @@ class Entity {
 	BLZR_API Entity(Registry &registry, const std::string &name,
 					const std::string &group);
 
-	Entity(Registry &registry, const entt::entity &entity);
+	BLZR_API Entity(Registry &registry, const entt::entity &entity);
 	~Entity() = default;
 
 	inline const std::string &GetName() const { return m_Name; }

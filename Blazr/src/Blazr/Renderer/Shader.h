@@ -18,8 +18,8 @@ class Shader {
 
 	GLuint GetProgramID() const;
 
-	std::string GetVertexPath();
-	std::string GetFragmentPath();
+	std::string GetVertexPath() { return m_sVertexPath; }
+	std::string GetFragmentPath() { return m_sFragmentPath; }
 
 	int GetUniformInt(const std::string &name) const;
 	glm::mat4 GetUniformMat4(const std::string &name) const;

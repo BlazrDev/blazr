@@ -83,9 +83,9 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +106,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -129,6 +130,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -142,9 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Editor.h" />
+    <ClInclude Include="src\parts\SceneControls.h" />
+    <ClInclude Include="src\parts\SceneTabs.h" />
+    <ClInclude Include="src\utils\FileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Editor.cpp" />
+    <ClCompile Include="src\utils\FileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Blazr\ImGui\ImGui.vcxproj">

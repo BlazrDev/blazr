@@ -15,5 +15,5 @@ int main(int argc, char **argv) {
 
   auto app = Blazr::CreateApplication();
   app->Run();
-  delete app;
+  //delete app;
 }

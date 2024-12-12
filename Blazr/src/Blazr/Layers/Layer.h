@@ -13,13 +13,14 @@ class Layer {
 
 	Layer(const std::string &name, int zIndex) : name(name), zIndex(zIndex) {}
 
-	void AddEntity(Ref<Entity> entity);
+	void BLZR_API AddEntity(Ref<Entity> entity);
 	void RemoveEntity(Ref<Entity> entity);
 
 	void Render(Registry &registry);
 
 	static void BindLayer(sol::state &lua);
 
-	// TODO add serialization and deserialization
+	static void to_json(nlohmann::json &j, const Ref<Layer> layer);
+	static void from_json(const nlohmann::json &j, Ref<Layer> layer);
 };
 } // namespace Blazr

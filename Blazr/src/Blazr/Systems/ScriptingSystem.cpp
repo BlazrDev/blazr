@@ -51,54 +51,89 @@ bool ScriptingSystem::LoadMainScript(sol::state &lua) {
 	sol::function render = render_script["render"];
 
 	Entity mainLuaScript(m_Registry, "main_script", "");
-	mainLuaScript.AddComponent<Bazr::ScriptComponent>(
-		Bazr::ScriptComponent{.update = update, .render = render});
+	mainLuaScript.AddComponent<Blazr::ScriptComponent>(
+		Blazr::ScriptComponent{.update = update, .render = render});
 
 	m_bMainLoaded = true;
 
 	return true;
 }
-void ScriptingSystem::Update() {
-	if (!m_bMainLoaded) {
-		BLZR_CORE_ERROR("Main lua script has not been initialized!");
-		return;
-	}
 
-	auto view = m_Registry.GetRegistry().view<Bazr::ScriptComponent>();
+void ScriptingSystem::Update() {
+	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
 	for (const auto &entity : view) {
 		Entity ent{m_Registry, entity};
-		if (ent.GetName() != "main_script") {
-			continue;
-		}
 
-		auto &script = ent.GetComponent<Bazr::ScriptComponent>();
-		auto error = script.update(entity);
-		if (!error.valid()) {
-			sol::error err = error;
-			BLZR_CORE_ERROR("Error running the Update script: {0}", err.what());
+		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+		if (script.update.valid()) {
+			auto result = script.update(entity);
+			if (!result.valid()) {
+				sol::error err = result;
+				BLZR_CORE_ERROR(
+					"Error running Update script for entity '{}': {}",
+					ent.GetName(), err.what());
+			}
+		} else {
+			BLZR_CORE_WARN(
+				"Entity '{}' has no valid update function in its script.",
+				ent.GetName());
 		}
 	}
 }
-void ScriptingSystem::Render() {
-	if (!m_bMainLoaded) {
-		BLZR_CORE_ERROR("Main lua script has not been initialized!");
-		return;
-	}
 
-	auto view = m_Registry.GetRegistry().view<Bazr::ScriptComponent>();
+void ScriptingSystem::Render() {
+	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
 	for (const auto &entity : view) {
 		Entity ent{m_Registry, entity};
-		if (ent.GetName() != "main_script") {
-			continue;
-		}
 
-		auto &script = ent.GetComponent<Bazr::ScriptComponent>();
-		auto error = script.render(entity);
-		if (!error.valid()) {
-			sol::error err = error;
-			BLZR_CORE_ERROR("Error running the Render script: {0}", err.what());
+		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+		if (script.render.valid()) {
+			auto result = script.render(entity);
+			if (!result.valid()) {
+				sol::error err = result;
+				BLZR_CORE_ERROR(
+					"Error running Render script for entity '{}': {}",
+					ent.GetName(), err.what());
+			}
+		} else {
+			BLZR_CORE_WARN(
+				"Entity '{}' has no valid render function in its script.",
+				ent.GetName());
+		}
+	}
+}
+
+void ScriptingSystem::InitializeEntityScripts(sol::state &lua) {
+	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
+
+	for (const auto &entity : view) {
+		Entity ent{m_Registry, entity};
+		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+
+		try {
+			sol::table scriptTable =
+				lua.require_file(ent.GetName(), script.scriptPath);
+
+			if (scriptTable["on_update"].valid()) {
+				script.update = scriptTable["on_update"];
+			} else {
+				BLZR_CORE_WARN(
+					"Script '{}' for entity '{}' has no 'on_update' function.",
+					script.scriptPath, ent.GetName());
+			}
+
+			if (scriptTable["on_render"].valid()) {
+				script.render = scriptTable["on_render"];
+			} else {
+				BLZR_CORE_WARN(
+					"Script '{}' for entity '{}' has no 'on_render' function.",
+					script.scriptPath, ent.GetName());
+			}
+		} catch (const sol::error &err) {
+			BLZR_CORE_ERROR("Failed to load script '{}' for entity '{}': {}",
+							script.scriptPath, ent.GetName(), err.what());
 		}
 	}
 }

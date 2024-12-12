@@ -25,6 +25,7 @@ Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
 	m_Camera.GetCamera().SetRotation(0.0f);
 	m_LayerManager = CreateRef<LayerManager>();
 	m_Registry = Registry::GetInstance();
+	m_LayerManager->CreateLayer("Layer 1", 0);
 }
 
 Scene::~Scene() {}
@@ -72,40 +73,32 @@ void Scene::Render() {
 }
 
 void Scene::Serialize(nlohmann::json &j) const {
-	j["Entities"] = nlohmann::json::array();
-	auto &registry = m_Registry->GetRegistry();
+	j["Name"] = m_Name; // Serialize the name of the scene
 
-	auto view = registry.view<TransformComponent, SpriteComponent>();
-
-	view.each([&](auto entity, TransformComponent &transform,
-				  SpriteComponent &sprite) {
-		nlohmann::json entityJson;
-
-		TransformComponent::to_json(entityJson["Transform"], transform);
-
-		SpriteComponent::to_json(entityJson["Sprite"], sprite);
-
-		j["Entities"].push_back(entityJson);
+	j["Layers"] = nlohmann::json::array();
+	auto layers = m_LayerManager->GetAllLayers();
+	std::for_each(layers.begin(), layers.end(), [&](Ref<Layer> layer) {
+		nlohmann::json layerJson;
+		Layer::to_json(layerJson[layer->name], layer);
+		j["Layers"].push_back(layerJson);
 	});
 }
 
 void Scene::Deserialize(const nlohmann::json &j) {
-	auto &registry = m_Registry->GetRegistry();
+	if (j.contains("Name")) {
+		m_Name = j.at("Name").get<std::string>();
+	} else {
+		BLZR_CORE_WARN(
+			"Scene JSON does not contain 'Name'. Using default name.");
+	}
 
-	for (const auto &entityJson : j.at("Entities")) {
-		auto entity = registry.create();
-
-		if (entityJson.contains("Transform")) {
-			TransformComponent transform;
-			TransformComponent::from_json(entityJson.at("Transform"),
-										  transform);
-			registry.emplace<TransformComponent>(entity, transform);
-		}
-
-		if (entityJson.contains("Sprite")) {
-			SpriteComponent sprite;
-			SpriteComponent::from_json(entityJson.at("Sprite"), sprite);
-			registry.emplace<SpriteComponent>(entity, sprite);
+	if (j.contains("Layers")) {
+		for (const auto &layerJson : j.at("Layers")) {
+			for (const auto &[layerName, layerData] : layerJson.items()) {
+				Ref<Layer> layer = CreateRef<Layer>(layerName, 0);
+				Layer::from_json(layerData, layer);
+				m_LayerManager->AddLayer(layer);
+			}
 		}
 	}
 }

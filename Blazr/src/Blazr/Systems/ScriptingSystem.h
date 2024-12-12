@@ -13,6 +13,7 @@ class ScriptingSystem {
 	~ScriptingSystem() = default;
 
 	bool LoadMainScript(sol::state &lua);
+	void InitializeEntityScripts(sol::state &lua);
 	void Update();
 	void Render();
 

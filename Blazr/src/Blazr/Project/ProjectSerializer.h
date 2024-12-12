@@ -8,7 +8,7 @@ namespace Blazr {
 
 class ProjectSerializer {
   public:
-	static bool Serialize(const Ref<Project> &project,
+	static bool BLZR_API Serialize(const Ref<Project> &project,
 						  const std::filesystem::path &filepath);
 
 	static Ref<Project> Deserialize(const std::filesystem::path &filepath);

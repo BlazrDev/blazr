@@ -4,6 +4,7 @@
 #include "box2d/box2d.h"
 #include "glm.hpp"
 #include <cstdint>
+#include <json.hpp>
 #include <memory>
 #include <sol.hpp>
 
@@ -53,6 +54,9 @@ class PhysicsComponent {
 	static void CreateLuaPhysicsComponentBind(sol::state_view &lua,
 											  Blazr::Registry &registry);
 
+	static void to_json(nlohmann::json &j, PhysicsComponent component);
+	static void from_json(const nlohmann::json &j,
+						  PhysicsComponent &scriptComponent);
 	void setTransform(const glm::vec2 &position);
 	void setTransform(const glm::vec2 &position, float angle);
 };

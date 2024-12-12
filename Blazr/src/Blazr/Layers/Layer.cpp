@@ -1,6 +1,12 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
+#include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
+#include "Blazr/Ecs/Components/ScriptComponent.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Layer.h"
 
 namespace Blazr {
@@ -45,5 +51,107 @@ void Layer::Render(Registry &registry) {
 void Layer::BindLayer(sol::state &lua) {
 	lua.new_usertype<Layer>("Layer", "name", &Layer::name, "zIndex",
 							&Layer::zIndex);
+}
+
+void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
+	j["zIndex"] = layer->zIndex;
+	j["Entities"] = nlohmann::json::array();
+	std::for_each(layer->entities.begin(), layer->entities.end(),
+				  [&](Ref<Entity> entity) {
+					  nlohmann::json entityJson;
+					  if (entity->HasComponent<AnimationComponent>()) {
+						  AnimationComponent::to_json(
+							  entityJson["Animation"],
+							  entity->GetComponent<AnimationComponent>());
+					  }
+					  if (entity->HasComponent<SpriteComponent>()) {
+						  SpriteComponent::to_json(
+							  entityJson["Sprite"],
+							  entity->GetComponent<SpriteComponent>());
+					  }
+					  if (entity->HasComponent<TransformComponent>()) {
+						  TransformComponent::to_json(
+							  entityJson["Transform"],
+							  entity->GetComponent<TransformComponent>());
+					  }
+					  if (entity->HasComponent<BoxColliderComponent>()) {
+						  BoxColliderComponent::to_json(
+							  entityJson["BoxCollider"],
+							  entity->GetComponent<BoxColliderComponent>());
+					  }
+					  if (entity->HasComponent<ScriptComponent>()) {
+						  ScriptComponent::to_json(
+							  entityJson["Script"],
+							  entity->GetComponent<ScriptComponent>());
+					  }
+					  if (entity->HasComponent<PhysicsComponent>()) {
+						  PhysicsComponent::to_json(
+							  entityJson["Physics"],
+							  entity->GetComponent<PhysicsComponent>());
+					  }
+					  if (entity->HasComponent<Identification>()) {
+						  Identification::to_json(
+							  entityJson["Identification"],
+							  entity->GetComponent<Identification>());
+					  }
+					  j["Entities"].push_back(entityJson);
+				  });
+}
+
+void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
+	layer->entities.clear();
+	if (j.contains("zIndex")) {
+		layer->zIndex = j.at("zIndex");
+	}
+
+	if (j.contains("Entities")) {
+		for (const auto &entityJson : j.at("Entities")) {
+
+			Ref<Entity> entity =
+				CreateRef<Entity>(*Registry::GetInstance(), "", "");
+
+			if (entityJson.contains("Animation")) {
+				AnimationComponent animation;
+				AnimationComponent::from_json(entityJson.at("Animation"),
+											  animation);
+				entity->AddComponent<AnimationComponent>(animation);
+			}
+			if (entityJson.contains("Sprite")) {
+				SpriteComponent sprite;
+				SpriteComponent::from_json(entityJson.at("Sprite"), sprite);
+				entity->AddComponent<SpriteComponent>(sprite);
+			}
+			if (entityJson.contains("Transform")) {
+				TransformComponent transform;
+				TransformComponent::from_json(entityJson.at("Transform"),
+											  transform);
+				entity->AddComponent<TransformComponent>(transform);
+			}
+			if (entityJson.contains("BoxCollider")) {
+				BoxColliderComponent boxCollider;
+				BoxColliderComponent::from_json(entityJson.at("BoxCollider"),
+												boxCollider);
+				entity->AddComponent<BoxColliderComponent>(boxCollider);
+			}
+			if (entityJson.contains("Script")) {
+				ScriptComponent script;
+				ScriptComponent::from_json(entityJson.at("Script"), script);
+				entity->AddComponent<ScriptComponent>(script);
+			}
+			if (entityJson.contains("Physics")) {
+				PhysicsComponent physics;
+				PhysicsComponent::from_json(entityJson.at("Physics"), physics);
+				entity->AddComponent<PhysicsComponent>(physics);
+			}
+			if (entityJson.contains("Identification")) {
+				Identification identification;
+				Identification::from_json(entityJson.at("Identification"),
+										  identification);
+				entity->AddComponent<Identification>(identification);
+			}
+
+			layer->entities.push_back(entity);
+		}
+	}
 }
 } // namespace Blazr

@@ -11,6 +11,7 @@
 #include "Blazr/Systems/Sounds/Music.h"
 #include "Blazr/Systems/Sounds/SoundProperties.h"
 #include "sol.hpp"
+#include <json.hpp>
 
 namespace Blazr {
 class AssetManager {
@@ -53,6 +54,10 @@ class AssetManager {
 
 	BLZR_API std::map<std::string, Ref<Blazr::Music>> &getAllMusic();
 	BLZR_API std::map<std::string, Ref<Blazr::Effect>> &getAllEffects();
+
+	static void to_json(nlohmann::json &j, Ref<AssetManager> assetManager);
+	static void from_json(const nlohmann::json &j,
+						  Ref<AssetManager> assetManager);
 	BLZR_API std::map<std::string, Ref<Blazr::Texture2D>> &getAllTextures();
 
   private:

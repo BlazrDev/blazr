@@ -35,7 +35,7 @@ class Scene {
 
 	void AddLayer(const std::string &layerName, int zIndex);
 	void RemoveLayer(const std::string &layerName);
-	Ref<Layer> GetLayerByName(const std::string &layerName);
+	Ref<Layer> BLZR_API GetLayerByName(const std::string &layerName);
 	std::vector<Ref<Layer>> GetAllLayers() const;
 
 	void AddEntityToLayer(const std::string &layerName, Ref<Entity> entity);
@@ -46,7 +46,11 @@ class Scene {
 
 	static void BindScene(sol::state &lua);
 
+	void SetName(const std::string &name) { m_Name = name; }
+	std::string GetName() const { return m_Name; }
+
   private:
+	std::string m_Name = "Untitled";
 	CameraController m_Camera;
 	std::shared_ptr<Blazr::Registry> m_Registry;
 	Ref<LayerManager> m_LayerManager;

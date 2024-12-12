@@ -19,7 +19,7 @@ Masha = {
             height = 617.0,
             texture_path = "masha",
             start = { x = 0, y = 0 },
-            layer = 0,
+            layer = "Layer 1",
         },
         box_collider = {
             width = 472,
@@ -42,7 +42,7 @@ Player = {
             height = 32.0,
             texture_path = "player",
             start = { x = 0, y = 0 },
-            layer = 0,
+            layer = "Layer 1",
         },
         box_collider = {
             width = 20,

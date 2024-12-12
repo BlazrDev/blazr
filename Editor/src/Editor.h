@@ -2,6 +2,7 @@
 #include "blzrpch.h"
 #include "Blazr.h"
 #include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
 #include "imgui.h"
@@ -26,16 +27,22 @@ class Editor : public Application {
 	void renderIdentificationComponent(ImVec2 &cursorPos,
 									   Identification &identification);
 	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite);
+	void renderAnimationComponent(ImVec2 &cursorPos,
+								  AnimationComponent &animation);
+
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
 
+
 	void setEventCallback(const Window::EventCallbackFn &callback);
+
+	Ref<Scene> GetActiveScene() { return m_ActiveScene; }
 
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
-	Ref<Scene> m_Scene;
+	Ref<Scene> m_ActiveScene;
 	Window::EventCallbackFn m_EventCallback;
 };
 
