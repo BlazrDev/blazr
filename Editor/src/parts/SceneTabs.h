@@ -1,6 +1,7 @@
 #include "../Editor.h"
 #include "Blazr/Project/Project.h"
 #include "Blazr/Project/ProjectSerializer.h"
+#include "Blazr/Renderer/CameraController.h"
 #include "imgui.h"
 
 namespace Blazr {
@@ -45,6 +46,7 @@ void RenderActiveScene(Ref<Scene> activeScene,
 		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
 						  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
+		CameraController::gameViewWindow = ImGui::IsWindowHovered();
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
 		int newWidth = static_cast<int>(windowSize.x);
 		int newHeight = static_cast<int>(windowSize.y);

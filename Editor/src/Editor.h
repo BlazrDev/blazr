@@ -1,6 +1,7 @@
 #pragma once
 #include "blzrpch.h"
 #include "Blazr.h"
+#include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Renderer/FrameBuffer.h"
@@ -30,10 +31,10 @@ class Editor : public Application {
 	void renderAnimationComponent(ImVec2 &cursorPos,
 								  AnimationComponent &animation);
 
+	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script);
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
-
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
