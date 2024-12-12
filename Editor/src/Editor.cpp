@@ -117,9 +117,20 @@ void Editor::Init() {
 	Ref<Project> newProject = Project::New("StartProject");
 	Ref<Scene> newScene = CreateRef<Scene>();
 	newProject->AddScene("Scene1", newScene);
+
 	m_ActiveScene = newScene;
-	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
-												 newProject->GetConfig().name);
+
+	// ProjectSerializer::Serialize(newProject,
+	// newProject->GetProjectDirectory() /
+	// newProject->GetConfig().name);
+
+	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
+		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+	// TODO should also initialize entity script when a new entity is created
+	// m_ScriptSystem->InitializeEntityScripts(*m_LuaState);
+	//
 }
 
 void Editor::InitImGui() {
@@ -1255,6 +1266,8 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		newPositionY = positionY;
 
 		newScaleX = scaleX;
+		BLZR_CORE_WARN("POSITION: {0} NEW POSITION: {1}", positionX,
+					   newPositionX);
 		newScaleY = scaleY;
 	}
 }
@@ -1272,65 +1285,72 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
 	cursorPos.y -= 3;
 	ImGui::SetCursorPos(cursorPos);
 
-	static char scriptPathBuffer[256];
-	strcpy(scriptPathBuffer, script.scriptPath.c_str());
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	if (ImGui::InputText("##ScriptPathInput", scriptPathBuffer,
-						 sizeof(scriptPathBuffer))) {
-		script.scriptPath = scriptPathBuffer;
-	}
+	(ImGui::Text(const_cast<char *>(script.scriptPath.c_str())));
 
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-
-	// Update Function Check
 	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Has Update Function");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	bool hasUpdate = script.update.valid();
-	ImGui::Checkbox("##UpdateFunctionCheckbox", &hasUpdate);
+	if (script.scriptPath.empty()) {
+		if (ImGui::Button("Create Script")) {
+			std::string newScriptPath = FileDialog::SaveFileWithPath(
+				"Lua Scripts (*.lua)\0*.lua\0",
+				Project::GetProjectDirectory().c_str());
 
-	cursorPos.y += 25;
+			if (!newScriptPath.empty()) {
+				std::string defaultScript = "-- Default Lua Script\n"
+											"\n"
+											"function on_update(entity)\n"
+											"    -- Your update logic here\n"
+											"end\n"
+											"\n"
+											"function on_render(entity)\n"
+											"    -- Your render logic here\n"
+											"end\n";
 
-	// Render Function Check
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Has Render Function");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	bool hasRender = script.render.valid();
-	ImGui::Checkbox("##RenderFunctionCheckbox", &hasRender);
+				std::ofstream outFile(newScriptPath);
+				if (outFile.is_open()) {
+					outFile << defaultScript;
+					outFile.close();
 
-	cursorPos.y += 35;
+					script.scriptPath = newScriptPath;
 
-	// Reload Script Button
-	ImGui::SetCursorPos(cursorPos);
-	if (ImGui::Button("Reload Script")) {
-		// Trigger a script reload process
-		sol::state lua;
-		try {
-			auto result = lua.safe_script_file(script.scriptPath);
-			if (result.valid()) {
-				std::string scriptName = script.scriptPath.substr(
-					script.scriptPath.find_last_of("/\\") + 1);
-				scriptName = scriptName.substr(0, scriptName.find_last_of('.'));
-
-				sol::table scriptTable = lua[scriptName];
-				if (scriptTable.valid()) {
-					if (scriptTable["on_update"].valid()) {
-						script.update = scriptTable["on_update"];
-					}
-					if (scriptTable["on_render"].valid()) {
-						script.render = scriptTable["on_render"];
-					}
+					ImGui::OpenPopup("Script Created");
 				} else {
-					BLZR_CORE_ERROR("Failed to load script table for %s",
-									scriptName.c_str());
+					ImGui::OpenPopup("Error Creating Script");
 				}
-			} else {
-				sol::error err = result;
-				BLZR_CORE_ERROR("Error loading script: %s", err.what());
 			}
-		} catch (const std::exception &e) {
-			BLZR_CORE_ERROR("Exception while reloading script: %s", e.what());
+		}
+
+		if (ImGui::BeginPopup("Script Created")) {
+			ImGui::Text("Script successfully created!");
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopup("Error Creating Script")) {
+			ImGui::Text("Failed to create the script file.");
+			ImGui::EndPopup();
+		}
+	} else {
+		if (ImGui::Button("Change Script")) {
+			std::string newScriptPath = FileDialog::OpenFileWithPath(
+				"Lua Scripts (*.lua)\0*.lua\0",
+				Project::GetProjectDirectory().c_str());
+
+			if (!newScriptPath.empty()) {
+				script.scriptPath = newScriptPath;
+				ImGui::OpenPopup("Script Changed");
+			} else {
+				ImGui::OpenPopup("Error Changing Script");
+			}
+		}
+
+		if (ImGui::BeginPopup("Script Changed")) {
+			ImGui::Text("Script successfully changed!");
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopup("Error Changing Script")) {
+			ImGui::Text("Failed to change the script file.");
+			ImGui::EndPopup();
 		}
 	}
 

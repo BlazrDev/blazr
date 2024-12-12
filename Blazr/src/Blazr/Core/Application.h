@@ -30,6 +30,7 @@ class BLZR_API Application {
 	virtual void Begin();*/
 	void onEvent(Event &e);
 	void SetActiveScene(Ref<Scene> scene);
+	Ref<Scene> GetActiveScene();
 
   private:
 	bool m_Running = true;
@@ -38,6 +39,7 @@ class BLZR_API Application {
   protected:
 	std::unique_ptr<Window> m_Window;
 	std::shared_ptr<Blazr::Registry> m_Registry;
+	Ref<ScriptingSystem> m_ScriptSystem;
 	Ref<sol::state> m_LuaState;
 	Ref<Scene> m_ActiveScene;
 };

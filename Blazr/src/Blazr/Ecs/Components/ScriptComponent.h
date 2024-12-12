@@ -1,5 +1,6 @@
 #pragma once
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Entity.h"
 #include <json.hpp>
 #include <sol.hpp>
 #include <string>
@@ -10,10 +11,15 @@ struct ScriptComponent {
 	sol::protected_function render{sol::lua_nil};
 
 	std::string scriptPath;
-	void LoadScript(sol::state &luaState) {
+	void LoadScript(sol::state &luaState, Entity entity) {
 		try {
+			// Load the Lua script file
 			sol::table script = luaState.require_file("script", scriptPath);
 
+			// Bind the entity to Lua
+			luaState["entity"] = entity;
+
+			// Check for 'on_update' function
 			if (script["on_update"].valid()) {
 				update = script["on_update"];
 			} else {
@@ -22,6 +28,7 @@ struct ScriptComponent {
 					scriptPath);
 			}
 
+			// Check for 'on_render' function
 			if (script["on_render"].valid()) {
 				render = script["on_render"];
 			} else {

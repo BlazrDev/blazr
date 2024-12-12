@@ -72,12 +72,11 @@ local attributes = PhysicsAttributes({
 })
 local physics = PhysicsComponent(attributes)
 
-local scene = Scene()
+local scene = editor:GetActiveScene() 
 local layerManager = scene:GetLayerManager()
 local backgroundLayer = layerManager:CreateLayer("0", 0)
 local playerLayer = layerManager:CreateLayer("1", 1)
 local colliderLayer = layerManager:CreateLayer("2", 2)
-editor:SetActiveScene(scene)
 
 -- playerEntity = Entity("Player", "Character")
 --

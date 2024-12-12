@@ -34,12 +34,9 @@ class Editor : public Application {
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
-	Ref<Scene> GetActiveScene() { return m_ActiveScene; }
-
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
-	Ref<Scene> m_ActiveScene;
 	Window::EventCallbackFn m_EventCallback;
 };
 

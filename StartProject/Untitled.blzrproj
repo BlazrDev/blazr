@@ -1,60 +1,9 @@
 {
     "AssetManager": {
-        "Effects": {
-            "boing": {
-                "channel": 1,
-                "path": "assets/sounds/boing.wav",
-                "properties": {
-                    "description": "boingggggggggg",
-                    "duration": 0.6980498866213152,
-                    "filename": "assets/sounds/boing.wav",
-                    "name": "boing"
-                }
-            }
-        },
-        "Music": {
-            "masa": {
-                "path": "assets/sounds/masa.mp3",
-                "properties": {
-                    "description": "Masa background music",
-                    "duration": 120.25614512471655,
-                    "filename": "assets/sounds/masa.mp3",
-                    "name": "masa"
-                }
-            },
-            "metak": {
-                "path": "assets/sounds/METAK.mp3",
-                "properties": {
-                    "description": "Metak background music",
-                    "duration": 168.34467120181407,
-                    "filename": "assets/sounds/METAK.mp3",
-                    "name": "metak"
-                }
-            }
-        },
+        "Effects": {},
+        "Music": {},
         "Shaders": {},
-        "Textures": {
-            "chammy": {
-                "path": "assets/chammy.png",
-                "pixelArt": true
-            },
-            "collider": {
-                "path": "assets/map_assets/collider.png",
-                "pixelArt": true
-            },
-            "map": {
-                "path": "assets/map_assets/map.png",
-                "pixelArt": true
-            },
-            "masha": {
-                "path": "assets/masha.png",
-                "pixelArt": true
-            },
-            "player": {
-                "path": "assets/sprite_sheet.png",
-                "pixelArt": true
-            }
-        }
+        "Textures": {}
     },
     "Config": {
         "AssetDirectory": "",
