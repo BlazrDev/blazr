@@ -1352,6 +1352,7 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 			ImGui::EndPopup();
 		}
 	} else {
+
 		if (ImGui::Button("Change Script")) {
 			std::filesystem::path path =
 				Project::GetProjectDirectory() / "scripts";
