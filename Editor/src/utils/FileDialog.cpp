@@ -124,7 +124,7 @@ std::string FileDialog::SaveFile(const char *filter) {
 std::string FileDialog::OpenFileWithPath(const char *filter,
 										 const char *initialPath) {
 	std::string command =
-		"zenity --file-selection --filename=" + std::string(initialPath);
+		"zenity --file-selection --filename=" + std::string(initialPath) + "/";
 	char buffer[256];
 	FILE *fp = popen(command.c_str(), "r");
 	if (fp) {
@@ -142,7 +142,7 @@ std::string FileDialog::SaveFileWithPath(const char *filter,
 										 const char *initialPath) {
 	std::string command =
 		"zenity --file-selection --save --confirm-overwrite --filename=" +
-		std::string(initialPath);
+		std::string(initialPath) + "/";
 	char buffer[256];
 	FILE *fp = popen(command.c_str(), "r");
 	if (fp) {

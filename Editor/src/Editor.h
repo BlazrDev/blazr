@@ -30,7 +30,8 @@ class Editor : public Application {
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
-	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script);
+	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
+							   entt::entity &entity);
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 

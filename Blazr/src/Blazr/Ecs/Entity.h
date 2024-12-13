@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Registry.h"
 #include "entt.hpp"
@@ -13,7 +14,7 @@ class Entity {
 	BLZR_API Entity(Registry &registry, const std::string &name,
 					const std::string &group);
 
-	Entity(Registry &registry, const entt::entity &entity);
+	BLZR_API Entity(Registry &registry, const entt::entity &entity);
 	~Entity() = default;
 
 	inline const std::string &GetName() const { return m_Name; }
@@ -95,6 +96,18 @@ class Entity {
 	static auto get_component(Entity &entity, sol::this_state s) {
 		auto &component = entity.GetComponent<TComponent>();
 		return sol::make_reference(s, std::ref(component));
+	}
+
+	bool operator==(const Entity &other) const {
+		auto &id1 = const_cast<Entity *>(this)->GetComponent<Identification>();
+		auto &id2 = const_cast<Entity &>(other).GetComponent<Identification>();
+		return id1.id == id2.id;
+	}
+
+	bool operator<=(const Entity &other) const {
+		auto &id1 = const_cast<Entity *>(this)->GetComponent<Identification>();
+		auto &id2 = const_cast<Entity &>(other).GetComponent<Identification>();
+		return id1.id <= id2.id;
 	}
 
   private:

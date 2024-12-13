@@ -11,36 +11,36 @@ struct ScriptComponent {
 	sol::protected_function render{sol::lua_nil};
 
 	std::string scriptPath;
-	void LoadScript(sol::state &luaState, Entity entity) {
+
+	void LoadScript(sol::state &luaState, Ref<Entity> entity,
+					const std::string &name) {
 		try {
-			// Load the Lua script file
 			sol::table script = luaState.require_file("script", scriptPath);
 
-			// Bind the entity to Lua
-			luaState["entity"] = entity;
+			Entity &entRef = *entity;
+			luaState[name] = entRef;
 
-			// Check for 'on_update' function
 			if (script["on_update"].valid()) {
+				auto &scriptComponent =
+					entRef.GetComponent<Blazr::ScriptComponent>();
+
+				BLZR_CORE_ERROR("PATH: {0}", scriptPath);
 				update = script["on_update"];
 			} else {
-				BLZR_CORE_WARN(
-					"Script at {} does not contain 'on_update' function.",
-					scriptPath);
+				BLZR_CORE_WARN("Script does not contain 'on_update' function.");
 			}
 
-			// Check for 'on_render' function
 			if (script["on_render"].valid()) {
 				render = script["on_render"];
 			} else {
-				BLZR_CORE_WARN(
-					"Script at {} does not contain 'on_render' function.",
-					scriptPath);
+				BLZR_CORE_WARN("Script does not contain 'on_render' function.");
 			}
 		} catch (const sol::error &e) {
 			BLZR_CORE_ERROR("Failed to load script at {}: {}", scriptPath,
 							e.what());
 		}
 	}
+
 	static void to_json(nlohmann::json &j,
 						const ScriptComponent &scriptComponent) {
 		j = nlohmann::json{{"scriptPath", scriptComponent.scriptPath}};

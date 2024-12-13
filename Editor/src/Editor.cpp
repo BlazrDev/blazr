@@ -120,9 +120,8 @@ void Editor::Init() {
 
 	m_ActiveScene = newScene;
 
-	// ProjectSerializer::Serialize(newProject,
-	// newProject->GetProjectDirectory() /
-	// newProject->GetConfig().name);
+	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
+												 newProject->GetConfig().name);
 
 	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
@@ -457,7 +456,7 @@ void Editor::RenderImGui() {
 						auto &script =
 							m_Registry->GetRegistry().get<ScriptComponent>(
 								entity);
-						renderScriptComponent(cursorPos, script);
+						renderScriptComponent(cursorPos, script, entity);
 					}
 				}
 
@@ -1272,7 +1271,8 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	}
 }
 
-void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
+void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
+								   entt::entity &entity) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Script Component");
@@ -1291,27 +1291,49 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
 	ImGui::SetCursorPos(cursorPos);
 	if (script.scriptPath.empty()) {
 		if (ImGui::Button("Create Script")) {
+
+			std::filesystem::path path =
+				Project::GetProjectDirectory() / "scripts";
+			if (!std::filesystem::exists(path)) {
+				if (std::filesystem::create_directory(path)) {
+				} else {
+					BLZR_CORE_ERROR("Error creating script folder");
+					return;
+				}
+			}
+			std::string absPath = std::filesystem::absolute(path);
+
 			std::string newScriptPath = FileDialog::SaveFileWithPath(
-				"Lua Scripts (*.lua)\0*.lua\0",
-				Project::GetProjectDirectory().c_str());
+				"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
+			;
 
 			if (!newScriptPath.empty()) {
-				std::string defaultScript = "-- Default Lua Script\n"
-											"\n"
-											"function on_update(entity)\n"
-											"    -- Your update logic here\n"
-											"end\n"
-											"\n"
-											"function on_render(entity)\n"
-											"    -- Your render logic here\n"
-											"end\n";
+				std::string defaultScript =
+					"-- Default Lua Script\n"
+					"\n"
+					"local script = {}\n"
+					"\n"
+					"function script.on_update(entity)\n"
+					"    -- Your update logic here\n"
+					"print(\"hello world from lua\")\n"
+					"end\n"
+					"\n"
+					"function script.on_render(entity)\n"
+					"    -- Your render logic here\n"
+					"end\n"
+					"\n"
+					"return script\n";
 
-				std::ofstream outFile(newScriptPath);
+				std::ofstream outFile(newScriptPath + ".lua");
 				if (outFile.is_open()) {
 					outFile << defaultScript;
 					outFile.close();
 
-					script.scriptPath = newScriptPath;
+					script.scriptPath = newScriptPath + ".lua";
+					auto &identification =
+						m_Registry->GetRegistry().get<Identification>(entity);
+					Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
+					script.LoadScript(*m_LuaState, ent, identification.name);
 
 					ImGui::OpenPopup("Script Created");
 				} else {
@@ -1331,26 +1353,29 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
 		}
 	} else {
 		if (ImGui::Button("Change Script")) {
+			std::filesystem::path path =
+				Project::GetProjectDirectory() / "scripts";
+			std::string absPath = std::filesystem::absolute(path);
+
 			std::string newScriptPath = FileDialog::OpenFileWithPath(
-				"Lua Scripts (*.lua)\0*.lua\0",
-				Project::GetProjectDirectory().c_str());
+				"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
 
 			if (!newScriptPath.empty()) {
+
+				auto &identification =
+					m_Registry->GetRegistry().get<Identification>(entity);
+				Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
+
+				script.update = sol::nil;
+				script.render = sol::nil;
+
 				script.scriptPath = newScriptPath;
+				script.LoadScript(*m_LuaState, ent, identification.name);
+
 				ImGui::OpenPopup("Script Changed");
 			} else {
 				ImGui::OpenPopup("Error Changing Script");
 			}
-		}
-
-		if (ImGui::BeginPopup("Script Changed")) {
-			ImGui::Text("Script successfully changed!");
-			ImGui::EndPopup();
-		}
-
-		if (ImGui::BeginPopup("Error Changing Script")) {
-			ImGui::Text("Failed to change the script file.");
-			ImGui::EndPopup();
 		}
 	}
 
