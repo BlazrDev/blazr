@@ -15,10 +15,7 @@ struct ScriptComponent {
 	void LoadScript(sol::state &luaState, Ref<Entity> entity,
 					const std::string &name) {
 		try {
-			luaState[name] = sol::lua_nil;
-
-			BLZR_CORE_ERROR("LOADING SCRIPT: {0}", scriptPath);
-			sol::table script = luaState.require_file("script", scriptPath);
+			sol::table script = luaState.script_file(scriptPath);
 
 			Entity &entRef = *entity;
 			luaState[name] = entRef;

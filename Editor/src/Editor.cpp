@@ -268,6 +268,7 @@ void Editor::RenderImGui() {
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!savePath.empty()) {
 					Registry::Reset();
+					Initialize();
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
 					newProject->AddScene("Scene1", newScene);
@@ -288,6 +289,7 @@ void Editor::RenderImGui() {
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!openPath.empty()) {
 					Registry::Reset();
+					Initialize();
 					Ref<Project> loadedProject = Project::Load(openPath);
 					if (loadedProject) {
 						Project::SetActive(loadedProject);
@@ -357,6 +359,13 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Scene", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
+	if (ImGui::BeginPopupContextWindow("AddGameObject",
+									   ImGuiPopupFlags_MouseButtonRight)) {
+		if (ImGui::MenuItem("AddGameObject")) {
+			Ref<Entity> ent = CreateRef<Entity>(*m_Registry);
+		}
+		ImGui::EndPopup();
+	}
 	auto view = m_Registry->GetRegistry().view<entt::entity>(
 		entt::exclude<TileComponent>);
 
