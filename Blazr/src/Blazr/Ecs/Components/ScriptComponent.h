@@ -15,6 +15,9 @@ struct ScriptComponent {
 	void LoadScript(sol::state &luaState, Ref<Entity> entity,
 					const std::string &name) {
 		try {
+			luaState[name] = sol::lua_nil;
+
+			BLZR_CORE_ERROR("LOADING SCRIPT: {0}", scriptPath);
 			sol::table script = luaState.require_file("script", scriptPath);
 
 			Entity &entRef = *entity;
@@ -23,15 +26,15 @@ struct ScriptComponent {
 			if (script["on_update"].valid()) {
 				auto &scriptComponent =
 					entRef.GetComponent<Blazr::ScriptComponent>();
-
-				BLZR_CORE_ERROR("PATH: {0}", scriptPath);
-				update = script["on_update"];
+				scriptComponent.update = script["on_update"];
 			} else {
 				BLZR_CORE_WARN("Script does not contain 'on_update' function.");
 			}
 
 			if (script["on_render"].valid()) {
-				render = script["on_render"];
+				auto &scriptComponent =
+					entRef.GetComponent<Blazr::ScriptComponent>();
+				scriptComponent.render = script["on_render"];
 			} else {
 				BLZR_CORE_WARN("Script does not contain 'on_render' function.");
 			}

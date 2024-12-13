@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Layer.h"
 
@@ -59,6 +60,9 @@ void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 	std::for_each(layer->entities.begin(), layer->entities.end(),
 				  [&](Ref<Entity> entity) {
 					  nlohmann::json entityJson;
+					  if (entity->HasComponent<TileComponent>()) {
+						  return;
+					  }
 					  if (entity->HasComponent<AnimationComponent>()) {
 						  AnimationComponent::to_json(
 							  entityJson["Animation"],
@@ -107,8 +111,20 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 	if (j.contains("Entities")) {
 		for (const auto &entityJson : j.at("Entities")) {
 
-			Ref<Entity> entity =
-				CreateRef<Entity>(*Registry::GetInstance(), "", "");
+			Ref<Entity> entity;
+			if (entityJson.contains("Identification")) {
+				Identification identification;
+				Identification::from_json(entityJson.at("Identification"),
+										  identification);
+				entity = CreateRef<Entity>(*Registry::GetInstance(),
+										   identification.name,
+										   identification.group);
+				entity->AddComponent<Identification>(identification);
+			} else {
+				BLZR_CORE_ERROR(
+					"Error deserializing entity. No identification found.");
+				return;
+			}
 
 			if (entityJson.contains("Animation")) {
 				AnimationComponent animation;
@@ -142,12 +158,6 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				PhysicsComponent physics;
 				PhysicsComponent::from_json(entityJson.at("Physics"), physics);
 				entity->AddComponent<PhysicsComponent>(physics);
-			}
-			if (entityJson.contains("Identification")) {
-				Identification identification;
-				Identification::from_json(entityJson.at("Identification"),
-										  identification);
-				entity->AddComponent<Identification>(identification);
 			}
 
 			layer->entities.push_back(entity);

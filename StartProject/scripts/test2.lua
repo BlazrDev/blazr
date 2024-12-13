@@ -4,7 +4,7 @@ local script = {}
 
 function script.on_update(entity)
     -- Your update logic here
-print("hello world from lua")
+    print("brothaaa")
 end
 
 function script.on_render(entity)

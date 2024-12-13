@@ -267,6 +267,7 @@ void Editor::RenderImGui() {
 				std::string savePath = Blazr::FileDialog::SaveFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!savePath.empty()) {
+					Registry::Reset();
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
 					newProject->AddScene("Scene1", newScene);
@@ -286,6 +287,7 @@ void Editor::RenderImGui() {
 				std::string openPath = Blazr::FileDialog::OpenFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!openPath.empty()) {
+					Registry::Reset();
 					Ref<Project> loadedProject = Project::Load(openPath);
 					if (loadedProject) {
 						Project::SetActive(loadedProject);
@@ -1286,99 +1288,104 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 	ImGui::SetCursorPos(cursorPos);
 
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	(ImGui::Text(const_cast<char *>(script.scriptPath.c_str())));
+	ImGui::Text(const_cast<char *>(script.scriptPath.c_str()));
 
-	ImGui::SetCursorPos(cursorPos);
-	if (script.scriptPath.empty()) {
-		if (ImGui::Button("Create Script")) {
+	cursorPos.y += 25; // Adjust cursor position for buttons
 
-			std::filesystem::path path =
-				Project::GetProjectDirectory() / "scripts";
-			if (!std::filesystem::exists(path)) {
-				if (std::filesystem::create_directory(path)) {
-				} else {
-					BLZR_CORE_ERROR("Error creating script folder");
-					return;
-				}
-			}
-			std::string absPath = std::filesystem::absolute(path);
-
-			std::string newScriptPath = FileDialog::SaveFileWithPath(
-				"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
-			;
-
-			if (!newScriptPath.empty()) {
-				std::string defaultScript =
-					"-- Default Lua Script\n"
-					"\n"
-					"local script = {}\n"
-					"\n"
-					"function script.on_update(entity)\n"
-					"    -- Your update logic here\n"
-					"print(\"hello world from lua\")\n"
-					"end\n"
-					"\n"
-					"function script.on_render(entity)\n"
-					"    -- Your render logic here\n"
-					"end\n"
-					"\n"
-					"return script\n";
-
-				std::ofstream outFile(newScriptPath + ".lua");
-				if (outFile.is_open()) {
-					outFile << defaultScript;
-					outFile.close();
-
-					script.scriptPath = newScriptPath + ".lua";
-					auto &identification =
-						m_Registry->GetRegistry().get<Identification>(entity);
-					Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
-					script.LoadScript(*m_LuaState, ent, identification.name);
-
-					ImGui::OpenPopup("Script Created");
-				} else {
-					ImGui::OpenPopup("Error Creating Script");
-				}
+	// Create Script Button
+	if (ImGui::Button("Create Script")) {
+		std::filesystem::path path = Project::GetProjectDirectory() / "scripts";
+		if (!std::filesystem::exists(path)) {
+			if (!std::filesystem::create_directory(path)) {
+				BLZR_CORE_ERROR("Error creating script folder");
+				return;
 			}
 		}
+		std::string absPath = std::filesystem::absolute(path);
 
-		if (ImGui::BeginPopup("Script Created")) {
-			ImGui::Text("Script successfully created!");
-			ImGui::EndPopup();
-		}
+		std::string newScriptPath = FileDialog::SaveFileWithPath(
+			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
 
-		if (ImGui::BeginPopup("Error Creating Script")) {
-			ImGui::Text("Failed to create the script file.");
-			ImGui::EndPopup();
-		}
-	} else {
-		if (ImGui::Button("Change Script")) {
-			std::filesystem::path path =
-				Project::GetProjectDirectory() / "scripts";
-			std::string absPath = std::filesystem::absolute(path);
+		if (!newScriptPath.empty()) {
+			std::string defaultScript = "-- Default Lua Script\n"
+										"\n"
+										"local script = {}\n"
+										"\n"
+										"function script.on_update(entity)\n"
+										"    -- Your update logic here\n"
+										"    print(\"hello world from lua\")\n"
+										"end\n"
+										"\n"
+										"function script.on_render(entity)\n"
+										"    -- Your render logic here\n"
+										"end\n"
+										"\n"
+										"return script\n";
 
-			std::string newScriptPath = FileDialog::OpenFileWithPath(
-				"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
+			std::ofstream outFile(newScriptPath + ".lua");
+			if (outFile.is_open()) {
+				outFile << defaultScript;
+				outFile.close();
 
-			if (!newScriptPath.empty()) {
-
+				script.scriptPath = newScriptPath + ".lua";
 				auto &identification =
 					m_Registry->GetRegistry().get<Identification>(entity);
 				Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
-
-				script.update = sol::nil;
-				script.render = sol::nil;
-
-				script.scriptPath = newScriptPath;
 				script.LoadScript(*m_LuaState, ent, identification.name);
 
-				ImGui::OpenPopup("Script Changed");
+				ImGui::OpenPopup("Script Created");
 			} else {
-				ImGui::OpenPopup("Error Changing Script");
+				ImGui::OpenPopup("Error Creating Script");
 			}
 		}
 	}
 
-	cursorPos.y += 35;
+	// Load Script Button
+	if (ImGui::Button("Load Script")) {
+		std::filesystem::path path = Project::GetProjectDirectory() / "scripts";
+		std::string absPath = std::filesystem::absolute(path);
+
+		std::string newScriptPath = FileDialog::OpenFileWithPath(
+			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
+
+		if (!newScriptPath.empty()) {
+			script.update = sol::nil;
+			script.render = sol::nil;
+
+			script.scriptPath = newScriptPath;
+
+			auto &identification =
+				m_Registry->GetRegistry().get<Identification>(entity);
+			Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
+			script.LoadScript(*m_LuaState, ent, identification.name);
+
+			ImGui::OpenPopup("Script Loaded");
+		} else {
+			ImGui::OpenPopup("Error Loading Script");
+		}
+	}
+
+	// Popups for success/failure
+	// if (ImGui::BeginPopup("Script Created")) {
+	// 	ImGui::Text("Script successfully created!");
+	// 	ImGui::EndPopup();
+	// }
+
+	// if (ImGui::BeginPopup("Error Creating Script")) {
+	// 	ImGui::Text("Failed to create the script file.");
+	// 	ImGui::EndPopup();
+	// }
+	//
+	// if (ImGui::BeginPopup("Script Loaded")) {
+	// 	ImGui::Text("Script successfully loaded!");
+	// 	ImGui::EndPopup();
+	// }
+	//
+	// if (ImGui::BeginPopup("Error Loading Script")) {
+	// 	ImGui::Text("Failed to load the script file.");
+	// 	ImGui::EndPopup();
+	// }
+
+	cursorPos.y += 35; // Adjust cursor position for layout
 }
 } // namespace Blazr

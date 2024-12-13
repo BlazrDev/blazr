@@ -4,7 +4,7 @@ local script = {}
 
 function script.on_update(entity)
     -- Your update logic here
-print("this is what you asked for")
+    print("bruh")
 end
 
 function script.on_render(entity)

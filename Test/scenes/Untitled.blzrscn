@@ -1,0 +1,3450 @@
+{
+    "Layers": [
+        {
+            "Layer 1": {
+                "Entities": [
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 617,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 472
+                        },
+                        "Identification": {
+                            "group": "Character2",
+                            "id": 370,
+                            "name": "Masha"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 617.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": 0,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": 0.0
+                            },
+                            "startX": 0,
+                            "startY": 0,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.0,
+                                    1.0
+                                ]
+                            ],
+                            "texturePath": "masha",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    }
+                ],
+                "zIndex": 0
+            }
+        },
+        {
+            "Layer 1": {
+                "Entities": [],
+                "zIndex": 0
+            }
+        }
+    ],
+    "Name": "Untitled"
+}
