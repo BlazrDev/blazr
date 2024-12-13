@@ -1,4 +1,5 @@
 #include "../Editor.h"
+#include "Blazr/Core/Log.h"
 #include "Blazr/Project/Project.h"
 #include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/CameraController.h"
@@ -15,6 +16,7 @@ void RenderSceneTabs(Editor &editor) {
 		for (const auto &[name, scene] : Project::GetActive()->GetScenes()) {
 			if (ImGui::BeginTabItem(name.c_str())) {
 				editor.SetActiveScene(scene);
+				BLZR_CORE_ERROR("{0}", scene->GetName());
 				ImGui::EndTabItem();
 			}
 		}
@@ -22,9 +24,8 @@ void RenderSceneTabs(Editor &editor) {
 	}
 }
 
-void RenderSceneToTexture(Ref<Scene> activeScene,
-						  Ref<FrameBuffer> gameFrameBuffer) {
-	gameFrameBuffer->Bind();
+void RenderSceneToTexture(Ref<Scene> activeScene) {
+	activeScene->m_GameFrameBuffer->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (activeScene != nullptr) {
@@ -37,11 +38,10 @@ void RenderSceneToTexture(Ref<Scene> activeScene,
 		BLZR_CORE_WARN("Active scene is null");
 	}
 
-	gameFrameBuffer->Unbind();
+	activeScene->m_GameFrameBuffer->Unbind();
 }
 
-void RenderActiveScene(Ref<Scene> activeScene,
-					   Ref<FrameBuffer> gameFrameBuffer) {
+void RenderActiveScene(Ref<Scene> activeScene) {
 	if (activeScene) {
 		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
 						  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
@@ -51,14 +51,14 @@ void RenderActiveScene(Ref<Scene> activeScene,
 		int newWidth = static_cast<int>(windowSize.x);
 		int newHeight = static_cast<int>(windowSize.y);
 
-		if (newWidth != gameFrameBuffer->GetWidth() ||
-			newHeight != gameFrameBuffer->GetHeight()) {
-			gameFrameBuffer->Resize(newWidth, newHeight);
+		if (newWidth != activeScene->m_GameFrameBuffer->GetWidth() ||
+			newHeight != activeScene->m_GameFrameBuffer->GetHeight()) {
+			activeScene->m_GameFrameBuffer->Resize(newWidth, newHeight);
 		}
 
-		RenderSceneToTexture(activeScene, gameFrameBuffer);
-		ImGui::Image((intptr_t)gameFrameBuffer->GetTextureID(), windowSize,
-					 ImVec2(0, 1), ImVec2(1, 0));
+		RenderSceneToTexture(activeScene);
+		ImGui::Image((intptr_t)activeScene->m_GameFrameBuffer->GetTextureID(),
+					 windowSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::EndChild();
 	}
 }

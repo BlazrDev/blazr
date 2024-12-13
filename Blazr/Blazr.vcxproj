@@ -207,6 +207,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Renderer\stb_image.h" />
     <ClInclude Include="src\Blazr\Resources\AssetManager.h" />
     <ClInclude Include="src\Blazr\Scene\Scene.h" />
+    <ClInclude Include="src\Blazr\Scene\TilemapScene.h" />
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h" />
     <ClInclude Include="src\Blazr\Systems\AnimationSystem.h" />
     <ClInclude Include="src\Blazr\Systems\BoxColliderSystem.h" />

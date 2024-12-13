@@ -5,6 +5,7 @@
 #include "Blazr/Layers/LayerManager.h"
 #include "Blazr/Renderer/Camera2D.h"
 #include "Blazr/Renderer/CameraController.h"
+#include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include <json.hpp>
 #include <memory>
@@ -48,8 +49,9 @@ class Scene {
 
 	void SetName(const std::string &name) { m_Name = name; }
 	std::string GetName() const { return m_Name; }
+	Ref<FrameBuffer> m_GameFrameBuffer;
 
-  private:
+  protected:
 	std::string m_Name = "Untitled";
 	CameraController m_Camera;
 	std::shared_ptr<Blazr::Registry> m_Registry;

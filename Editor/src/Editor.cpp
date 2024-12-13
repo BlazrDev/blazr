@@ -107,7 +107,6 @@ void Editor::Init() {
 	auto scriptingSystem = std::make_shared<ScriptingSystem>(*m_Registry.get());
 	m_Registry->AddToContext(animationSystem);
 	m_Registry->AddToContext(scriptingSystem);
-	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	m_Renderer = Renderer2D();
 	InitImGui();
 	Ref<Project> newProject = Project::New("StartProject");
@@ -115,6 +114,7 @@ void Editor::Init() {
 	Ref<Scene> newScene = CreateRef<Scene>();
 	newProject->AddScene("Scene1", newScene);
 	m_ActiveScene = newScene;
+	m_ActiveScene->m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	ProjectSerializer::Serialize(newProject, Project::GetProjectDirectory() /
 												 newProject->GetConfig().name);
 }
@@ -693,7 +693,7 @@ void Editor::RenderImGui() {
 
 	RenderSceneTabs(*this);
 	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer);
-	RenderActiveScene(m_ActiveScene, m_GameFrameBuffer);
+	RenderActiveScene(m_ActiveScene);
 
 	ImVec2 cameraPos = ImGui::GetWindowPos();
 	ImVec2 cameraSize = ImGui::GetWindowSize();

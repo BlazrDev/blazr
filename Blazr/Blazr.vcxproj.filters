@@ -190,6 +190,9 @@
     <ClInclude Include="src\Blazr\Scene\Scene.h">
       <Filter>Blazr\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Scene\TilemapScene.h">
+      <Filter>Blazr\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Scripting\GlmLuaBindings.h">
       <Filter>Blazr\Scripting</Filter>
     </ClInclude>
