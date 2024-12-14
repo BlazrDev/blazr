@@ -40,7 +40,7 @@ class Entity {
 				"remove_component"_hs);
 	};
 
-	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
+	inline entt::entity &GetEntityHandler() { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
 		return m_Registry.GetRegistry().destroy(m_EntityHandler);
 	}

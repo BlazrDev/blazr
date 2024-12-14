@@ -62,8 +62,8 @@
     "Config": {
         "AssetDirectory": "",
         "ScriptPath": "",
-        "StartScene": "Scene1",
-        "name": "t"
+        "StartScene": "Untitled 1",
+        "name": "test"
     },
-    "ProjectDirectory": "/home/archy/Documents/Programs/blazr/Test2"
+    "ProjectDirectory": "/home/archy/Documents/Programs/blazr/SerTest"
 }

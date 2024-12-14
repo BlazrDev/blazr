@@ -12,6 +12,7 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 			"Untitled " +
 			std::to_string(Project::GetActive()->GetScenes().size() + 1);
 		Ref<Scene> newScene = CreateRef<Scene>();
+		newScene->SetName(newSceneName);
 		Project::GetActive()->AddScene(newSceneName, newScene);
 
 		ProjectSerializer::Serialize(

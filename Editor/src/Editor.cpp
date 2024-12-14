@@ -36,6 +36,7 @@ static int selectedLayerIndex = 0;
 static bool showAddLayerPopup = false;
 static char newLayerName[256] = "New Layer";
 static int newLayerZIndex = 0;
+static bool layerChanged = false;
 
 static float pos = 0;
 static bool mapflag = true;
@@ -55,9 +56,6 @@ static float scaleY = 1.0f;
 static float newScaleX = 1.0f;
 static float newScaleY = 1.0f;
 
-// identification
-static char name[128] = "";
-static char groupName[128] = "";
 // sprite
 static float spriteWidth = 0.0f;
 static float spriteHeight = 0.0f;
@@ -116,7 +114,8 @@ void Editor::Init() {
 	InitImGui();
 	Ref<Project> newProject = Project::New("StartProject");
 	Ref<Scene> newScene = CreateRef<Scene>();
-	newProject->AddScene("Scene1", newScene);
+	newScene->SetName("Untitled 1");
+	newProject->AddScene("Untitled 1", newScene);
 
 	m_ActiveScene = newScene;
 
@@ -235,7 +234,7 @@ void Editor::Run() {
 	glfwSwapBuffers(m_Window->GetWindow());
 }
 
-static std::string selectedGameObject = "ObjectDetails";
+static std::string selectedGameObject = "GameObject";
 void Editor::RenderImGui() {
 	ImVec2 cursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
@@ -271,8 +270,9 @@ void Editor::RenderImGui() {
 					Initialize();
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
-					newProject->AddScene("Scene1", newScene);
-					newProject->GetConfig().StartSceneName = "Scene1";
+					newScene->SetName("Untitled 1");
+					newProject->AddScene("Untitled 1", newScene);
+					newProject->GetConfig().StartSceneName = "Untitled 1";
 					m_ActiveScene = newScene;
 
 					newProject->SetProjectDirectory(
@@ -294,6 +294,9 @@ void Editor::RenderImGui() {
 					if (loadedProject) {
 						Project::SetActive(loadedProject);
 						m_ActiveScene = loadedProject->GetScene(
+							loadedProject->GetConfig().StartSceneName);
+						BLZR_CORE_ERROR(
+							"START SCENE: {0}",
 							loadedProject->GetConfig().StartSceneName);
 					} else {
 						BLZR_CORE_ERROR("Failed to load project from: {}",
@@ -363,21 +366,38 @@ void Editor::RenderImGui() {
 									   ImGuiPopupFlags_MouseButtonRight)) {
 		if (ImGui::MenuItem("AddGameObject")) {
 			Ref<Entity> ent = CreateRef<Entity>(*m_Registry);
+			auto l = m_ActiveScene->GetAllLayers().at(0);
+			l->AddEntity(ent);
 		}
 		ImGui::EndPopup();
 	}
-	auto view = m_Registry->GetRegistry().view<entt::entity>(
-		entt::exclude<TileComponent>);
 
-	for (auto entity : view) {
-		auto &identification =
-			m_Registry->GetRegistry().get<Identification>(entity);
-		std::string gameObjectName = identification.name;
-		if (ImGui::Selectable(gameObjectName.c_str())) {
-			selectedGameObject = "ObjectDetails-" + gameObjectName;
-			showGameObjectDetails = true;
+	for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+		for (Ref<Entity> ent : layer->entities) {
+			if (!ent->HasComponent<TileComponent>()) {
+				std::string gameObjectName =
+					ent->GetComponent<Identification>().name;
+
+				if (ImGui::Selectable(gameObjectName.c_str())) {
+					selectedGameObject = gameObjectName;
+					showGameObjectDetails = true;
+				}
+			}
 		}
 	}
+
+	auto view = m_Registry->GetRegistry().view<entt::entity>(
+		entt::exclude<TileComponent>);
+	//
+	// for (auto entity : view) {
+	// 	auto &identification =
+	// 		m_Registry->GetRegistry().get<Identification>(entity);
+	// 	std::string gameObjectName = identification.name;
+	// 	if (ImGui::Selectable(gameObjectName.c_str())) {
+	// 		selectedGameObject = "ObjectDetails-" + gameObjectName;
+	// 		showGameObjectDetails = true;
+	// 	}
+	// }
 	ImVec2 scenePos = ImGui::GetWindowPos();
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
@@ -394,80 +414,96 @@ void Editor::RenderImGui() {
 		if (ImGui::BeginTabBar("DetailsTabs")) {
 			if (ImGui::BeginTabItem("Components")) {
 
-				for (auto entity : view) {
-					std::string entityName =
-						"ObjectDetails-" + m_Registry->GetRegistry()
-											   .get<Identification>(entity)
-											   .name;
-					if (m_Registry->GetRegistry().all_of<TransformComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &transform =
-							m_Registry->GetRegistry().get<TransformComponent>(
-								entity);
+				for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+					for (Ref<Entity> ent : layer->entities) {
 
-						renderTransformComponent(cursorPos, transform);
-					}
-					if (m_Registry->GetRegistry().all_of<SpriteComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &sprite =
-							m_Registry->GetRegistry().get<SpriteComponent>(
-								entity);
-						showColorTab = true;
-
-						renderSpriteComponent(cursorPos, sprite);
-
-						std::vector<Ref<Layer>> layers =
-							m_ActiveScene->GetLayerManager()->GetAllLayers();
-						auto l = m_ActiveScene->GetLayerByName(sprite.layer);
-						if (l) {
-							l->AddEntity(
-								CreateRef<Entity>(*m_Registry, entity));
+						if (ent->HasComponent<TileComponent>()) {
+							continue;
 						}
-					}
-					if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &physics =
-							m_Registry->GetRegistry().get<PhysicsComponent>(
-								entity);
-						renderPhysicsComponent(cursorPos, physics);
-					}
 
-					if (m_Registry->GetRegistry().all_of<AnimationComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &animation =
-							m_Registry->GetRegistry().get<AnimationComponent>(
-								entity);
-						// renderTransformComponent(cursorPos);
-					}
-					if (m_Registry->GetRegistry().all_of<BoxColliderComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &boxCollider =
-							m_Registry->GetRegistry().get<BoxColliderComponent>(
-								entity);
-						// renderTransformComponent(cursorPos);
-					}
-					if (m_Registry->GetRegistry().all_of<Identification>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &identification =
-							m_Registry->GetRegistry().get<Identification>(
-								entity);
-						renderIdentificationComponent(cursorPos,
-													  identification);
-					}
+						entt::entity &entity = ent->GetEntityHandler();
 
-					if (m_Registry->GetRegistry().all_of<ScriptComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &script =
-							m_Registry->GetRegistry().get<ScriptComponent>(
-								entity);
-						renderScriptComponent(cursorPos, script, entity);
+						std::string entityName =
+							m_Registry->GetRegistry()
+								.get<Identification>(entity)
+								.name;
+						if (m_Registry->GetRegistry()
+								.all_of<TransformComponent>(entity) &&
+							selectedGameObject == entityName) {
+							auto &transform =
+								m_Registry->GetRegistry()
+									.get<TransformComponent>(entity);
+
+							renderTransformComponent(cursorPos, transform);
+						}
+						if (m_Registry->GetRegistry().all_of<SpriteComponent>(
+								entity) &&
+							selectedGameObject == entityName) {
+							auto &sprite =
+								m_Registry->GetRegistry().get<SpriteComponent>(
+									entity);
+							showColorTab = true;
+
+							auto &identification =
+								m_Registry->GetRegistry().get<Identification>(
+									entity);
+							renderSpriteComponent(cursorPos, sprite,
+												  identification);
+
+							std::vector<Ref<Layer>> layers =
+								m_ActiveScene->GetLayerManager()
+									->GetAllLayers();
+							auto l =
+								m_ActiveScene->GetLayerByName(sprite.layer);
+							if (l && layerChanged) {
+								l->AddEntity(
+									CreateRef<Entity>(*m_Registry, entity));
+								layerChanged = false;
+							}
+						}
+						if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
+								entity) &&
+							selectedGameObject == entityName) {
+							auto &physics =
+								m_Registry->GetRegistry().get<PhysicsComponent>(
+									entity);
+							renderPhysicsComponent(cursorPos, physics);
+						}
+
+						if (m_Registry->GetRegistry()
+								.all_of<AnimationComponent>(entity) &&
+							selectedGameObject == entityName) {
+							auto &animation =
+								m_Registry->GetRegistry()
+									.get<AnimationComponent>(entity);
+							// renderTransformComponent(cursorPos);
+						}
+						if (m_Registry->GetRegistry()
+								.all_of<BoxColliderComponent>(entity) &&
+							selectedGameObject == entityName) {
+							auto &boxCollider =
+								m_Registry->GetRegistry()
+									.get<BoxColliderComponent>(entity);
+							// renderTransformComponent(cursorPos);
+						}
+						if (m_Registry->GetRegistry().all_of<Identification>(
+								entity) &&
+							selectedGameObject == entityName) {
+							auto &identification =
+								m_Registry->GetRegistry().get<Identification>(
+									entity);
+							renderIdentificationComponent(cursorPos,
+														  identification);
+						}
+
+						if (m_Registry->GetRegistry().all_of<ScriptComponent>(
+								entity) &&
+							selectedGameObject == entityName) {
+							auto &script =
+								m_Registry->GetRegistry().get<ScriptComponent>(
+									entity);
+							renderScriptComponent(cursorPos, script, entity);
+						}
 					}
 				}
 
@@ -522,7 +558,6 @@ void Editor::RenderImGui() {
 								// metoda addSprite
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -546,7 +581,6 @@ void Editor::RenderImGui() {
 								// metoda addBoxCollider
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -566,7 +600,6 @@ void Editor::RenderImGui() {
 								// metoda Animation
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -585,7 +618,6 @@ void Editor::RenderImGui() {
 							case 3:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -603,7 +635,6 @@ void Editor::RenderImGui() {
 							case 4:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -629,7 +660,6 @@ void Editor::RenderImGui() {
 							case 5:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -664,9 +694,12 @@ void Editor::RenderImGui() {
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 					if (ImGui::ColorPicker3("Game object\ncolor",
 											(float *)&sceneColor)) {
+
+						auto view =
+							m_Registry->GetRegistry().view<entt::entity>(
+								entt::exclude<TileComponent>);
 						for (auto entity : view) {
 							std::string entityName =
-								"ObjectDetails-" +
 								m_Registry->GetRegistry()
 									.get<Identification>(entity)
 									.name;
@@ -928,8 +961,16 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	cursorPos.x += 43;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###nameObject", identification.name.data(),
-					 IM_ARRAYSIZE(identification.group.data()));
+
+	char nameBuffer[256];
+	strncpy(nameBuffer, identification.name.c_str(), sizeof(nameBuffer) - 1);
+	nameBuffer[sizeof(nameBuffer) - 1] = '\0';
+
+	if (ImGui::InputText("###nameObject", nameBuffer, sizeof(nameBuffer),
+						 ImGuiInputTextFlags_EnterReturnsTrue)) {
+		identification.name = nameBuffer;
+	}
+
 	cursorPos.x -= 43;
 	cursorPos.y += 25;
 	ImGui::SetCursorPos(cursorPos);
@@ -942,7 +983,8 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	cursorPos.y += 35;
 }
 
-void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
+void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
+								   Identification &identification) {
 
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
@@ -1077,7 +1119,10 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 				if (previousSelectedLayerIndex != i) {
 					previousSelectedLayerIndex = i;
 					selectedLayerIndex = i;
+					m_ActiveScene->GetLayerByName(sprite.layer)
+						->RemoveEntity(identification.name);
 					sprite.layer = layers[i]->name;
+					layerChanged = true;
 				}
 			}
 			if (isSelected) {
@@ -1283,7 +1328,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 }
 
 void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
-								   entt::entity &entity) {
+								   const entt::entity &entity) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Script Component");

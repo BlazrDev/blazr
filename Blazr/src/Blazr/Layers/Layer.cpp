@@ -18,6 +18,14 @@ void Layer::RemoveEntity(Ref<Entity> entity) {
 	entities.erase(std::remove(entities.begin(), entities.end(), entity),
 				   entities.end());
 }
+void Layer::RemoveEntity(const std::string &name) {
+	for (auto it = entities.begin(); it != entities.end(); ++it) {
+		if ((*it)->GetName() == name) {
+			entities.erase(it);
+			return;
+		}
+	}
+}
 void Layer::Render(Registry &registry) {
 	for (auto entity : entities) {
 		if (entity->HasComponent<TransformComponent>() &&
@@ -120,7 +128,6 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				entity = CreateRef<Entity>(*Registry::GetInstance(),
 										   identification.name,
 										   identification.group);
-				entity->AddComponent<Identification>(identification);
 			} else {
 				BLZR_CORE_ERROR(
 					"Error deserializing entity. No identification found.");

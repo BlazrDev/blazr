@@ -15,6 +15,7 @@ class Layer {
 
 	void AddEntity(Ref<Entity> entity);
 	void RemoveEntity(Ref<Entity> entity);
+	void RemoveEntity(const std::string &name);
 
 	void Render(Registry &registry);
 

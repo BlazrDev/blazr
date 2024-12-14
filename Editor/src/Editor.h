@@ -26,12 +26,13 @@ class Editor : public Application {
 								  TransformComponent &transform);
 	void renderIdentificationComponent(ImVec2 &cursorPos,
 									   Identification &identification);
-	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite);
+	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
+							   Identification &identification);
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
 	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
-							   entt::entity &entity);
+							   const entt::entity &entity);
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 

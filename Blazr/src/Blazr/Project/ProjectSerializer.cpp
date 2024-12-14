@@ -124,6 +124,7 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 					auto scene = DeserializeScene(entry.path());
 					if (scene) {
 						project->AddScene(scene->GetName(), scene);
+						BLZR_CORE_ERROR("Deserialized {0}", scene->GetName());
 					} else {
 						BLZR_CORE_WARN("FAILED TO DESERIALIZE SCENE:{}",
 									   entry.path().string());
