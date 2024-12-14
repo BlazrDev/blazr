@@ -889,7 +889,17 @@ void Editor::RenderImGui() {
 								"",
 								(ImTextureID)(intptr_t)texture->GetRendererID(),
 								ImVec2(tileWidth, tileHeight), uv0, uv1)) {
-							selectedTileData = {col, rows, row};
+
+							auto tilemapScene =
+								std::dynamic_pointer_cast<TilemapScene>(
+									m_ActiveScene);
+
+							if (tilemapScene) {
+								tilemapScene->SetSelectedTile(
+									std::pair<std::string, glm::vec3>(
+										selectedTielset,
+										glm::vec3(col, rows, row)));
+							}
 
 							// BLZR_CORE_ERROR("{0} {1}", row, col);
 						}

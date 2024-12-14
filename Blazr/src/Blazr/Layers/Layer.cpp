@@ -28,10 +28,15 @@ void Layer::Render(Registry &registry) {
 
 			sprite.generateTextureCoordinates();
 
-			if (entity->GetName() != "collider")
-				Renderer2D::DrawQuad(registry, entityHandler);
+			if (entity->GetGroup() == "grid") {
+				Blazr::Renderer2D::DrawQuad(
+					entityHandler, {transform.position.x, transform.position.y},
+					{sprite.width, sprite.height}, sprite.color);
+			}
 
 			if (showColliders) {
+				if (entity->GetName() != "collider")
+					Renderer2D::DrawQuad(registry, entityHandler);
 				if (entity->HasComponent<BoxColliderComponent>()) {
 					auto &collider =
 						entity->GetComponent<BoxColliderComponent>();

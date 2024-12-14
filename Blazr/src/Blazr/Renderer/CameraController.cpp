@@ -107,7 +107,5 @@ bool Blazr::CameraController::OnMouseMove(MouseMovedEvent &e) {
 	if (mouseX < 0)
 		mouseX = 0;
 	m_MousePosition = {mouseX, mouseY};
-	std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ")"
-			  << std::endl;
 	return false;
 }

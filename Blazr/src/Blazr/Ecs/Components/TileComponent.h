@@ -1,3 +1,4 @@
+#pragma once
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
 #include "sol.hpp"
