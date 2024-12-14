@@ -89,7 +89,7 @@ static bool showColorTab = false;
 
 static auto assetManager = AssetManager::GetInstance();
 static auto soundPlayer = SoundPlayer::GetInstance();
-
+static std::string selectedTielset = "";
 static std::string luaScriptContent = ""; // Sadržaj Lua skripte
 static char
 	luaScriptBuffer[1024 * 16]; // Buffer za unos teksta (podešen na 16KB)
@@ -828,8 +828,66 @@ void Editor::RenderImGui() {
 			}
 			ImGui::EndTabItem();
 		}
+
 		if (ImGui::BeginTabItem("Logs")) {
 			// TO DO
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Tileset")) {
+
+			auto tilesets = assetManager->GetKeysTexturesTileset();
+			// BLZR_CORE_ERROR("sizeeeeeeeeeeeeeeeeeeeeee {0}",
+			// tilesets.size());
+			if (ImGui::BeginCombo("Choose Tileset", selectedTielset.c_str())) {
+				for (const auto &tileset : tilesets) {
+					bool bIsSelected = selectedTielset == tileset;
+					if (ImGui::Selectable(tileset.c_str(), bIsSelected)) {
+						selectedTielset = tileset;
+					}
+					if (bIsSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			auto texture = assetManager->GetTexture(selectedTielset);
+			if (texture) {
+				double tileWidth = 16.f;
+				double tileHeight = 16.f;
+				int textureWidth = texture->GetWidth();
+				int textureHeight = texture->GetHeight();
+				int columns = textureWidth / tileWidth;
+				int rows = textureHeight / tileHeight;
+				int k = 0;
+				int id = 0;
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+
+				for (int row = 0; row < rows; row++) {
+					for (int col = 0; col < columns; col++) {
+						ImVec2 uv0((float)col * tileWidth / (float)textureWidth,
+								   1.0f - (float)(row * tileHeight) /
+											  (float)textureHeight); // Flip Y
+						ImVec2 uv1((float)(col + 1) * tileWidth /
+									   (float)textureWidth,
+								   1.0f - (float)((row + 1) * tileHeight) /
+											  (float)textureHeight);
+						ImGui::PushID(k++);
+						if (ImGui::ImageButton(
+								"",
+								(ImTextureID)(intptr_t)texture->GetRendererID(),
+								ImVec2(tileWidth, tileHeight), uv0, uv1)) {
+							selectedTileData = {col, rows, row};
+
+							// BLZR_CORE_ERROR("{0} {1}", row, col);
+						}
+						ImGui::PopID();
+						ImGui::SameLine();
+					}
+					ImGui::NewLine();
+				}
+				ImGui::PopStyleVar(2);
+			}
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();

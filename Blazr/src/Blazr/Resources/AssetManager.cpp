@@ -4,18 +4,21 @@
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "Blazr/Resources/AssetManager.h"
+#include <algorithm>
+#include <ranges>
+#include <vector>
 
 Ref<Blazr::AssetManager> Blazr::AssetManager::instance = nullptr;
 bool Blazr::AssetManager::LoadTexture(const std::string &name,
 									  const std::string &texturePath,
-									  bool pixelArt) {
+									  bool pixelArt, bool tileset) {
 	if (m_mapTextures.find(name) != m_mapTextures.end()) {
 		BLZR_CORE_ERROR("Texture already loaded: {0}", name);
 		return false;
 	}
 
 	// TODO: pixelArt
-	auto texture = std::make_shared<Texture2D>(texturePath);
+	auto texture = std::make_shared<Texture2D>(texturePath, tileset);
 
 	if (!texture) {
 		BLZR_CORE_ERROR("Failed to load texture: {0}", texturePath);
@@ -31,7 +34,7 @@ Blazr::AssetManager::GetTexture(const std::string &name) {
 	if (textureIterator == m_mapTextures.end()) {
 		// BLZR_CORE_ERROR("Texture not found: {0}", name);
 		auto texture = std::make_shared<Texture2D>("assets/white_texture.png");
-		return texture;
+		return nullptr;
 	}
 
 	return textureIterator->second;
@@ -161,6 +164,17 @@ Blazr::AssetManager::getAllTextures() {
 	return m_mapTextures;
 }
 
+std::vector<std::string> Blazr::AssetManager::GetKeysTexturesTileset() {
+
+	std::vector<std::string> keysVector;
+	for (const auto &pair : m_mapTextures) {
+		if (pair.second->isTileset()) {
+			keysVector.push_back(pair.first);
+		}
+	}
+	return keysVector;
+}
+
 // void Blazr::AssetManager::CreateLuaEntityBind(sol::state_view &lua) {
 // 	lua.new_usertype<AssetManager>(
 // 		"AssetManager", sol::constructors<AssetManager()>(),
@@ -200,8 +214,9 @@ void Blazr::AssetManager::CreateLuaAssetManager(sol::state &lua,
 		},
 		"load_texture",
 		[&](const std::string &name, const std::string &texturePath,
-			bool pixelArt) {
-			return asset_manager->LoadTexture(name, texturePath, pixelArt);
+			bool pixelArt, bool tileset) {
+			return asset_manager->LoadTexture(name, texturePath, pixelArt,
+											  tileset);
 		});
 }
 

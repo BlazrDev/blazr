@@ -40,6 +40,8 @@ class Editor : public Application {
 
 	Ref<Scene> GetActiveScene() { return m_ActiveScene; }
 
+	glm::vec3 selectedTileData;
+
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;

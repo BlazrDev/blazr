@@ -37,7 +37,7 @@ class AssetManager {
 	static void CreateLuaAssetManager(sol::state &lua, Registry &registry);
 
 	bool LoadTexture(const std::string &name, const std::string &texturePath,
-					 bool pixelArt = true);
+					 bool pixelArt = true, bool tileset = false);
 	const Ref<Texture2D> GetTexture(const std::string &name);
 
 	bool LoadShader(const std::string &name, const std::string &vertexPath,
@@ -59,6 +59,7 @@ class AssetManager {
 	static void from_json(const nlohmann::json &j,
 						  Ref<AssetManager> assetManager);
 	BLZR_API std::map<std::string, Ref<Blazr::Texture2D>> &getAllTextures();
+	BLZR_API std::vector<std::string> GetKeysTexturesTileset();
 
   private:
 	static Ref<AssetManager> instance;

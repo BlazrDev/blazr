@@ -21,7 +21,7 @@ Blazr::Entity::Entity(Registry &registry, const std::string &name,
 					   .group = group,
 					   .id = static_cast<int32_t>(m_EntityHandler)});
 
-	BLZR_CORE_INFO("Entity created with name: {0}, group: {1}", name, group);
+	// BLZR_CORE_INFO("Entity created with name: {0}, group: {1}", name, group);
 }
 Blazr::Entity::Entity(Registry &registry, const entt::entity &entity)
 	: m_Registry(registry), m_EntityHandler(entity), m_Name(""), m_Group("") {

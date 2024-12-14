@@ -6,9 +6,9 @@
 #include <iostream>
 
 namespace Blazr {
-Texture2D::Texture2D(const std::string &filepath)
+Texture2D::Texture2D(const std::string &filepath, bool tileset)
 	: m_FilePath(filepath), m_LocalBuffer(nullptr), m_Width(0), m_Height(0),
-	  m_BPP(0) {
+	  m_BPP(0), m_Tileset(tileset) {
 	stbi_set_flip_vertically_on_load(1);
 	m_LocalBuffer = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 0);
 
@@ -101,5 +101,6 @@ std::vector<unsigned char> Texture2D::ConvertToRGBA(const unsigned char *data,
 	}
 	return rgbaData;
 }
+bool Texture2D::isTileset() const { return m_Tileset; }
 
 } // namespace Blazr
