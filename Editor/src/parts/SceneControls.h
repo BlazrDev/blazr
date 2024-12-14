@@ -14,7 +14,8 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 			"Untitled " +
 			std::to_string(Project::GetActive()->GetScenes().size() + 1);
 		if (true) {
-			Ref<TilemapScene> tilemapScene = CreateRef<TilemapScene>();
+			Canvas canvas{16, 16};
+			Ref<TilemapScene> tilemapScene = CreateRef<TilemapScene>(canvas);
 			Project::GetActive()->AddScene(tilemapScene->GetName(),
 										   tilemapScene);
 		} else {

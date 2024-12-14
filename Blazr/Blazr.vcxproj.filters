@@ -154,6 +154,9 @@
     <ClInclude Include="src\Blazr\Renderer\CameraController.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Renderer\Canvas.h">
+      <Filter>Blazr\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Renderer\FrameBuffer.h">
       <Filter>Blazr\Renderer</Filter>
     </ClInclude>

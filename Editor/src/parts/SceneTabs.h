@@ -16,7 +16,6 @@ void RenderSceneTabs(Editor &editor) {
 		for (const auto &[name, scene] : Project::GetActive()->GetScenes()) {
 			if (ImGui::BeginTabItem(name.c_str())) {
 				editor.SetActiveScene(scene);
-				BLZR_CORE_ERROR("{0}", scene->GetName());
 				ImGui::EndTabItem();
 			}
 		}
@@ -34,6 +33,7 @@ void RenderSceneToTexture(Ref<Scene> activeScene) {
 			activeScene->Update();
 		}
 		activeScene->Render();
+
 	} else {
 		BLZR_CORE_WARN("Active scene is null");
 	}
@@ -44,10 +44,10 @@ void RenderSceneToTexture(Ref<Scene> activeScene) {
 void RenderActiveScene(Ref<Scene> activeScene) {
 	if (activeScene) {
 		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
-						  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+						  ImGuiWindowFlags_NoMove);
 
 		CameraController::gameViewWindow = ImGui::IsWindowHovered();
-		ImVec2 windowSize = ImGui::GetContentRegionAvail();
+		ImVec2 windowSize = {1280, 720}; // ImGui::GetContentRegionAvail();
 		int newWidth = static_cast<int>(windowSize.x);
 		int newHeight = static_cast<int>(windowSize.y);
 

@@ -114,7 +114,6 @@ void Editor::Init() {
 	Ref<Scene> newScene = CreateRef<Scene>();
 	newProject->AddScene("Scene1", newScene);
 	m_ActiveScene = newScene;
-	m_ActiveScene->m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 	ProjectSerializer::Serialize(newProject, Project::GetProjectDirectory() /
 												 newProject->GetConfig().name);
 }
@@ -169,6 +168,18 @@ void Editor::InitImGui() {
 			(*eventCallback)(event);
 		}
 	});
+	glfwSetCursorPosCallback(
+		m_Window->GetWindow(),
+		[](GLFWwindow *window, double xPos, double yPos) {
+			auto eventCallback = static_cast<std::function<void(Event &)> *>(
+				glfwGetWindowUserPointer(window));
+
+			if (eventCallback) {
+				MouseMovedEvent event(static_cast<float>(xPos),
+									  static_cast<float>(yPos));
+				(*eventCallback)(event);
+			}
+		});
 	m_EventCallback = [this](Event &e) { m_ActiveScene->onEvent(e); };
 
 	glfwMakeContextCurrent(m_Window->GetWindow());
@@ -315,6 +326,7 @@ void Editor::RenderImGui() {
 		}
 		if (ImGui::BeginMenu("Tools")) {
 			// Tools action
+			ImGui::MenuItem("Show Collider", nullptr, &Layer::showColliders);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Settings")) {

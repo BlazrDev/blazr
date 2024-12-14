@@ -30,6 +30,7 @@ class BLZR_API Application {
 	virtual void Begin();*/
 	void onEvent(Event &e);
 	void SetActiveScene(Ref<Scene> scene);
+	Ref<Scene> GetActiveScene() { return m_ActiveScene; }
 
   private:
 	bool m_Running = true;

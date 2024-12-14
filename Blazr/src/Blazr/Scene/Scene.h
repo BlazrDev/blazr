@@ -27,7 +27,7 @@ class Scene {
 	CameraController &GetCameraController() { return m_Camera; }
 
 	void BLZR_API Update();
-	void BLZR_API Render();
+	virtual void BLZR_API Render();
 
 	void BLZR_API onEvent(Event &e);
 

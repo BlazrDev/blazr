@@ -77,13 +77,13 @@ void Blazr::CameraController::OnEvent(Event &e) {
 
 	dispatcher.Dispatch<WindowResizeEvent>(
 		[this](WindowResizeEvent &event) { return OnWindowResized(event); });
+
+	dispatcher.Dispatch<MouseMovedEvent>(
+		[this](MouseMovedEvent &event) { return OnMouseMove(event); });
 }
 
 void Blazr::CameraController::OnResize(float width, float height) {
-	float scaledWidth = width * 0.5f;
-	float scaledHeight = height * 0.5f;
-	m_Camera.SetProjection(-width * m_Zoom, width * m_Zoom, -height * m_Zoom,
-						   height * m_Zoom);
+	m_Camera.SetProjection(0.f, width, 0.f, height);
 }
 
 bool Blazr::CameraController::OnMouseScrolled(MouseScrolledEvent &e) {
@@ -96,5 +96,18 @@ bool Blazr::CameraController::OnMouseScrolled(MouseScrolledEvent &e) {
 
 bool Blazr::CameraController::OnWindowResized(WindowResizeEvent &e) {
 	OnResize((float)e.getWidth(), (float)e.getHeight());
+	return false;
+}
+
+bool Blazr::CameraController::OnMouseMove(MouseMovedEvent &e) {
+	float mouseX = e.getX() - 285;
+	float mouseY = e.getY() - 89;
+	if (mouseY < 0)
+		mouseY = 0;
+	if (mouseX < 0)
+		mouseX = 0;
+	m_MousePosition = {mouseX, mouseY};
+	std::cout << "Mouse Position: (" << mouseX << ", " << mouseY << ")"
+			  << std::endl;
 	return false;
 }

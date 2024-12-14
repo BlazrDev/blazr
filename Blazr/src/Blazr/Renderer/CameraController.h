@@ -17,8 +17,11 @@ class CameraController {
 	void OnEvent(Event &e);
 	Camera2D &GetCamera() { return m_Camera; }
 
+	glm::vec2 &GetMousePosition() { return m_MousePosition; }
+
 	bool OnMouseScrolled(MouseScrolledEvent &e);
 	bool OnWindowResized(WindowResizeEvent &e);
+	bool OnMouseMove(MouseMovedEvent &e);
 
   private:
 	void OnResize(float width, float height);
@@ -29,5 +32,6 @@ class CameraController {
 	float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 180.0f;
 	bool m_Rotation;
 	float m_Zoom{1.0f};
+	glm::vec2 m_MousePosition = {0.0f, 0.0f};
 };
 } // namespace Blazr

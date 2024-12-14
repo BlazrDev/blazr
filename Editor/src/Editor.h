@@ -45,7 +45,6 @@ class Editor : public Application {
   private:
 	Renderer2D m_Renderer;
 	Ref<FrameBuffer> m_GameFrameBuffer;
-	Ref<Scene> m_ActiveScene;
 	Window::EventCallbackFn m_EventCallback;
 };
 
