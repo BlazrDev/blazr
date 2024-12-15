@@ -53,8 +53,7 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 			sceneName.begin(),
 			std::remove_if(sceneName.begin(), sceneName.end(),
 						   [](char c) { return c == ' ' || c == '\''; })));
-		if (!SerializeScene(pair.second,
-							project->GetProjectDirectory() / pair.first)) {
+		if (!SerializeScene(pair.second, pair.first)) {
 			BLZR_CORE_ERROR(
 				"Unable to save scene {0}. Aborting saving process!",
 				pair.first);
@@ -125,6 +124,7 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 					auto scene = DeserializeScene(entry.path());
 					if (scene) {
 						project->AddScene(scene->GetName(), scene);
+						BLZR_CORE_ERROR("Deserialized {0}", scene->GetName());
 					} else {
 						BLZR_CORE_WARN("FAILED TO DESERIALIZE SCENE:{}",
 									   entry.path().string());
@@ -152,9 +152,10 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 	json j;
 	scene->Serialize(j);
 
-	std::filesystem::create_directories(filepath.parent_path());
+	std::filesystem::create_directories(
+		Project::GetActive()->GetProjectDirectory() / "scenes");
 	std::ofstream ofs(
-		Project::GetActive()->GetProjectDirectory() / "scenes/" /
+		Project::GetActive()->GetProjectDirectory() / "scenes" /
 		const_cast<std::filesystem::path &>(filepath).replace_extension(
 			".blzrscn"));
 	if (!ofs) {

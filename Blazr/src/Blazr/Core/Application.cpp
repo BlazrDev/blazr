@@ -1,6 +1,7 @@
 #include "blzrpch.h"
 #include "Application.h"
 #include "Blazr/Events/ApplicationEvent.h"
+#include "Blazr/Project/Project.h"
 #include "Blazr/Scene/Scene.h"
 #include "Log.h"
 
@@ -89,14 +90,14 @@ void Application::Initialize() {
 		return;
 	}
 
-	auto scriptSystem = std::make_shared<ScriptingSystem>(*m_Registry);
-	if (!scriptSystem) {
+	m_ScriptSystem = std::make_shared<ScriptingSystem>(*m_Registry);
+	if (!m_ScriptSystem) {
 		BLZR_CORE_ERROR("Failed to create the script system!");
 		return;
 	}
 
 	if (!m_Registry->AddToContext<std::shared_ptr<ScriptingSystem>>(
-			scriptSystem)) {
+			m_ScriptSystem)) {
 		BLZR_CORE_ERROR(
 			"Failed to add the script system to the registry context!");
 		return;
@@ -108,18 +109,12 @@ void Application::Initialize() {
 	LayerManager::BindLayerManager(*m_LuaState);
 	Layer::BindLayer(*m_LuaState);
 	// bind editor
-	m_LuaState->new_usertype<Application>("EditorInterface", "SetActiveScene",
-										  &Application::SetActiveScene);
+	m_LuaState->new_usertype<Application>(
+		"EditorInterface", "SetActiveScene", &Application::SetActiveScene,
+		"GetActiveScene", &Application::GetActiveScene);
 
 	// Bind the editor instance to Lua under the global 'editor'
 	(*m_LuaState)["editor"] = this;
-
-	if (!scriptSystem->LoadMainScript(*m_LuaState)) {
-		BLZR_CORE_ERROR("Failed to load the main lua script");
-		return;
-	}
-	// TODO should also initialize entity script when a new entity is created
-	scriptSystem->InitializeEntityScripts(*m_LuaState);
 
 	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry);
 	if (!animationSystem) {
@@ -138,4 +133,6 @@ void Application::Initialize() {
 Application *CreateApplication() { return nullptr; }
 
 void Application::SetActiveScene(Ref<Scene> scene) { m_ActiveScene = scene; }
+
+Ref<Scene> Application::GetActiveScene() { return m_ActiveScene; }
 } // namespace Blazr

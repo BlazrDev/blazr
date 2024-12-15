@@ -15,6 +15,7 @@ class Layer {
 
 	void BLZR_API AddEntity(Ref<Entity> entity);
 	void RemoveEntity(Ref<Entity> entity);
+	void RemoveEntity(const std::string &name);
 
 	std::vector<Ref<Entity>> BLZR_API GetEntities() { return entities; }
 

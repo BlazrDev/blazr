@@ -82,4 +82,7 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 			return component ? component.cast<sol::reference>()
 							 : sol::lua_nil_t{};
 		});
+
+	// lua.new_usertype<Ref<Entity>>(
+	// 	"EntityRef", "get", [](Ref<Entity> &ref) -> Entity & { return *ref; });
 }

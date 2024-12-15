@@ -244,8 +244,11 @@ void Blazr::AssetManager::to_json(nlohmann::json &j,
 		if (music) {
 			nlohmann::json propertiesJson;
 			SoundProperties::to_json(propertiesJson, music->GetProperties());
-			j["Music"][name] = {{"path", music->GetPath()},
-								{"properties", propertiesJson}};
+			j["Music"][name] = {
+				{"path", music->GetPath()},
+				{"properties", propertiesJson},
+				{"description",
+				 music->GetProperties().description}}; // Add description
 		}
 	}
 
@@ -254,9 +257,12 @@ void Blazr::AssetManager::to_json(nlohmann::json &j,
 		if (effect) {
 			nlohmann::json propertiesJson;
 			SoundProperties::to_json(propertiesJson, effect->GetProperties());
-			j["Effects"][name] = {{"path", effect->GetPath()},
-								  {"properties", propertiesJson},
-								  {"channel", effect->getChannel()}};
+			j["Effects"][name] = {
+				{"path", effect->GetPath()},
+				{"properties", propertiesJson},
+				{"channel", effect->getChannel()},
+				{"description",
+				 effect->GetProperties().description}}; // Add description
 		}
 	}
 }

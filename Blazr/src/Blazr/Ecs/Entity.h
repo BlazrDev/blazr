@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Registry.h"
 #include "entt.hpp"
@@ -21,6 +22,8 @@ class Entity {
 
 	inline void SetName(const std::string &name) { m_Name = name; }
 
+	inline void SetGroup(const std::string &group) { m_Group = group; }
+
 	inline entt::registry &GetRegistry() { return m_Registry.GetRegistry(); }
 
 	static void CreateLuaEntityBind(sol::state_view &lua, Registry &registry);
@@ -39,7 +42,7 @@ class Entity {
 				"remove_component"_hs);
 	};
 
-	inline entt::entity GetEntityHandler() const { return m_EntityHandler; }
+	inline entt::entity &GetEntityHandler() { return m_EntityHandler; }
 	inline std::uint32_t destroy() {
 		return m_Registry.GetRegistry().destroy(m_EntityHandler);
 	}
@@ -95,6 +98,18 @@ class Entity {
 	static auto get_component(Entity &entity, sol::this_state s) {
 		auto &component = entity.GetComponent<TComponent>();
 		return sol::make_reference(s, std::ref(component));
+	}
+
+	bool operator==(const Entity &other) const {
+		auto &id1 = const_cast<Entity *>(this)->GetComponent<Identification>();
+		auto &id2 = const_cast<Entity &>(other).GetComponent<Identification>();
+		return id1.id == id2.id;
+	}
+
+	bool operator<=(const Entity &other) const {
+		auto &id1 = const_cast<Entity *>(this)->GetComponent<Identification>();
+		auto &id2 = const_cast<Entity &>(other).GetComponent<Identification>();
+		return id1.id <= id2.id;
 	}
 
   private:

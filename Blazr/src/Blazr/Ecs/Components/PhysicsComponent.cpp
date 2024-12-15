@@ -247,8 +247,6 @@ void Blazr::PhysicsComponent::CreateLuaPhysicsComponentBind(
 			auto bx = (position.x * PIXELS_TO_METERS) - scaleHalfHeight;
 			auto by = (position.y * PIXELS_TO_METERS) - scaleHalfWidth;
 
-			BLZR_CORE_INFO("Setting position to: {0}, {1}", bx, by);
-
 			body->SetTransform(b2Vec2{bx, by}, 0.f);
 		},
 		"get_transform",

@@ -1,0 +1,29 @@
+{
+    "Layers": [
+        {
+            "Layer 1": {
+                "Entities": [],
+                "zIndex": 0
+            }
+        },
+        {
+            "Grid": {
+                "Entities": [],
+                "zIndex": 0
+            }
+        },
+        {
+            "Tilemap": {
+                "Entities": [],
+                "zIndex": 1
+            }
+        },
+        {
+            "Collider": {
+                "Entities": [],
+                "zIndex": 2
+            }
+        }
+    ],
+    "Name": "TileMapScene"
+}

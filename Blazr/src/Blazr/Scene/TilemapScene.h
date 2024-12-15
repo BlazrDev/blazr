@@ -2,7 +2,9 @@
 
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
@@ -12,6 +14,7 @@
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Scene/Scene.h"
 #include "imgui.h"
+#include <string>
 
 namespace Blazr {
 class TilemapScene : public Blazr::Scene {
@@ -29,6 +32,7 @@ class TilemapScene : public Blazr::Scene {
 		m_Canvas = CreateRef<Canvas>(canvas);
 		m_LayerManager->CreateLayer("Grid", 0);
 		m_LayerManager->CreateLayer("Tilemap", 1);
+		m_LayerManager->CreateLayer("Collider", 2);
 
 		float tileSize = m_Canvas->GetTileSize();
 		glm::vec2 position = {1280, 720};
@@ -149,7 +153,7 @@ class TilemapScene : public Blazr::Scene {
 						.position = {centerPosition.x + gridX * tileSize,
 									 centerPosition.y + gridY * tileSize}});
 
-				BLZR_CORE_INFO("SHIFT PRESSED: {0}", isShiftPressed);
+				// BLZR_CORE_INFO("SHIFT PRESSED: {0}", isShiftPressed);
 				if (ImGui::IsWindowHovered() &&
 					ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
 					!isShiftPressed) {
@@ -157,36 +161,22 @@ class TilemapScene : public Blazr::Scene {
 					if (!IsEntityAtPosition(m_Registry.get(),
 											centerPosition.x + gridX * tileSize,
 											centerPosition.y + gridY * tileSize,
-											"Tilemap")) {
-						Entity entity = Entity(*m_Registry, "", "tilemap");
+											"Tilemap") &&
+						m_selectedTile.first != "collider") {
 
-						auto &transform =
-							entity.AddComponent<TransformComponent>(
-								TransformComponent{
-									.position = {
-										centerPosition.x + gridX * tileSize,
-										centerPosition.y + gridY * tileSize}});
-
-						auto &sprite = entity.AddComponent<SpriteComponent>(
-							SpriteComponent{
-								.width = tileSize,
-								.height = tileSize,
-								.startX =
-									static_cast<int>(m_selectedTile.second.x),
-								.startY =
-									static_cast<int>(m_selectedTile.second.y) -
-									static_cast<int>(m_selectedTile.second.z) -
-									1,
-								.layer = "Tilemap",
-								.texturePath = m_selectedTile.first});
-
-						auto &tile = entity.AddComponent<TileComponent>(
-							TileComponent{.name = m_selectedTile.first});
-						sprite.generateObject(texture->GetWidth(),
-											  texture->GetHeight());
-
-						m_LayerManager->AddEntityToLayer(
-							"Tilemap", CreateRef<Entity>(entity));
+						addTile(std::to_string(gridX) + "  " +
+									std::to_string(gridY),
+								centerPosition.x + gridX * tileSize,
+								centerPosition.y + gridY * tileSize, tileSize);
+					} else if (!IsEntityAtPosition(
+								   m_Registry.get(),
+								   centerPosition.x + gridX * tileSize,
+								   centerPosition.y + gridY * tileSize,
+								   "Collider") &&
+							   m_selectedTile.first == "collider") {
+						addCollider(
+							"Collider", centerPosition.x + gridX * tileSize,
+							centerPosition.y + gridY * tileSize, tileSize);
 					}
 				} else {
 					if (ImGui::IsWindowHovered() &&
@@ -194,16 +184,20 @@ class TilemapScene : public Blazr::Scene {
 						isShiftPressed) {
 						auto view =
 							m_Registry->GetRegistry()
-								.view<TransformComponent, SpriteComponent>();
+								.view<TransformComponent, SpriteComponent,
+									  Identification>();
 						for (auto entity : view) {
 							auto &transform =
 								view.get<TransformComponent>(entity);
 							auto &sprite = view.get<SpriteComponent>(entity);
+							auto &id = view.get<Identification>(entity);
 							if (transform.position.x ==
 									centerPosition.x + gridX * tileSize &&
 								transform.position.y ==
 									centerPosition.y + gridY * tileSize &&
 								sprite.layer == "Tilemap") {
+								m_LayerManager->GetLayerByName("Tilemap")
+									->RemoveEntity(id.name);
 								m_Registry->GetRegistry().destroy(entity);
 							}
 						}
@@ -225,6 +219,73 @@ class TilemapScene : public Blazr::Scene {
 		Blazr::Renderer2D::Flush();
 	}
 
+	void addTile(const std::string &name, int x, int y, int tileSize = 16) {
+		auto texture =
+			AssetManager::GetInstance()->GetTexture(m_selectedTile.first);
+
+		Entity entity = Entity(*m_Registry, name, "tilemap");
+
+		auto &transform = entity.AddComponent<TransformComponent>(
+			TransformComponent{.position = {x, y}});
+
+		auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+			.width = static_cast<float>(tileSize),
+			.height = static_cast<float>(tileSize),
+			.startX = static_cast<int>(m_selectedTile.second.x),
+			.startY = static_cast<int>(m_selectedTile.second.y) -
+					  static_cast<int>(m_selectedTile.second.z) - 1,
+			.layer = "Tilemap",
+			.texturePath = m_selectedTile.first});
+
+		auto &tile = entity.AddComponent<TileComponent>(
+			TileComponent{.name = m_selectedTile.first});
+
+		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
+		m_LayerManager->AddEntityToLayer("Tilemap", CreateRef<Entity>(entity));
+	}
+
+	void addCollider(const std::string &name, int x, int y, int tileSize = 16) {
+		auto texture =
+			AssetManager::GetInstance()->GetTexture(m_selectedTile.first);
+
+		Entity entity = Entity(*m_Registry, name, "tilemap");
+
+		auto &transform = entity.AddComponent<TransformComponent>(
+			TransformComponent{.position = {x, y}});
+
+		auto &sprite = entity.AddComponent<SpriteComponent>(SpriteComponent{
+			.width = static_cast<float>(tileSize),
+			.height = static_cast<float>(tileSize),
+			.startX = static_cast<int>(m_selectedTile.second.x),
+			.startY = static_cast<int>(m_selectedTile.second.y) -
+					  static_cast<int>(m_selectedTile.second.z) - 1,
+			.layer = "Collider",
+			.texturePath = m_selectedTile.first});
+
+		auto &tile = entity.AddComponent<TileComponent>(
+			TileComponent{.name = m_selectedTile.first});
+		auto &collider = entity.AddComponent<BoxColliderComponent>(
+			BoxColliderComponent{.width = static_cast<int>(tileSize),
+								 .height = static_cast<int>(tileSize)});
+		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
+
+		auto &physicsWorld = m_Registry->GetContext<std::shared_ptr<b2World>>();
+
+		if (!physicsWorld) {
+			return;
+		}
+
+		PhysicsAttributes attributes{
+			.position = transform.position,
+			.scale = transform.scale,
+			.boxSize = {collider.width, collider.height},
+			.offset = collider.offset,
+		};
+		entity.AddComponent<PhysicsComponent>(
+			PhysicsComponent(physicsWorld, attributes));
+
+		m_LayerManager->AddEntityToLayer("Collider", CreateRef<Entity>(entity));
+	}
 	bool IsEntityAtPosition(Blazr::Registry *registry, float posX, float posY,
 							const std::string &layer) {
 		auto view =
@@ -243,9 +304,28 @@ class TilemapScene : public Blazr::Scene {
 
 	void ExportTilemapToScene(Scene &scene) {
 		auto layerManager = scene.GetLayerManager();
-
+		auto tileMapLayer = layerManager->GetLayerByName("Tilemap");
+		if (tileMapLayer == nullptr) {
+			layerManager->CreateLayer("Tilemap", 0);
+			tileMapLayer = layerManager->GetLayerByName("Tilemap");
+		}
 		auto entities =
 			m_LayerManager->GetLayerByName("Tilemap")->GetEntities();
+
+		for (auto entity : entities) {
+			tileMapLayer->AddEntity(entity);
+		}
+
+		auto colliderLayer = layerManager->GetLayerByName("Collider");
+		if (colliderLayer == nullptr) {
+			layerManager->CreateLayer("Collider", 1);
+			colliderLayer = layerManager->GetLayerByName("Collider");
+		}
+		entities = m_LayerManager->GetLayerByName("Collider")->GetEntities();
+
+		for (auto entity : entities) {
+			colliderLayer->AddEntity(entity);
+		}
 	}
 	Ref<Canvas> GetCanvas() { return m_Canvas; }
 	void SetCanvas(Ref<Canvas> canvas) { m_Canvas = canvas; }

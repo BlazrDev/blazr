@@ -27,18 +27,18 @@ class Editor : public Application {
 								  TransformComponent &transform);
 	void renderIdentificationComponent(ImVec2 &cursorPos,
 									   Identification &identification);
-	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite);
+	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
+							   Identification &identification);
 	void renderAnimationComponent(ImVec2 &cursorPos,
 								  AnimationComponent &animation);
 
-	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script);
+	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
+							   const entt::entity &entity);
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
-
-	Ref<Scene> GetActiveScene() { return m_ActiveScene; }
 
 	glm::vec3 selectedTileData;
 

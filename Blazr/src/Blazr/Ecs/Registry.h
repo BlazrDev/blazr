@@ -64,6 +64,8 @@ class Registry {
 		return s_Instance;
 	}
 
+	static void Reset() { s_Instance = CreateRef<Registry>(); }
+
   private:
 	static Ref<Registry> s_Instance;
 	std::unique_ptr<entt::registry> m_Registry;

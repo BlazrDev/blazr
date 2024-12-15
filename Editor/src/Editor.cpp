@@ -26,6 +26,7 @@
 #include "imgui_impl_opengl3.h"
 #include "parts/SceneControls.h"
 #include "parts/SceneTabs.h"
+#include "utils/FileDialog.h"
 // #include "utils/FileDialog.h"
 #include <GLFW/glfw3.h>
 #include <memory>
@@ -36,6 +37,7 @@ static int selectedLayerIndex = 0;
 static bool showAddLayerPopup = false;
 static char newLayerName[256] = "New Layer";
 static int newLayerZIndex = 0;
+static bool layerChanged = false;
 
 static float pos = 0;
 static bool mapflag = true;
@@ -54,13 +56,13 @@ static float scaleY = 1.0f;
 static float newScaleX = 1.0f;
 static float newScaleY = 1.0f;
 
-// identification
-static char name[128] = "";
-static char groupName[128] = "";
 // sprite
-static char layer[128] = "";
+// static char layer[128] = "";
 static float spriteWidth = 0.0f;
 static float spriteHeight = 0.0f;
+static float newSpriteWidth = 0.0f;
+static float newSpriteHeight = 0.0f;
+static float layer = 0.0f;
 static float sheetX = 0.0f;
 static float sheetY = 0.0f;
 
@@ -112,10 +114,21 @@ void Editor::Init() {
 	Ref<Project> newProject = Project::New("StartProject");
 	Project::SetActive(newProject);
 	Ref<Scene> newScene = CreateRef<Scene>();
-	newProject->AddScene("Scene1", newScene);
+	newScene->SetName("Untitled 1");
+	newProject->AddScene("Untitled 1", newScene);
+
 	m_ActiveScene = newScene;
-	ProjectSerializer::Serialize(newProject, Project::GetProjectDirectory() /
+
+	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
 												 newProject->GetConfig().name);
+
+	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
+		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+	// TODO should also initialize entity script when a new entity is created
+	// m_ScriptSystem->InitializeEntityScripts(*m_LuaState);
+	//
 }
 
 void Editor::InitImGui() {
@@ -233,7 +246,7 @@ void Editor::Run() {
 	glfwSwapBuffers(m_Window->GetWindow());
 }
 
-static std::string selectedGameObject = "ObjectDetails";
+static std::string selectedGameObject = "GameObject";
 void Editor::RenderImGui() {
 	ImVec2 cursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
@@ -262,13 +275,16 @@ void Editor::RenderImGui() {
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("New Project")) {
-				/*std::string savePath = Blazr::FileDialog::SaveFile(
+				std::string savePath = Blazr::FileDialog::SaveFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!savePath.empty()) {
+					Registry::Reset();
+					Initialize();
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
-					newProject->AddScene("Scene1", newScene);
-					newProject->GetConfig().StartSceneName = "Scene1";
+					newScene->SetName("Untitled 1");
+					newProject->AddScene("Untitled 1", newScene);
+					newProject->GetConfig().StartSceneName = "Untitled 1";
 					m_ActiveScene = newScene;
 
 					newProject->SetProjectDirectory(
@@ -277,23 +293,28 @@ void Editor::RenderImGui() {
 						std::filesystem::path(savePath).stem().string();
 
 					ProjectSerializer::Serialize(newProject, savePath);
-				}*/
+				}
 			}
 
 			if (ImGui::MenuItem("Open...")) {
-				/*std::string openPath = Blazr::FileDialog::OpenFile(
+				std::string openPath = Blazr::FileDialog::OpenFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!openPath.empty()) {
+					Registry::Reset();
+					Initialize();
 					Ref<Project> loadedProject = Project::Load(openPath);
 					if (loadedProject) {
 						Project::SetActive(loadedProject);
 						m_ActiveScene = loadedProject->GetScene(
 							loadedProject->GetConfig().StartSceneName);
+						BLZR_CORE_ERROR(
+							"START SCENE: {0}",
+							loadedProject->GetConfig().StartSceneName);
 					} else {
 						BLZR_CORE_ERROR("Failed to load project from: {}",
 										openPath);
 					}
-				}*/
+				}
 			}
 
 			if (ImGui::MenuItem("Save As...")) {
@@ -313,14 +334,17 @@ void Editor::RenderImGui() {
 					}
 				}*/
 			}
-			ImGui::EndMenu();
-
 			if (ImGui::MenuItem("Export tilemap to scene")) {
 				auto tilemapScene =
 					std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
 				if (tilemapScene) {
-					Scene scene = Scene();
-					tilemapScene->ExportTilemapToScene(scene);
+					for (const auto &[name, scene] :
+						 Project::GetActive()->GetScenes()) {
+						BLZR_CORE_INFO("Scene name: {0}", scene->GetName());
+						if (scene->GetName() == "Untitled 1") {
+							tilemapScene->ExportTilemapToScene(*scene);
+						}
+					}
 				}
 			}
 			ImGui::EndMenu();
@@ -364,18 +388,47 @@ void Editor::RenderImGui() {
 	ImGui::Begin("Scene", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoNavFocus);
-	auto view = m_Registry->GetRegistry().view<entt::entity>(
-		entt::exclude<TileComponent>);
+	if (ImGui::BeginPopupContextWindow("AddGameObject",
+									   ImGuiPopupFlags_MouseButtonRight)) {
+		if (ImGui::MenuItem("AddGameObject")) {
+			Ref<Entity> ent = CreateRef<Entity>(*m_Registry);
+			auto l = m_ActiveScene->GetAllLayers().at(0);
+			l->AddEntity(ent);
+		}
+		ImGui::EndPopup();
+	}
 
-	for (auto entity : view) {
-		auto &identification =
-			m_Registry->GetRegistry().get<Identification>(entity);
-		std::string gameObjectName = identification.name;
-		if (ImGui::Selectable(gameObjectName.c_str())) {
-			selectedGameObject = "ObjectDetails-" + gameObjectName;
-			showGameObjectDetails = true;
+	auto tilemapScene = std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+
+	if (!tilemapScene) {
+
+		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+			for (Ref<Entity> ent : layer->entities) {
+				if (!ent->HasComponent<TileComponent>()) {
+					std::string gameObjectName =
+						ent->GetComponent<Identification>().name;
+
+					if (ImGui::Selectable(gameObjectName.c_str())) {
+						selectedGameObject = gameObjectName;
+						showGameObjectDetails = true;
+					}
+				}
+			}
 		}
 	}
+
+	auto view = m_Registry->GetRegistry().view<entt::entity>(
+		entt::exclude<TileComponent>);
+	//
+	// for (auto entity : view) {
+	// 	auto &identification =
+	// 		m_Registry->GetRegistry().get<Identification>(entity);
+	// 	std::string gameObjectName = identification.name;
+	// 	if (ImGui::Selectable(gameObjectName.c_str())) {
+	// 		selectedGameObject = "ObjectDetails-" + gameObjectName;
+	// 		showGameObjectDetails = true;
+	// 	}
+	// }
 	ImVec2 scenePos = ImGui::GetWindowPos();
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
@@ -394,80 +447,101 @@ void Editor::RenderImGui() {
 				if (!CameraController::paused) {
 					ImGui::BeginDisabled(true);
 				}
-				for (auto entity : view) {
-					std::string entityName =
-						"ObjectDetails-" + m_Registry->GetRegistry()
-											   .get<Identification>(entity)
-											   .name;
-					if (m_Registry->GetRegistry().all_of<TransformComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &transform =
-							m_Registry->GetRegistry().get<TransformComponent>(
-								entity);
+				if (!tilemapScene) {
 
-						renderTransformComponent(cursorPos, transform);
-					}
-					if (m_Registry->GetRegistry().all_of<SpriteComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &sprite =
-							m_Registry->GetRegistry().get<SpriteComponent>(
-								entity);
-						showColorTab = true;
+					for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+						for (Ref<Entity> ent : layer->entities) {
 
-						renderSpriteComponent(cursorPos, sprite);
+							if (ent->HasComponent<TileComponent>()) {
+								continue;
+							}
 
-						std::vector<Ref<Layer>> layers =
-							m_ActiveScene->GetLayerManager()->GetAllLayers();
-						auto l = m_ActiveScene->GetLayerByName(sprite.layer);
-						if (l) {
-							l->AddEntity(
-								CreateRef<Entity>(*m_Registry, entity));
-						}
-					}
-					if (m_Registry->GetRegistry().all_of<PhysicsComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &physics =
-							m_Registry->GetRegistry().get<PhysicsComponent>(
-								entity);
-						renderPhysicsComponent(cursorPos, physics);
-					}
+							entt::entity &entity = ent->GetEntityHandler();
 
-					if (m_Registry->GetRegistry().all_of<AnimationComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &animation =
-							m_Registry->GetRegistry().get<AnimationComponent>(
-								entity);
-						// renderTransformComponent(cursorPos);
-					}
-					if (m_Registry->GetRegistry().all_of<BoxColliderComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &boxCollider =
-							m_Registry->GetRegistry().get<BoxColliderComponent>(
-								entity);
-						// renderTransformComponent(cursorPos);
-					}
-					if (m_Registry->GetRegistry().all_of<Identification>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &identification =
-							m_Registry->GetRegistry().get<Identification>(
-								entity);
-						renderIdentificationComponent(cursorPos,
+							std::string entityName =
+								m_Registry->GetRegistry()
+									.get<Identification>(entity)
+									.name;
+							if (m_Registry->GetRegistry()
+									.all_of<TransformComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &transform =
+									m_Registry->GetRegistry()
+										.get<TransformComponent>(entity);
+
+								renderTransformComponent(cursorPos, transform);
+							}
+							if (m_Registry->GetRegistry()
+									.all_of<SpriteComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &sprite =
+									m_Registry->GetRegistry()
+										.get<SpriteComponent>(entity);
+								showColorTab = true;
+
+								auto &identification =
+									m_Registry->GetRegistry()
+										.get<Identification>(entity);
+								renderSpriteComponent(cursorPos, sprite,
 													  identification);
-					}
 
-					if (m_Registry->GetRegistry().all_of<ScriptComponent>(
-							entity) &&
-						selectedGameObject == entityName) {
-						auto &script =
-							m_Registry->GetRegistry().get<ScriptComponent>(
-								entity);
-						renderScriptComponent(cursorPos, script);
+								std::vector<Ref<Layer>> layers =
+									m_ActiveScene->GetLayerManager()
+										->GetAllLayers();
+								auto l =
+									m_ActiveScene->GetLayerByName(sprite.layer);
+								if (l && layerChanged) {
+									l->AddEntity(
+										CreateRef<Entity>(*m_Registry, entity));
+									layerChanged = false;
+								}
+							}
+							if (m_Registry->GetRegistry()
+									.all_of<PhysicsComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &physics =
+									m_Registry->GetRegistry()
+										.get<PhysicsComponent>(entity);
+								renderPhysicsComponent(cursorPos, physics);
+							}
+
+							if (m_Registry->GetRegistry()
+									.all_of<AnimationComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &animation =
+									m_Registry->GetRegistry()
+										.get<AnimationComponent>(entity);
+								renderAnimationComponent(cursorPos, animation);
+							}
+							if (m_Registry->GetRegistry()
+									.all_of<BoxColliderComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &boxCollider =
+									m_Registry->GetRegistry()
+										.get<BoxColliderComponent>(entity);
+								renderBoxColliderComponent(cursorPos,
+														   boxCollider);
+							}
+							if (m_Registry->GetRegistry()
+									.all_of<Identification>(entity) &&
+								selectedGameObject == entityName) {
+								auto &identification =
+									m_Registry->GetRegistry()
+										.get<Identification>(entity);
+								renderIdentificationComponent(cursorPos,
+															  identification);
+							}
+
+							if (m_Registry->GetRegistry()
+									.all_of<ScriptComponent>(entity) &&
+								selectedGameObject == entityName) {
+								auto &script =
+									m_Registry->GetRegistry()
+										.get<ScriptComponent>(entity);
+								renderScriptComponent(cursorPos, script,
+													  entity);
+							}
+						}
 					}
 				}
 
@@ -525,7 +599,6 @@ void Editor::RenderImGui() {
 								// metoda addSprite
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -549,7 +622,6 @@ void Editor::RenderImGui() {
 								// metoda addBoxCollider
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -569,7 +641,6 @@ void Editor::RenderImGui() {
 								// metoda Animation
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -588,7 +659,6 @@ void Editor::RenderImGui() {
 							case 3:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -606,7 +676,6 @@ void Editor::RenderImGui() {
 							case 4:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -632,7 +701,6 @@ void Editor::RenderImGui() {
 							case 5:
 								for (auto entity : view) {
 									std::string entityName =
-										"ObjectDetails-" +
 										m_Registry->GetRegistry()
 											.get<Identification>(entity)
 											.name;
@@ -670,9 +738,12 @@ void Editor::RenderImGui() {
 					static ImVec4 sceneColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 					if (ImGui::ColorPicker3("Game object\ncolor",
 											(float *)&sceneColor)) {
+
+						auto view =
+							m_Registry->GetRegistry().view<entt::entity>(
+								entt::exclude<TileComponent>);
 						for (auto entity : view) {
 							std::string entityName =
-								"ObjectDetails-" +
 								m_Registry->GetRegistry()
 									.get<Identification>(entity)
 									.name;
@@ -939,83 +1010,6 @@ void Blazr::Editor::setEventCallback(const Window::EventCallbackFn &callback) {
 	m_EventCallback = callback;
 }
 
-void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script) {
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Separator();
-	ImGui::Text("Script Component");
-
-	// Script Path
-	cursorPos.y += 30;
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Script Path");
-	cursorPos.x += 90;
-	cursorPos.y -= 3;
-	ImGui::SetCursorPos(cursorPos);
-
-	static char scriptPathBuffer[256];
-	strcpy(scriptPathBuffer, script.scriptPath.c_str());
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	if (ImGui::InputText("##ScriptPathInput", scriptPathBuffer,
-						 sizeof(scriptPathBuffer))) {
-		script.scriptPath = scriptPathBuffer;
-	}
-
-	cursorPos.x -= 90;
-	cursorPos.y += 28;
-
-	// Update Function Check
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Has Update Function");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	bool hasUpdate = script.update.valid();
-	ImGui::Checkbox("##UpdateFunctionCheckbox", &hasUpdate);
-
-	cursorPos.y += 25;
-
-	// Render Function Check
-	ImGui::SetCursorPos(cursorPos);
-	ImGui::Text("Has Render Function");
-	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 12);
-	bool hasRender = script.render.valid();
-	ImGui::Checkbox("##RenderFunctionCheckbox", &hasRender);
-
-	cursorPos.y += 35;
-
-	// Reload Script Button
-	ImGui::SetCursorPos(cursorPos);
-	if (ImGui::Button("Reload Script")) {
-		// Trigger a script reload process
-		sol::state lua;
-		try {
-			auto result = lua.safe_script_file(script.scriptPath);
-			if (result.valid()) {
-				std::string scriptName = script.scriptPath.substr(
-					script.scriptPath.find_last_of("/\\") + 1);
-				scriptName = scriptName.substr(0, scriptName.find_last_of('.'));
-
-				sol::table scriptTable = lua[scriptName];
-				if (scriptTable.valid()) {
-					if (scriptTable["on_update"].valid()) {
-						script.update = scriptTable["on_update"];
-					}
-					if (scriptTable["on_render"].valid()) {
-						script.render = scriptTable["on_render"];
-					}
-				} else {
-					BLZR_CORE_ERROR("Failed to load script table for %s",
-									scriptName.c_str());
-				}
-			} else {
-				sol::error err = result;
-				BLZR_CORE_ERROR("Error loading script: %s", err.what());
-			}
-		} catch (const std::exception &e) {
-			BLZR_CORE_ERROR("Exception while reloading script: %s", e.what());
-		}
-	}
-
-	cursorPos.y += 35;
-}
 void Editor::renderTransformComponent(ImVec2 &cursorPos,
 									  TransformComponent &transform) {
 
@@ -1110,15 +1104,6 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 
 void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 										   Identification &identification) {
-
-	if (name != identification.name || groupName != identification.group) {
-		std::copy(identification.name.begin(), identification.name.end(), name);
-		name[identification.name.size()] = '\0';
-		std::copy(identification.group.begin(), identification.group.end(),
-				  groupName);
-		name[identification.group.size()] = '\0';
-	}
-
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Identification");
@@ -1129,32 +1114,30 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	cursorPos.x += 43;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###nameObject", name, IM_ARRAYSIZE(name));
+
+	char nameBuffer[256];
+	strncpy(nameBuffer, identification.name.c_str(), sizeof(nameBuffer) - 1);
+	nameBuffer[sizeof(nameBuffer) - 1] = '\0';
+
+	if (ImGui::InputText("###nameObject", nameBuffer, sizeof(nameBuffer),
+						 ImGuiInputTextFlags_EnterReturnsTrue)) {
+		identification.name = nameBuffer;
+	}
+
 	cursorPos.x -= 43;
 	cursorPos.y += 25;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("Group");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###group", groupName, IM_ARRAYSIZE(groupName));
+	ImGui::InputText("###group", identification.group.data(),
+					 IM_ARRAYSIZE(identification.group.data()));
 	ImGui::PopItemWidth();
 	cursorPos.y += 35;
-
-	if ((name != identification.name || groupName != identification.group) &&
-		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
-		BLZR_CORE_INFO("Name changed from {0} to {1}", identification.name,
-					   name);
-		BLZR_CORE_INFO("Group changed from {0} to {1}", identification.group,
-					   groupName);
-
-		identification.name = name;
-		identification.group = groupName;
-	}
 }
 
-void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
-	std::copy(sprite.layer.begin(), sprite.layer.end(), layer);
-	name[sprite.layer.size()] = '\0';
+void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
+								   Identification &identification) {
 
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
@@ -1230,20 +1213,230 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputFloat("##spriteHeight", &sprite.height, 0.1f, 1.0f, "%.1f");
+
+	if ((sprite.width != spriteWidth || sprite.height != spriteHeight) &&
+		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		spriteWidth = sprite.width;
+		spriteHeight = sprite.height;
+		sprite.generateObject(sprite.width, sprite.height);
+	}
 	// layer
 	cursorPos.x -= 65;
 	cursorPos.y += 28;
 	ImGui::SetCursorPos(cursorPos);
+
 	ImGui::Text("Layer");
 	cursorPos.x += 65;
 	cursorPos.y -= 3;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("##layer", layer, IM_ARRAYSIZE(layer));
+
+	static std::unordered_map<SpriteComponent *, int>
+		previousSelectedLayerIndices;
+
+	std::vector<Ref<Layer>> layers =
+		m_ActiveScene->GetLayerManager()->GetAllLayers();
+
+	// Ensure the sprite has a valid current layer and selectedLayerIndex
+	if (!sprite.layer.empty()) {
+		for (int i = 0; i < layers.size(); i++) {
+			if (layers[i]->name == sprite.layer) {
+				selectedLayerIndex = i;
+				break;
+			}
+		}
+	} else {
+		sprite.layer = layers[0]->name;
+		selectedLayerIndex = 0;
+	}
+
+	int &previousSelectedLayerIndex = previousSelectedLayerIndices[&sprite];
+	if (previousSelectedLayerIndex == 0 && selectedLayerIndex != 0) {
+		previousSelectedLayerIndex = selectedLayerIndex;
+	}
+
+	if (ImGui::BeginCombo("##LayerDropdown",
+						  selectedLayerIndex == -1
+							  ? "Select a layer:"
+							  : layers[selectedLayerIndex]->name.c_str())) {
+
+		if (ImGui::Selectable("Add New Layer", false)) {
+			showAddLayerPopup = true;
+			strncpy(newLayerName, "New Layer", sizeof(newLayerName));
+			newLayerZIndex = 0;
+		}
+
+		for (int i = 0; i < layers.size(); i++) {
+			bool isSelected = (selectedLayerIndex == i);
+			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
+				if (previousSelectedLayerIndex != i) {
+					previousSelectedLayerIndex = i;
+					selectedLayerIndex = i;
+					m_ActiveScene->GetLayerByName(sprite.layer)
+						->RemoveEntity(identification.name);
+					sprite.layer = layers[i]->name;
+					layerChanged = true;
+				}
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (showAddLayerPopup) {
+		ImGui::OpenPopup("Create New Layer");
+	}
+
+	if (ImGui::BeginPopupModal("Create New Layer", &showAddLayerPopup,
+							   ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("Enter Layer Details:");
+		ImGui::Separator();
+
+		ImGui::InputText("Layer Name", newLayerName, sizeof(newLayerName));
+		ImGui::InputInt("zIndex", &newLayerZIndex);
+
+		if (ImGui::Button("Create", ImVec2(120, 0))) {
+			Ref<Layer> newLayer =
+				CreateRef<Layer>(newLayerName, newLayerZIndex);
+			m_ActiveScene->GetLayerManager()->AddLayer(newLayer);
+
+			layers = m_ActiveScene->GetLayerManager()->GetAllLayers();
+			selectedLayerIndex = layers.size() - 1;
+
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 
 	cursorPos.x -= 65;
 	cursorPos.y += 35;
 }
+
+void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
+								   const entt::entity &entity) {
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("Script Component");
+
+	// Script Path
+	cursorPos.y += 30;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Script Path");
+	cursorPos.x += 90;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::Text(const_cast<char *>(script.scriptPath.c_str()));
+
+	cursorPos.y += 25; // Adjust cursor position for buttons
+
+	// Create Script Button
+	if (ImGui::Button("Create Script")) {
+		std::filesystem::path path = Project::GetProjectDirectory() / "scripts";
+		if (!std::filesystem::exists(path)) {
+			if (!std::filesystem::create_directory(path)) {
+				BLZR_CORE_ERROR("Error creating script folder");
+				return;
+			}
+		}
+		std::string absPath = std::filesystem::absolute(path);
+
+		std::string newScriptPath = FileDialog::SaveFileWithPath(
+			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
+
+		if (!newScriptPath.empty()) {
+			std::string defaultScript = "-- Default Lua Script\n"
+										"\n"
+										"local script = {}\n"
+										"\n"
+										"function script.on_update(entity)\n"
+										"    -- Your update logic here\n"
+										"    print(\"hello world from lua\")\n"
+										"end\n"
+										"\n"
+										"function script.on_render(entity)\n"
+										"    -- Your render logic here\n"
+										"end\n"
+										"\n"
+										"return script\n";
+
+			std::ofstream outFile(newScriptPath + ".lua");
+			if (outFile.is_open()) {
+				outFile << defaultScript;
+				outFile.close();
+
+				script.scriptPath = newScriptPath + ".lua";
+				auto &identification =
+					m_Registry->GetRegistry().get<Identification>(entity);
+				Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
+				script.LoadScript(*m_LuaState, ent, identification.name);
+
+				ImGui::OpenPopup("Script Created");
+			} else {
+				ImGui::OpenPopup("Error Creating Script");
+			}
+		}
+	}
+
+	// Load Script Button
+	if (ImGui::Button("Load Script")) {
+		std::filesystem::path path = Project::GetProjectDirectory() / "scripts";
+		std::string absPath = std::filesystem::absolute(path);
+
+		std::string newScriptPath = FileDialog::OpenFileWithPath(
+			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
+
+		if (!newScriptPath.empty()) {
+			script.update = sol::nil;
+			script.render = sol::nil;
+
+			script.scriptPath = newScriptPath;
+
+			auto &identification =
+				m_Registry->GetRegistry().get<Identification>(entity);
+			Ref<Entity> ent = CreateRef<Entity>(*m_Registry, entity);
+			script.LoadScript(*m_LuaState, ent, identification.name);
+
+			ImGui::OpenPopup("Script Loaded");
+		} else {
+			ImGui::OpenPopup("Error Loading Script");
+		}
+	}
+
+	// Popups for success/failure
+	// if (ImGui::BeginPopup("Script Created")) {
+	// 	ImGui::Text("Script successfully created!");
+	// 	ImGui::EndPopup();
+	// }
+
+	// if (ImGui::BeginPopup("Error Creating Script")) {
+	// 	ImGui::Text("Failed to create the script file.");
+	// 	ImGui::EndPopup();
+	// }
+	//
+	// if (ImGui::BeginPopup("Script Loaded")) {
+	// 	ImGui::Text("Script successfully loaded!");
+	// 	ImGui::EndPopup();
+	// }
+	//
+	// if (ImGui::BeginPopup("Error Loading Script")) {
+	// 	ImGui::Text("Failed to load the script file.");
+	// 	ImGui::EndPopup();
+	// }
+
+	cursorPos.y += 35; // Adjust cursor position for layout
+}
+
 void Editor::renderAnimationComponent(ImVec2 &cursorPos,
 									  AnimationComponent &animation) {
 
@@ -1334,6 +1527,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	ImGui::SetCursorPos(cursorPos);
 	const char *types[] = {"Static", "Kinematic", "Dynamic"};
 	static int selectedTypeIndex = body->GetType();
+	BLZR_CORE_INFO("Type: {0}", selectedTypeIndex);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
 												 ? "Choose a type"
@@ -1341,6 +1535,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		for (int i = 0; i < IM_ARRAYSIZE(types); i++) {
 			bool isSelected = (selectedTypeIndex == i);
 			if (ImGui::Selectable(types[i], isSelected)) {
+				selectedTypeIndex = i;
 				physics.GetAttributes().type = static_cast<RigidBodyType>(i);
 				body->SetType(b2BodyType(i));
 			}

@@ -66,10 +66,11 @@ void ScriptingSystem::Update() {
 		Entity ent{m_Registry, entity};
 
 		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+
 		if (script.update.valid()) {
-			auto result = script.update(entity);
-			if (!result.valid()) {
-				sol::error err = result;
+			try {
+				script.update(ent);
+			} catch (const sol::error &err) {
 				BLZR_CORE_ERROR(
 					"Error running Update script for entity '{}': {}",
 					ent.GetName(), err.what());

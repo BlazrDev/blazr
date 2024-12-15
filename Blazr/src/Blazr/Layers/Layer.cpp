@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Ecs/Components/SpriteComponent.h"
+#include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Layer.h"
 
@@ -16,6 +17,14 @@ void Layer::AddEntity(Ref<Entity> entity) { entities.push_back(entity); }
 void Layer::RemoveEntity(Ref<Entity> entity) {
 	entities.erase(std::remove(entities.begin(), entities.end(), entity),
 				   entities.end());
+}
+void Layer::RemoveEntity(const std::string &name) {
+	for (auto it = entities.begin(); it != entities.end(); ++it) {
+		if ((*it)->GetName() == name) {
+			entities.erase(it);
+			return;
+		}
+	}
 }
 void Layer::Render(Registry &registry) {
 	for (auto entity : entities) {
@@ -34,7 +43,7 @@ void Layer::Render(Registry &registry) {
 					{sprite.width, sprite.height}, sprite.color);
 			}
 
-			if (entity->GetName() != "collider" &&
+			if (entity->GetName() != "Collider" &&
 				entity->GetGroup() != "grid") {
 				Renderer2D::DrawQuad(registry, entityHandler);
 			}
@@ -66,6 +75,10 @@ void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 	j["Entities"] = nlohmann::json::array();
 	std::for_each(layer->entities.begin(), layer->entities.end(),
 				  [&](Ref<Entity> entity) {
+					  if (entity->HasComponent<TileComponent>()) {
+						  return;
+					  }
+
 					  nlohmann::json entityJson;
 					  if (entity->HasComponent<AnimationComponent>()) {
 						  AnimationComponent::to_json(
@@ -115,8 +128,19 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 	if (j.contains("Entities")) {
 		for (const auto &entityJson : j.at("Entities")) {
 
-			Ref<Entity> entity =
-				CreateRef<Entity>(*Registry::GetInstance(), "", "");
+			Ref<Entity> entity;
+			if (entityJson.contains("Identification")) {
+				Identification identification;
+				Identification::from_json(entityJson.at("Identification"),
+										  identification);
+				entity = CreateRef<Entity>(*Registry::GetInstance(),
+										   identification.name,
+										   identification.group);
+			} else {
+				BLZR_CORE_ERROR(
+					"Error deserializing entity. No identification found.");
+				return;
+			}
 
 			if (entityJson.contains("Animation")) {
 				AnimationComponent animation;
@@ -150,12 +174,6 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				PhysicsComponent physics;
 				PhysicsComponent::from_json(entityJson.at("Physics"), physics);
 				entity->AddComponent<PhysicsComponent>(physics);
-			}
-			if (entityJson.contains("Identification")) {
-				Identification identification;
-				Identification::from_json(entityJson.at("Identification"),
-										  identification);
-				entity->AddComponent<Identification>(identification);
 			}
 
 			layer->entities.push_back(entity);
