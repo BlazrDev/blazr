@@ -1,5 +1,6 @@
 #include "../Editor.h"
 #include "Blazr/Core/Core.h"
+#include "Blazr/Core/Log.h"
 #include "Blazr/Project/Project.h"
 #include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/CameraController.h"
@@ -7,25 +8,46 @@
 #include "imgui.h"
 
 namespace Blazr {
+static bool showSceneAddDialog = false;
+static char inputText[128];
 void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
-						 char *luaScriptBuffer) {
-	if (ImGui::Button("+")) {
-		std::string newSceneName =
-			"Untitled " +
-			std::to_string(Project::GetActive()->GetScenes().size() + 1);
-		if (true) {
-			Canvas canvas{16, 16};
-			Ref<TilemapScene> tilemapScene = CreateRef<TilemapScene>(canvas);
-			Project::GetActive()->AddScene(tilemapScene->GetName(),
-										   tilemapScene);
-		} else {
-			Ref<Scene> newScene = CreateRef<Scene>();
-			Project::GetActive()->AddScene(newSceneName, newScene);
-		}
+						 char *luaScriptBuffer, Ref<Project> project) {
 
+	if (ImGui::Button("+")) {
+		showSceneAddDialog = true;
+	}
+	if (showSceneAddDialog) {
+
+		auto scenes = project->GetScenes();
+		ImVec2 windowSize(400, 150);
+		ImVec2 windowPos(100, 100);
+		ImGui::SetNextWindowSize(windowSize, ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowPos(windowPos, ImGuiCond_FirstUseEver);
+		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoCollapse;
+		if (ImGui::Begin("Choose Dialog", nullptr, windowFlags)) {
+			ImGui::Text("Enter scene name:");
+			ImGui::InputText("##input", inputText, IM_ARRAYSIZE(inputText));
+			if (ImGui::Button("TileMapScene")) {
+				BLZR_CORE_ERROR("tilmapscene");
+
+				Canvas canvas{16, 16};
+				Ref<TilemapScene> tilemapScene =
+					CreateRef<TilemapScene>(canvas);
+				Project::GetActive()->AddScene(tilemapScene->GetName(),
+											   tilemapScene);
+				showSceneAddDialog = false;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("AddScene")) {
+				Ref<Scene> newScene = CreateRef<Scene>();
+				Project::GetActive()->AddScene(inputText, newScene);
+				showSceneAddDialog = false;
+			}
+		}
 		ProjectSerializer::Serialize(
 			Project::GetActive(), Project::GetActive()->GetProjectDirectory() /
 									  Project::GetActive()->GetConfig().name);
+		ImGui::End();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Play")) {
@@ -47,4 +69,5 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 		}
 	}
 }
+
 } // namespace Blazr

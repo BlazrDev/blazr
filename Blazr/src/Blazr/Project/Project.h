@@ -78,10 +78,10 @@ class Project {
 							  const std::string &newName);
 
 	static BLZR_API Ref<Project> s_ActiveProject;
+
   private:
 	std::unordered_map<std::string, Ref<Scene>> m_Scenes;
 	ProjectConfig m_Config;
 	std::filesystem::path m_ProjectDirectory;
-
 };
 } // namespace Blazr

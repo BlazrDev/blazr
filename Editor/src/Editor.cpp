@@ -86,6 +86,7 @@ static bool showIdentificationComponent = false;
 static bool showSpriteComponent = false;
 static bool showPhysicsComponent = false;
 static bool showColorTab = false;
+static bool showSceneChooseDialog = false;
 
 // managers
 
@@ -96,6 +97,9 @@ static std::string luaScriptContent = ""; // Sadržaj Lua skripte
 static char
 	luaScriptBuffer[1024 * 16]; // Buffer za unos teksta (podešen na 16KB)
 
+static Ref<Project> newProject;
+static std::string selectedScene = "";
+static bool sceneIsSelected = false;
 Editor::Editor() { Init(); }
 
 Editor::~Editor() { Shutdown(); }
@@ -111,7 +115,7 @@ void Editor::Init() {
 	m_Registry->AddToContext(scriptingSystem);
 	m_Renderer = Renderer2D();
 	InitImGui();
-	Ref<Project> newProject = Project::New("StartProject");
+	newProject = Project::New("StartProject");
 	Project::SetActive(newProject);
 	Ref<Scene> newScene = CreateRef<Scene>();
 	newScene->SetName("Untitled 1");
@@ -335,17 +339,18 @@ void Editor::RenderImGui() {
 				}*/
 			}
 			if (ImGui::MenuItem("Export tilemap to scene")) {
-				auto tilemapScene =
-					std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
-				if (tilemapScene) {
-					for (const auto &[name, scene] :
-						 Project::GetActive()->GetScenes()) {
-						BLZR_CORE_INFO("Scene name: {0}", scene->GetName());
-						if (scene->GetName() == "Untitled 1") {
-							tilemapScene->ExportTilemapToScene(*scene);
-						}
-					}
-				}
+				showSceneChooseDialog = true;
+				// auto tilemapScene =
+				// 	std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+				// if (tilemapScene) {
+				// 	for (const auto &[name, scene] :
+				// 		 Project::GetActive()->GetScenes()) {
+				// 		BLZR_CORE_INFO("Scene name: {0}", scene->GetName());
+				// 		if (scene->GetName() == "Untitled 1") {
+				// 			tilemapScene->ExportTilemapToScene(*scene);
+				// 		}
+				// 	}
+				// }
 			}
 			ImGui::EndMenu();
 		}
@@ -372,6 +377,44 @@ void Editor::RenderImGui() {
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+
+	if (showSceneChooseDialog) {
+		ImVec2 windowSize(300, 300);
+		ImVec2 windowPos(100, 100);
+		ImGui::SetNextWindowSize(windowSize);
+		ImGui::SetNextWindowPos(windowPos);
+		if (ImGui::Begin("Choose Scene Dialog", nullptr,
+						 ImGuiWindowFlags_NoCollapse)) {
+			auto scenes = newProject->GetScenes();
+			if (ImGui::BeginCombo("Select item", selectedScene.c_str())) {
+				for (const auto &scene : scenes) {
+					const bool isSelected = (selectedScene == scene.first);
+
+					if (ImGui::Selectable(scene.first.c_str(), isSelected)) {
+						selectedScene = scene.first;
+						showSceneChooseDialog = false;
+					}
+
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			auto tilemapScene =
+				std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+			if (tilemapScene) {
+
+				for (auto pair : scenes) {
+					if (pair.first == selectedScene) {
+						tilemapScene->ExportTilemapToScene(*pair.second);
+					}
+				}
+			}
+		}
+		ImGui::End();
 	}
 
 	//// Zooming
@@ -433,7 +476,8 @@ void Editor::RenderImGui() {
 	ImVec2 sceneSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//---------------------------------------------------------------2. box -
+	//---------------------------------------------------------------2. box
+	//-
 	// Object details---------------------------------
 	ImGui::SetNextWindowSize(ImVec2(270, heightSize));
 	ImGui::SetNextWindowPos(ImVec2(widthSize - 270, 19));
@@ -785,7 +829,8 @@ void Editor::RenderImGui() {
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
 	RenderSceneTabs(*this);
-	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer);
+	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer,
+						newProject);
 	RenderActiveScene(m_ActiveScene);
 
 	ImVec2 cameraPos = ImGui::GetWindowPos();
