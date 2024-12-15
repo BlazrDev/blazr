@@ -42,6 +42,7 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 				Ref<Scene> newScene = CreateRef<Scene>();
 				Project::GetActive()->AddScene(inputText, newScene);
 				showSceneAddDialog = false;
+				strcpy(inputText, "");
 			}
 		}
 		ProjectSerializer::Serialize(

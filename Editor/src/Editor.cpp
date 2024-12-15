@@ -410,6 +410,7 @@ void Editor::RenderImGui() {
 				for (auto pair : scenes) {
 					if (pair.first == selectedScene) {
 						tilemapScene->ExportTilemapToScene(*pair.second);
+						selectedScene = "";
 					}
 				}
 			}
