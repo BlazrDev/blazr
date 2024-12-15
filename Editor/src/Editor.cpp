@@ -314,6 +314,16 @@ void Editor::RenderImGui() {
 				}*/
 			}
 			ImGui::EndMenu();
+
+			if (ImGui::MenuItem("Export tilemap to scene")) {
+				auto tilemapScene =
+					std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+				if (tilemapScene) {
+					Scene scene = Scene();
+					tilemapScene->ExportTilemapToScene(scene);
+				}
+			}
+			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
 			if (ImGui::MenuItem("Undo")) {

@@ -2,6 +2,8 @@
 
 #include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Components/Identification.h"
+#include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
@@ -18,6 +20,8 @@ class TilemapScene : public Blazr::Scene {
 	Ref<Canvas> m_Canvas;
 	std::pair<std::string, glm::vec3> m_selectedTile = {"", {0, 0, 0}};
 	bool m_ShowGrid = true;
+	Entity m_SelectedEntity{*m_Registry, "selected", "selected"};
+	bool isShiftPressed = false;
 
   public:
 	TilemapScene(Canvas &canvas) : Scene() {
@@ -61,6 +65,10 @@ class TilemapScene : public Blazr::Scene {
 			}
 		}
 
+		m_SelectedEntity.AddComponent<TransformComponent>();
+		m_SelectedEntity.AddComponent<SpriteComponent>();
+		m_SelectedEntity.AddComponent<TileComponent>();
+
 		// if (mousePosition.x < 0)
 		// 	mousePosition.x = 0;
 		// if (mousePosition.y < 0)
@@ -74,6 +82,24 @@ class TilemapScene : public Blazr::Scene {
 	}
 	void SetSelectedTile(std::pair<std::string, glm::vec3> texture) {
 		m_selectedTile = texture;
+
+		m_SelectedEntity.ReplaceComponent<TransformComponent>(
+			TransformComponent{.position = {0, 0}});
+		auto &sprite =
+			m_SelectedEntity.ReplaceComponent<SpriteComponent>(SpriteComponent{
+				.width = static_cast<float>(m_Canvas->GetTileSize()),
+				.height = static_cast<float>(m_Canvas->GetTileSize()),
+				.startX = static_cast<int>(texture.second.x),
+				.startY = static_cast<int>(texture.second.y) -
+						  static_cast<int>(texture.second.z) - 1,
+				.texturePath = texture.first});
+
+		m_SelectedEntity.ReplaceComponent<TileComponent>(
+			TileComponent{.name = texture.first});
+
+		auto t = AssetManager::GetInstance()->GetTexture(m_selectedTile.first);
+
+		sprite.generateObject(t->GetWidth(), t->GetHeight());
 	}
 
 	void Render() override {
@@ -95,6 +121,11 @@ class TilemapScene : public Blazr::Scene {
 
 		float gridX = static_cast<int>(mousePosition.x / tileSize);
 		float gridY = static_cast<int>(mousePosition.y / tileSize);
+		if (ImGui::GetIO().KeyShift) {
+			isShiftPressed = true;
+		} else {
+			isShiftPressed = false;
+		}
 
 		// Proveravamo da li je miš u granicama mreže
 		if (gridX >= 0 && gridX < m_Canvas->GetWidth() && gridY >= 0 &&
@@ -104,42 +135,79 @@ class TilemapScene : public Blazr::Scene {
 			glm::vec4 highlightColor = {255.0f, 0.0f, 0.0f, 1.0f};
 
 			if (m_selectedTile.first != "") {
+				auto texture = AssetManager::GetInstance()->GetTexture(
+					m_selectedTile.first);
+				if (texture == nullptr) {
+					BLZR_CORE_ERROR("Texture is null {0}",
+									m_selectedTile.first);
+				}
 
+				Renderer2D::DrawQuad(*m_Registry,
+									 m_SelectedEntity.GetEntityHandler());
+				m_SelectedEntity.ReplaceComponent<TransformComponent>(
+					TransformComponent{
+						.position = {centerPosition.x + gridX * tileSize,
+									 centerPosition.y + gridY * tileSize}});
+
+				BLZR_CORE_INFO("SHIFT PRESSED: {0}", isShiftPressed);
 				if (ImGui::IsWindowHovered() &&
-					ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
-					BLZR_CORE_INFO("Mouse clicked");
+					ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
+					!isShiftPressed) {
 
-					Entity entity = Entity(*m_Registry, "", "tilemap");
+					if (!IsEntityAtPosition(m_Registry.get(),
+											centerPosition.x + gridX * tileSize,
+											centerPosition.y + gridY * tileSize,
+											"Tilemap")) {
+						Entity entity = Entity(*m_Registry, "", "tilemap");
 
-					auto &transform = entity.AddComponent<TransformComponent>(
-						TransformComponent{
-							.position = {centerPosition.x + gridX * tileSize,
-										 centerPosition.y + gridY * tileSize}});
+						auto &transform =
+							entity.AddComponent<TransformComponent>(
+								TransformComponent{
+									.position = {
+										centerPosition.x + gridX * tileSize,
+										centerPosition.y + gridY * tileSize}});
 
-					auto &sprite =
-						entity.AddComponent<SpriteComponent>(SpriteComponent{
-							.width = tileSize,
-							.height = tileSize,
-							.startX = static_cast<int>(m_selectedTile.second.x),
-							.startY =
-								static_cast<int>(m_selectedTile.second.y) -
-								static_cast<int>(m_selectedTile.second.z) - 1,
-							.layer = "Tilemap",
-							.texturePath = m_selectedTile.first});
+						auto &sprite = entity.AddComponent<SpriteComponent>(
+							SpriteComponent{
+								.width = tileSize,
+								.height = tileSize,
+								.startX =
+									static_cast<int>(m_selectedTile.second.x),
+								.startY =
+									static_cast<int>(m_selectedTile.second.y) -
+									static_cast<int>(m_selectedTile.second.z) -
+									1,
+								.layer = "Tilemap",
+								.texturePath = m_selectedTile.first});
 
-					auto &tile = entity.AddComponent<TileComponent>(
-						TileComponent{.name = m_selectedTile.first});
-					auto texture = AssetManager::GetInstance()->GetTexture(
-						m_selectedTile.first);
-					if (texture == nullptr) {
-						BLZR_CORE_ERROR("Texture is null {0}",
-										m_selectedTile.first);
+						auto &tile = entity.AddComponent<TileComponent>(
+							TileComponent{.name = m_selectedTile.first});
+						sprite.generateObject(texture->GetWidth(),
+											  texture->GetHeight());
+
+						m_LayerManager->AddEntityToLayer(
+							"Tilemap", CreateRef<Entity>(entity));
 					}
-					sprite.generateObject(texture->GetWidth(),
-										  texture->GetHeight());
-
-					m_LayerManager->AddEntityToLayer("Tilemap",
-													 CreateRef<Entity>(entity));
+				} else {
+					if (ImGui::IsWindowHovered() &&
+						ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
+						isShiftPressed) {
+						auto view =
+							m_Registry->GetRegistry()
+								.view<TransformComponent, SpriteComponent>();
+						for (auto entity : view) {
+							auto &transform =
+								view.get<TransformComponent>(entity);
+							auto &sprite = view.get<SpriteComponent>(entity);
+							if (transform.position.x ==
+									centerPosition.x + gridX * tileSize &&
+								transform.position.y ==
+									centerPosition.y + gridY * tileSize &&
+								sprite.layer == "Tilemap") {
+								m_Registry->GetRegistry().destroy(entity);
+							}
+						}
+					}
 				}
 
 			} else {
@@ -157,6 +225,28 @@ class TilemapScene : public Blazr::Scene {
 		Blazr::Renderer2D::Flush();
 	}
 
+	bool IsEntityAtPosition(Blazr::Registry *registry, float posX, float posY,
+							const std::string &layer) {
+		auto view =
+			registry->GetRegistry().view<TransformComponent, SpriteComponent>();
+		for (auto entity : view) {
+			auto &transform = view.get<TransformComponent>(entity);
+			auto &sprite = view.get<SpriteComponent>(entity);
+
+			if (transform.position.x == posX && transform.position.y == posY &&
+				sprite.layer == layer) {
+				return true; // Entitet postoji na toj poziciji i ima isti sloj
+			}
+		}
+		return false; // Nema entiteta na toj poziciji sa istim slojem
+	}
+
+	void ExportTilemapToScene(Scene &scene) {
+		auto layerManager = scene.GetLayerManager();
+
+		auto entities =
+			m_LayerManager->GetLayerByName("Tilemap")->GetEntities();
+	}
 	Ref<Canvas> GetCanvas() { return m_Canvas; }
 	void SetCanvas(Ref<Canvas> canvas) { m_Canvas = canvas; }
 };

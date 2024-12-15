@@ -34,9 +34,12 @@ void Layer::Render(Registry &registry) {
 					{sprite.width, sprite.height}, sprite.color);
 			}
 
+			if (entity->GetName() != "collider" &&
+				entity->GetGroup() != "grid") {
+				Renderer2D::DrawQuad(registry, entityHandler);
+			}
+
 			if (showColliders) {
-				if (entity->GetName() != "collider")
-					Renderer2D::DrawQuad(registry, entityHandler);
 				if (entity->HasComponent<BoxColliderComponent>()) {
 					auto &collider =
 						entity->GetComponent<BoxColliderComponent>();

@@ -16,6 +16,8 @@ class Layer {
 	void BLZR_API AddEntity(Ref<Entity> entity);
 	void RemoveEntity(Ref<Entity> entity);
 
+	std::vector<Ref<Entity>> BLZR_API GetEntities() { return entities; }
+
 	void Render(Registry &registry);
 
 	static void BindLayer(sol::state &lua);
