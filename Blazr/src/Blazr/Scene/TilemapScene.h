@@ -22,9 +22,9 @@ class TilemapScene : public Blazr::Scene {
   private:
 	Ref<Canvas> m_Canvas;
 	std::pair<std::string, glm::vec3> m_selectedTile = {"", {0, 0, 0}};
-	bool m_ShowGrid = true;
 	Entity m_SelectedEntity{*m_Registry, "selected", "selected"};
 	bool isShiftPressed = false;
+	std::string layer = "";
 
   public:
 	TilemapScene(Canvas &canvas) : Scene() {
@@ -32,8 +32,16 @@ class TilemapScene : public Blazr::Scene {
 		m_Canvas = CreateRef<Canvas>(canvas);
 		m_LayerManager->CreateLayer("Grid", 0);
 		m_LayerManager->CreateLayer("Tilemap", 1);
-		m_LayerManager->CreateLayer("Collider", 2);
+		m_LayerManager->CreateLayer("Objects", 2);
+		m_LayerManager->CreateLayer("Collider", 10);
 
+		initCanvas();
+		m_SelectedEntity.AddComponent<TransformComponent>();
+		m_SelectedEntity.AddComponent<SpriteComponent>();
+		m_SelectedEntity.AddComponent<TileComponent>();
+	}
+
+	void initCanvas() {
 		float tileSize = m_Canvas->GetTileSize();
 		glm::vec2 position = {1280, 720};
 		glm::vec2 centerPosition{0.f};
@@ -68,22 +76,22 @@ class TilemapScene : public Blazr::Scene {
 												 CreateRef<Entity>(entity));
 			}
 		}
+	}
 
-		m_SelectedEntity.AddComponent<TransformComponent>();
-		m_SelectedEntity.AddComponent<SpriteComponent>();
-		m_SelectedEntity.AddComponent<TileComponent>();
-
-		// if (mousePosition.x < 0)
-		// 	mousePosition.x = 0;
-		// if (mousePosition.y < 0)
-		// 	mousePosition.y = 0;
-
-		// Izračunavamo relativnu poziciju miša prema mreži
+	void removeGrid() {
+		auto entities = m_LayerManager->GetLayerByName("Grid")->GetEntities();
+		for (auto entity : entities) {
+			m_LayerManager->GetLayerByName("Grid")->RemoveEntity(entity);
+		}
 	}
 
 	std::pair<std::string, glm::vec3> GetSelectedTile() {
 		return m_selectedTile;
 	}
+
+	std::string GetLayer() { return layer; }
+
+	void SetLayer(std::string layer) { this->layer = layer; }
 	void SetSelectedTile(std::pair<std::string, glm::vec3> texture) {
 		m_selectedTile = texture;
 
@@ -111,6 +119,12 @@ class TilemapScene : public Blazr::Scene {
 		Blazr::Renderer2D::BeginScene(m_Camera.GetCamera());
 		m_Camera.GetCamera().Update();
 		m_Camera.OnUpdate();
+
+		if (m_Canvas->GetUpdate()) {
+			removeGrid();
+			initCanvas();
+			m_Canvas->SetUpdate(false);
+		}
 		float tileSize = m_Canvas->GetTileSize();
 		glm::vec2 position = {1280, 720};
 		glm::vec2 centerPosition{0.f};
@@ -153,7 +167,6 @@ class TilemapScene : public Blazr::Scene {
 						.position = {centerPosition.x + gridX * tileSize,
 									 centerPosition.y + gridY * tileSize}});
 
-				// BLZR_CORE_INFO("SHIFT PRESSED: {0}", isShiftPressed);
 				if (ImGui::IsWindowHovered() &&
 					ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
 					!isShiftPressed) {
@@ -161,7 +174,7 @@ class TilemapScene : public Blazr::Scene {
 					if (!IsEntityAtPosition(m_Registry.get(),
 											centerPosition.x + gridX * tileSize,
 											centerPosition.y + gridY * tileSize,
-											"Tilemap") &&
+											layer) &&
 						m_selectedTile.first != "collider") {
 
 						addTile(std::to_string(gridX) + "  " +
@@ -172,7 +185,7 @@ class TilemapScene : public Blazr::Scene {
 								   m_Registry.get(),
 								   centerPosition.x + gridX * tileSize,
 								   centerPosition.y + gridY * tileSize,
-								   "Collider") &&
+								   layer) &&
 							   m_selectedTile.first == "collider") {
 						addCollider(
 							"Collider", centerPosition.x + gridX * tileSize,
@@ -195,8 +208,8 @@ class TilemapScene : public Blazr::Scene {
 									centerPosition.x + gridX * tileSize &&
 								transform.position.y ==
 									centerPosition.y + gridY * tileSize &&
-								sprite.layer == "Tilemap") {
-								m_LayerManager->GetLayerByName("Tilemap")
+								sprite.layer == layer) {
+								m_LayerManager->GetLayerByName(layer)
 									->RemoveEntity(id.name);
 								m_Registry->GetRegistry().destroy(entity);
 							}
@@ -234,14 +247,14 @@ class TilemapScene : public Blazr::Scene {
 			.startX = static_cast<int>(m_selectedTile.second.x),
 			.startY = static_cast<int>(m_selectedTile.second.y) -
 					  static_cast<int>(m_selectedTile.second.z) - 1,
-			.layer = "Tilemap",
+			.layer = layer,
 			.texturePath = m_selectedTile.first});
 
 		auto &tile = entity.AddComponent<TileComponent>(
 			TileComponent{.name = m_selectedTile.first});
 
 		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
-		m_LayerManager->AddEntityToLayer("Tilemap", CreateRef<Entity>(entity));
+		m_LayerManager->AddEntityToLayer(layer, CreateRef<Entity>(entity));
 	}
 
 	void addCollider(const std::string &name, int x, int y, int tileSize = 16) {
@@ -259,7 +272,7 @@ class TilemapScene : public Blazr::Scene {
 			.startX = static_cast<int>(m_selectedTile.second.x),
 			.startY = static_cast<int>(m_selectedTile.second.y) -
 					  static_cast<int>(m_selectedTile.second.z) - 1,
-			.layer = "Collider",
+			.layer = layer,
 			.texturePath = m_selectedTile.first});
 
 		auto &tile = entity.AddComponent<TileComponent>(
@@ -284,7 +297,7 @@ class TilemapScene : public Blazr::Scene {
 		entity.AddComponent<PhysicsComponent>(
 			PhysicsComponent(physicsWorld, attributes));
 
-		m_LayerManager->AddEntityToLayer("Collider", CreateRef<Entity>(entity));
+		m_LayerManager->AddEntityToLayer(layer, CreateRef<Entity>(entity));
 	}
 	bool IsEntityAtPosition(Blazr::Registry *registry, float posX, float posY,
 							const std::string &layer) {
@@ -303,31 +316,39 @@ class TilemapScene : public Blazr::Scene {
 	}
 
 	void ExportTilemapToScene(Scene &scene) {
+
 		auto layerManager = scene.GetLayerManager();
-		auto tileMapLayer = layerManager->GetLayerByName("Tilemap");
-		if (tileMapLayer == nullptr) {
-			layerManager->CreateLayer("Tilemap", 0);
-			tileMapLayer = layerManager->GetLayerByName("Tilemap");
+		for (auto layer : m_LayerManager->GetAllLayers()) {
+			if (layer->name == "Grid") {
+				continue;
+			}
+			auto sceneLayerManager = layerManager->GetLayerByName(layer->name);
+			if (sceneLayerManager == nullptr) {
+				sceneLayerManager =
+					layerManager->CreateLayer(layer->name, layer->zIndex);
+			}
+			for (auto entity : layer->GetEntities()) {
+				sceneLayerManager->AddEntity(entity);
+			}
 		}
-		auto entities =
-			m_LayerManager->GetLayerByName("Tilemap")->GetEntities();
+		clearScene();
+	}
 
-		for (auto entity : entities) {
-			tileMapLayer->AddEntity(entity);
-		}
+	void clearScene() {
 
-		auto colliderLayer = layerManager->GetLayerByName("Collider");
-		if (colliderLayer == nullptr) {
-			layerManager->CreateLayer("Collider", 1);
-			colliderLayer = layerManager->GetLayerByName("Collider");
-		}
-		entities = m_LayerManager->GetLayerByName("Collider")->GetEntities();
-
-		for (auto entity : entities) {
-			colliderLayer->AddEntity(entity);
+		for (auto layer : m_LayerManager->GetAllLayers()) {
+			if (layer->name != "Grid") {
+				auto entities = layer->GetEntities();
+				for (auto entity : entities) {
+					layer->RemoveEntity(entity);
+				}
+			}
 		}
 	}
 	Ref<Canvas> GetCanvas() { return m_Canvas; }
-	void SetCanvas(Ref<Canvas> canvas) { m_Canvas = canvas; }
+	void SetCanvas(Ref<Canvas> canvas) {
+		m_Canvas = canvas;
+		initCanvas();
+	}
 };
 } // namespace Blazr

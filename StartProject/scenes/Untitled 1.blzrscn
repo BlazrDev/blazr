@@ -1,29 +1,4 @@
 {
-    "Layers": [
-        {
-            "Layer 1": {
-                "Entities": [],
-                "zIndex": 0
-            }
-        },
-        {
-            "0": {
-                "Entities": [],
-                "zIndex": 0
-            }
-        },
-        {
-            "1": {
-                "Entities": [],
-                "zIndex": 1
-            }
-        },
-        {
-            "2": {
-                "Entities": [],
-                "zIndex": 2
-            }
-        }
-    ],
+    "Layers": [],
     "Name": "Untitled 1"
 }

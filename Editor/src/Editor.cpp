@@ -14,6 +14,7 @@
 #include "Blazr/Renderer/CameraController.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
+#include "Blazr/Scene/TilemapScene.h"
 #include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
@@ -100,6 +101,9 @@ static char
 static Ref<Project> newProject;
 static std::string selectedScene = "";
 static bool sceneIsSelected = false;
+static int canvasWidth = 16;
+static int canvasHeight = 16;
+
 Editor::Editor() { Init(); }
 
 Editor::~Editor() { Shutdown(); }
@@ -253,6 +257,7 @@ void Editor::Run() {
 static std::string selectedGameObject = "GameObject";
 void Editor::RenderImGui() {
 	ImVec2 cursorPos = ImVec2(10, 55);
+	ImVec2 tilemapCursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
@@ -273,6 +278,7 @@ void Editor::RenderImGui() {
 	ImGui::DockSpace(ImGui::GetID("MainDockSpace"), ImVec2(0.0f, 0.0f));
 
 	static bool showGameObjectDetails = false;
+	static bool showTilemapSettings = false;
 	int numberOfComponents = 3;
 
 	// Menu bar
@@ -459,6 +465,10 @@ void Editor::RenderImGui() {
 				}
 			}
 		}
+		showTilemapSettings = false;
+	} else {
+		showTilemapSettings = true;
+		showGameObjectDetails = false;
 	}
 
 	auto view = m_Registry->GetRegistry().view<entt::entity>(
@@ -589,7 +599,6 @@ void Editor::RenderImGui() {
 						}
 					}
 				}
-
 				if (!CameraController::paused) {
 					ImGui::EndDisabled();
 				}
@@ -811,7 +820,24 @@ void Editor::RenderImGui() {
 			}
 			ImGui::EndTabBar();
 		}
-	} else {
+	} else if (showTilemapSettings) {
+		if (ImGui::BeginTabBar("Tilemap Settings")) {
+			if (ImGui::BeginTabItem("TileMap Settings")) {
+				if (!CameraController::paused) {
+					ImGui::BeginDisabled(true);
+				}
+
+				renderTileMapSettings(tilemapCursorPos, *tilemapScene);
+				if (!CameraController::paused) {
+					ImGui::EndDisabled();
+				}
+				ImGui::EndTabItem();
+			}
+		}
+		ImGui::EndTabBar();
+	}
+
+	else {
 		ImGui::Separator();
 		ImGui::Dummy(ImVec2());
 		ImGui::SetWindowFontScale(1.2f);
@@ -1459,27 +1485,6 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 		}
 	}
 
-	// Popups for success/failure
-	// if (ImGui::BeginPopup("Script Created")) {
-	// 	ImGui::Text("Script successfully created!");
-	// 	ImGui::EndPopup();
-	// }
-
-	// if (ImGui::BeginPopup("Error Creating Script")) {
-	// 	ImGui::Text("Failed to create the script file.");
-	// 	ImGui::EndPopup();
-	// }
-	//
-	// if (ImGui::BeginPopup("Script Loaded")) {
-	// 	ImGui::Text("Script successfully loaded!");
-	// 	ImGui::EndPopup();
-	// }
-	//
-	// if (ImGui::BeginPopup("Error Loading Script")) {
-	// 	ImGui::Text("Failed to load the script file.");
-	// 	ImGui::EndPopup();
-	// }
-
 	cursorPos.y += 35; // Adjust cursor position for layout
 }
 
@@ -1688,6 +1693,135 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		newOffsetX = offsetX;
 		newOffsetY = offsetY;
 	}
+}
+void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
+	Ref<Canvas> canvas = tilemap.GetCanvas();
+
+	if (canvas == nullptr) {
+		return;
+	}
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("TileMap Settings");
+	ImGui::SameLine();
+	cursorPos.y += 28;
+	// Pozicija (Position)
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Grid Size");
+	cursorPos.y += 18;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushItemWidth(105);
+	ImGui::Text("X");
+	ImGui::SameLine();
+	ImGui::InputInt("##Grid Size X", &canvasWidth, 1, 4);
+	if (canvasWidth < 1) {
+		canvasWidth = 1;
+	}
+	if (canvasWidth > 100) {
+		canvasWidth = 100;
+	}
+	ImGui::SameLine();
+	ImGui::Text("Y");
+	ImGui::SameLine();
+	ImGui::InputInt("##Grid Size Y", &canvasHeight, 1, 4);
+	if (canvasHeight < 1) {
+		canvasHeight = 1;
+	}
+
+	if (canvasHeight > 100) {
+		canvasHeight = 100;
+	}
+
+	if ((canvasWidth != canvas->GetWidth() ||
+		 canvasHeight != canvas->GetHeight()) &&
+		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		canvas->SetWidth(canvasWidth * canvas->GetTileSize());
+		canvas->SetHeight(canvasHeight * canvas->GetTileSize());
+		canvas->SetUpdate(true);
+	}
+
+	ImGui::PopItemWidth();
+	cursorPos.y += 25;
+
+	std::vector<Ref<Layer>> layers =
+		m_ActiveScene->GetLayerManager()->GetAllLayers();
+
+	layers.erase(std::remove_if(layers.begin(), layers.end(),
+								[](const Ref<Layer> &layer) {
+									return layer->name == "Grid";
+								}),
+				 layers.end());
+
+	static std::unordered_map<Ref<Layer>, int> previousSelectedLayerIndices;
+
+	int &previousSelectedLayerIndex = previousSelectedLayerIndices[layers[0]];
+	if (previousSelectedLayerIndex == 0 && selectedLayerIndex != 0) {
+		previousSelectedLayerIndex = selectedLayerIndex;
+	}
+
+	if (ImGui::BeginCombo("##LayerDropdown",
+						  selectedLayerIndex == -1
+							  ? "Select a layer:"
+							  : layers[selectedLayerIndex]->name.c_str())) {
+
+		if (ImGui::Selectable("Add New Layer", false)) {
+			showAddLayerPopup = true;
+			strncpy(newLayerName, "New Layer", sizeof(newLayerName));
+			newLayerZIndex = 0;
+		}
+
+		for (int i = 0; i < layers.size(); i++) {
+			bool isSelected = (selectedLayerIndex == i);
+			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
+				if (previousSelectedLayerIndex != i) {
+					tilemap.SetLayer(layers[i]->name);
+					previousSelectedLayerIndex = i;
+					selectedLayerIndex = i;
+					layerChanged = true;
+				}
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (showAddLayerPopup) {
+		ImGui::OpenPopup("Create New Layer");
+	}
+
+	if (ImGui::BeginPopupModal("Create New Layer", &showAddLayerPopup,
+							   ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("Enter Layer Details:");
+		ImGui::Separator();
+
+		ImGui::InputText("Layer Name", newLayerName, sizeof(newLayerName));
+		ImGui::InputInt("zIndex", &newLayerZIndex);
+
+		if (ImGui::Button("Create", ImVec2(120, 0))) {
+			Ref<Layer> newLayer =
+				CreateRef<Layer>(newLayerName, newLayerZIndex);
+			m_ActiveScene->GetLayerManager()->AddLayer(newLayer);
+
+			layers = m_ActiveScene->GetLayerManager()->GetAllLayers();
+			selectedLayerIndex = layers.size() - 1;
+
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+
+	cursorPos.x -= 65;
+	cursorPos.y += 35;
 }
 
 } // namespace Blazr
