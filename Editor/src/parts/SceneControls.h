@@ -40,6 +40,7 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 			ImGui::SameLine();
 			if (ImGui::Button("AddScene")) {
 				Ref<Scene> newScene = CreateRef<Scene>();
+				newScene->SetName(inputText);
 				Project::GetActive()->AddScene(inputText, newScene);
 				showSceneAddDialog = false;
 				strcpy(inputText, "");

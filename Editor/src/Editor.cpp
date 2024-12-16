@@ -30,7 +30,7 @@
 // #include "utils/FileDialog.h"
 #include <GLFW/glfw3.h>
 #include <memory>
-
+namespace fs = std::filesystem;
 namespace Blazr {
 // layers
 static int selectedLayerIndex = 0;
@@ -928,6 +928,14 @@ void Editor::RenderImGui() {
 
 			ImGui::EndTabItem();
 		}
+		const char *filters[] = {
+			"Image Files\0*.png;*.jpg;*.jpeg\0\0", // TEXTURES
+			"Font Files\0*.ttf;*.otf\0\0",		   // FONTS
+			"Audio Files\0*.wav\0\0",			   // MUSIC
+			"Audio Files\0*.wav\0\0",			   // SOUNDFX
+			"Scene Files\0*.scene\0\0"			   // SCENES
+		};
+
 		if (ImGui::BeginTabItem("Assets")) {
 
 			if (ImGui::BeginCombo("Asset Type", items[current_item])) {
@@ -945,6 +953,7 @@ void Editor::RenderImGui() {
 			ImGui::Spacing();
 			ImGui::Separator();
 			ImGui::Spacing();
+
 			switch (current_item) {
 			case 0: // TEXTURES
 				ImGui::Text("Texture");
@@ -965,6 +974,66 @@ void Editor::RenderImGui() {
 				ImGui::Text("Select an asset type to view its content.");
 				break;
 			}
+
+			if (ImGui::Button("Import Asset")) {
+				std::string filepath =
+					Blazr::FileDialog::OpenFile(filters[current_item]);
+				if (!filepath.empty()) {
+					// Get the project directory
+					std::string projectDir = Project::GetProjectDirectory();
+					std::string assetsDir = projectDir + "/assets";
+
+					// Determine the subfolder based on the asset type
+					std::string subfolder;
+					switch (current_item) {
+					case 0:
+						subfolder = "/textures";
+						break;
+					case 1:
+						subfolder = "/fonts";
+						break;
+					case 2:
+						subfolder = "/music";
+						break;
+					case 3:
+						subfolder = "/soundfx";
+						break;
+					case 4:
+						subfolder = "/scenes";
+						break;
+					default:
+						subfolder = "/others";
+						break;
+					}
+
+					// Full path to the target directory
+					std::string targetDir = assetsDir + subfolder;
+
+					// Create the directories if they don't exist
+					if (!fs::exists(targetDir)) {
+						fs::create_directories(targetDir);
+					}
+
+					// Get the filename from the selected file path
+					std::string filename =
+						fs::path(filepath).filename().string();
+
+					// Target file path
+					std::string targetPath = targetDir + "/" + filename;
+
+					// Copy the file to the target location
+					try {
+						fs::copy(filepath, targetPath,
+								 fs::copy_options::overwrite_existing);
+						ImGui::Text("Imported File: %s", filename.c_str());
+					} catch (const fs::filesystem_error &e) {
+						ImGui::Text("Error copying file: %s", e.what());
+					}
+				} else {
+					ImGui::Text("No file selected.");
+				}
+			}
+
 			ImGui::EndTabItem();
 		}
 
