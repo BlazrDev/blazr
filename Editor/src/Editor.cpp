@@ -104,6 +104,7 @@ static std::string selectedScene = "";
 static bool sceneIsSelected = false;
 static int canvasWidth = 16;
 static int canvasHeight = 16;
+static std::string identificationGroup = "";
 
 Editor::Editor() { Init(); }
 
@@ -278,6 +279,7 @@ void Editor::RenderImGui() {
 
 	static bool showGameObjectDetails = false;
 	static bool showTilemapSettings = false;
+	static bool showTileObjectDetails = false;
 	int numberOfComponents = 3;
 
 	// Menu bar
@@ -465,6 +467,29 @@ void Editor::RenderImGui() {
 	} else {
 		showTilemapSettings = true;
 		showGameObjectDetails = false;
+		std::unordered_set<std::string>
+			displayedGroups; // Set za praćenje ispisanih grupa
+
+		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+			for (Ref<Entity> ent : layer->entities) {
+				if (ent->HasComponent<TileComponent>() &&
+					ent->HasComponent<PhysicsComponent>()) {
+					std::string gameObjectName =
+						ent->GetComponent<Identification>().group;
+
+					// Proveri da li je grupa već ispisana
+					if (displayedGroups.find(gameObjectName) ==
+						displayedGroups.end()) {
+						if (ImGui::Selectable(gameObjectName.c_str())) {
+							selectedGameObject = gameObjectName;
+							showTileObjectDetails = true;
+						}
+						displayedGroups.insert(
+							gameObjectName); // Dodaj grupu u set
+					}
+				}
+			}
+		}
 	}
 
 	auto view = m_Registry->GetRegistry().view<entt::entity>(
@@ -824,6 +849,124 @@ void Editor::RenderImGui() {
 				}
 
 				renderTileMapSettings(tilemapCursorPos, *tilemapScene);
+
+				auto view = m_Registry->GetRegistry()
+								.view<PhysicsComponent, TileComponent,
+									  Identification>();
+				bool physicsComponentRendered =
+					false; // Flag za prikaz PhysicsComponent samo jednom
+				std::map<std::string, PhysicsComponent>
+					updatedPhysics; // Promenljive za ažurirani PhysicsComponent
+
+				for (auto entity : view) {
+					auto &physics = view.get<PhysicsComponent>(entity);
+					auto &identification = view.get<Identification>(entity);
+
+					// Ažuriraj grupu ako je tilemap
+					if (identification.group == "tilemap") {
+						identification.group = identificationGroup;
+					}
+
+					// Ako je entitet deo selektovane grupe
+					if (identification.group == selectedGameObject) {
+						// Prikazivanje PhysicsComponent samo jednom
+						if (!physicsComponentRendered) {
+							renderPhysicsComponent(
+								tilemapCursorPos,
+								physics); // Render prvi PhysicsComponent
+							renderIdentificationComponent(tilemapCursorPos,
+														  identification);
+							physicsComponentRendered = true;
+
+							updatedPhysics[identification.group] = physics;
+							for (auto e : view) {
+								auto &oldId = view.get<Identification>(e);
+								auto &oldPhysics =
+									view.get<PhysicsComponent>(e);
+
+								// Ako je entitet deo selektovane grupe
+								if (oldId.group == selectedGameObject &&
+									e != entity) {
+									auto &physicsWorld = m_Registry->GetContext<
+										std::shared_ptr<b2World>>();
+
+									if (!physicsWorld) {
+										return;
+									}
+									m_Registry->GetRegistry()
+										.replace<PhysicsComponent>(
+											e,
+											PhysicsComponent(
+												physicsWorld,
+												PhysicsAttributes{
+													.type =
+														physics.GetAttributes()
+															.type,
+													.density =
+														physics.GetAttributes()
+															.density,
+													.friction =
+														physics.GetAttributes()
+															.friction,
+													.restitution =
+														physics.GetAttributes()
+															.restitution,
+													.gravityScale =
+														physics.GetAttributes()
+															.gravityScale,
+													.position =
+														oldPhysics
+															.GetAttributes()
+															.position,
+													.scale =
+														oldPhysics
+															.GetAttributes()
+															.scale,
+													.boxSize =
+														oldPhysics
+															.GetAttributes()
+															.boxSize,
+													.offset =
+														oldPhysics
+															.GetAttributes()
+															.offset,
+													.isSensor =
+														physics.GetAttributes()
+															.isSensor,
+													.isFixedRotation =
+														physics.GetAttributes()
+															.isFixedRotation}));
+
+									// Ako je entitet već ažuriran
+									// oldPhysics.SetAttributes(PhysicsAttributes{
+									// 	.type = physics.GetAttributes().type,
+									// 	.density =
+									// 		physics.GetAttributes().density,
+									// 	.friction =
+									// 		physics.GetAttributes().friction,
+									// 	.restitution =
+									// 		physics.GetAttributes().restitution,
+									// 	.gravityScale = physics.GetAttributes()
+									// 						.gravityScale,
+									// 	.position =
+									// 		oldPhysics.GetAttributes().position,
+									// 	.scale =
+									// 		oldPhysics.GetAttributes().scale,
+									// 	.boxSize =
+									// 		oldPhysics.GetAttributes().boxSize,
+									// 	.offset =
+									// 		oldPhysics.GetAttributes().offset,
+									// 	.isSensor =
+									// 		physics.GetAttributes().isSensor,
+									// 	.isFixedRotation =
+									// 		physics.GetAttributes()
+									// 			.isFixedRotation});
+								}
+							}
+						}
+					}
+				}
+
 				if (!CameraController::paused) {
 					ImGui::EndDisabled();
 				}
@@ -1204,8 +1347,15 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	ImGui::Text("Group");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###group", identification.group.data(),
-					 IM_ARRAYSIZE(identification.group.data()));
+
+	char groupBuffer[256];
+	strncpy(groupBuffer, identification.group.c_str(), sizeof(groupBuffer) - 1);
+	groupBuffer[sizeof(groupBuffer) - 1] = '\0';
+
+	if (ImGui::InputText("###groupObject", groupBuffer, sizeof(groupBuffer),
+						 ImGuiInputTextFlags_EnterReturnsTrue)) {
+		identification.group = groupBuffer;
+	}
 	ImGui::PopItemWidth();
 	cursorPos.y += 35;
 }
@@ -1750,7 +1900,8 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 	}
 
 	ImGui::PopItemWidth();
-	cursorPos.y += 25;
+	cursorPos.y += 35;
+	ImGui::SetCursorPosY(cursorPos.y);
 
 	std::vector<Ref<Layer>> layers =
 		m_ActiveScene->GetLayerManager()->GetAllLayers();
@@ -1761,6 +1912,7 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 								}),
 				 layers.end());
 
+	ImGui::PushItemWidth(120);
 	if (ImGui::BeginCombo("##LayerDropdown",
 						  selectedTilemapLayer == -1
 							  ? "Select a layer:"
@@ -1793,6 +1945,20 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::SameLine();
+
+	if (tilemap.GetLayer() == "Collider") {
+		char groupBuffer[256];
+		strncpy(groupBuffer, identificationGroup.c_str(),
+				sizeof(groupBuffer) - 1);
+		groupBuffer[sizeof(groupBuffer) - 1] = '\0';
+
+		if (ImGui::InputText("###group", groupBuffer, sizeof(groupBuffer),
+							 ImGuiInputTextFlags_EnterReturnsTrue)) {
+			identificationGroup = groupBuffer;
+		}
+	}
+	ImGui::PopItemWidth();
 
 	if (showAddLayerPopup) {
 		ImGui::OpenPopup("Create New Layer");
@@ -1826,7 +1992,6 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 		ImGui::EndPopup();
 	}
 
-	cursorPos.x -= 65;
 	cursorPos.y += 35;
 }
 

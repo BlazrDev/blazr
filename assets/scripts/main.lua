@@ -42,7 +42,7 @@ Player = {
             height = 32.0,
             texture_path = "player",
             start = { x = 0, y = 0 },
-            layer = "Default",
+            layer = "Layer 1",
         },
         box_collider = {
             width = 20,
@@ -118,7 +118,7 @@ local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
 
 -- layerManager:AddEntityToLayer("0", mashaEntity)
-layerManager:AddEntityToLayer("Default", playerEntity)
+-- layerManager:AddEntityToLayer("Default", playerEntity)
 -- explosionntity = Entity("Explosion", "e")
 -- local transform3 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
 -- local sprite3 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))

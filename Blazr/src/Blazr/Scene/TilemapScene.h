@@ -291,6 +291,7 @@ class TilemapScene : public Blazr::Scene {
 		}
 
 		PhysicsAttributes attributes{
+			.friction = 100,
 			.position = transform.position,
 			.scale = transform.scale,
 			.boxSize = {collider.width, collider.height},
