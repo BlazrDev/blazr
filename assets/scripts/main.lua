@@ -192,7 +192,6 @@ main = {
 			-- pos = pos + 1
 			-- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
 			update()
-			print(physicsComp)
 			-- scene:Update()
 		end,
 	},

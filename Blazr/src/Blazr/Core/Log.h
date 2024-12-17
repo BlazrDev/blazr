@@ -1,6 +1,7 @@
 #pragma once
 #include "Blazr/Core/ImGuiLogSink.h"
 #include "Core.h"
+#include "sol.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -18,7 +19,17 @@ class BLZR_API Log {
 
 	static std::shared_ptr<ImGuiLogSink> &getImGuiSink() { return imGuiSink; }
 
+	static void createLogLuaBind(sol::state &lua);
+
   private:
+	static std::string format_arguments(const std::string &fmt,
+										sol::variadic_args args);
+	static void log_trace(const std::string &fmt, sol::variadic_args args);
+
+	static void log_info(const std::string &fmt, sol::variadic_args args);
+	static void log_warn(const std::string &fmt, sol::variadic_args args);
+	static void log_error(const std::string &fmt, sol::variadic_args args);
+	static void log_critical(const std::string &fmt, sol::variadic_args args);
 	static std::shared_ptr<spdlog::logger> s_CoreLogger;
 	static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	static std::shared_ptr<ImGuiLogSink> imGuiSink;
