@@ -146,8 +146,10 @@ class TilemapScene : public Blazr::Scene {
 		}
 
 		// Proveravamo da li je miš u granicama mreže
-		if (gridX >= 0 && gridX < m_Canvas->GetWidth() && gridY >= 0 &&
-			gridY < m_Canvas->GetHeight()) {
+		if (gridX >= 0 &&
+			gridX < m_Canvas->GetWidth() / m_Canvas->GetTileSize() &&
+			gridY >= 0 &&
+			gridY < m_Canvas->GetHeight() / m_Canvas->GetTileSize()) {
 
 			// Dodatna logika za klikove ili označavanje kvadrata
 			glm::vec4 highlightColor = {255.0f, 0.0f, 0.0f, 1.0f};

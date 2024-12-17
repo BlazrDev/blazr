@@ -88,6 +88,7 @@ static bool showSpriteComponent = false;
 static bool showPhysicsComponent = false;
 static bool showColorTab = false;
 static bool showSceneChooseDialog = false;
+static int selectedTilemapLayer = -1;
 
 // managers
 
@@ -134,9 +135,7 @@ void Editor::Init() {
 		BLZR_CORE_ERROR("Failed to load the main lua script");
 		return;
 	}
-	// TODO should also initialize entity script when a new entity is created
-	// m_ScriptSystem->InitializeEntityScripts(*m_LuaState);
-	//
+	assetManager->LoadTexture("default", "assets/white_texture.png");
 }
 
 void Editor::InitImGui() {
@@ -328,7 +327,7 @@ void Editor::RenderImGui() {
 			}
 
 			if (ImGui::MenuItem("Save As...")) {
-				/*std::string savePath = Blazr::FileDialog::SaveFile(
+				std::string savePath = Blazr::FileDialog::SaveFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!savePath.empty()) {
 					Ref<Project> active = Project::GetActive();
@@ -342,21 +341,10 @@ void Editor::RenderImGui() {
 					} else {
 						BLZR_CORE_ERROR("No active project to save.");
 					}
-				}*/
+				}
 			}
 			if (ImGui::MenuItem("Export tilemap to scene")) {
 				showSceneChooseDialog = true;
-				// auto tilemapScene =
-				// 	std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
-				// if (tilemapScene) {
-				// 	for (const auto &[name, scene] :
-				// 		 Project::GetActive()->GetScenes()) {
-				// 		BLZR_CORE_INFO("Scene name: {0}", scene->GetName());
-				// 		if (scene->GetName() == "Untitled 1") {
-				// 			tilemapScene->ExportTilemapToScene(*scene);
-				// 		}
-				// 	}
-				// }
 			}
 			ImGui::EndMenu();
 		}
@@ -366,6 +354,14 @@ void Editor::RenderImGui() {
 			}
 			if (ImGui::MenuItem("Redo")) {
 				// Redo action
+			}
+
+			if (ImGui::MenuItem("Clear tilesmap")) {
+				auto tilemapScene =
+					std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+				if (tilemapScene) {
+					tilemapScene->clearScene();
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -850,6 +846,12 @@ void Editor::RenderImGui() {
 	//-
 	// Camera
 	// box with tabs---------------------------------
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove;
+
+	if (CameraController::paused) {
+		flags |= ImGuiWindowFlags_NoScrollWithMouse;
+	}
+
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
 	ImGui::Begin("Camera", nullptr,
@@ -858,7 +860,7 @@ void Editor::RenderImGui() {
 	RenderSceneTabs(*this);
 	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer,
 						newProject);
-	RenderActiveScene(m_ActiveScene);
+	RenderActiveScene(m_ActiveScene, flags);
 
 	ImVec2 cameraPos = ImGui::GetWindowPos();
 	ImVec2 cameraSize = ImGui::GetWindowSize();
@@ -1229,6 +1231,8 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 
 	// Iteriraj kroz mapu i dodaj sve ključeve u vektor
 	for (const auto &pair : loadedTexture) {
+		if (pair.first == "default")
+			continue;
 		textures.push_back(pair.first);
 	}
 
@@ -1244,6 +1248,9 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 			selectedTextureIndex == -1 ? "Choose a texture"
 									   : textures[selectedTextureIndex].c_str();
 
+		if (selectedTextureIndex == -1) {
+			sprite.texturePath = "default";
+		}
 		// Dropdown meni
 		if (ImGui::BeginCombo("##TexturesDropdown", currentTexture)) {
 			for (int i = 0; i < textures.size(); i++) {
@@ -1288,9 +1295,11 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 
 	if ((sprite.width != spriteWidth || sprite.height != spriteHeight) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		auto texture =
+			AssetManager::GetInstance()->GetTexture(sprite.texturePath);
 		spriteWidth = sprite.width;
 		spriteHeight = sprite.height;
-		sprite.generateObject(sprite.width, sprite.height);
+		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
 	}
 	// layer
 	cursorPos.x -= 65;
@@ -1578,7 +1587,6 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	ImGui::SetCursorPos(cursorPos);
 	const char *types[] = {"Static", "Kinematic", "Dynamic"};
 	static int selectedTypeIndex = body->GetType();
-	BLZR_CORE_INFO("Type: {0}", selectedTypeIndex);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
 												 ? "Choose a type"
@@ -1753,17 +1761,10 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 								}),
 				 layers.end());
 
-	static std::unordered_map<Ref<Layer>, int> previousSelectedLayerIndices;
-
-	int &previousSelectedLayerIndex = previousSelectedLayerIndices[layers[0]];
-	if (previousSelectedLayerIndex == 0 && selectedLayerIndex != 0) {
-		previousSelectedLayerIndex = selectedLayerIndex;
-	}
-
 	if (ImGui::BeginCombo("##LayerDropdown",
-						  selectedLayerIndex == -1
+						  selectedTilemapLayer == -1
 							  ? "Select a layer:"
-							  : layers[selectedLayerIndex]->name.c_str())) {
+							  : layers[selectedTilemapLayer]->name.c_str())) {
 
 		if (ImGui::Selectable("Add New Layer", false)) {
 			showAddLayerPopup = true;
@@ -1772,14 +1773,19 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 		}
 
 		for (int i = 0; i < layers.size(); i++) {
-			bool isSelected = (selectedLayerIndex == i);
+			bool isSelected = (selectedTilemapLayer == i);
 			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
-				if (previousSelectedLayerIndex != i) {
-					tilemap.SetLayer(layers[i]->name);
-					previousSelectedLayerIndex = i;
-					selectedLayerIndex = i;
-					layerChanged = true;
+				if (layers[i]->name == "Collider") {
+					auto tilemapScene =
+						std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+					if (tilemapScene) {
+						tilemapScene->SetSelectedTile(
+							std::pair<std::string, glm::vec3>(
+								"collider", glm::vec3(0, 0, 0)));
+					}
 				}
+				tilemap.SetLayer(layers[i]->name);
+				selectedTilemapLayer = i;
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -1806,7 +1812,7 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 			m_ActiveScene->GetLayerManager()->AddLayer(newLayer);
 
 			layers = m_ActiveScene->GetLayerManager()->GetAllLayers();
-			selectedLayerIndex = layers.size() - 1;
+			selectedTilemapLayer = layers.size() - 1;
 
 			showAddLayerPopup = false;
 			ImGui::CloseCurrentPopup();

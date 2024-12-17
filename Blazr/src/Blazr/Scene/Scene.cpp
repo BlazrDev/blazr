@@ -24,6 +24,7 @@ Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
 	m_Camera.GetCamera().SetPosition({0.0f, 0.0f});
 	m_Camera.GetCamera().SetRotation(0.0f);
 	m_LayerManager = CreateRef<LayerManager>();
+	m_LayerManager->CreateLayer("Default", 0);
 	m_Registry = Registry::GetInstance();
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 }

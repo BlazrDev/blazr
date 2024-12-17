@@ -1,6 +1,12 @@
 {
     "Layers": [
         {
+            "Default": {
+                "Entities": [],
+                "zIndex": 0
+            }
+        },
+        {
             "Grid": {
                 "Entities": [],
                 "zIndex": 0
