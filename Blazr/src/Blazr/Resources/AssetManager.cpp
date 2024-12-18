@@ -1,6 +1,7 @@
 #include "blzrpch.h"
 #include "AssetManager.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/ShaderLoader.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include "Blazr/Resources/AssetManager.h"
@@ -218,6 +219,14 @@ void Blazr::AssetManager::CreateLuaAssetManager(sol::state &lua,
 			return asset_manager->LoadTexture(name, texturePath, pixelArt,
 											  tileset);
 		});
+}
+
+bool Blazr::AssetManager::LoadScene(const std::string &scenePath) {
+	if (Ref<Scene> scene = ProjectSerializer::DeserializeScene(scenePath)) {
+		Project::GetActive()->AddScene(scene->GetName(), scene);
+		return true;
+	}
+	return false;
 }
 
 void Blazr::AssetManager::to_json(nlohmann::json &j,

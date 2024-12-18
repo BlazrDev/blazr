@@ -26,7 +26,8 @@ class Editor : public Application {
 	void renderTransformComponent(ImVec2 &cursorPos,
 								  TransformComponent &transform);
 	void renderIdentificationComponent(ImVec2 &cursorPos,
-									   Identification &identification);
+									   Identification &identification,
+									   const std::string &layerName);
 	void renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 							   Identification &identification);
 	void renderAnimationComponent(ImVec2 &cursorPos,

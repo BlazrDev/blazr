@@ -1,0 +1,15 @@
+{
+    "AssetManager": {
+        "Effects": {},
+        "Music": {},
+        "Shaders": {},
+        "Textures": {}
+    },
+    "Config": {
+        "AssetDirectory": "",
+        "ScriptPath": "",
+        "StartScene": "",
+        "name": "Untitled"
+    },
+    "ProjectDirectory": "StartProject"
+}

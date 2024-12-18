@@ -125,14 +125,6 @@ void Editor::Init() {
 
 	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
 												 newProject->GetConfig().name);
-
-	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
-		BLZR_CORE_ERROR("Failed to load the main lua script");
-		return;
-	}
-	// TODO should also initialize entity script when a new entity is created
-	// m_ScriptSystem->InitializeEntityScripts(*m_LuaState);
-	//
 }
 
 void Editor::InitImGui() {
@@ -573,8 +565,18 @@ void Editor::RenderImGui() {
 								auto &identification =
 									m_Registry->GetRegistry()
 										.get<Identification>(entity);
-								renderIdentificationComponent(cursorPos,
-															  identification);
+								if (m_Registry->GetRegistry()
+										.all_of<SpriteComponent>(entity)) {
+									auto &sprite =
+										m_Registry->GetRegistry()
+											.get<SpriteComponent>(entity);
+									renderIdentificationComponent(
+										cursorPos, identification,
+										sprite.layer);
+								} else {
+									renderIdentificationComponent(
+										cursorPos, identification, "");
+								}
 							}
 
 							if (m_Registry->GetRegistry()
@@ -979,7 +981,7 @@ void Editor::RenderImGui() {
 				std::string filepath =
 					Blazr::FileDialog::OpenFile(filters[current_item]);
 				if (!filepath.empty()) {
-					// Get the project directory
+					// Get the project directory and determine the assets folder
 					std::string projectDir = Project::GetProjectDirectory();
 					std::string assetsDir = projectDir + "/assets";
 
@@ -1006,26 +1008,53 @@ void Editor::RenderImGui() {
 						break;
 					}
 
-					// Full path to the target directory
 					std::string targetDir = assetsDir + subfolder;
 
-					// Create the directories if they don't exist
 					if (!fs::exists(targetDir)) {
 						fs::create_directories(targetDir);
 					}
 
-					// Get the filename from the selected file path
 					std::string filename =
 						fs::path(filepath).filename().string();
 
-					// Target file path
 					std::string targetPath = targetDir + "/" + filename;
 
-					// Copy the file to the target location
 					try {
 						fs::copy(filepath, targetPath,
 								 fs::copy_options::overwrite_existing);
-						ImGui::Text("Imported File: %s", filename.c_str());
+
+						auto &assetManager = Blazr::AssetManager::GetInstance();
+						bool success = false;
+
+						switch (current_item) {
+						case 0: // TEXTURES
+							success =
+								assetManager->LoadTexture(filename, targetPath);
+							break;
+						case 2: // MUSIC
+							success = assetManager->LoadMusic(
+								filename, targetPath, "Imported Music");
+							break;
+						case 3: // SOUNDFX
+							success = assetManager->LoadEffect(
+								filename, targetPath, "Imported Sound Effect",
+								0);
+						case 4:
+							success = assetManager->LoadScene(targetPath);
+							break;
+						default:
+							BLZR_CORE_WARN("Asset type not supported for "
+										   "automatic loading.");
+							break;
+						}
+
+						if (success) {
+							ImGui::Text("Imported and Loaded Asset: %s",
+										filename.c_str());
+						} else {
+							ImGui::Text("Failed to load asset: %s",
+										filename.c_str());
+						}
 					} catch (const fs::filesystem_error &e) {
 						ImGui::Text("Error copying file: %s", e.what());
 					}
@@ -1033,7 +1062,6 @@ void Editor::RenderImGui() {
 					ImGui::Text("No file selected.");
 				}
 			}
-
 			ImGui::EndTabItem();
 		}
 
@@ -1044,8 +1072,6 @@ void Editor::RenderImGui() {
 		if (ImGui::BeginTabItem("Tileset")) {
 
 			auto tilesets = assetManager->GetKeysTexturesTileset();
-			// BLZR_CORE_ERROR("sizeeeeeeeeeeeeeeeeeeeeee {0}",
-			// tilesets.size());
 			if (ImGui::BeginCombo("Choose Tileset", selectedTielset.c_str())) {
 				for (const auto &tileset : tilesets) {
 					bool bIsSelected = selectedTielset == tileset;
@@ -1218,7 +1244,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 }
 
 void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
-										   Identification &identification) {
+										   Identification &identification,
+										   const std::string &layerName) {
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Identification");
@@ -1352,7 +1379,6 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 	std::vector<Ref<Layer>> layers =
 		m_ActiveScene->GetLayerManager()->GetAllLayers();
 
-	// Ensure the sprite has a valid current layer and selectedLayerIndex
 	if (!sprite.layer.empty()) {
 		for (int i = 0; i < layers.size(); i++) {
 			if (layers[i]->name == sprite.layer) {

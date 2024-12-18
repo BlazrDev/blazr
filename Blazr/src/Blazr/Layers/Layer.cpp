@@ -18,14 +18,23 @@ void Layer::RemoveEntity(Ref<Entity> entity) {
 	entities.erase(std::remove(entities.begin(), entities.end(), entity),
 				   entities.end());
 }
+
 void Layer::RemoveEntity(const std::string &name) {
-	for (auto it = entities.begin(); it != entities.end(); ++it) {
-		if ((*it)->GetName() == name) {
-			entities.erase(it);
-			return;
+	for (auto it = entities.begin(); it != entities.end();) {
+		if (*it == nullptr) {
+			BLZR_CORE_WARN("Encountered a null entity in layer!");
+			it = entities.erase(it); // Remove the null entity
+			continue;
+		}
+
+		if ((*it)->GetComponent<Identification>().name == name) {
+			it = entities.erase(it); // Erase and update iterator
+		} else {
+			++it;
 		}
 	}
 }
+
 void Layer::Render(Registry &registry) {
 	for (auto entity : entities) {
 		if (entity->HasComponent<TransformComponent>() &&
