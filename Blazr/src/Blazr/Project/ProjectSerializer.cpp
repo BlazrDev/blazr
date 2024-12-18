@@ -36,11 +36,11 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 	nlohmann::json assetJson;
 	AssetManager::to_json(assetJson, AssetManager::GetInstance());
 	j["AssetManager"] = assetJson;
+	std::cout << assetJson;
 
-	std::filesystem::create_directories(filepath.parent_path());
+	std::filesystem::create_directories(filepath);
 	std::ofstream ofs(
-		const_cast<std::filesystem::path &>(filepath).replace_extension(
-			".blzrproj"));
+		(filepath / project->GetConfig().name).replace_extension(".blzrproj"));
 	if (!ofs) {
 		BLZR_CORE_ERROR("Failed to save project: {}", filepath.string());
 		return false;

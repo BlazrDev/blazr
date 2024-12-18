@@ -242,7 +242,6 @@ void Blazr::AssetManager::to_json(nlohmann::json &j,
 	j["Textures"] = nlohmann::json::object();
 	for (const auto &[name, texture] : assetManager->m_mapTextures) {
 		if (texture) {
-			// TODO pixel art hardcoded value for now
 			j["Textures"][name] = {{"path", texture->GetPath()},
 								   {"pixelArt", true}};
 		}
@@ -297,6 +296,7 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 		for (const auto &[name, textureJson] : j.at("Textures").items()) {
 			std::string path = textureJson.at("path").get<std::string>();
 			bool pixelArt = textureJson.at("pixelArt").get<bool>();
+			BLZR_CORE_WARN("LOADING TEXTURE {0}", name);
 			assetManager->LoadTexture(name, path, pixelArt);
 		}
 	}

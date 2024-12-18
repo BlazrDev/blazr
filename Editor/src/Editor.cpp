@@ -108,7 +108,6 @@ void Editor::Init() {
 	BLZR_CORE_INFO("Initializing Editor...");
 
 	Renderer2D::Init();
-	// m_Scene = CreateRef<Scene>();
 	auto animationSystem = std::make_shared<AnimationSystem>(*m_Registry.get());
 	auto scriptingSystem = std::make_shared<ScriptingSystem>(*m_Registry.get());
 	m_Registry->AddToContext(animationSystem);
@@ -119,6 +118,7 @@ void Editor::Init() {
 	Project::SetActive(newProject);
 	Ref<Scene> newScene = CreateRef<Scene>();
 	newScene->SetName("Untitled 1");
+	newProject->GetConfig().StartSceneName = "Untitled 1";
 	newProject->AddScene("Untitled 1", newScene);
 
 	m_ActiveScene = newScene;
@@ -272,7 +272,7 @@ void Editor::RenderImGui() {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("New Project")) {
 				std::string savePath = Blazr::FileDialog::SaveFile(
-					"Blazr Project (*.blzr)\0*.blzr\0");
+					"Blazr Project (*.blzrproj)\0*.blzrproj\0");
 				if (!savePath.empty()) {
 					Registry::Reset();
 					Initialize();
@@ -314,21 +314,18 @@ void Editor::RenderImGui() {
 			}
 
 			if (ImGui::MenuItem("Save As...")) {
-				/*std::string savePath = Blazr::FileDialog::SaveFile(
-					"Blazr Project (*.blzr)\0*.blzr\0");
+				std::string savePath =
+					Project::GetActive()->GetProjectDirectory();
+				BLZR_CORE_ERROR("ACTIVE DIR: {0}", savePath);
 				if (!savePath.empty()) {
+
 					Ref<Project> active = Project::GetActive();
 					if (active) {
-						active->SetProjectDirectory(
-							std::filesystem::path(savePath).parent_path());
-						active->GetConfig().name =
-							std::filesystem::path(savePath).stem().string();
-
 						ProjectSerializer::Serialize(active, savePath);
 					} else {
 						BLZR_CORE_ERROR("No active project to save.");
 					}
-				}*/
+				}
 			}
 			if (ImGui::MenuItem("Export tilemap to scene")) {
 				showSceneChooseDialog = true;
@@ -355,9 +352,104 @@ void Editor::RenderImGui() {
 			}
 			ImGui::EndMenu();
 		}
+#include <filesystem>
+#include <iostream>
+#include <vector>
+
+		namespace fs = std::filesystem;
+
 		if (ImGui::BeginMenu("Tools")) {
-			// Tools action
 			ImGui::MenuItem("Show Collider", nullptr, &Layer::showColliders);
+
+			if (ImGui::MenuItem("Build Game")) {
+				std::string outputDir =
+					Blazr::FileDialog::OpenFolderWithPath(".");
+				if (!outputDir.empty()) {
+					try {
+						// Define paths
+						std::string executableDir =
+							"bin/Debug-linux-x86_64/Sandbox";
+						std::string projectDir = Project::GetProjectDirectory();
+						std::vector<std::string> foldersToCopy = {
+							"assets", "scenes", "scripts"};
+
+						if (!fs::exists(outputDir)) {
+							fs::create_directories(outputDir);
+						}
+
+						if (fs::exists(executableDir)) {
+							std::string targetExecutableDir = outputDir;
+
+							fs::copy(executableDir, targetExecutableDir,
+									 fs::copy_options::recursive |
+										 fs::copy_options::overwrite_existing);
+							std::cout << "Copied executable folder to: "
+									  << targetExecutableDir << std::endl;
+						} else {
+							std::cerr << "Executable folder not found: "
+									  << executableDir << std::endl;
+						}
+
+						Project proj = *Project::GetActive();
+						proj.GetConfig().name = "project";
+						Ref<Project> p = CreateRef<Project>(proj);
+						ProjectSerializer::Serialize(p, outputDir);
+
+						fs::copy(projectDir + "/" +
+									 Project::GetActive()->GetConfig().name +
+									 ".blzrproj",
+								 outputDir + "/project.blzrproj",
+								 fs::copy_options::overwrite_existing);
+
+						std::string gameOutputDir =
+							outputDir + "/" + proj.GetConfig().name;
+						BLZR_CORE_ERROR("DIRECTORY: {0}", gameOutputDir);
+
+						if (!fs::exists(gameOutputDir)) {
+							fs::create_directories(gameOutputDir);
+						}
+
+						fs::copy("assets", outputDir + "/" + "assets",
+								 fs::copy_options::recursive |
+									 fs::copy_options::overwrite_existing);
+
+						fs::copy("shaders", outputDir + "/" + "shaders",
+								 fs::copy_options::recursive |
+									 fs::copy_options::overwrite_existing);
+
+						// Copy other project folders (assets, scenes, scripts)
+						for (const auto &folder : foldersToCopy) {
+							std::string sourcePath = projectDir + "/" + folder;
+							std::string targetPath =
+								gameOutputDir + "/" + folder;
+
+							if (fs::exists(sourcePath)) {
+								// Copy each folder and its contents recursively
+								fs::copy(
+									sourcePath, targetPath,
+									fs::copy_options::recursive |
+										fs::copy_options::overwrite_existing);
+								std::cout << "Copied folder: " << folder
+										  << " to " << targetPath << std::endl;
+							} else {
+								std::cerr << "Warning: Folder not found: "
+										  << sourcePath << std::endl;
+							}
+						}
+
+						std::cout << "Game build completed successfully!"
+								  << std::endl;
+
+					} catch (const fs::filesystem_error &e) {
+						std::cerr << "Error during build process: " << e.what()
+								  << std::endl;
+					}
+				} else {
+					std::cout << "Build cancelled. No directory selected."
+							  << std::endl;
+				}
+			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Settings")) {

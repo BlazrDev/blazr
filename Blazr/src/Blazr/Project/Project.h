@@ -79,6 +79,8 @@ class Project {
 
 	static BLZR_API Ref<Project> s_ActiveProject;
 
+	void BLZR_API BuildProject(const std::string &path);
+
   private:
 	std::unordered_map<std::string, Ref<Scene>> m_Scenes;
 	ProjectConfig m_Config;

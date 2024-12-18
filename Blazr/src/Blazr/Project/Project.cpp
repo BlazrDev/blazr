@@ -67,4 +67,6 @@ bool Project::RenameScene(const std::string &oldName,
 	BLZR_CORE_INFO("Scene '{}' renamed to '{}'", oldName, newName);
 	return true;
 }
+
+void Project::BuildProject(const std::string &path) {}
 } // namespace Blazr

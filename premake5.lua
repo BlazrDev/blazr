@@ -190,8 +190,17 @@ location("Sandbox")
 kind("ConsoleApp")
 language("C++")
 
+-- prebuildcommands{
+--     -- ("{COPY} ../%{LibDir.GLEW[os.host()]} ../bin/" .. outputdir .. "/Sandbox"),
+--     ("{COPY} ../%{LibDir.Lua[os.host()]} ../bin/" .. outputdir .. "/Sandbox"),
+--     ("{COPY} ../%{LibDir.SDL[os.host()]} ../bin/" .. outputdir .. "/Sandbox"),
+--     ("{COPY} ../%{LibDir.box2d[os.host()]} ../bin/" .. outputdir .. "/Sandbox"),
+-- }
+
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("obj/" .. outputdir .. "/%{prj.name}")
+
+linkoptions { "-Wl,-rpath,$$ORIGIN" }
 
 files({
     "%{prj.name}/src/**.h",

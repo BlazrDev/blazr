@@ -33,6 +33,25 @@ void Application::Run() {
 	// Render loop
 	while (m_Running) {
 		m_Window->onUpdate();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		if (m_ActiveScene != nullptr) {
+			int width;
+			int height;
+			glfwGetWindowSize(m_Window->GetWindow(), &width, &height);
+			m_Window->setWidth(width);
+			m_Window->setHeight(height);
+
+			glfwPollEvents();
+
+			m_ActiveScene->Render();
+
+			glfwSwapBuffers(m_Window->GetWindow());
+
+		} else {
+			BLZR_CORE_WARN("Active scene is null");
+		}
+		m_ActiveScene->Update();
 	}
 }
 

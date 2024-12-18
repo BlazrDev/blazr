@@ -14,6 +14,34 @@
 namespace Blazr {
 
 #if defined(BLZR_PLATFORM_WINDOWS)
+std::string FileDialog::OpenFolderWithPath(const char *initialPath) {
+	BROWSEINFO bi = {0};
+	bi.lpszTitle = "Select Folder";
+	bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+	// Use the initial path if provided
+	if (initialPath) {
+		bi.lpfn = [](HWND hwnd, UINT uMsg, LPARAM lParam,
+					 LPARAM lpData) -> int {
+			if (uMsg == BFFM_INITIALIZED) {
+				SendMessage(hwnd, BFFM_SETSELECTION, TRUE, lpData);
+			}
+			return 0;
+		};
+		bi.lParam = (LPARAM)initialPath;
+	}
+
+	LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
+	if (pidl != nullptr) {
+		char path[MAX_PATH];
+		if (SHGetPathFromIDList(pidl, path)) {
+			CoTaskMemFree(pidl); // Free memory
+			return std::string(path);
+		}
+		CoTaskMemFree(pidl); // Free memory even if no path was returned
+	}
+	return ""; // Dialog was canceled or failed
+}
 
 std::string FileDialog::OpenFile(const char *filter) {
 	char fileName[MAX_PATH] = "";
@@ -143,6 +171,25 @@ std::string FileDialog::SaveFileWithPath(const char *filter,
 	std::string command =
 		"zenity --file-selection --save --confirm-overwrite --filename=" +
 		std::string(initialPath) + "/";
+	char buffer[256];
+	FILE *fp = popen(command.c_str(), "r");
+	if (fp) {
+		if (fgets(buffer, sizeof(buffer), fp) != nullptr) {
+			pclose(fp);
+			buffer[strcspn(buffer, "\n")] = '\0';
+			return std::string(buffer);
+		}
+		pclose(fp);
+	}
+	return ""; // Dialog was canceled or failed
+}
+
+std::string FileDialog::OpenFolderWithPath(const char *initialPath) {
+	std::string command = "zenity --file-selection --directory";
+	if (initialPath) {
+		command += " --filename=" + std::string(initialPath) + "/";
+	}
+
 	char buffer[256];
 	FILE *fp = popen(command.c_str(), "r");
 	if (fp) {

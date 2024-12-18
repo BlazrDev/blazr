@@ -25,6 +25,8 @@
 # Clang tooling
 \.clangd
 
+StartProject/
+
 # Others
 *.pdb
 *.idb
