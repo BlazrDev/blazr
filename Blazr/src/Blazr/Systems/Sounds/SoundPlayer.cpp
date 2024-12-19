@@ -2,6 +2,7 @@
 #include "Blazr/Core/Log.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Music.h"
+#include "SDL_mixer.h"
 #include "SoundPlayer.h"
 #include <string>
 
@@ -24,7 +25,6 @@ Blazr::SoundPlayer::SoundPlayer() {
 		channelVolumes.emplace(i, 100);
 		channelMuted.emplace(i, false);
 	}
-	musicVolume = 100;
 };
 
 Blazr::SoundPlayer::~SoundPlayer() {
@@ -56,11 +56,12 @@ void Blazr::SoundPlayer::PlayMusic(const std::string &name, int loop) {
 	auto assetManager = AssetManager::GetInstance();
 
 	auto music = assetManager->GetMusic(name);
+	currentMusic = music;
 	if (!music->getSample()) {
 		BLZR_CORE_ERROR("Mix_Music is null");
 		return;
 	}
-
+	Mix_VolumeMusic(music->volume);
 	if (Mix_PlayMusic(music->getSample(), loop) == -1) {
 		std::string error(Mix_GetError());
 		BLZR_CORE_ERROR("Failed to play music: {0}", error);
@@ -72,11 +73,13 @@ void Blazr::SoundPlayer::PlayMusicFadeIn(const std::string &name, int loop,
 	auto assetManager = AssetManager::GetInstance();
 
 	auto music = assetManager->GetMusic(name);
+	currentMusic = music;
 	if (!music->getSample()) {
 		BLZR_CORE_ERROR("Mix_Music is null");
 		return;
 	}
 
+	Mix_VolumeMusic(music->volume);
 	if (Mix_FadeInMusic(music->getSample(), loop, fadeInEffect) == -1) {
 		std::string error(Mix_GetError());
 		BLZR_CORE_ERROR("Failed to play faded music: {0}", error);
@@ -91,15 +94,27 @@ void Blazr::SoundPlayer::ToggleMusic(const std::string &name) {
 	}
 }
 
-void Blazr::SoundPlayer::MusicVolume(const int volume) {
+void Blazr::SoundPlayer::MusicVolume(std::string name, const int volume) {
 	int scaledVolume = static_cast<int>(volume * (MIX_MAX_VOLUME / 100.0));
-	musicVolume = std::max(0, std::min(scaledVolume, MIX_MAX_VOLUME));
+	int musicVolume = std::max(0, std::min(scaledVolume, MIX_MAX_VOLUME));
 
+	auto assetManager = AssetManager::GetInstance();
+	auto music = assetManager->GetMusic(name);
+	if (music) {
+		music->volume = volume;
+	}
 	Mix_VolumeMusic(musicVolume);
-	musicVolume = volume;
 }
 
-int Blazr::SoundPlayer::GetCurrentMusicVolume() { return Mix_VolumeMusic(-1); }
+Ref<Blazr::Music> Blazr::SoundPlayer::GetCurrentPlaying() {
+	return currentMusic;
+}
+
+int Blazr::SoundPlayer::GetCurrentMusicVolume() {
+
+	return currentMusic->volume;
+	// return Mix_VolumeMusic(-1);
+}
 
 void Blazr::SoundPlayer::MuteMusic() { Mix_VolumeMusic(0); }
 
@@ -108,7 +123,7 @@ void Blazr::SoundPlayer::ToggleMusicMute() {
 	if (currentVolume > 0) {
 		Mix_VolumeMusic(0);
 	} else {
-		Mix_VolumeMusic(musicVolume);
+		Mix_VolumeMusic(currentMusic->volume);
 	}
 }
 
@@ -200,7 +215,9 @@ void Blazr::SoundPlayer::CreateLuaSoundPlayer(sol::state &lua,
 		"toggle_effect",
 		[&](const int channel) { sound_player->ToggleEffect(channel); },
 		"set_music_volume",
-		[&](const int volume) { sound_player->MusicVolume(volume); },
+		[&](const std::string name, const int volume) {
+			sound_player->MusicVolume(name, volume);
+		},
 		"toggle_music_mute", [&]() { sound_player->ToggleMusicMute(); },
 		"set_effect_volume",
 		[&](const int channel, const int volume) {

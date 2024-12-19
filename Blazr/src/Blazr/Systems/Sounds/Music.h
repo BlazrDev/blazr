@@ -16,6 +16,7 @@ class Music {
 	SoundProperties GetProperties() const { return m_Params; }
 	void SetPath(const std::string &path) { m_Path = path; }
 
+	int volume;
 	Mix_Music *getSample();
 };
 

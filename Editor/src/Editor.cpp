@@ -399,22 +399,23 @@ void Editor::RenderImGui() {
 				if (!outputDir.empty()) {
 					try {
 						std::string executableDir;
-						#ifdef _WIN32
-						#ifdef NDEBUG
-												executableDir = "bin/Release-windows-x86_64/Sandbox";
-						#else
-												executableDir = "bin/Debug-windows-x86_64/Sandbox";
-						#endif
-						#elif defined(__linux__)
-						#ifdef NDEBUG
-												executableDir = "bin/Release-linux-x86_64/Sandbox";
-						#else
-												executableDir = "bin/Debug-linux-x86_64/Sandbox";
-						#endif
-						#else
-						#error Unsupported platform!
-						#endif
-						std::string projectDir = Project::GetProjectDirectory().string();
+#ifdef _WIN32
+#ifdef NDEBUG
+						executableDir = "bin/Release-windows-x86_64/Sandbox";
+#else
+						executableDir = "bin/Debug-windows-x86_64/Sandbox";
+#endif
+#elif defined(__linux__)
+#ifdef NDEBUG
+						executableDir = "bin/Release-linux-x86_64/Sandbox";
+#else
+						executableDir = "bin/Debug-linux-x86_64/Sandbox";
+#endif
+#else
+#error Unsupported platform!
+#endif
+						std::string projectDir =
+							Project::GetProjectDirectory().string();
 						std::vector<std::string> foldersToCopy = {
 							"assets", "scenes", "scripts"};
 
@@ -1197,9 +1198,15 @@ void Editor::RenderImGui() {
 						ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5.0f);
 						std::string label = "##" + pair.first;
 						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
-											  &soundPlayer->musicVolume, 0, 100,
+											  &pair.second->volume, 0, 100,
 											  "%d")) {
-							soundPlayer->MusicVolume(soundPlayer->musicVolume);
+							if (pair.first == soundPlayer->GetCurrentPlaying()
+												  ->GetProperties()
+												  .name) {
+								soundPlayer->MusicVolume(pair.first,
+														 pair.second->volume);
+							}
+							// soundPlayer->MusicVolume(soundPlayer->musicVolume);
 						}
 						ImGui::EndGroup();
 						ImGui::SameLine();
@@ -1303,7 +1310,8 @@ void Editor::RenderImGui() {
 					Blazr::FileDialog::OpenFile(filters[current_item]);
 				if (!filepath.empty()) {
 					// Get the project directory and determine the assets folder
-					std::string projectDir = Project::GetProjectDirectory().string();
+					std::string projectDir =
+						Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
 					// Determine the subfolder based on the asset type

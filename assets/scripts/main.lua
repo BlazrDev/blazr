@@ -6,69 +6,69 @@ if run_script("assets/tiled_maps/testmap.lua") then
 	print("Testmap script has been executed")
 end
 Masha = {
-    tag = "Masha",
-    group = "Character2",
-    components = {
-        transform = {
-            position = { x = 0, y = 0 },
-            scale = { x = 0.3, y = 0.3 },
-            rotation = 0,
-        },
-        sprite = {
-            width = 472.0,
-            height = 617.0,
-            texture_path = "masha",
-            start = { x = 0, y = 0 },
-            layer = "Default",
-        },
-        box_collider = {
-            width = 472,
-            height = 617,
-            offset = { x = 0, y = 0 },
-        },
-    },
+	tag = "Masha",
+	group = "Character2",
+	components = {
+		transform = {
+			position = { x = 0, y = 0 },
+			scale = { x = 0.3, y = 0.3 },
+			rotation = 0,
+		},
+		sprite = {
+			width = 472.0,
+			height = 617.0,
+			texture_path = "masha",
+			start = { x = 0, y = 0 },
+			layer = "Default",
+		},
+		box_collider = {
+			width = 472,
+			height = 617,
+			offset = { x = 0, y = 0 },
+		},
+	},
 }
 Player = {
-    tag = "Player",
-    group = "Character",
-    components = {
-        transform = {
-            position = { x = 0, y = 0 },
-            scale = { x = 3, y = 3 },
-            rotation = 0,
-        },
-        sprite = {
-            width = 32.0,
-            height = 32.0,
-            texture_path = "player",
-            start = { x = 0, y = 0 },
-            layer = "Default",
-        },
-        box_collider = {
-            width = 20,
-            height = 24,
-            offset = { x = 15, y = 0 },
-        },
-        animation = {
-            num_frames = 10,
-            frame_rate = 10,
-            frame_offset = 10,
-            b_vertical = false,
-        },
-    },
+	tag = "Player",
+	group = "Character",
+	components = {
+		transform = {
+			position = { x = 0, y = 0 },
+			scale = { x = 3, y = 3 },
+			rotation = 0,
+		},
+		sprite = {
+			width = 32.0,
+			height = 32.0,
+			texture_path = "player",
+			start = { x = 0, y = 0 },
+			layer = "Default",
+		},
+		box_collider = {
+			width = 20,
+			height = 24,
+			offset = { x = 15, y = 0 },
+		},
+		animation = {
+			num_frames = 10,
+			frame_rate = 10,
+			frame_offset = 10,
+			b_vertical = false,
+		},
+	},
 }
 local attributes = PhysicsAttributes({
-    type = RigidBodyType.Dynamic,
-    density = 80,
-    friction = 1000,
-    restitution = 10,
-    gravityScale = 0.0,
-    position = vec2(0, 0),
-    scale = vec2(3, 3),
-    boxSize = vec2(20, 24),
-    offset = vec2(15, 0),
-    isSensor = false,
-    isFixedRotation = true,
+	type = RigidBodyType.Dynamic,
+	density = 80,
+	friction = 1000,
+	restitution = 10,
+	gravityScale = 0.0,
+	position = vec2(0, 0),
+	scale = vec2(3, 3),
+	boxSize = vec2(20, 24),
+	offset = vec2(15, 0),
+	isSensor = false,
+	isFixedRotation = true,
 })
 local physics = PhysicsComponent(attributes)
 
@@ -81,24 +81,25 @@ local colliderLayer = layerManager:CreateLayer("2", 2)
 -- playerEntity = Entity("Player", "Character")
 --
 Assets = {
-    music = {
-        { name = "masa", path = "assets/sounds/masa.mp3", desc = "Masa background music" },
-        { name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
-    },
-    sound_effects = {
-        { name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg", channel = 1 },
-    },
-    textures = {
-        { name = "masha", path = "assets/masha.png", pixelArt = false },
-        { name = "chammy", path = "assets/chammy.png", pixelArt = false },
-        { name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
-        { name = "map", path = "assets/map_assets/map.png", pixelArt = true, tileset = true },
-        { name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
-    },
+	music = {
+		{ name = "masa", path = "assets/sounds/masa.mp3", desc = "Masa background music" },
+		{ name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
+	},
+	sound_effects = {
+		{ name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg", channel = 1 },
+	},
+	textures = {
+		{ name = "masha", path = "assets/masha.png", pixelArt = false },
+		{ name = "chammy", path = "assets/chammy.png", pixelArt = false },
+		{ name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
+		{ name = "map", path = "assets/map_assets/map.png", pixelArt = true, tileset = true },
+		{ name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
+	},
 }
 
 local tileset = CreateMap()
 LoadAssets(Assets)
+SoundPlayer.play_music("masa", 1, 0)
 -- LoadMap(tileset, scene)
 -- local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 -- local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
@@ -186,16 +187,16 @@ local function update()
 end
 local pos = 0
 main = {
-    [1] = {
-        update = function()
-            -- pos = pos + 1
-            -- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
-            -- scene:Update()
-        end,
-    },
-    [2] = {
-        render = function()
-            -- scene:Render()
-        end,
-    },
+	[1] = {
+		update = function()
+			-- pos = pos + 1
+			-- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
+			-- scene:Update()
+		end,
+	},
+	[2] = {
+		render = function()
+			-- scene:Render()
+		end,
+	},
 }
