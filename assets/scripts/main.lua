@@ -19,7 +19,7 @@ Masha = {
             height = 617.0,
             texture_path = "masha",
             start = { x = 0, y = 0 },
-            layer = "Layer 1",
+            layer = "Default",
         },
         box_collider = {
             width = 472,
@@ -33,7 +33,7 @@ Player = {
     group = "Character",
     components = {
         transform = {
-            position = { x = 100, y = 300 },
+            position = { x = 0, y = 0 },
             scale = { x = 3, y = 3 },
             rotation = 0,
         },
@@ -42,7 +42,7 @@ Player = {
             height = 32.0,
             texture_path = "player",
             start = { x = 0, y = 0 },
-            layer = "Layer 1",
+            layer = "Default",
         },
         box_collider = {
             width = 20,
@@ -63,7 +63,7 @@ local attributes = PhysicsAttributes({
     friction = 1000,
     restitution = 10,
     gravityScale = 0.0,
-    position = vec2(200, 300),
+    position = vec2(0, 0),
     scale = vec2(3, 3),
     boxSize = vec2(20, 24),
     offset = vec2(15, 0),
@@ -93,7 +93,7 @@ Assets = {
         { name = "chammy", path = "assets/chammy.png", pixelArt = false },
         { name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
         { name = "map", path = "assets/map_assets/map.png", pixelArt = true, tileset = true },
-        { name = "collider", path = "assets/map_assets/collider.png", pixelArt = true, tileset = true },
+        { name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
     },
 }
 
@@ -118,7 +118,7 @@ local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
 
 -- layerManager:AddEntityToLayer("0", mashaEntity)
--- layerManager:AddEntityToLayer("1", playerEntity)
+-- layerManager:AddEntityToLayer("Default", playerEntity)
 -- explosionntity = Entity("Explosion", "e")
 -- local transform3 = mashaEntity:add_component(TransformComponent(300, 200, 0.3, 0.3, 0))
 -- local sprite3 = mashaEntity:add_component(SpriteComponent(472.0, 617.0, "masha", 0, 0, 0))
@@ -188,7 +188,6 @@ main = {
         update = function()
             -- pos = pos + 1
             -- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
-            update()
             -- scene:Update()
         end,
     },

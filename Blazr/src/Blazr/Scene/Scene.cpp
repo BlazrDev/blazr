@@ -1,4 +1,5 @@
 #include "blzrpch.h"
+#include "Blazr/Core/Core.h"
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/PhysicsComponent.h"
@@ -6,6 +7,7 @@
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Blazr/Ecs/Entity.h"
 #include "Blazr/Renderer/CameraController.h"
+#include "Blazr/Renderer/FollowCamera.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Systems/AnimationSystem.h"
@@ -24,8 +26,8 @@ Scene::Scene() : m_Camera(1280.0f, 720.f, true) {
 	m_Camera.GetCamera().SetPosition({0.0f, 0.0f});
 	m_Camera.GetCamera().SetRotation(0.0f);
 	m_LayerManager = CreateRef<LayerManager>();
+	m_LayerManager->CreateLayer("Default", 0);
 	m_Registry = Registry::GetInstance();
-	m_LayerManager->CreateLayer("Layer 1", 0);
 	m_GameFrameBuffer = CreateRef<FrameBuffer>(1280, 720);
 }
 
@@ -64,6 +66,9 @@ void Scene::onEvent(Event &e) { m_Camera.OnEvent(e); }
 void Scene::Render() {
 
 	Renderer2D::BeginScene(m_Camera.GetCamera());
+	if (m_FollowCamera.GetTarget() != nullptr) {
+		m_FollowCamera.Update();
+	}
 	m_Camera.GetCamera().Update();
 	m_Camera.OnUpdate();
 

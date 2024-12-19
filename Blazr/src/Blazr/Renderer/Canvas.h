@@ -5,6 +5,7 @@ class Canvas {
 	int mWidth;
 	int mHeight;
 	int tileSize = 16;
+	bool update = false;
 
   public:
 	Canvas(int width = 0, int height = 0) {
@@ -19,4 +20,6 @@ class Canvas {
 	inline void SetHeight(int height) { mHeight = height; }
 	inline void SetTileSize(int size) { tileSize = size; }
 	inline int GetTileSize() { return tileSize; }
+	inline void SetUpdate(bool value) { update = value; }
+	inline bool GetUpdate() { return update; }
 };

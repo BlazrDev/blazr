@@ -12,8 +12,10 @@
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/CameraController.h"
+#include "Blazr/Renderer/FollowCamera.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
+#include "Blazr/Scene/TilemapScene.h"
 #include "Blazr/Systems/AnimationSystem.h"
 #include "Blazr/Systems/PhysicsSystem.h"
 #include "Blazr/Systems/ScriptingSystem.h"
@@ -87,6 +89,7 @@ static bool showSpriteComponent = false;
 static bool showPhysicsComponent = false;
 static bool showColorTab = false;
 static bool showSceneChooseDialog = false;
+static int selectedTilemapLayer = -1;
 
 // managers
 
@@ -100,6 +103,12 @@ static char
 static Ref<Project> newProject;
 static std::string selectedScene = "";
 static bool sceneIsSelected = false;
+static int canvasWidth = 16;
+static int canvasHeight = 16;
+static int tilemapScaleX = 1;
+static int tilemapScaleY = 1;
+static std::string identificationGroup = "";
+
 Editor::Editor() { Init(); }
 
 Editor::~Editor() { Shutdown(); }
@@ -125,6 +134,12 @@ void Editor::Init() {
 
 	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
 												 newProject->GetConfig().name);
+
+	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
+		BLZR_CORE_ERROR("Failed to load the main lua script");
+		return;
+	}
+	assetManager->LoadTexture("default", "assets/white_texture.png");
 }
 
 void Editor::InitImGui() {
@@ -245,6 +260,7 @@ void Editor::Run() {
 static std::string selectedGameObject = "GameObject";
 void Editor::RenderImGui() {
 	ImVec2 cursorPos = ImVec2(10, 55);
+	ImVec2 tilemapCursorPos = ImVec2(10, 55);
 	ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
@@ -265,6 +281,8 @@ void Editor::RenderImGui() {
 	ImGui::DockSpace(ImGui::GetID("MainDockSpace"), ImVec2(0.0f, 0.0f));
 
 	static bool showGameObjectDetails = false;
+	static bool showTilemapSettings = false;
+	static bool showTileObjectDetails = false;
 	int numberOfComponents = 3;
 
 	// Menu bar
@@ -329,17 +347,6 @@ void Editor::RenderImGui() {
 			}
 			if (ImGui::MenuItem("Export tilemap to scene")) {
 				showSceneChooseDialog = true;
-				// auto tilemapScene =
-				// 	std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
-				// if (tilemapScene) {
-				// 	for (const auto &[name, scene] :
-				// 		 Project::GetActive()->GetScenes()) {
-				// 		BLZR_CORE_INFO("Scene name: {0}", scene->GetName());
-				// 		if (scene->GetName() == "Untitled 1") {
-				// 			tilemapScene->ExportTilemapToScene(*scene);
-				// 		}
-				// 	}
-				// }
 			}
 			ImGui::EndMenu();
 		}
@@ -349,6 +356,31 @@ void Editor::RenderImGui() {
 			}
 			if (ImGui::MenuItem("Redo")) {
 				// Redo action
+			}
+
+			if (ImGui::MenuItem("Clear scene")) {
+
+				for (auto &scene : newProject->GetScenes()) {
+					auto tilemapScene =
+						std::dynamic_pointer_cast<TilemapScene>(scene.second);
+					if (tilemapScene) {
+						if (std::dynamic_pointer_cast<TilemapScene>(
+								m_ActiveScene) == nullptr) {
+							tilemapScene->clearScene(*m_ActiveScene);
+							break;
+						} else {
+							for (auto &scene : newProject->GetScenes()) {
+								if (tilemapScene) {
+									if (std::dynamic_pointer_cast<TilemapScene>(
+											scene.second) == nullptr)
+										tilemapScene->clearScene(*scene.second);
+								}
+
+								tilemapScene->clearRegistry();
+							}
+						}
+					}
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -502,9 +534,6 @@ void Editor::RenderImGui() {
 		ImGui::End();
 	}
 
-	//// Zooming
-	// if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
-	//	m_Scene->GetCamera().SetScale(zoomLevel);
 	// }----------------------------------------------------------1. box -
 	// Scene---------------------------------
 
@@ -539,6 +568,49 @@ void Editor::RenderImGui() {
 					if (ImGui::Selectable(gameObjectName.c_str())) {
 						selectedGameObject = gameObjectName;
 						showGameObjectDetails = true;
+					}
+					if (ImGui::BeginPopupContextItem(gameObjectName.c_str())) {
+						if (!ent->GetFollowCamera()) {
+							if (ImGui::MenuItem("Add Follower Camera")) {
+								m_ActiveScene->SetFollowCamera(ent);
+								ent->SetFollowCamera(true);
+							}
+							ImGui::EndPopup();
+						} else if (ent->GetFollowCamera()) {
+							if (ImGui::MenuItem("Remove Follower Camera")) {
+								// Logika za dodavanje follower kamere
+								m_ActiveScene->SetFollowCamera(nullptr);
+								ent->SetFollowCamera(false);
+							}
+							ImGui::EndPopup();
+						}
+					}
+				}
+			}
+		}
+		showTilemapSettings = false;
+	} else {
+		showTilemapSettings = true;
+		showGameObjectDetails = false;
+		std::unordered_set<std::string>
+			displayedGroups; // Set za praćenje ispisanih grupa
+
+		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+			for (Ref<Entity> ent : layer->entities) {
+				if (ent->HasComponent<TileComponent>() &&
+					ent->HasComponent<PhysicsComponent>()) {
+					std::string gameObjectName =
+						ent->GetComponent<Identification>().group;
+
+					// Proveri da li je grupa već ispisana
+					if (displayedGroups.find(gameObjectName) ==
+						displayedGroups.end()) {
+						if (ImGui::Selectable(gameObjectName.c_str())) {
+							selectedGameObject = gameObjectName;
+							showTileObjectDetails = true;
+						}
+						displayedGroups.insert(
+							gameObjectName); // Dodaj grupu u set
 					}
 				}
 			}
@@ -683,7 +755,6 @@ void Editor::RenderImGui() {
 						}
 					}
 				}
-
 				if (!CameraController::paused) {
 					ImGui::EndDisabled();
 				}
@@ -905,7 +976,146 @@ void Editor::RenderImGui() {
 			}
 			ImGui::EndTabBar();
 		}
-	} else {
+	} else if (showTilemapSettings) {
+		if (ImGui::BeginTabBar("Tilemap Settings")) {
+			if (ImGui::BeginTabItem("TileMap Settings")) {
+				if (!CameraController::paused) {
+					ImGui::BeginDisabled(true);
+				}
+
+				renderTileMapSettings(tilemapCursorPos, *tilemapScene);
+
+				auto view = m_Registry->GetRegistry()
+								.view<PhysicsComponent, TileComponent,
+									  Identification, SpriteComponent>();
+				bool physicsComponentRendered =
+					false; // Flag za prikaz PhysicsComponent samo jednom
+				std::map<std::string, PhysicsComponent>
+					updatedPhysics; // Promenljive za ažurirani
+									// PhysicsComponent
+
+				for (auto entity : view) {
+					auto &physics = view.get<PhysicsComponent>(entity);
+					auto &identification = view.get<Identification>(entity);
+					auto &sprite = view.get<SpriteComponent>(entity);
+
+					// Ažuriraj grupu ako je tilemap
+					if (identification.group == "tilemap") {
+						identification.group = identificationGroup;
+					}
+
+					// Ako je entitet deo selektovane grupe
+					if (identification.group == selectedGameObject) {
+						// Prikazivanje PhysicsComponent samo jednom
+						if (!physicsComponentRendered) {
+							renderPhysicsComponent(
+								tilemapCursorPos,
+								physics); // Render prvi PhysicsComponent
+							renderIdentificationComponent(
+								tilemapCursorPos, identification, sprite.layer);
+							physicsComponentRendered = true;
+
+							updatedPhysics[identification.group] = physics;
+							for (auto e : view) {
+								auto &oldId = view.get<Identification>(e);
+								auto &oldPhysics =
+									view.get<PhysicsComponent>(e);
+
+								// Ako je entitet deo selektovane grupe
+								if (oldId.group == selectedGameObject &&
+									e != entity) {
+									auto &physicsWorld = m_Registry->GetContext<
+										std::shared_ptr<b2World>>();
+
+									if (!physicsWorld) {
+										return;
+									}
+									m_Registry->GetRegistry()
+										.replace<PhysicsComponent>(
+											e,
+											PhysicsComponent(
+												physicsWorld,
+												PhysicsAttributes{
+													.type =
+														physics.GetAttributes()
+															.type,
+													.density =
+														physics.GetAttributes()
+															.density,
+													.friction =
+														physics.GetAttributes()
+															.friction,
+													.restitution =
+														physics.GetAttributes()
+															.restitution,
+													.gravityScale =
+														physics.GetAttributes()
+															.gravityScale,
+													.position =
+														oldPhysics
+															.GetAttributes()
+															.position,
+													.scale =
+														oldPhysics
+															.GetAttributes()
+															.scale,
+													.boxSize =
+														oldPhysics
+															.GetAttributes()
+															.boxSize,
+													.offset =
+														oldPhysics
+															.GetAttributes()
+															.offset,
+													.isSensor =
+														physics.GetAttributes()
+															.isSensor,
+													.isFixedRotation =
+														physics.GetAttributes()
+															.isFixedRotation}));
+
+									// Ako je entitet već ažuriran
+									// oldPhysics.SetAttributes(PhysicsAttributes{
+									// 	.type =
+									// physics.GetAttributes().type,
+									// 	.density =
+									// 		physics.GetAttributes().density,
+									// 	.friction =
+									// 		physics.GetAttributes().friction,
+									// 	.restitution =
+									// 		physics.GetAttributes().restitution,
+									// 	.gravityScale =
+									// physics.GetAttributes()
+									// 						.gravityScale,
+									// 	.position =
+									// 		oldPhysics.GetAttributes().position,
+									// 	.scale =
+									// 		oldPhysics.GetAttributes().scale,
+									// 	.boxSize =
+									// 		oldPhysics.GetAttributes().boxSize,
+									// 	.offset =
+									// 		oldPhysics.GetAttributes().offset,
+									// 	.isSensor =
+									// 		physics.GetAttributes().isSensor,
+									// 	.isFixedRotation =
+									// 		physics.GetAttributes()
+									// 			.isFixedRotation});
+								}
+							}
+						}
+					}
+				}
+
+				if (!CameraController::paused) {
+					ImGui::EndDisabled();
+				}
+				ImGui::EndTabItem();
+			}
+		}
+		ImGui::EndTabBar();
+	}
+
+	else {
 		ImGui::Separator();
 		ImGui::Dummy(ImVec2());
 		ImGui::SetWindowFontScale(1.2f);
@@ -918,6 +1128,12 @@ void Editor::RenderImGui() {
 	//-
 	// Camera
 	// box with tabs---------------------------------
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove;
+
+	if (CameraController::paused) {
+		flags |= ImGuiWindowFlags_NoScrollWithMouse;
+	}
+
 	ImGui::SetNextWindowSize(ImVec2(widthSize - 230 - 310, heightSize - 300));
 	ImGui::SetNextWindowPos(ImVec2(270, 19));
 	ImGui::Begin("Camera", nullptr,
@@ -926,7 +1142,7 @@ void Editor::RenderImGui() {
 	RenderSceneTabs(*this);
 	RenderSceneControls(showCodeEditor, luaScriptContent, luaScriptBuffer,
 						newProject);
-	RenderActiveScene(m_ActiveScene);
+	RenderActiveScene(m_ActiveScene, flags);
 
 	ImVec2 cameraPos = ImGui::GetWindowPos();
 	ImVec2 cameraSize = ImGui::GetWindowSize();
@@ -1364,8 +1580,15 @@ void Editor::renderIdentificationComponent(ImVec2 &cursorPos,
 	ImGui::Text("Group");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-	ImGui::InputText("###group", identification.group.data(),
-					 IM_ARRAYSIZE(identification.group.data()));
+
+	char groupBuffer[256];
+	strncpy(groupBuffer, identification.group.c_str(), sizeof(groupBuffer) - 1);
+	groupBuffer[sizeof(groupBuffer) - 1] = '\0';
+
+	if (ImGui::InputText("###groupObject", groupBuffer, sizeof(groupBuffer),
+						 ImGuiInputTextFlags_EnterReturnsTrue)) {
+		identification.group = groupBuffer;
+	}
 	ImGui::PopItemWidth();
 	cursorPos.y += 35;
 }
@@ -1391,6 +1614,8 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 
 	// Iteriraj kroz mapu i dodaj sve ključeve u vektor
 	for (const auto &pair : loadedTexture) {
+		if (pair.first == "default")
+			continue;
 		textures.push_back(pair.first);
 	}
 
@@ -1406,6 +1631,9 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 			selectedTextureIndex == -1 ? "Choose a texture"
 									   : textures[selectedTextureIndex].c_str();
 
+		if (selectedTextureIndex == -1) {
+			sprite.texturePath = "default";
+		}
 		// Dropdown meni
 		if (ImGui::BeginCombo("##TexturesDropdown", currentTexture)) {
 			for (int i = 0; i < textures.size(); i++) {
@@ -1450,9 +1678,11 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 
 	if ((sprite.width != spriteWidth || sprite.height != spriteHeight) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		auto texture =
+			AssetManager::GetInstance()->GetTexture(sprite.texturePath);
 		spriteWidth = sprite.width;
 		spriteHeight = sprite.height;
-		sprite.generateObject(sprite.width, sprite.height);
+		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
 	}
 	// layer
 	cursorPos.x -= 65;
@@ -1646,27 +1876,6 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 		}
 	}
 
-	// Popups for success/failure
-	// if (ImGui::BeginPopup("Script Created")) {
-	// 	ImGui::Text("Script successfully created!");
-	// 	ImGui::EndPopup();
-	// }
-
-	// if (ImGui::BeginPopup("Error Creating Script")) {
-	// 	ImGui::Text("Failed to create the script file.");
-	// 	ImGui::EndPopup();
-	// }
-	//
-	// if (ImGui::BeginPopup("Script Loaded")) {
-	// 	ImGui::Text("Script successfully loaded!");
-	// 	ImGui::EndPopup();
-	// }
-	//
-	// if (ImGui::BeginPopup("Error Loading Script")) {
-	// 	ImGui::Text("Failed to load the script file.");
-	// 	ImGui::EndPopup();
-	// }
-
 	cursorPos.y += 35; // Adjust cursor position for layout
 }
 
@@ -1760,7 +1969,6 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	ImGui::SetCursorPos(cursorPos);
 	const char *types[] = {"Static", "Kinematic", "Dynamic"};
 	static int selectedTypeIndex = body->GetType();
-	BLZR_CORE_INFO("Type: {0}", selectedTypeIndex);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
 												 ? "Choose a type"
@@ -1875,6 +2083,183 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		newOffsetX = offsetX;
 		newOffsetY = offsetY;
 	}
+}
+void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
+	Ref<Canvas> canvas = tilemap.GetCanvas();
+
+	if (canvas == nullptr) {
+		return;
+	}
+
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Separator();
+	ImGui::Text("TileMap Settings");
+	ImGui::SameLine();
+	cursorPos.y += 28;
+	// Pozicija (Position)
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("Grid Size");
+	cursorPos.y += 18;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushItemWidth(105);
+	ImGui::Text("X");
+	ImGui::SameLine();
+	ImGui::InputInt("##Grid Size X", &canvasWidth, 1, 4);
+	if (canvasWidth < 1) {
+		canvasWidth = 1;
+	}
+	if (canvasWidth > 100) {
+		canvasWidth = 100;
+	}
+	ImGui::SameLine();
+	ImGui::Text("Y");
+	ImGui::SameLine();
+	ImGui::InputInt("##Grid Size Y", &canvasHeight, 1, 4);
+	if (canvasHeight < 1) {
+		canvasHeight = 1;
+	}
+
+	if (canvasHeight > 100) {
+		canvasHeight = 100;
+	}
+
+	if ((canvasWidth != canvas->GetWidth() ||
+		 canvasHeight != canvas->GetHeight()) &&
+		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		canvas->SetWidth(canvasWidth * canvas->GetTileSize());
+		canvas->SetHeight(canvasHeight * canvas->GetTileSize());
+		canvas->SetUpdate(true);
+	}
+
+	ImGui::PopItemWidth();
+	cursorPos.y += 35;
+	ImGui::SetCursorPosY(cursorPos.y);
+
+	std::vector<Ref<Layer>> layers =
+		m_ActiveScene->GetLayerManager()->GetAllLayers();
+
+	layers.erase(std::remove_if(layers.begin(), layers.end(),
+								[](const Ref<Layer> &layer) {
+									return layer->name == "Grid";
+								}),
+				 layers.end());
+
+	ImGui::PushItemWidth(120);
+	if (ImGui::BeginCombo("##LayerDropdown",
+						  selectedTilemapLayer == -1
+							  ? "Select a layer:"
+							  : layers[selectedTilemapLayer]->name.c_str())) {
+
+		if (ImGui::Selectable("Add New Layer", false)) {
+			showAddLayerPopup = true;
+			strncpy(newLayerName, "New Layer", sizeof(newLayerName));
+			newLayerZIndex = 0;
+		}
+
+		for (int i = 0; i < layers.size(); i++) {
+			bool isSelected = (selectedTilemapLayer == i);
+			if (ImGui::Selectable(layers[i]->name.c_str(), isSelected)) {
+				if (layers[i]->name == "Collider") {
+					auto tilemapScene =
+						std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
+					if (tilemapScene) {
+						tilemapScene->SetSelectedTile(
+							std::pair<std::string, glm::vec3>(
+								"collider", glm::vec3(0, 0, 0)));
+					}
+				}
+				tilemap.SetLayer(layers[i]->name);
+				selectedTilemapLayer = i;
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+
+	if (tilemap.GetLayer() == "Collider") {
+		char groupBuffer[256];
+		strncpy(groupBuffer, identificationGroup.c_str(),
+				sizeof(groupBuffer) - 1);
+		groupBuffer[sizeof(groupBuffer) - 1] = '\0';
+
+		if (ImGui::InputText("###group", groupBuffer, sizeof(groupBuffer),
+							 ImGuiInputTextFlags_EnterReturnsTrue)) {
+			identificationGroup = groupBuffer;
+		}
+	}
+	ImGui::PopItemWidth();
+
+	if (showAddLayerPopup) {
+		ImGui::OpenPopup("Create New Layer");
+	}
+
+	if (ImGui::BeginPopupModal("Create New Layer", &showAddLayerPopup,
+							   ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("Enter Layer Details:");
+		ImGui::Separator();
+
+		ImGui::InputText("Layer Name", newLayerName, sizeof(newLayerName));
+		ImGui::InputInt("zIndex", &newLayerZIndex);
+
+		if (ImGui::Button("Create", ImVec2(120, 0))) {
+			Ref<Layer> newLayer =
+				CreateRef<Layer>(newLayerName, newLayerZIndex);
+			m_ActiveScene->GetLayerManager()->AddLayer(newLayer);
+
+			layers = m_ActiveScene->GetLayerManager()->GetAllLayers();
+			selectedTilemapLayer = layers.size() - 1;
+
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+			showAddLayerPopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+
+	cursorPos.y += 25;
+
+	// ImGui::SetCursorPos(cursorPos);
+	// ImGui::Text("Scale");
+	// cursorPos.y += 18;
+	//
+	// ImGui::SetCursorPos(cursorPos);
+	// ImGui::PushItemWidth(105);
+	// ImGui::Text("X");
+	// ImGui::SameLine();
+	// ImGui::InputInt("##ScaleX", &tilemapScaleX, 1, 4);
+	// if (tilemapScaleX < 1) {
+	// 	tilemapScaleX = 1;
+	// }
+	// if (tilemapScaleX > 10) {
+	// 	tilemapScaleX = 10;
+	// }
+	// ImGui::SameLine();
+	// ImGui::Text("Y");
+	// ImGui::SameLine();
+	// ImGui::InputInt("##ScaleY", &tilemapScaleY, 1, 4);
+	// if (tilemapScaleY < 1) {
+	// 	tilemapScaleY = 1;
+	// }
+	//
+	// if (tilemapScaleY > 100) {
+	// 	tilemapScaleY = 100;
+	// }
+	//
+	// if ((tilemapScaleX != canvas->GetTileSize() ||
+	// 	 tilemapScaleY != tilemap.GetScale().y) &&
+	// 	glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+	// 	tilemap.SetScale(glm::vec2(tilemapScaleX, tilemapScaleY));
+	// }
+	//
+	// ImGui::PopItemWidth();
 }
 
 } // namespace Blazr

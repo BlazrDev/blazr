@@ -5,6 +5,7 @@
 #include "Blazr/Layers/LayerManager.h"
 #include "Blazr/Renderer/Camera2D.h"
 #include "Blazr/Renderer/CameraController.h"
+#include "Blazr/Renderer/FollowCamera.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Renderer/Texture2D.h"
 #include <json.hpp>
@@ -25,6 +26,12 @@ class Scene {
 
 	std::shared_ptr<Registry> GetRegistry() { return m_Registry; }
 	CameraController &GetCameraController() { return m_Camera; }
+
+	void BLZR_API SetFollowCamera(Ref<Entity> target) {
+		m_FollowCamera.SetTarget(target);
+	}
+
+	FollowCamera &GetFollowCamera() { return m_FollowCamera; }
 
 	void BLZR_API Update();
 	virtual void BLZR_API Render();
@@ -56,6 +63,7 @@ class Scene {
 	CameraController m_Camera;
 	std::shared_ptr<Blazr::Registry> m_Registry;
 	Ref<LayerManager> m_LayerManager;
+	FollowCamera m_FollowCamera{m_Camera.GetCamera(), nullptr};
 };
 
 } // namespace Blazr

@@ -25,6 +25,10 @@ class Camera2D {
 
 	void BLZR_API SetRotation(float rotation) { m_Rotation = rotation; }
 
+	float BLZR_API GetWidth() const { return m_Width; }
+
+	float BLZR_API GetHeight() const { return m_Height; }
+
 	void BLZR_API Update();
 
 	glm::mat4 GetCameraMatrix() const;

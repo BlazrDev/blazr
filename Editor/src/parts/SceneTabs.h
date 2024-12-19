@@ -6,6 +6,7 @@
 #include "imgui.h"
 
 namespace Blazr {
+
 void RenderSceneTabs(Editor &editor) {
 	if (ImGui::BeginTabBar("SceneTabs")) {
 
@@ -41,10 +42,9 @@ void RenderSceneToTexture(Ref<Scene> activeScene) {
 	activeScene->m_GameFrameBuffer->Unbind();
 }
 
-void RenderActiveScene(Ref<Scene> activeScene) {
+void RenderActiveScene(Ref<Scene> activeScene, ImGuiWindowFlags flags) {
 	if (activeScene) {
-		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true,
-						  ImGuiWindowFlags_NoMove);
+		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true, flags);
 
 		CameraController::gameViewWindow = ImGui::IsWindowHovered();
 		ImVec2 windowSize = {1280, 720}; // ImGui::GetContentRegionAvail();

@@ -35,7 +35,7 @@ class PhysicsComponent {
   public:
 	BLZR_API PhysicsComponent();
 	BLZR_API PhysicsComponent(std::shared_ptr<b2World> world,
-					 const PhysicsAttributes &atributes);
+							  const PhysicsAttributes &atributes);
 	~PhysicsComponent() = default;
 
 	void BLZR_API init(int windowWidth, int windowHeight);

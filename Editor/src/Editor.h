@@ -6,6 +6,7 @@
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Renderer/FrameBuffer.h"
 #include "Blazr/Scene/Scene.h"
+#include "Blazr/Scene/TilemapScene.h"
 #include "imgui.h"
 
 namespace Blazr {
@@ -38,6 +39,7 @@ class Editor : public Application {
 	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
+	void renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tileMap);
 
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
