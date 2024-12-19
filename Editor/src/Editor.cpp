@@ -12,6 +12,7 @@
 #include "Blazr/Physics/Box2DWrapper.h"
 #include "Blazr/Project/ProjectSerializer.h"
 #include "Blazr/Renderer/CameraController.h"
+#include "Blazr/Renderer/FollowCamera.h"
 #include "Blazr/Renderer/Renderer2D.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Scene/TilemapScene.h"
@@ -104,6 +105,8 @@ static std::string selectedScene = "";
 static bool sceneIsSelected = false;
 static int canvasWidth = 16;
 static int canvasHeight = 16;
+static int tilemapScaleX = 1;
+static int tilemapScaleY = 1;
 static std::string identificationGroup = "";
 
 Editor::Editor() { Init(); }
@@ -358,11 +361,28 @@ void Editor::RenderImGui() {
 				// Redo action
 			}
 
-			if (ImGui::MenuItem("Clear tilesmap")) {
-				auto tilemapScene =
-					std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
-				if (tilemapScene) {
-					tilemapScene->clearScene();
+			if (ImGui::MenuItem("Clear scene")) {
+
+				for (auto &scene : newProject->GetScenes()) {
+					auto tilemapScene =
+						std::dynamic_pointer_cast<TilemapScene>(scene.second);
+					if (tilemapScene) {
+						if (std::dynamic_pointer_cast<TilemapScene>(
+								m_ActiveScene) == nullptr) {
+							tilemapScene->clearScene(*m_ActiveScene);
+							break;
+						} else {
+							for (auto &scene : newProject->GetScenes()) {
+								if (tilemapScene) {
+									if (std::dynamic_pointer_cast<TilemapScene>(
+											scene.second) == nullptr)
+										tilemapScene->clearScene(*scene.second);
+								}
+
+								tilemapScene->clearRegistry();
+							}
+						}
+					}
 				}
 			}
 			ImGui::EndMenu();
@@ -422,9 +442,6 @@ void Editor::RenderImGui() {
 		ImGui::End();
 	}
 
-	//// Zooming
-	// if (ImGui::SliderFloat("##ZoomSlider", &zoomLevel, 0.1f, 5.0f)) {
-	//	m_Scene->GetCamera().SetScale(zoomLevel);
 	// }----------------------------------------------------------1. box -
 	// Scene---------------------------------
 
@@ -459,6 +476,22 @@ void Editor::RenderImGui() {
 					if (ImGui::Selectable(gameObjectName.c_str())) {
 						selectedGameObject = gameObjectName;
 						showGameObjectDetails = true;
+					}
+					if (ImGui::BeginPopupContextItem(gameObjectName.c_str())) {
+						if (!ent->GetFollowCamera()) {
+							if (ImGui::MenuItem("Add Follower Camera")) {
+								m_ActiveScene->SetFollowCamera(ent);
+								ent->SetFollowCamera(true);
+							}
+							ImGui::EndPopup();
+						} else if (ent->GetFollowCamera()) {
+							if (ImGui::MenuItem("Remove Follower Camera")) {
+								// Logika za dodavanje follower kamere
+								m_ActiveScene->SetFollowCamera(nullptr);
+								ent->SetFollowCamera(false);
+							}
+							ImGui::EndPopup();
+						}
 					}
 				}
 			}
@@ -856,7 +889,8 @@ void Editor::RenderImGui() {
 				bool physicsComponentRendered =
 					false; // Flag za prikaz PhysicsComponent samo jednom
 				std::map<std::string, PhysicsComponent>
-					updatedPhysics; // Promenljive za ažurirani PhysicsComponent
+					updatedPhysics; // Promenljive za ažurirani
+									// PhysicsComponent
 
 				for (auto entity : view) {
 					auto &physics = view.get<PhysicsComponent>(entity);
@@ -939,14 +973,16 @@ void Editor::RenderImGui() {
 
 									// Ako je entitet već ažuriran
 									// oldPhysics.SetAttributes(PhysicsAttributes{
-									// 	.type = physics.GetAttributes().type,
+									// 	.type =
+									// physics.GetAttributes().type,
 									// 	.density =
 									// 		physics.GetAttributes().density,
 									// 	.friction =
 									// 		physics.GetAttributes().friction,
 									// 	.restitution =
 									// 		physics.GetAttributes().restitution,
-									// 	.gravityScale = physics.GetAttributes()
+									// 	.gravityScale =
+									// physics.GetAttributes()
 									// 						.gravityScale,
 									// 	.position =
 									// 		oldPhysics.GetAttributes().position,
@@ -1992,7 +2028,42 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 		ImGui::EndPopup();
 	}
 
-	cursorPos.y += 35;
+	cursorPos.y += 25;
+
+	// ImGui::SetCursorPos(cursorPos);
+	// ImGui::Text("Scale");
+	// cursorPos.y += 18;
+	//
+	// ImGui::SetCursorPos(cursorPos);
+	// ImGui::PushItemWidth(105);
+	// ImGui::Text("X");
+	// ImGui::SameLine();
+	// ImGui::InputInt("##ScaleX", &tilemapScaleX, 1, 4);
+	// if (tilemapScaleX < 1) {
+	// 	tilemapScaleX = 1;
+	// }
+	// if (tilemapScaleX > 10) {
+	// 	tilemapScaleX = 10;
+	// }
+	// ImGui::SameLine();
+	// ImGui::Text("Y");
+	// ImGui::SameLine();
+	// ImGui::InputInt("##ScaleY", &tilemapScaleY, 1, 4);
+	// if (tilemapScaleY < 1) {
+	// 	tilemapScaleY = 1;
+	// }
+	//
+	// if (tilemapScaleY > 100) {
+	// 	tilemapScaleY = 100;
+	// }
+	//
+	// if ((tilemapScaleX != canvas->GetTileSize() ||
+	// 	 tilemapScaleY != tilemap.GetScale().y) &&
+	// 	glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+	// 	tilemap.SetScale(glm::vec2(tilemapScaleX, tilemapScaleY));
+	// }
+	//
+	// ImGui::PopItemWidth();
 }
 
 } // namespace Blazr

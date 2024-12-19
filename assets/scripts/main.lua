@@ -19,7 +19,7 @@ Masha = {
             height = 617.0,
             texture_path = "masha",
             start = { x = 0, y = 0 },
-            layer = "Layer 1",
+            layer = "Default",
         },
         box_collider = {
             width = 472,
@@ -33,7 +33,7 @@ Player = {
     group = "Character",
     components = {
         transform = {
-            position = { x = 100, y = 300 },
+            position = { x = 0, y = 0 },
             scale = { x = 3, y = 3 },
             rotation = 0,
         },
@@ -42,7 +42,7 @@ Player = {
             height = 32.0,
             texture_path = "player",
             start = { x = 0, y = 0 },
-            layer = "Layer 1",
+            layer = "Default",
         },
         box_collider = {
             width = 20,
@@ -63,7 +63,7 @@ local attributes = PhysicsAttributes({
     friction = 1000,
     restitution = 10,
     gravityScale = 0.0,
-    position = vec2(200, 300),
+    position = vec2(0, 0),
     scale = vec2(3, 3),
     boxSize = vec2(20, 24),
     offset = vec2(15, 0),

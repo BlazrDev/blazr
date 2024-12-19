@@ -25,6 +25,7 @@ class TilemapScene : public Blazr::Scene {
 	Entity m_SelectedEntity{*m_Registry, "selected", "selected"};
 	bool isShiftPressed = false;
 	std::string layer = "";
+	glm::vec2 scale{1.0f, 1.0f};
 
   public:
 	TilemapScene(Canvas &canvas) : Scene() {
@@ -40,6 +41,10 @@ class TilemapScene : public Blazr::Scene {
 		m_SelectedEntity.AddComponent<SpriteComponent>();
 		m_SelectedEntity.AddComponent<TileComponent>();
 	}
+
+	void SetScale(glm::vec2 scale) { this->scale = scale; }
+
+	glm::vec2 GetScale() { return scale; }
 
 	void initCanvas() {
 		float tileSize = m_Canvas->GetTileSize();
@@ -189,9 +194,11 @@ class TilemapScene : public Blazr::Scene {
 								   centerPosition.y + gridY * tileSize,
 								   layer) &&
 							   m_selectedTile.first == "collider") {
-						addCollider(
-							"Collider", centerPosition.x + gridX * tileSize,
-							centerPosition.y + gridY * tileSize, tileSize);
+						addCollider("Collider: " + std::to_string(gridX) +
+										"  " + std::to_string(gridY),
+									centerPosition.x + gridX * tileSize,
+									centerPosition.y + gridY * tileSize,
+									tileSize);
 					}
 				} else {
 					if (ImGui::IsWindowHovered() &&
@@ -312,13 +319,15 @@ class TilemapScene : public Blazr::Scene {
 
 			if (transform.position.x == posX && transform.position.y == posY &&
 				sprite.layer == layer) {
-				return true; // Entitet postoji na toj poziciji i ima isti sloj
+				return true;
 			}
 		}
 		return false; // Nema entiteta na toj poziciji sa istim slojem
 	}
 
 	void ExportTilemapToScene(Scene &scene) {
+
+		clearScene(scene);
 
 		auto layerManager = scene.GetLayerManager();
 		for (auto layer : m_LayerManager->GetAllLayers()) {
@@ -334,20 +343,37 @@ class TilemapScene : public Blazr::Scene {
 				sceneLayerManager->AddEntity(entity);
 			}
 		}
-		clearScene();
+		// clearScene();
 	}
 
-	void clearScene() {
+	void clearScene(Scene &scene) {
 
+		auto layerManager = scene.GetLayerManager();
 		for (auto layer : m_LayerManager->GetAllLayers()) {
 			if (layer->name != "Grid") {
-				auto entities = layer->GetEntities();
-				for (auto entity : entities) {
-					layer->RemoveEntity(entity);
+				auto sceneLayer = layerManager->GetLayerByName(layer->name);
+				if (sceneLayer == nullptr) {
+					continue;
+				}
+
+				for (auto entity : sceneLayer->GetEntities()) {
+					sceneLayer->RemoveEntity(entity);
 				}
 			}
 		}
 	}
+
+	void clearRegistry() {
+		for (auto layer : m_LayerManager->GetAllLayers()) {
+			if (layer->name != "Grid") {
+				for (auto entity : layer->GetEntities()) {
+					m_LayerManager->GetLayerByName(layer->name)
+						->RemoveEntity(entity);
+				}
+			}
+		}
+	}
+
 	Ref<Canvas> GetCanvas() { return m_Canvas; }
 	void SetCanvas(Ref<Canvas> canvas) {
 		m_Canvas = canvas;

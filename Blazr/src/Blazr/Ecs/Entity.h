@@ -100,6 +100,11 @@ class Entity {
 		return sol::make_reference(s, std::ref(component));
 	}
 
+	void BLZR_API SetFollowCamera(bool followCamera) {
+		hasFollowCamera = followCamera;
+	}
+	bool BLZR_API GetFollowCamera() const { return hasFollowCamera; }
+
 	bool operator==(const Entity &other) const {
 		auto &id1 = const_cast<Entity *>(this)->GetComponent<Identification>();
 		auto &id2 = const_cast<Entity &>(other).GetComponent<Identification>();
@@ -117,6 +122,7 @@ class Entity {
 	entt::entity m_EntityHandler;
 	std::string m_Name;
 	std::string m_Group;
+	bool hasFollowCamera = false;
 	static int ID;
 };
 } // namespace Blazr

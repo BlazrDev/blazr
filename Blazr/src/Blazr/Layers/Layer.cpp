@@ -1,4 +1,5 @@
 #include "blzrpch.h"
+
 #include "Blazr/Core/Log.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
 #include "Blazr/Ecs/Components/BoxColliderComponent.h"
@@ -9,6 +10,7 @@
 #include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
 #include "Layer.h"
+#include <cstring>
 
 namespace Blazr {
 bool Layer::showColliders = false;
@@ -43,7 +45,7 @@ void Layer::Render(Registry &registry) {
 					{sprite.width, sprite.height}, sprite.color);
 			}
 
-			if (entity->GetName() != "Collider" &&
+			if (entity->GetName().find("Collider") == std::string::npos &&
 				entity->GetGroup() != "grid") {
 				Renderer2D::DrawQuad(registry, entityHandler);
 			}
