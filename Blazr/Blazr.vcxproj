@@ -165,6 +165,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Core\Application.h" />
     <ClInclude Include="src\Blazr\Core\Core.h" />
     <ClInclude Include="src\Blazr\Core\EntryPoint.h" />
+    <ClInclude Include="src\Blazr\Core\ImGuiLogSink.h" />
     <ClInclude Include="src\Blazr\Core\KeyCodes.h" />
     <ClInclude Include="src\Blazr\Core\Log.h" />
     <ClInclude Include="src\Blazr\Core\MouseCodes.h" />

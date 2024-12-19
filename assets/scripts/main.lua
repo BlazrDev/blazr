@@ -1,9 +1,9 @@
 -- Main Script
 if run_script("assets/scripts/utilities.lua") then
-    print("Utilities script has been executed")
+	print("Utilities script has been executed")
 end
 if run_script("assets/tiled_maps/testmap.lua") then
-    print("Testmap script has been executed")
+	print("Testmap script has been executed")
 end
 Masha = {
     tag = "Masha",
@@ -116,6 +116,7 @@ local playerCollider = playerEntity:get_component(BoxColliderComponent)
 local mashaCollider = mashaEntity:get_component(BoxColliderComponent)
 local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
+local physicsComp = playerEntity:get_component(PhysicsComponent)
 
 -- layerManager:AddEntityToLayer("0", mashaEntity)
 -- layerManager:AddEntityToLayer("Default", playerEntity)
@@ -133,25 +134,25 @@ mashaCollider.colliding = true
 -- collider2.colliding = true
 
 local function stoji()
-    playerAnimation.frame_offset = 7
-    playerAnimation.current_frame = 0
-    playerAnimation.num_frames = 11
+	playerAnimation.frame_offset = 7
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 11
 end
 
 local function udara()
-    playerAnimation.frame_offset = 4
+	playerAnimation.frame_offset = 4
 
-    playerAnimation.current_frame = 2
-    playerAnimation.num_frames = 10
+	playerAnimation.current_frame = 2
+	playerAnimation.num_frames = 10
 end
 
 local function trci()
-    playerAnimation.frame_offset = 6
-    playerAnimation.current_frame = 0
-    playerAnimation.num_frames = 8
-    -- sprite2.color.x = 1.0
-    -- sprite2.color.y = 1.0
-    -- sprite2.color.z = 1.0
+	playerAnimation.frame_offset = 6
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 8
+	-- sprite2.color.x = 1.0
+	-- sprite2.color.y = 1.0
+	-- sprite2.color.z = 1.0
 end
 -- local am = AssetManager:get_instance()
 -- AssetManager.load_music("masa", "assets/sounds/masa.mp3", "dess")
@@ -161,26 +162,27 @@ end
 local x = 5
 local y = 5
 local function update()
-    local velocity = physicsComponent:get_linear_velocity()
-    if InputSystem.key_repeating(KEY_A) then
-        physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
-        trci()
-    elseif InputSystem.key_repeating(KEY_D) then
-        physicsComponent:set_linear_velocity(vec2(x, velocity.y))
-        trci()
-    end
-    if InputSystem.key_repeating(KEY_W) then
-        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
-        trci()
-    end
-    if InputSystem.key_repeating(KEY_S) then
-        physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
-        trci()
-    end
+	local velocity = physicsComponent:get_linear_velocity()
+	if InputSystem.key_repeating(KEY_A) then
+		physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
+		trci()
+	elseif InputSystem.key_repeating(KEY_D) then
+		physicsComponent:set_linear_velocity(vec2(x, velocity.y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_W) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_S) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
+		trci()
+	end
 
-    if InputSystem.key_repeating(KEY_SPACE) then
-        physicsComponent:set_transform(vec2(500, 300))
-    end
+	if InputSystem.key_repeating(KEY_SPACE) then
+		-- physicsComponent:set_transform(vec2(500, 300))
+		physicsComp:set_transform(vec2(400, 200))
+	end
 end
 local pos = 0
 main = {

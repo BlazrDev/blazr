@@ -1387,6 +1387,37 @@ void Editor::RenderImGui() {
 		}
 
 		if (ImGui::BeginTabItem("Logs")) {
+
+			auto &logEntries = Blazr::Log::getImGuiSink()->getEntries();
+
+			if (ImGui::BeginChild("LogScrolling")) {
+				for (const auto &entry : logEntries) {
+					ImVec4 color;
+					switch (entry.level) {
+					case spdlog::level::trace:
+						color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
+						break;
+					case spdlog::level::debug:
+						color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
+						break;
+					case spdlog::level::info:
+						color = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+						break;
+					case spdlog::level::warn:
+						color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
+						break;
+					case spdlog::level::err:
+					case spdlog::level::critical:
+						color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+						break;
+					default:
+						color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+						break;
+					}
+					ImGui::TextColored(color, "%s", entry.message.c_str());
+				}
+			}
+			ImGui::EndChild();
 			// TO DO
 			ImGui::EndTabItem();
 		}

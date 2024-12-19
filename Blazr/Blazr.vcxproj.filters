@@ -64,6 +64,9 @@
     <ClInclude Include="src\Blazr\Core\EntryPoint.h">
       <Filter>Blazr\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Core\ImGuiLogSink.h">
+      <Filter>Blazr\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blazr\Core\KeyCodes.h">
       <Filter>Blazr\Core</Filter>
     </ClInclude>
