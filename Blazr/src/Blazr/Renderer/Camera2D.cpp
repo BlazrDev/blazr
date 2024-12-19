@@ -56,4 +56,36 @@ void Camera2D::Update() {
 	m_bNeedsUpdate = false;
 }
 
+void Camera2D::to_json(nlohmann::json &j, const Camera2D &camera) {
+	j = nlohmann::json{
+		{"position", {camera.GetPosition().x, camera.GetPosition().y}},
+		{"scale", camera.GetScale()},
+		{"rotation", camera.GetRotation()},
+		{"width", camera.GetWidth()},
+		{"height", camera.GetHeight()}};
+}
+
+void Camera2D::from_json(const nlohmann::json &j, Camera2D &camera) {
+	auto position = j.at("position").get<std::vector<float>>();
+	camera.SetPosition({position[0], position[1]});
+
+	float scale = j.at("scale").get<float>();
+	camera.SetScale(scale);
+
+	float rotation = j.at("rotation").get<float>();
+	camera.SetRotation(rotation);
+
+	// Width and height are set via constructor and might not be mutable
+	// directly. Ensure your Camera2D class allows updating width and height if
+	// needed.
+	int width = j.at("width").get<int>();
+	int height = j.at("height").get<int>();
+
+	if (camera.GetWidth() != width || camera.GetHeight() != height) {
+		camera = Camera2D(
+			width,
+			height); // Create a new camera instance with the updated dimensions
+	}
+}
+
 } // namespace Blazr

@@ -1612,14 +1612,20 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 	// Kreiraj vektor stringova za čuvanje svih ključeva iz mape
 	std::vector<std::string> textures;
 
+	static int selectedTextureIndex = -1;
 	// Iteriraj kroz mapu i dodaj sve ključeve u vektor
+	int i = 0;
 	for (const auto &pair : loadedTexture) {
 		if (pair.first == "default")
 			continue;
 		textures.push_back(pair.first);
+		if (!sprite.texturePath.empty()) {
+			if (sprite.texturePath == pair.first) {
+				selectedTextureIndex = i;
+			}
+		}
+		i++;
 	}
-
-	static int selectedTextureIndex = -1;
 
 	// Proveri da li ima tekstura u vektoru
 	if (!textures.empty()) {

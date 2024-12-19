@@ -1,6 +1,7 @@
 #pragma once
 #include "Blazr/Core/Core.h"
 #include "glm.hpp"
+#include "json.hpp"
 #include <gtc/matrix_transform.hpp>
 
 namespace Blazr {
@@ -42,6 +43,9 @@ class Camera2D {
 
 		return instance;
 	}
+
+	static void to_json(nlohmann::json &j, const Camera2D &camera);
+	static void from_json(const nlohmann::json &j, Camera2D &camera);
 
   private:
 	glm::vec2 m_Position;

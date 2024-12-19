@@ -88,6 +88,10 @@ void Scene::Serialize(nlohmann::json &j) const {
 		Layer::to_json(layerJson[layer->name], layer);
 		j["Layers"].push_back(layerJson);
 	});
+	nlohmann::json cameraJson;
+	CameraController::to_json(cameraJson,
+							  const_cast<CameraController &>(m_Camera));
+	j["Camera"] = cameraJson;
 }
 
 void Scene::Deserialize(const nlohmann::json &j) {
@@ -103,9 +107,19 @@ void Scene::Deserialize(const nlohmann::json &j) {
 			for (const auto &[layerName, layerData] : layerJson.items()) {
 				Ref<Layer> layer = CreateRef<Layer>(layerName, 0);
 				Layer::from_json(layerData, layer);
+				for (Ref<Layer> l : m_LayerManager->GetAllLayers()) {
+					if (l->name == layer->name) {
+						m_LayerManager->RemoveLayer(l->name);
+					}
+				}
 				m_LayerManager->AddLayer(layer);
 			}
 		}
+	}
+
+	if (j.contains("Camera")) {
+		nlohmann::json cameraJson = j.at("Camera");
+		CameraController::from_json(cameraJson, m_Camera);
 	}
 }
 

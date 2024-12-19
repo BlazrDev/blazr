@@ -109,3 +109,46 @@ bool Blazr::CameraController::OnMouseMove(MouseMovedEvent &e) {
 	m_MousePosition = {mouseX, mouseY};
 	return false;
 }
+
+void Blazr::CameraController::to_json(nlohmann::json &j,
+									  CameraController &controller) {
+	nlohmann::json cameraJson;
+	Camera2D::to_json(cameraJson, controller.m_Camera);
+
+	j = nlohmann::json{
+		{"width", controller.m_Width},
+		{"height", controller.m_Height},
+		{"camera_position",
+		 {controller.m_CameraPosition.x, controller.m_CameraPosition.y,
+		  controller.m_CameraPosition.z}},
+		{"camera_rotation", controller.m_CameraRotation},
+		{"camera_translation_speed", controller.m_CameraTranslationSpeed},
+		{"camera_rotation_speed", controller.m_CameraRotationSpeed},
+		{"rotation", controller.m_Rotation},
+		{"zoom", controller.m_Zoom},
+		{"mouse_position",
+		 {controller.m_MousePosition.x, controller.m_MousePosition.y}},
+		{"camera", cameraJson}};
+}
+
+void Blazr::CameraController::from_json(nlohmann::json &j,
+										CameraController &controller) {
+	j.at("width").get_to(controller.m_Width);
+	j.at("height").get_to(controller.m_Height);
+
+	auto position = j.at("camera_position").get<std::vector<float>>();
+	controller.m_CameraPosition = {position[0], position[1], position[2]};
+
+	j.at("camera_rotation").get_to(controller.m_CameraRotation);
+	j.at("camera_translation_speed")
+		.get_to(controller.m_CameraTranslationSpeed);
+	j.at("camera_rotation_speed").get_to(controller.m_CameraRotationSpeed);
+	j.at("rotation").get_to(controller.m_Rotation);
+	j.at("zoom").get_to(controller.m_Zoom);
+
+	auto mouse_pos = j.at("mouse_position").get<std::vector<float>>();
+	controller.m_MousePosition = {mouse_pos[0], mouse_pos[1]};
+
+	nlohmann::json camera_json = j.at("camera");
+	Camera2D::from_json(camera_json, controller.m_Camera);
+}
