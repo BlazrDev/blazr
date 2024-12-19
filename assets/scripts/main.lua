@@ -1,8 +1,10 @@
 -- Main Script
 if run_script("assets/scripts/utilities.lua") then
 	print("Utilities script has been executed")
+	print("Utilities script has been executed")
 end
 if run_script("assets/tiled_maps/testmap.lua") then
+	print("Testmap script has been executed")
 	print("Testmap script has been executed")
 end
 Masha = {
@@ -138,16 +140,28 @@ local function stoji()
 	playerAnimation.frame_offset = 7
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 11
+	playerAnimation.frame_offset = 7
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 11
 end
 
 local function udara()
 	playerAnimation.frame_offset = 4
+	playerAnimation.frame_offset = 4
 
+	playerAnimation.current_frame = 2
+	playerAnimation.num_frames = 10
 	playerAnimation.current_frame = 2
 	playerAnimation.num_frames = 10
 end
 
 local function trci()
+	playerAnimation.frame_offset = 6
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 8
+	-- sprite2.color.x = 1.0
+	-- sprite2.color.y = 1.0
+	-- sprite2.color.z = 1.0
 	playerAnimation.frame_offset = 6
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 8
@@ -179,6 +193,22 @@ local function update()
 		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
 		trci()
 	end
+	local velocity = physicsComponent:get_linear_velocity()
+	if InputSystem.key_repeating(KEY_A) then
+		physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
+		trci()
+	elseif InputSystem.key_repeating(KEY_D) then
+		physicsComponent:set_linear_velocity(vec2(x, velocity.y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_W) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_S) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
+		trci()
+	end
 
 	if InputSystem.key_repeating(KEY_SPACE) then
 		-- physicsComponent:set_transform(vec2(500, 300))
@@ -186,6 +216,13 @@ local function update()
 	end
 end
 local pos = 0
+globalTimer = Timer()
+-- timer:start()
+function test()
+	print("svake sekunde")
+end
+globalTimer:execute_every_async(1000, test)
+-- globalTimer:execute_n_times_every(5, 10, test)
 main = {
 	[1] = {
 		update = function()
