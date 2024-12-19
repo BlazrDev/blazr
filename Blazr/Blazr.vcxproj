@@ -218,6 +218,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClInclude Include="src\Blazr\Systems\Sounds\Music.h" />
     <ClInclude Include="src\Blazr\Systems\Sounds\SoundPlayer.h" />
     <ClInclude Include="src\Blazr\Systems\Sounds\SoundProperties.h" />
+    <ClInclude Include="src\Blazr\Utilities\Timer.h" />
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +263,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
     <ClCompile Include="src\Blazr\Systems\Sounds\Effect.cpp" />
     <ClCompile Include="src\Blazr\Systems\Sounds\Music.cpp" />
     <ClCompile Include="src\Blazr\Systems\Sounds\SoundPlayer.cpp" />
+    <ClCompile Include="src\Blazr\Utilities\Timer.cpp" />
     <ClCompile Include="src\blzrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

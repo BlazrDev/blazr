@@ -52,6 +52,9 @@
     <Filter Include="Blazr\Systems\Sounds">
       <UniqueIdentifier>{727880E3-5E07-0AAD-0726-1EA8F3931A53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blazr\Utilities">
+      <UniqueIdentifier>{8BC3418A-F74E-AF4E-0060-32436C6A0B4F}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Blazr.h" />
@@ -223,6 +226,9 @@
     <ClInclude Include="src\Blazr\Systems\Sounds\SoundProperties.h">
       <Filter>Blazr\Systems\Sounds</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blazr\Utilities\Timer.h">
+      <Filter>Blazr\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\blzrpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +354,9 @@
     </ClCompile>
     <ClCompile Include="src\Blazr\Systems\Sounds\SoundPlayer.cpp">
       <Filter>Blazr\Systems\Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blazr\Utilities\Timer.cpp">
+      <Filter>Blazr\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\blzrpch.cpp" />
   </ItemGroup>
