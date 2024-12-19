@@ -36,7 +36,6 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 	nlohmann::json assetJson;
 	AssetManager::to_json(assetJson, AssetManager::GetInstance());
 	j["AssetManager"] = assetJson;
-	std::cout << assetJson;
 
 	std::filesystem::create_directories(filepath);
 	std::ofstream ofs(

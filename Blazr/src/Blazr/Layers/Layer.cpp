@@ -84,9 +84,9 @@ void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 	j["Entities"] = nlohmann::json::array();
 	std::for_each(layer->entities.begin(), layer->entities.end(),
 				  [&](Ref<Entity> entity) {
-					  if (entity->HasComponent<TileComponent>()) {
-						  return;
-					  }
+					  // if (entity->HasComponent<TileComponent>()) {
+					  //  return;
+					  // }
 
 					  nlohmann::json entityJson;
 					  if (entity->HasComponent<AnimationComponent>()) {

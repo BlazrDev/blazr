@@ -5,6 +5,7 @@
 #include "Blazr/Events/Event.h"
 #include "Blazr/Events/MouseEvent.h"
 #include "Camera2D.h"
+#include "json.hpp"
 
 namespace Blazr {
 class CameraController {
@@ -22,6 +23,9 @@ class CameraController {
 	bool OnMouseScrolled(MouseScrolledEvent &e);
 	bool OnWindowResized(WindowResizeEvent &e);
 	bool OnMouseMove(MouseMovedEvent &e);
+
+	static void to_json(nlohmann::json &j, CameraController &controller);
+	static void from_json(nlohmann::json &j, CameraController &controller);
 
   private:
 	void OnResize(float width, float height);

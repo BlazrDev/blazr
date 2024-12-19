@@ -296,7 +296,6 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 		for (const auto &[name, textureJson] : j.at("Textures").items()) {
 			std::string path = textureJson.at("path").get<std::string>();
 			bool pixelArt = textureJson.at("pixelArt").get<bool>();
-			BLZR_CORE_WARN("LOADING TEXTURE {0}", name);
 			assetManager->LoadTexture(name, path, pixelArt);
 		}
 	}
