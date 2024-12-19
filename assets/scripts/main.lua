@@ -184,18 +184,20 @@ local function update()
 	end
 end
 local pos = 0
-local timer = Timer()
+globalTimer = Timer()
 -- timer:start()
 function test()
 	print("svake sekunde")
 end
-timer:execute_every_async(1000, test)
+globalTimer:execute_every_async(1000, test)
+-- globalTimer:execute_n_times_every(5, 10, test)
 main = {
 	[1] = {
 		update = function()
 			-- pos = pos + 1
 			-- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
 			update()
+
 			-- scene:Update()
 		end,
 	},

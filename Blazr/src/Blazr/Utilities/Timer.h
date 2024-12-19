@@ -16,7 +16,6 @@ class Timer {
 	bool m_isPaused;
 	int64_t accumulatedTime;
 	std::thread m_workerThread;
-	std::atomic<bool> m_stopThread;
 	std::atomic<bool> m_threadRunning;
 
   public:
@@ -36,6 +35,8 @@ class Timer {
 
 	void ExecuteEvery(int64_t interval, sol::function luaFunc);
 	void ExecuteEveryAsync(int64_t interval, sol::function luaFunc);
+	void ExeuteNTimesAsync(int n, int64_t interval, sol::function luaFunc);
+	void StopExecuting();
 	const bool IsRunning();
 	const bool IsPaused();
 
