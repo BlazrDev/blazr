@@ -12,7 +12,7 @@ class ScriptingSystem {
 	BLZR_API ScriptingSystem(Registry &registry);
 	~ScriptingSystem() = default;
 
-	bool LoadMainScript(sol::state &lua);
+	bool BLZR_API LoadMainScript(sol::state &lua);
 	void InitializeEntityScripts(sol::state &lua);
 	void Update();
 	void Render();

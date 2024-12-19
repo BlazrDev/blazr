@@ -44,7 +44,7 @@ class Scene {
 	void AddLayer(const std::string &layerName, int zIndex);
 	void RemoveLayer(const std::string &layerName);
 	Ref<Layer> BLZR_API GetLayerByName(const std::string &layerName);
-	std::vector<Ref<Layer>> GetAllLayers() const;
+	std::vector<Ref<Layer>> BLZR_API GetAllLayers() const;
 
 	void AddEntityToLayer(const std::string &layerName, Ref<Entity> entity);
 	void RemoveEntityFromLayer(const std::string &layerName,

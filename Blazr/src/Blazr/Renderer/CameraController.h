@@ -14,8 +14,8 @@ class CameraController {
 	static bool BLZR_API gameViewWindow;
 
 	CameraController(int width, int height, bool rotation = true);
-	void OnUpdate();
-	void OnEvent(Event &e);
+	void BLZR_API OnUpdate();
+	void BLZR_API OnEvent(Event &e);
 	Camera2D &GetCamera() { return m_Camera; }
 
 	glm::vec2 &GetMousePosition() { return m_MousePosition; }

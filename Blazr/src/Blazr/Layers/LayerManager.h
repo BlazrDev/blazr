@@ -5,11 +5,11 @@ namespace Blazr {
 class LayerManager {
   public:
 	Ref<Layer> BLZR_API GetLayerByName(const std::string &name) const;
-	Ref<Layer> CreateLayer(const std::string &name, int zIndex = 0);
-	void AddEntityToLayer(const std::string &layerName, Ref<Entity> entity);
-	void RemoveLayer(const std::string &name);
+	Ref<Layer> BLZR_API CreateLayer(const std::string &name, int zIndex = 0);
+	void BLZR_API AddEntityToLayer(const std::string &layerName, Ref<Entity> entity);
+	void BLZR_API RemoveLayer(const std::string &name);
 	void SortLayers();
-	void Render(Registry &registry);
+	void BLZR_API Render(Registry &registry);
 	void BLZR_API AddLayer(Ref<Layer> layer);
 	std::vector<Ref<Layer>> BLZR_API GetAllLayers() const;
 

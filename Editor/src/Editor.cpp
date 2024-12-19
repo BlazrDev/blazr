@@ -333,7 +333,7 @@ void Editor::RenderImGui() {
 
 			if (ImGui::MenuItem("Save As...")) {
 				std::string savePath =
-					Project::GetActive()->GetProjectDirectory();
+					Project::GetActive()->GetProjectDirectory().string();
 				BLZR_CORE_ERROR("ACTIVE DIR: {0}", savePath);
 				if (!savePath.empty()) {
 
@@ -398,10 +398,23 @@ void Editor::RenderImGui() {
 					Blazr::FileDialog::OpenFolderWithPath(".");
 				if (!outputDir.empty()) {
 					try {
-						// Define paths
-						std::string executableDir =
-							"bin/Debug-linux-x86_64/Sandbox";
-						std::string projectDir = Project::GetProjectDirectory();
+						std::string executableDir;
+						#ifdef _WIN32
+						#ifdef NDEBUG
+												executableDir = "bin/Release-windows-x86_64/Sandbox";
+						#else
+												executableDir = "bin/Debug-windows-x86_64/Sandbox";
+						#endif
+						#elif defined(__linux__)
+						#ifdef NDEBUG
+												executableDir = "bin/Release-linux-x86_64/Sandbox";
+						#else
+												executableDir = "bin/Debug-linux-x86_64/Sandbox";
+						#endif
+						#else
+						#error Unsupported platform!
+						#endif
+						std::string projectDir = Project::GetProjectDirectory().string();
 						std::vector<std::string> foldersToCopy = {
 							"assets", "scenes", "scripts"};
 
@@ -1290,7 +1303,7 @@ void Editor::RenderImGui() {
 					Blazr::FileDialog::OpenFile(filters[current_item]);
 				if (!filepath.empty()) {
 					// Get the project directory and determine the assets folder
-					std::string projectDir = Project::GetProjectDirectory();
+					std::string projectDir = Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
 					// Determine the subfolder based on the asset type
@@ -1818,7 +1831,7 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 				return;
 			}
 		}
-		std::string absPath = std::filesystem::absolute(path);
+		std::string absPath = std::filesystem::absolute(path).string();
 
 		std::string newScriptPath = FileDialog::SaveFileWithPath(
 			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());
@@ -1860,7 +1873,7 @@ void Editor::renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 	// Load Script Button
 	if (ImGui::Button("Load Script")) {
 		std::filesystem::path path = Project::GetProjectDirectory() / "scripts";
-		std::string absPath = std::filesystem::absolute(path);
+		std::string absPath = std::filesystem::absolute(path).string();
 
 		std::string newScriptPath = FileDialog::OpenFileWithPath(
 			"Lua Scripts (*.lua)\0*.lua\0", absPath.c_str());

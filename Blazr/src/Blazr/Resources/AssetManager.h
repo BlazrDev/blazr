@@ -36,29 +36,29 @@ class AssetManager {
 	// static void CreateLuaEntityBind(sol::state_view &lua);
 	static void CreateLuaAssetManager(sol::state &lua, Registry &registry);
 
-	bool LoadTexture(const std::string &name, const std::string &texturePath,
+	bool BLZR_API LoadTexture(const std::string &name, const std::string &texturePath,
 					 bool pixelArt = true, bool tileset = false);
-	const Ref<Texture2D> GetTexture(const std::string &name);
+	const Ref<Texture2D> BLZR_API GetTexture(const std::string &name);
 
-	bool LoadShader(const std::string &name, const std::string &vertexPath,
+	bool BLZR_API LoadShader(const std::string &name, const std::string &vertexPath,
 					const std::string &fragmentPath);
-	Ref<Blazr::Shader> GetShader(const std::string &name);
+	Ref<Blazr::Shader> BLZR_API GetShader(const std::string &name);
 
-	bool LoadMusic(const std::string &name, const std::string &musicPath,
+	bool BLZR_API LoadMusic(const std::string &name, const std::string &musicPath,
 				   const std::string &musicDescription);
-	Ref<Blazr::Music> GetMusic(const std::string &name);
+	Ref<Blazr::Music> BLZR_API GetMusic(const std::string &name);
 
-	bool LoadEffect(const std::string &name, const std::string &effectPath,
+	bool BLZR_API LoadEffect(const std::string &name, const std::string &effectPath,
 					const std::string &effectDescription, int channel);
-	Ref<Blazr::Effect> GetEffect(const std::string &name);
+	Ref<Blazr::Effect> BLZR_API GetEffect(const std::string &name);
 
-	bool LoadScene(const std::string &scenePath);
+	bool BLZR_API LoadScene(const std::string &scenePath);
 
 	BLZR_API std::map<std::string, Ref<Blazr::Music>> &getAllMusic();
 	BLZR_API std::map<std::string, Ref<Blazr::Effect>> &getAllEffects();
 
-	static void to_json(nlohmann::json &j, Ref<AssetManager> assetManager);
-	static void from_json(const nlohmann::json &j,
+	static void BLZR_API to_json(nlohmann::json &j, Ref<AssetManager> assetManager);
+	static void BLZR_API from_json(const nlohmann::json &j,
 						  Ref<AssetManager> assetManager);
 	BLZR_API std::map<std::string, Ref<Blazr::Texture2D>> &getAllTextures();
 	BLZR_API std::vector<std::string> GetKeysTexturesTileset();
