@@ -135,11 +135,12 @@ void Editor::Init() {
 	ProjectSerializer::Serialize(newProject, newProject->GetProjectDirectory() /
 												 newProject->GetConfig().name);
 
-	if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
-		BLZR_CORE_ERROR("Failed to load the main lua script");
-		return;
-	}
+	// if (!m_ScriptSystem->LoadMainScript(*m_LuaState)) {
+	// 	BLZR_CORE_ERROR("Failed to load the main lua script");
+	// 	return;
+	// }
 	assetManager->LoadTexture("default", "assets/white_texture.png");
+	assetManager->LoadTexture("collider", "assets/collider.png");
 }
 
 void Editor::InitImGui() {
@@ -300,6 +301,7 @@ void Editor::RenderImGui() {
 					newProject->AddScene("Untitled 1", newScene);
 					newProject->GetConfig().StartSceneName = "Untitled 1";
 					m_ActiveScene = newScene;
+					// assetManager->Reset();
 
 					newProject->SetProjectDirectory(
 						std::filesystem::path(savePath).parent_path());
@@ -328,6 +330,51 @@ void Editor::RenderImGui() {
 						BLZR_CORE_ERROR("Failed to load project from: {}",
 										openPath);
 					}
+				}
+			}
+
+			if (ImGui::MenuItem("Open tileset...")) {
+				std::string filepath = Blazr::FileDialog::OpenFile(
+					"Image Files\0*.png;*.jpg;*.jpeg\0\0");
+				if (!filepath.empty()) {
+					// Get the project directory and determine the assets folder
+					std::string projectDir =
+						Project::GetProjectDirectory().string();
+					std::string assetsDir = projectDir + "/assets";
+
+					// Determine the subfolder based on the asset type
+					std::string subfolder = "/textures";
+
+					std::string targetDir = assetsDir + subfolder;
+
+					if (!fs::exists(targetDir)) {
+						fs::create_directories(targetDir);
+					}
+
+					std::string filename =
+						fs::path(filepath).filename().string();
+
+					std::string targetPath = targetDir + "/" + filename;
+
+					try {
+						fs::copy(filepath, targetPath,
+								 fs::copy_options::overwrite_existing);
+
+						auto &assetManager = Blazr::AssetManager::GetInstance();
+						bool success = assetManager->LoadTexture(
+							filename, targetPath, true, true);
+						if (success) {
+							ImGui::Text("Imported and Loaded Asset: %s",
+										filename.c_str());
+						} else {
+							ImGui::Text("Failed to load asset: %s",
+										filename.c_str());
+						}
+					} catch (const fs::filesystem_error &e) {
+						ImGui::Text("Error copying file: %s", e.what());
+					}
+				} else {
+					ImGui::Text("No file selected.");
 				}
 			}
 
@@ -516,7 +563,7 @@ void Editor::RenderImGui() {
 		ImGui::SetNextWindowPos(windowPos);
 		if (ImGui::Begin("Choose Scene Dialog", nullptr,
 						 ImGuiWindowFlags_NoCollapse)) {
-			auto scenes = newProject->GetScenes();
+			auto scenes = Project::GetActive()->GetScenes();
 			if (ImGui::BeginCombo("Select item", selectedScene.c_str())) {
 				for (const auto &scene : scenes) {
 					const bool isSelected = (selectedScene == scene.first);
@@ -536,7 +583,6 @@ void Editor::RenderImGui() {
 			auto tilemapScene =
 				std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
 			if (tilemapScene) {
-
 				for (auto pair : scenes) {
 					if (pair.first == selectedScene) {
 						tilemapScene->ExportTilemapToScene(*pair.second);
@@ -1287,6 +1333,15 @@ void Editor::RenderImGui() {
 			switch (current_item) {
 			case 0: // TEXTURES
 				ImGui::Text("Texture");
+				for (auto &pair : assetManager->getAllTextures()) {
+					ImGui::BeginGroup();
+					ImGui::Image(
+						(ImTextureID)(intptr_t)pair.second->GetRendererID(),
+						ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Text(pair.first.c_str());
+					ImGui::EndGroup();
+					ImGui::SameLine(0, 20);
+				}
 				break;
 			case 1: // FONTS
 				ImGui::Text("Font");

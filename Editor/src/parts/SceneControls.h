@@ -28,8 +28,6 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 			ImGui::Text("Enter scene name:");
 			ImGui::InputText("##input", inputText, IM_ARRAYSIZE(inputText));
 			if (ImGui::Button("TileMapScene")) {
-				BLZR_CORE_ERROR("tilmapscene");
-
 				Canvas canvas{16, 16};
 				Ref<TilemapScene> tilemapScene =
 					CreateRef<TilemapScene>(canvas);

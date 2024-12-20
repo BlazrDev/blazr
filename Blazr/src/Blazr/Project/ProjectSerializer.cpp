@@ -1,6 +1,6 @@
-
 #include "blzrpch.h"
 #include "Blazr/Resources/AssetManager.h"
+#include "Blazr/Scene/TilemapScene.h"
 #include "ProjectSerializer.h"
 #include <fstream>
 
@@ -151,10 +151,18 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 	json j;
 	scene->Serialize(j);
 
-	std::filesystem::create_directories(
-		Project::GetActive()->GetProjectDirectory() / "scenes");
+	std::filesystem::path scenesFolder =
+		Project::GetActive()->GetProjectDirectory() / "scenes";
+	std::filesystem::path targetFolder = scenesFolder;
+
+	if (dynamic_cast<TilemapScene *>(scene.get())) {
+		targetFolder /= "tilemap";
+	}
+
+	std::filesystem::create_directories(targetFolder);
+
 	std::ofstream ofs(
-		Project::GetActive()->GetProjectDirectory() / "scenes" /
+		targetFolder /
 		const_cast<std::filesystem::path &>(filepath).replace_extension(
 			".blzrscn"));
 	if (!ofs) {
@@ -179,9 +187,18 @@ ProjectSerializer::DeserializeScene(const std::filesystem::path &filepath) {
 	json j;
 	ifs >> j;
 
-	auto scene = CreateRef<Scene>();
-	scene->Deserialize(j);
+	auto tilemapFolder =
+		Project::GetActive()->GetProjectDirectory() / "scenes" / "tilemap";
+	Ref<Scene> scene;
 
+	if (filepath.string().find(tilemapFolder.string()) != std::string::npos) {
+		Canvas canvas{16, 16};
+		scene = CreateRef<TilemapScene>(canvas);
+	} else {
+		scene = CreateRef<Scene>();
+	}
+
+	scene->Deserialize(j);
 	return scene;
 }
 

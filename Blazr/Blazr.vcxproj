@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;..\ImGui\src;..\ImGui\src\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -106,7 +106,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;..\ImGui\src;..\ImGui\src\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,7 +136,7 @@ IF EXIST ..\bin\Release-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bi
       <PrecompiledHeaderFile>blzrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;BLZR_BUILD_DLL;GLEW_STATIC;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glew\linux\include;vendor\lua\linux\include;vendor\sol2;vendor\glm;vendor\entt;vendor\json;vendor\sdl\linux\include;vendor\box2d\include;..\ImGui\src;..\ImGui\src\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -276,6 +276,9 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="ImGui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

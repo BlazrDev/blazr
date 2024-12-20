@@ -13,11 +13,6 @@ Ref<Blazr::AssetManager> Blazr::AssetManager::instance = nullptr;
 bool Blazr::AssetManager::LoadTexture(const std::string &name,
 									  const std::string &texturePath,
 									  bool pixelArt, bool tileset) {
-	if (m_mapTextures.find(name) != m_mapTextures.end()) {
-		BLZR_CORE_ERROR("Texture already loaded: {0}", name);
-		return false;
-	}
-
 	// TODO: pixelArt
 	auto texture = std::make_shared<Texture2D>(texturePath, tileset);
 
@@ -26,9 +21,11 @@ bool Blazr::AssetManager::LoadTexture(const std::string &name,
 		return false;
 	}
 
-	m_mapTextures.emplace(name, std::move(texture));
+	// Overwrite or insert the texture in the map
+	m_mapTextures[name] = std::move(texture);
 	return true;
 }
+
 const Ref<Blazr::Texture2D>
 Blazr::AssetManager::GetTexture(const std::string &name) {
 	auto textureIterator = m_mapTextures.find(name);
@@ -318,4 +315,10 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 			assetManager->LoadEffect(name, path, description, channel);
 		}
 	}
+}
+
+void Blazr::AssetManager::Reset() {
+	instance = std::make_shared<AssetManager>();
+	LoadTexture("default", "assets/white_texture.png");
+	LoadTexture("collider", "assets/collider.png");
 }

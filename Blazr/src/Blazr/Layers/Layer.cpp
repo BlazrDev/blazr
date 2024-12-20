@@ -186,7 +186,13 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				entity->AddComponent<ScriptComponent>(script);
 			}
 			if (entityJson.contains("Physics")) {
-				PhysicsComponent physics;
+
+				auto &physicsWorld =
+					Registry::GetInstance()
+						->GetContext<std::shared_ptr<b2World>>();
+				PhysicsComponent physics =
+					PhysicsComponent(physicsWorld, PhysicsAttributes{});
+				;
 				PhysicsComponent::from_json(entityJson.at("Physics"), physics);
 				entity->AddComponent<PhysicsComponent>(physics);
 			}

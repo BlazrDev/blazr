@@ -106,6 +106,8 @@ includedirs({
     "%{IncludeDir.Json}",
     "%{IncludeDir.SDL[os.host()]}",
     "%{IncludeDir.box2d}",
+    "%{IncludeDir.ImGui}",
+    "%{IncludeDir.ImGuiBackends}",
 })
 
 libdirs({
@@ -129,6 +131,7 @@ links({
     "SDL2",
     "SDL2_mixer",
     "box2d",
+    "ImGui",
 })
 
 buildoptions({ "/utf-8" })
@@ -157,6 +160,7 @@ links({
     "SDL2",
     "SDL2_mixer",
     "box2d",
+    "ImGui",
 })
 
 linkoptions({ "-Wl,-rpath=Blazr/vendor/lua/linux" })
@@ -318,6 +322,9 @@ includedirs({
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.GLEW[os.host()]}",
 })
+
+filter("system:linux")
+    buildoptions({ "-fPIC" })
 
 filter("system:windows")
 defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
