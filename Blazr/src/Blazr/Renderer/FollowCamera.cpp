@@ -1,3 +1,4 @@
+#include "blzrpch.h"
 #include "FollowCamera.h"
 
 namespace Blazr {

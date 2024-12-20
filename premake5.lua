@@ -379,6 +379,8 @@ links({
     "ImGui",
     "Blazr",
     "box2d",
+    "SDL2",
+    "SDL2_mixer"
 })
 
 -- Windows-specific configuration

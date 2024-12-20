@@ -10,7 +10,6 @@ Blazr::Timer::Timer()
 	  m_threadRunning(false) {}
 
 Blazr::Timer::~Timer() {
-	BLZR_CORE_INFO("Destructor timer called");
 	if (m_workerThread.joinable()) {
 		m_workerThread.join();
 	}

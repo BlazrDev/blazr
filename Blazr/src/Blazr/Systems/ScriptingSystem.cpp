@@ -19,6 +19,7 @@
 
 #include "../Resources/AssetManager.h"
 #include "Blazr/Utilities/Timer.h"
+#include "Blazr/Core/Log.h"
 #include "Sounds/SoundPlayer.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}
@@ -176,6 +177,7 @@ void ScriptingSystem::RegisterLuaBindings(sol::state &lua, Registry &registry) {
 	AssetManager::CreateLuaAssetManager(lua, registry);
 	SoundPlayer::CreateLuaSoundPlayer(lua, registry);
 	Timer::CreateLuaTimerBind(lua);
+	Log::createLogLuaBind(lua);
 }
 
 void ScriptingSystem::RegisterLuaFunctions(sol::state &lua) {

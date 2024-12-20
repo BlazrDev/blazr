@@ -9,8 +9,8 @@ class Registry {
 	BLZR_API Registry();
 	~Registry() = default;
 
-	inline entt::registry &GetRegistry() { return *m_Registry; }
-	inline entt::entity CreateEntity() { return m_Registry->create(); }
+	inline entt::registry BLZR_API &GetRegistry() { return *m_Registry; }
+	inline entt::entity BLZR_API CreateEntity() { return m_Registry->create(); }
 
 	template <typename TContext> TContext &GetContext() {
 		return m_Registry->ctx().get<TContext>();
@@ -57,7 +57,7 @@ class Registry {
 				"exclude_component_from_view"_hs);
 	}
 
-	static Ref<Registry> GetInstance() {
+	static Ref<Registry> BLZR_API GetInstance() {
 		if (s_Instance == nullptr) {
 			s_Instance = CreateRef<Registry>();
 		}
@@ -67,7 +67,7 @@ class Registry {
 	static void Reset() { s_Instance = CreateRef<Registry>(); }
 
   private:
-	static Ref<Registry> s_Instance;
+	static Ref<Registry> BLZR_API s_Instance;
 	std::unique_ptr<entt::registry> m_Registry;
 };
 } // namespace Blazr

@@ -1,8 +1,10 @@
 #include "FileDialog.h"
 
 #if defined(BLZR_PLATFORM_WINDOWS)
-#include <commdlg.h>
 #include <windows.h>
+#include <commdlg.h>
+#include <shlobj.h>
+#include <string>
 #elif defined(BLZR_PLATFORM_LINUX)
 #include <cstdio>
 #include <cstdlib>
@@ -14,109 +16,111 @@
 namespace Blazr {
 
 #if defined(BLZR_PLATFORM_WINDOWS)
-std::string FileDialog::OpenFolderWithPath(const char *initialPath) {
-	BROWSEINFO bi = {0};
-	bi.lpszTitle = "Select Folder";
-	bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+std::wstring ConvertToWideString(const std::string &str) {
+	int size_needed =
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, nullptr, 0);
+	std::wstring wstr(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, &wstr[0], size_needed);
+	return wstr;
+}
 
-	// Use the initial path if provided
-	if (initialPath) {
-		bi.lpfn = [](HWND hwnd, UINT uMsg, LPARAM lParam,
-					 LPARAM lpData) -> int {
-			if (uMsg == BFFM_INITIALIZED) {
-				SendMessage(hwnd, BFFM_SETSELECTION, TRUE, lpData);
-			}
-			return 0;
-		};
-		bi.lParam = (LPARAM)initialPath;
-	}
+// Helper to convert wide (UTF-16) strings to narrow (UTF-8)
+std::string ConvertToNarrowString(const std::wstring &wstr) {
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr,
+										  0, nullptr, nullptr);
+	std::string str(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &str[0], size_needed,
+						nullptr, nullptr);
+	return str;
+}
 
-	LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
-	if (pidl != nullptr) {
-		char path[MAX_PATH];
-		if (SHGetPathFromIDList(pidl, path)) {
-			CoTaskMemFree(pidl); // Free memory
-			return std::string(path);
-		}
-		CoTaskMemFree(pidl); // Free memory even if no path was returned
+std::string FileDialog::OpenFile(const char *filter) {
+	OPENFILENAMEW ofn = {0};
+	wchar_t fileName[MAX_PATH] = L"";
+
+	ofn.lStructSize = sizeof(OPENFILENAMEW);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFilter = ConvertToWideString(filter).c_str();
+	ofn.lpstrFile = fileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileNameW(&ofn)) {
+		return ConvertToNarrowString(fileName);
 	}
 	return ""; // Dialog was canceled or failed
 }
 
-std::string FileDialog::OpenFile(const char *filter) {
-	char fileName[MAX_PATH] = "";
-
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = filter;
-	ofn.lpstrFile = fileName;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-	if (GetOpenFileName(&ofn)) {
-		return std::string(fileName);
-	}
-	return ""; // Dialog was canceled
-}
-
 std::string FileDialog::SaveFile(const char *filter) {
-	char fileName[MAX_PATH] = "";
+	OPENFILENAMEW ofn = {0};
+	wchar_t fileName[MAX_PATH] = L"";
 
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
+	ofn.lStructSize = sizeof(OPENFILENAMEW);
 	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = filter;
+	ofn.lpstrFilter = ConvertToWideString(filter).c_str();
 	ofn.lpstrFile = fileName;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_OVERWRITEPROMPT;
 
-	if (GetSaveFileName(&ofn)) {
-		return std::string(fileName);
+	if (GetSaveFileNameW(&ofn)) {
+		return ConvertToNarrowString(fileName);
 	}
-	return ""; // Dialog was canceled
+	return ""; // Dialog was canceled or failed
 }
 
 std::string FileDialog::OpenFileWithPath(const char *filter,
 										 const char *initialPath) {
-	char fileName[MAX_PATH] = "";
+	OPENFILENAMEW ofn = {0};
+	wchar_t fileName[MAX_PATH] = L"";
 
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
+	ofn.lStructSize = sizeof(OPENFILENAMEW);
 	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = filter;
+	ofn.lpstrFilter = ConvertToWideString(filter).c_str();
 	ofn.lpstrFile = fileName;
 	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrInitialDir = initialPath;
+	ofn.lpstrInitialDir = ConvertToWideString(initialPath).c_str();
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-	if (GetOpenFileName(&ofn)) {
-		return std::string(fileName);
+	if (GetOpenFileNameW(&ofn)) {
+		return ConvertToNarrowString(fileName);
 	}
-	return ""; // Dialog was canceled
+	return ""; // Dialog was canceled or failed
 }
 
 std::string FileDialog::SaveFileWithPath(const char *filter,
 										 const char *initialPath) {
-	char fileName[MAX_PATH] = "";
+	OPENFILENAMEW ofn = {0};
+	wchar_t fileName[MAX_PATH] = L"";
 
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
+	ofn.lStructSize = sizeof(OPENFILENAMEW);
 	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = filter;
+	ofn.lpstrFilter = ConvertToWideString(filter).c_str();
 	ofn.lpstrFile = fileName;
 	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrInitialDir = initialPath;
+	ofn.lpstrInitialDir = ConvertToWideString(initialPath).c_str();
 	ofn.Flags = OFN_OVERWRITEPROMPT;
 
-	if (GetSaveFileName(&ofn)) {
-		return std::string(fileName);
+	if (GetSaveFileNameW(&ofn)) {
+		return ConvertToNarrowString(fileName);
 	}
-	return ""; // Dialog was canceled
+	return ""; // Dialog was canceled or failed
+}
+
+std::string FileDialog::OpenFolderWithPath(const char *initialPath) {
+	BROWSEINFOW bi = {0};
+	bi.lpszTitle = L"Select Folder";
+	bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+	PIDLIST_ABSOLUTE pidl = SHBrowseForFolderW(&bi);
+	if (pidl) {
+		wchar_t folderPath[MAX_PATH];
+		if (SHGetPathFromIDListW(pidl, folderPath)) {
+			CoTaskMemFree(pidl);
+			return ConvertToNarrowString(folderPath);
+		}
+		CoTaskMemFree(pidl);
+	}
+	return ""; // Dialog was canceled or failed
 }
 
 #elif defined(BLZR_PLATFORM_LINUX)

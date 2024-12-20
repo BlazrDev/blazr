@@ -1,8 +1,10 @@
 -- Main Script
 if run_script("assets/scripts/utilities.lua") then
 	print("Utilities script has been executed")
+	print("Utilities script has been executed")
 end
 if run_script("assets/tiled_maps/testmap.lua") then
+	print("Testmap script has been executed")
 	print("Testmap script has been executed")
 end
 Masha = {
@@ -19,7 +21,7 @@ Masha = {
 			height = 617.0,
 			texture_path = "masha",
 			start = { x = 0, y = 0 },
-			layer = "Layer 1",
+			layer = "Default",
 		},
 		box_collider = {
 			width = 472,
@@ -33,7 +35,7 @@ Player = {
 	group = "Character",
 	components = {
 		transform = {
-			position = { x = 100, y = 300 },
+			position = { x = 0, y = 0 },
 			scale = { x = 3, y = 3 },
 			rotation = 0,
 		},
@@ -42,7 +44,7 @@ Player = {
 			height = 32.0,
 			texture_path = "player",
 			start = { x = 0, y = 0 },
-			layer = "Layer 1",
+			layer = "Default",
 		},
 		box_collider = {
 			width = 20,
@@ -63,7 +65,7 @@ local attributes = PhysicsAttributes({
 	friction = 1000,
 	restitution = 10,
 	gravityScale = 0.0,
-	position = vec2(200, 300),
+	position = vec2(0, 0),
 	scale = vec2(3, 3),
 	boxSize = vec2(20, 24),
 	offset = vec2(15, 0),
@@ -92,13 +94,14 @@ Assets = {
 		{ name = "masha", path = "assets/masha.png", pixelArt = false },
 		{ name = "chammy", path = "assets/chammy.png", pixelArt = false },
 		{ name = "player", path = "assets/sprite_sheet.png", pixelArt = false },
-		{ name = "map", path = "assets/map_assets/map.png", pixelArt = true },
+		{ name = "map", path = "assets/map_assets/map.png", pixelArt = true, tileset = true },
 		{ name = "collider", path = "assets/map_assets/collider.png", pixelArt = true },
 	},
 }
 
 local tileset = CreateMap()
 LoadAssets(Assets)
+SoundPlayer.play_music("masa", 1, 0)
 -- LoadMap(tileset, scene)
 -- local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 -- local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))
@@ -116,6 +119,7 @@ local playerCollider = playerEntity:get_component(BoxColliderComponent)
 local mashaCollider = mashaEntity:get_component(BoxColliderComponent)
 local playerAnimation = playerEntity:get_component(AnimationComponent)
 local playerTransform = playerEntity:get_component(TransformComponent)
+local physicsComp = playerEntity:get_component(PhysicsComponent)
 
 -- layerManager:AddEntityToLayer("0", mashaEntity)
 -- layerManager:AddEntityToLayer("Default", playerEntity)
@@ -136,16 +140,28 @@ local function stoji()
 	playerAnimation.frame_offset = 7
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 11
+	playerAnimation.frame_offset = 7
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 11
 end
 
 local function udara()
 	playerAnimation.frame_offset = 4
+	playerAnimation.frame_offset = 4
 
+	playerAnimation.current_frame = 2
+	playerAnimation.num_frames = 10
 	playerAnimation.current_frame = 2
 	playerAnimation.num_frames = 10
 end
 
 local function trci()
+	playerAnimation.frame_offset = 6
+	playerAnimation.current_frame = 0
+	playerAnimation.num_frames = 8
+	-- sprite2.color.x = 1.0
+	-- sprite2.color.y = 1.0
+	-- sprite2.color.z = 1.0
 	playerAnimation.frame_offset = 6
 	playerAnimation.current_frame = 0
 	playerAnimation.num_frames = 8
@@ -177,9 +193,26 @@ local function update()
 		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
 		trci()
 	end
+	local velocity = physicsComponent:get_linear_velocity()
+	if InputSystem.key_repeating(KEY_A) then
+		physicsComponent:set_linear_velocity(vec2(-x, velocity.y))
+		trci()
+	elseif InputSystem.key_repeating(KEY_D) then
+		physicsComponent:set_linear_velocity(vec2(x, velocity.y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_W) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y + y))
+		trci()
+	end
+	if InputSystem.key_repeating(KEY_S) then
+		physicsComponent:set_linear_velocity(vec2(velocity.x, velocity.y - y))
+		trci()
+	end
 
 	if InputSystem.key_repeating(KEY_SPACE) then
-		physicsComponent:set_transform(vec2(500, 300))
+		-- physicsComponent:set_transform(vec2(500, 300))
+		physicsComp:set_transform(vec2(400, 200))
 	end
 end
 local pos = 0
@@ -191,26 +224,10 @@ end
 globalTimer:execute_every_async(1000, test)
 -- globalTimer:execute_n_times_every(5, 10, test)
 main = {
-<<<<<<< HEAD
-    [1] = {
-        update = function()
-            -- pos = pos + 1
-            -- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
-            -- scene:Update()
-        end,
-    },
-    [2] = {
-        render = function()
-            -- scene:Render()
-        end,
-    },
-=======
 	[1] = {
 		update = function()
 			-- pos = pos + 1
 			-- print("Player position: ", playerTransform.position.x, playerTransform.position.y)
-			update()
-
 			-- scene:Update()
 		end,
 	},
@@ -219,5 +236,4 @@ main = {
 			-- scene:Render()
 		end,
 	},
->>>>>>> origin/BLAZRDEV-56-timer
 }

@@ -15,9 +15,10 @@ class SoundPlayer {
 	static int NUM_OF_CHANNELS;
 	std::unordered_map<int, bool> channelMuted;
 
+	Ref<Music> currentMusic;
+
   public:
 	std::unordered_map<int, int> channelVolumes;
-	int musicVolume;
 	BLZR_API static Ref<SoundPlayer> &GetInstance() {
 		// BLZR_CORE_INFO("Sound player reference");
 		if (instance == nullptr) {
@@ -34,7 +35,7 @@ class SoundPlayer {
 
 	void PlayMusic(const std::string &name, int loop);
 	void PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect);
-	void BLZR_API MusicVolume(const int volume);
+	void BLZR_API MusicVolume(std::string name, const int volume);
 	int GetCurrentMusicVolume();
 	void MuteMusic();
 	void ToggleMusicMute();
@@ -47,6 +48,7 @@ class SoundPlayer {
 	void ToggleMuteAllEffects();
 	int GetEffectVolume(int channel);
 	bool isChannelPlaying(int channel);
+	Ref<Music> GetCurrentPlaying();
 
 	void effectTest(int channel, int value);
 };
