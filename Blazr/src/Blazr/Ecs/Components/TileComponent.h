@@ -1,6 +1,7 @@
 #pragma once
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
+#include "json.hpp"
 #include "sol.hpp"
 #include <entt.hpp>
 
@@ -15,5 +16,13 @@ struct TileComponent {
 			}),
 			"name", &TileComponent::name);
 	};
+
+	static void to_json(nlohmann::json &j, const TileComponent &tile) {
+		j = nlohmann::json{{"name", tile.name}};
+	}
+
+	static void from_json(const nlohmann::json &j, TileComponent &tile) {
+		tile.name = j.at("name").get<std::string>();
+	}
 };
 } // namespace Blazr

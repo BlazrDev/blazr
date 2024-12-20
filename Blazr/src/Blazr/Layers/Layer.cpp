@@ -84,50 +84,54 @@ void Layer::BindLayer(sol::state &lua) {
 void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 	j["zIndex"] = layer->zIndex;
 	j["Entities"] = nlohmann::json::array();
-	std::for_each(layer->entities.begin(), layer->entities.end(),
-				  [&](Ref<Entity> entity) {
-					  // if (entity->HasComponent<TileComponent>()) {
-					  //  return;
-					  // }
+	std::for_each(
+		layer->entities.begin(), layer->entities.end(),
+		[&](Ref<Entity> entity) {
+			// if (entity->HasComponent<TileComponent>()) {
+			//  return;
+			// }
 
-					  nlohmann::json entityJson;
-					  if (entity->HasComponent<AnimationComponent>()) {
-						  AnimationComponent::to_json(
-							  entityJson["Animation"],
-							  entity->GetComponent<AnimationComponent>());
-					  }
-					  if (entity->HasComponent<SpriteComponent>()) {
-						  SpriteComponent::to_json(
-							  entityJson["Sprite"],
-							  entity->GetComponent<SpriteComponent>());
-					  }
-					  if (entity->HasComponent<TransformComponent>()) {
-						  TransformComponent::to_json(
-							  entityJson["Transform"],
-							  entity->GetComponent<TransformComponent>());
-					  }
-					  if (entity->HasComponent<BoxColliderComponent>()) {
-						  BoxColliderComponent::to_json(
-							  entityJson["BoxCollider"],
-							  entity->GetComponent<BoxColliderComponent>());
-					  }
-					  if (entity->HasComponent<ScriptComponent>()) {
-						  ScriptComponent::to_json(
-							  entityJson["Script"],
-							  entity->GetComponent<ScriptComponent>());
-					  }
-					  if (entity->HasComponent<PhysicsComponent>()) {
-						  PhysicsComponent::to_json(
-							  entityJson["Physics"],
-							  entity->GetComponent<PhysicsComponent>());
-					  }
-					  if (entity->HasComponent<Identification>()) {
-						  Identification::to_json(
-							  entityJson["Identification"],
-							  entity->GetComponent<Identification>());
-					  }
-					  j["Entities"].push_back(entityJson);
-				  });
+			nlohmann::json entityJson;
+			if (entity->HasComponent<AnimationComponent>()) {
+				AnimationComponent::to_json(
+					entityJson["Animation"],
+					entity->GetComponent<AnimationComponent>());
+			}
+			if (entity->HasComponent<SpriteComponent>()) {
+				SpriteComponent::to_json(
+					entityJson["Sprite"],
+					entity->GetComponent<SpriteComponent>());
+			}
+			if (entity->HasComponent<TransformComponent>()) {
+				TransformComponent::to_json(
+					entityJson["Transform"],
+					entity->GetComponent<TransformComponent>());
+			}
+			if (entity->HasComponent<BoxColliderComponent>()) {
+				BoxColliderComponent::to_json(
+					entityJson["BoxCollider"],
+					entity->GetComponent<BoxColliderComponent>());
+			}
+			if (entity->HasComponent<ScriptComponent>()) {
+				ScriptComponent::to_json(
+					entityJson["Script"],
+					entity->GetComponent<ScriptComponent>());
+			}
+			if (entity->HasComponent<PhysicsComponent>()) {
+				PhysicsComponent::to_json(
+					entityJson["Physics"],
+					entity->GetComponent<PhysicsComponent>());
+			}
+			if (entity->HasComponent<Identification>()) {
+				Identification::to_json(entityJson["Identification"],
+										entity->GetComponent<Identification>());
+			}
+			if (entity->HasComponent<TileComponent>()) {
+				TileComponent::to_json(entityJson["Tile"],
+									   entity->GetComponent<TileComponent>());
+			}
+			j["Entities"].push_back(entityJson);
+		});
 }
 
 void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
@@ -185,6 +189,11 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				PhysicsComponent physics;
 				PhysicsComponent::from_json(entityJson.at("Physics"), physics);
 				entity->AddComponent<PhysicsComponent>(physics);
+			}
+			if (entityJson.contains("Tile")) {
+				TileComponent tile;
+				TileComponent::from_json(entityJson.at("Tile"), tile);
+				entity->AddComponent<TileComponent>(tile);
 			}
 
 			layer->entities.push_back(entity);
