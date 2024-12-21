@@ -16,7 +16,6 @@
 # Build results
 *.log
 **/Makefile
-**/libBlazr.so
 
 # Visual Studio project files
 **/*.vcxproj.user
@@ -37,4 +36,3 @@ StartProject/
 *.cache
 *.ilk
 *.lastbuildstate
-
