@@ -44,6 +44,7 @@ class Editor : public Application {
 	void setEventCallback(const Window::EventCallbackFn &callback);
 
 	glm::vec3 selectedTileData;
+	static bool clickedStop;
 
   private:
 	Renderer2D m_Renderer;

@@ -350,7 +350,7 @@ class TilemapScene : public Blazr::Scene {
 
 		auto layerManager = scene.GetLayerManager();
 		for (auto layer : m_LayerManager->GetAllLayers()) {
-			if (layer->name != "Grid") {
+			if (layer->name != "Grid" || layer->name != "Default") {
 				auto sceneLayer = layerManager->GetLayerByName(layer->name);
 				if (sceneLayer == nullptr) {
 					continue;

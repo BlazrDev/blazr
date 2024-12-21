@@ -71,7 +71,7 @@ struct SpriteComponent {
 		textureCoordinates[0] = {object.coordX * object.width,
 								 object.coordY * object.height};
 	}
-	std::string texturePath;
+	std::string texturePath = "default";
 
 	static void CreateLuaSpriteComponentBind(sol::state &lua,
 											 Registry &registry);

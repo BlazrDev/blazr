@@ -52,10 +52,12 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 	ImGui::SameLine();
 	if (ImGui::Button("Play")) {
 		CameraController::paused = false;
+		Editor::clickedStop = true;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop")) {
 		CameraController::paused = true;
+		Editor::clickedStop = false;
 	}
 
 	ImGui::SameLine();

@@ -81,6 +81,8 @@ static float restitution = 0.0f;
 static float gravityScale = 0.0f;
 static bool isSensor = false;
 static bool isFixedRotation = false;
+static float physicsPosX = 0.0f;
+static float physicsPosY = 0.0f;
 // za GUI
 static bool showCodeEditor = false;
 static bool showTransformComponent = false;
@@ -108,6 +110,8 @@ static int canvasHeight = 16;
 static int tilemapScaleX = 1;
 static int tilemapScaleY = 1;
 static std::string identificationGroup = "";
+
+bool Editor::clickedStop = false;
 
 Editor::Editor() { Init(); }
 
@@ -731,6 +735,10 @@ void Editor::RenderImGui() {
 										.get<TransformComponent>(entity);
 
 								renderTransformComponent(cursorPos, transform);
+
+								if (!clickedStop) {
+									transform.position = {newPosX, newPosY};
+								}
 							}
 							if (m_Registry->GetRegistry()
 									.all_of<SpriteComponent>(entity) &&
@@ -764,6 +772,16 @@ void Editor::RenderImGui() {
 									m_Registry->GetRegistry()
 										.get<PhysicsComponent>(entity);
 								renderPhysicsComponent(cursorPos, physics);
+
+								if (!clickedStop) {
+									BLZR_CORE_ERROR("{0} {1}", newPosX,
+													newPosY);
+									physics.GetAttributes().position = {
+										newPosX, newPosY};
+
+									physics.init(1280, 720);
+									clickedStop = true;
+								}
 							}
 
 							if (m_Registry->GetRegistry()
@@ -1061,7 +1079,9 @@ void Editor::RenderImGui() {
 
 					// Ažuriraj grupu ako je tilemap
 					if (identification.group == "tilemap") {
-						identification.group = identificationGroup;
+						if (identificationGroup != "") {
+							identification.group = identificationGroup;
+						}
 					}
 
 					// Ako je entitet deo selektovane grupe
@@ -2174,12 +2194,15 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		}
 	}
 
-	if ((posX != newPosX || posY != newPosY || scaleX != newScaleX ||
+	if ((posX != physicsPosX || posY != physicsPosY || scaleX != newScaleX ||
 		 scaleY != newScaleY || widthBoxCollider != newWidthBoxCollider ||
 		 heightBoxCollider != newHeightBoxCollider || offsetX != newOffsetX ||
 		 offsetY != newOffsetY) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
-		physics.GetAttributes().position = {posX, posY};
+
+		physics.GetAttributes().position = {newPosX, newPosY};
+		// physics.GetRigidBody()->SetTransform(
+		// 	b2Vec2{static_cast<float>(posX), static_cast<float>(posY)}, 0);
 		physics.GetAttributes().scale = {scaleX, scaleY};
 		physics.GetAttributes().boxSize = {widthBoxCollider, heightBoxCollider};
 		physics.GetAttributes().offset = {offsetX, offsetY};
@@ -2187,8 +2210,6 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			physics.init(1280, 720);
 		}
 
-		newPosX = posX;
-		newPosY = posY;
 		newScaleX = scaleX;
 		newScaleY = scaleY;
 		newWidthBoxCollider = widthBoxCollider;
@@ -2301,6 +2322,9 @@ void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {
 		if (ImGui::InputText("###group", groupBuffer, sizeof(groupBuffer),
 							 ImGuiInputTextFlags_EnterReturnsTrue)) {
 			identificationGroup = groupBuffer;
+			if (identificationGroup.empty()) {
+				identificationGroup = "default";
+			}
 		}
 	}
 	ImGui::PopItemWidth();
