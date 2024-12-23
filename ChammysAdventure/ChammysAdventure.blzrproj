@@ -5,23 +5,23 @@
         "Shaders": {},
         "Textures": {
             "ChestAnim.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/ChestAnim.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/ChestAnim.png",
                 "pixelArt": true
             },
             "CoinAnim.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/CoinAnim.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/CoinAnim.png",
                 "pixelArt": true
             },
             "Tiles.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/Tiles.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/Tiles.png",
                 "pixelArt": true
             },
             "backgrounds.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/backgrounds.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/backgrounds.png",
                 "pixelArt": true
             },
             "chammyAnim.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/chammyAnim.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/chammyAnim.png",
                 "pixelArt": true
             },
             "collider": {
@@ -33,7 +33,7 @@
                 "pixelArt": true
             },
             "props.png": {
-                "path": "/home/archy/Documents/Programs/blazr/ChammysAdventure/assets/textures/props.png",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/props.png",
                 "pixelArt": true
             }
         }
@@ -44,5 +44,5 @@
         "StartScene": "mainScene",
         "name": "ChammysAdventure"
     },
-    "ProjectDirectory": "/home/archy/Documents/Programs/blazr/ChammysAdventure"
+    "ProjectDirectory": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure"
 }

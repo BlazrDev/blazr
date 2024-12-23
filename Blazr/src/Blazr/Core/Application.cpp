@@ -42,11 +42,7 @@ void Application::Run() {
 			m_Window->setWidth(width);
 			m_Window->setHeight(height);
 
-			glfwPollEvents();
-
 			m_ActiveScene->Render();
-
-			glfwSwapBuffers(m_Window->GetWindow());
 
 		} else {
 			BLZR_CORE_WARN("Active scene is null");
@@ -147,6 +143,7 @@ void Application::Initialize() {
 			"Failed to add the animation system to the registry context!");
 		return;
 	}
+	glfwSwapInterval(1);
 }
 
 Application *CreateApplication() { return nullptr; }
