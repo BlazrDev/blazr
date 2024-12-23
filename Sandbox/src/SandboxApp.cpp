@@ -15,7 +15,8 @@ class Sandbox : public Application {
 		m_Registry->AddToContext(animationSystem);
 		m_Registry->AddToContext(scriptingSystem);
 		m_Renderer = Renderer2D();
-		m_Project = ProjectSerializer::Deserialize("project.blzrproj");
+		m_Project =
+			ProjectSerializer::Deserialize("project.blzrproj", m_LuaState);
 		m_ActiveScene =
 			m_Project->GetScene(m_Project->GetConfig().StartSceneName);
 	}

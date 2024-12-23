@@ -91,10 +91,13 @@ void Scene::Serialize(nlohmann::json &j) const {
 	nlohmann::json cameraJson;
 	CameraController::to_json(cameraJson,
 							  const_cast<CameraController &>(m_Camera));
+	nlohmann::json followCameraJson;
+	FollowCamera::to_json(followCameraJson, m_FollowCamera);
 	j["Camera"] = cameraJson;
+	j["FollowCamera"] = followCameraJson;
 }
 
-void Scene::Deserialize(const nlohmann::json &j) {
+void Scene::Deserialize(const nlohmann::json &j, Ref<sol::state> luaState) {
 	if (j.contains("Name")) {
 		m_Name = j.at("Name").get<std::string>();
 	} else {
@@ -106,7 +109,7 @@ void Scene::Deserialize(const nlohmann::json &j) {
 		for (const auto &layerJson : j.at("Layers")) {
 			for (const auto &[layerName, layerData] : layerJson.items()) {
 				Ref<Layer> layer = CreateRef<Layer>(layerName, 0);
-				Layer::from_json(layerData, layer);
+				Layer::from_json(layerData, layer, luaState);
 				for (Ref<Layer> l : m_LayerManager->GetAllLayers()) {
 					if (l->name == layer->name) {
 						m_LayerManager->RemoveLayer(l->name);
@@ -120,6 +123,11 @@ void Scene::Deserialize(const nlohmann::json &j) {
 	if (j.contains("Camera")) {
 		nlohmann::json cameraJson = j.at("Camera");
 		CameraController::from_json(cameraJson, m_Camera);
+	}
+	if (j.contains("FollowCamera")) {
+		nlohmann::json followCameraJson = j.at("FollowCamera");
+		FollowCamera::from_json(followCameraJson, m_FollowCamera,
+								m_Camera.GetCamera());
 	}
 }
 

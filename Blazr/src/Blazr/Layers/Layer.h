@@ -24,6 +24,7 @@ class Layer {
 	static void BLZR_API BindLayer(sol::state &lua);
 
 	static void to_json(nlohmann::json &j, const Ref<Layer> layer);
-	static void from_json(const nlohmann::json &j, Ref<Layer> layer);
+	static void from_json(const nlohmann::json &j, Ref<Layer> layer,
+						  Ref<sol::state> luaState);
 };
 } // namespace Blazr

@@ -4,15 +4,15 @@
             "height": 720.0,
             "position": [
                 0.0,
-                240.0
+                0.0
             ],
             "rotation": 0.0,
-            "scale": 6.75,
+            "scale": 1.75,
             "width": 1280.0
         },
         "camera_position": [
-            -157.5,
-            -90.0,
+            75.0,
+            -37.5,
             0.0
         ],
         "camera_rotation": 0.0,
@@ -20,12 +20,23 @@
         "camera_translation_speed": 0.25,
         "height": 720,
         "mouse_position": [
-            46.0,
+            0.0,
             0.0
         ],
         "rotation": true,
         "width": 1280,
-        "zoom": 6.75
+        "zoom": 1.75
+    },
+    "FollowCamera": {
+        "Position": [
+            0.0,
+            0.0
+        ],
+        "Target": {
+            "group": "character",
+            "id": 134,
+            "name": "Chammy"
+        }
     },
     "Layers": [
         {
@@ -34,7 +45,7 @@
                     {
                         "Identification": {
                             "group": "",
-                            "id": 953,
+                            "id": 0,
                             "name": "background"
                         },
                         "Sprite": {
@@ -86,7 +97,8 @@
                                 3.0,
                                 2.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Animation": {
@@ -107,7 +119,7 @@
                         },
                         "Identification": {
                             "group": "chest",
-                            "id": 954,
+                            "id": 1,
                             "name": "chest"
                         },
                         "Script": {
@@ -162,12 +174,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "",
-                            "id": 955,
+                            "id": 2,
                             "name": "tree"
                         },
                         "Sprite": {
@@ -219,12 +232,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "",
-                            "id": 956,
+                            "id": 3,
                             "name": "bush"
                         },
                         "Sprite": {
@@ -276,7 +290,8 @@
                                 0.800000011920929,
                                 0.800000011920929
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 0
@@ -288,7 +303,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 957,
+                            "id": 4,
                             "name": "0.000000  2.000000"
                         },
                         "Sprite": {
@@ -343,12 +358,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 958,
+                            "id": 5,
                             "name": "0.000000  1.000000"
                         },
                         "Sprite": {
@@ -403,12 +419,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 959,
+                            "id": 6,
                             "name": "0.000000  0.000000"
                         },
                         "Sprite": {
@@ -463,12 +480,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 960,
+                            "id": 7,
                             "name": "1.000000  0.000000"
                         },
                         "Sprite": {
@@ -523,12 +541,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 961,
+                            "id": 8,
                             "name": "2.000000  0.000000"
                         },
                         "Sprite": {
@@ -583,12 +602,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 962,
+                            "id": 9,
                             "name": "3.000000  0.000000"
                         },
                         "Sprite": {
@@ -643,12 +663,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 963,
+                            "id": 10,
                             "name": "4.000000  0.000000"
                         },
                         "Sprite": {
@@ -703,12 +724,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 964,
+                            "id": 11,
                             "name": "5.000000  0.000000"
                         },
                         "Sprite": {
@@ -763,12 +785,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 965,
+                            "id": 12,
                             "name": "6.000000  0.000000"
                         },
                         "Sprite": {
@@ -823,12 +846,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 966,
+                            "id": 13,
                             "name": "7.000000  0.000000"
                         },
                         "Sprite": {
@@ -883,12 +907,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 967,
+                            "id": 14,
                             "name": "8.000000  0.000000"
                         },
                         "Sprite": {
@@ -943,12 +968,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 968,
+                            "id": 15,
                             "name": "9.000000  0.000000"
                         },
                         "Sprite": {
@@ -1003,12 +1029,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 969,
+                            "id": 16,
                             "name": "10.000000  0.000000"
                         },
                         "Sprite": {
@@ -1063,12 +1090,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 970,
+                            "id": 17,
                             "name": "0.000000  3.000000"
                         },
                         "Sprite": {
@@ -1123,12 +1151,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 971,
+                            "id": 18,
                             "name": "1.000000  3.000000"
                         },
                         "Sprite": {
@@ -1183,12 +1212,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 972,
+                            "id": 19,
                             "name": "2.000000  3.000000"
                         },
                         "Sprite": {
@@ -1243,12 +1273,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 973,
+                            "id": 20,
                             "name": "3.000000  3.000000"
                         },
                         "Sprite": {
@@ -1303,12 +1334,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 974,
+                            "id": 21,
                             "name": "4.000000  3.000000"
                         },
                         "Sprite": {
@@ -1363,12 +1395,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 975,
+                            "id": 22,
                             "name": "5.000000  3.000000"
                         },
                         "Sprite": {
@@ -1423,12 +1456,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 976,
+                            "id": 23,
                             "name": "6.000000  2.000000"
                         },
                         "Sprite": {
@@ -1483,12 +1517,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 977,
+                            "id": 24,
                             "name": "7.000000  2.000000"
                         },
                         "Sprite": {
@@ -1543,12 +1578,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 978,
+                            "id": 25,
                             "name": "8.000000  2.000000"
                         },
                         "Sprite": {
@@ -1603,12 +1639,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 979,
+                            "id": 26,
                             "name": "9.000000  2.000000"
                         },
                         "Sprite": {
@@ -1663,12 +1700,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 980,
+                            "id": 27,
                             "name": "10.000000  2.000000"
                         },
                         "Sprite": {
@@ -1723,12 +1761,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 981,
+                            "id": 28,
                             "name": "11.000000  2.000000"
                         },
                         "Sprite": {
@@ -1783,12 +1822,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 982,
+                            "id": 29,
                             "name": "11.000000  1.000000"
                         },
                         "Sprite": {
@@ -1843,12 +1883,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 983,
+                            "id": 30,
                             "name": "5.000000  2.000000"
                         },
                         "Sprite": {
@@ -1903,12 +1944,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 984,
+                            "id": 31,
                             "name": "4.000000  2.000000"
                         },
                         "Sprite": {
@@ -1963,12 +2005,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 985,
+                            "id": 32,
                             "name": "3.000000  2.000000"
                         },
                         "Sprite": {
@@ -2023,12 +2066,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 986,
+                            "id": 33,
                             "name": "2.000000  2.000000"
                         },
                         "Sprite": {
@@ -2083,12 +2127,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 987,
+                            "id": 34,
                             "name": "1.000000  2.000000"
                         },
                         "Sprite": {
@@ -2143,12 +2188,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 988,
+                            "id": 35,
                             "name": "1.000000  1.000000"
                         },
                         "Sprite": {
@@ -2203,12 +2249,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 989,
+                            "id": 36,
                             "name": "2.000000  1.000000"
                         },
                         "Sprite": {
@@ -2263,12 +2310,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 990,
+                            "id": 37,
                             "name": "3.000000  1.000000"
                         },
                         "Sprite": {
@@ -2323,12 +2371,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 991,
+                            "id": 38,
                             "name": "4.000000  1.000000"
                         },
                         "Sprite": {
@@ -2383,12 +2432,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 992,
+                            "id": 39,
                             "name": "5.000000  1.000000"
                         },
                         "Sprite": {
@@ -2443,12 +2493,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 993,
+                            "id": 40,
                             "name": "6.000000  1.000000"
                         },
                         "Sprite": {
@@ -2503,12 +2554,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 994,
+                            "id": 41,
                             "name": "7.000000  1.000000"
                         },
                         "Sprite": {
@@ -2563,12 +2615,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 995,
+                            "id": 42,
                             "name": "8.000000  1.000000"
                         },
                         "Sprite": {
@@ -2623,12 +2676,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 996,
+                            "id": 43,
                             "name": "9.000000  1.000000"
                         },
                         "Sprite": {
@@ -2683,12 +2737,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 997,
+                            "id": 44,
                             "name": "10.000000  1.000000"
                         },
                         "Sprite": {
@@ -2743,12 +2798,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 998,
+                            "id": 45,
                             "name": "11.000000  0.000000"
                         },
                         "Sprite": {
@@ -2803,12 +2859,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 999,
+                            "id": 46,
                             "name": "13.000000  4.000000"
                         },
                         "Sprite": {
@@ -2863,12 +2920,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1000,
+                            "id": 47,
                             "name": "16.000000  5.000000"
                         },
                         "Sprite": {
@@ -2923,12 +2981,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1001,
+                            "id": 48,
                             "name": "19.000000  7.000000"
                         },
                         "Sprite": {
@@ -2983,12 +3042,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1002,
+                            "id": 49,
                             "name": "19.000000  6.000000"
                         },
                         "Sprite": {
@@ -3043,12 +3103,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1003,
+                            "id": 50,
                             "name": "19.000000  5.000000"
                         },
                         "Sprite": {
@@ -3103,12 +3164,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1004,
+                            "id": 51,
                             "name": "19.000000  4.000000"
                         },
                         "Sprite": {
@@ -3163,12 +3225,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1005,
+                            "id": 52,
                             "name": "20.000000  4.000000"
                         },
                         "Sprite": {
@@ -3223,12 +3286,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1006,
+                            "id": 53,
                             "name": "21.000000  4.000000"
                         },
                         "Sprite": {
@@ -3283,12 +3347,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1007,
+                            "id": 54,
                             "name": "22.000000  4.000000"
                         },
                         "Sprite": {
@@ -3343,12 +3408,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1008,
+                            "id": 55,
                             "name": "23.000000  4.000000"
                         },
                         "Sprite": {
@@ -3403,12 +3469,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1009,
+                            "id": 56,
                             "name": "24.000000  4.000000"
                         },
                         "Sprite": {
@@ -3463,12 +3530,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1010,
+                            "id": 57,
                             "name": "25.000000  4.000000"
                         },
                         "Sprite": {
@@ -3523,12 +3591,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1011,
+                            "id": 58,
                             "name": "26.000000  4.000000"
                         },
                         "Sprite": {
@@ -3583,12 +3652,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1012,
+                            "id": 59,
                             "name": "27.000000  4.000000"
                         },
                         "Sprite": {
@@ -3643,12 +3713,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1013,
+                            "id": 60,
                             "name": "20.000000  7.000000"
                         },
                         "Sprite": {
@@ -3703,12 +3774,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1014,
+                            "id": 61,
                             "name": "21.000000  8.000000"
                         },
                         "Sprite": {
@@ -3763,12 +3835,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1015,
+                            "id": 62,
                             "name": "22.000000  8.000000"
                         },
                         "Sprite": {
@@ -3823,12 +3896,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1016,
+                            "id": 63,
                             "name": "23.000000  8.000000"
                         },
                         "Sprite": {
@@ -3883,12 +3957,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1017,
+                            "id": 64,
                             "name": "24.000000  8.000000"
                         },
                         "Sprite": {
@@ -3943,12 +4018,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1018,
+                            "id": 65,
                             "name": "25.000000  8.000000"
                         },
                         "Sprite": {
@@ -4003,12 +4079,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1019,
+                            "id": 66,
                             "name": "26.000000  8.000000"
                         },
                         "Sprite": {
@@ -4063,12 +4140,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1020,
+                            "id": 67,
                             "name": "27.000000  8.000000"
                         },
                         "Sprite": {
@@ -4123,12 +4201,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1021,
+                            "id": 68,
                             "name": "28.000000  8.000000"
                         },
                         "Sprite": {
@@ -4183,12 +4262,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1022,
+                            "id": 69,
                             "name": "28.000000  4.000000"
                         },
                         "Sprite": {
@@ -4243,12 +4323,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1023,
+                            "id": 70,
                             "name": "28.000000  7.000000"
                         },
                         "Sprite": {
@@ -4303,12 +4384,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1024,
+                            "id": 71,
                             "name": "28.000000  6.000000"
                         },
                         "Sprite": {
@@ -4363,12 +4445,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1025,
+                            "id": 72,
                             "name": "28.000000  5.000000"
                         },
                         "Sprite": {
@@ -4423,12 +4506,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1026,
+                            "id": 73,
                             "name": "21.000000  7.000000"
                         },
                         "Sprite": {
@@ -4483,12 +4567,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1027,
+                            "id": 74,
                             "name": "20.000000  6.000000"
                         },
                         "Sprite": {
@@ -4543,12 +4628,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1028,
+                            "id": 75,
                             "name": "20.000000  5.000000"
                         },
                         "Sprite": {
@@ -4603,12 +4689,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1029,
+                            "id": 76,
                             "name": "21.000000  5.000000"
                         },
                         "Sprite": {
@@ -4663,12 +4750,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1030,
+                            "id": 77,
                             "name": "21.000000  6.000000"
                         },
                         "Sprite": {
@@ -4723,12 +4811,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1031,
+                            "id": 78,
                             "name": "22.000000  6.000000"
                         },
                         "Sprite": {
@@ -4783,12 +4872,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1032,
+                            "id": 79,
                             "name": "22.000000  7.000000"
                         },
                         "Sprite": {
@@ -4843,12 +4933,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1033,
+                            "id": 80,
                             "name": "23.000000  7.000000"
                         },
                         "Sprite": {
@@ -4903,12 +4994,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1034,
+                            "id": 81,
                             "name": "24.000000  7.000000"
                         },
                         "Sprite": {
@@ -4963,12 +5055,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1035,
+                            "id": 82,
                             "name": "25.000000  7.000000"
                         },
                         "Sprite": {
@@ -5023,12 +5116,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1036,
+                            "id": 83,
                             "name": "26.000000  7.000000"
                         },
                         "Sprite": {
@@ -5083,12 +5177,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1037,
+                            "id": 84,
                             "name": "27.000000  7.000000"
                         },
                         "Sprite": {
@@ -5143,12 +5238,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1038,
+                            "id": 85,
                             "name": "23.000000  6.000000"
                         },
                         "Sprite": {
@@ -5203,12 +5299,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1039,
+                            "id": 86,
                             "name": "24.000000  6.000000"
                         },
                         "Sprite": {
@@ -5263,12 +5360,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1040,
+                            "id": 87,
                             "name": "24.000000  5.000000"
                         },
                         "Sprite": {
@@ -5323,12 +5421,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1041,
+                            "id": 88,
                             "name": "25.000000  5.000000"
                         },
                         "Sprite": {
@@ -5383,12 +5482,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1042,
+                            "id": 89,
                             "name": "26.000000  5.000000"
                         },
                         "Sprite": {
@@ -5443,12 +5543,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1043,
+                            "id": 90,
                             "name": "27.000000  5.000000"
                         },
                         "Sprite": {
@@ -5503,12 +5604,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1044,
+                            "id": 91,
                             "name": "27.000000  6.000000"
                         },
                         "Sprite": {
@@ -5563,12 +5665,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1045,
+                            "id": 92,
                             "name": "26.000000  6.000000"
                         },
                         "Sprite": {
@@ -5623,12 +5726,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1046,
+                            "id": 93,
                             "name": "25.000000  6.000000"
                         },
                         "Sprite": {
@@ -5683,12 +5787,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1047,
+                            "id": 94,
                             "name": "23.000000  5.000000"
                         },
                         "Sprite": {
@@ -5743,12 +5848,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1048,
+                            "id": 95,
                             "name": "22.000000  5.000000"
                         },
                         "Sprite": {
@@ -5803,12 +5909,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1049,
+                            "id": 96,
                             "name": "19.000000  11.000000"
                         },
                         "Sprite": {
@@ -5863,12 +5970,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1050,
+                            "id": 97,
                             "name": "16.000000  12.000000"
                         },
                         "Sprite": {
@@ -5923,12 +6031,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1051,
+                            "id": 98,
                             "name": "15.000000  12.000000"
                         },
                         "Sprite": {
@@ -5983,12 +6092,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1052,
+                            "id": 99,
                             "name": "14.000000  12.000000"
                         },
                         "Sprite": {
@@ -6043,12 +6153,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1053,
+                            "id": 100,
                             "name": "13.000000  12.000000"
                         },
                         "Sprite": {
@@ -6103,12 +6214,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1054,
+                            "id": 101,
                             "name": "12.000000  12.000000"
                         },
                         "Sprite": {
@@ -6163,12 +6275,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1055,
+                            "id": 102,
                             "name": "11.000000  12.000000"
                         },
                         "Sprite": {
@@ -6223,12 +6336,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1056,
+                            "id": 103,
                             "name": "8.000000  13.000000"
                         },
                         "Sprite": {
@@ -6283,12 +6397,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1057,
+                            "id": 104,
                             "name": "8.000000  12.000000"
                         },
                         "Sprite": {
@@ -6343,12 +6458,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1058,
+                            "id": 105,
                             "name": "8.000000  11.000000"
                         },
                         "Sprite": {
@@ -6403,12 +6519,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1059,
+                            "id": 106,
                             "name": "2.000000  11.000000"
                         },
                         "Sprite": {
@@ -6463,12 +6580,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1060,
+                            "id": 107,
                             "name": "7.000000  11.000000"
                         },
                         "Sprite": {
@@ -6523,12 +6641,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1061,
+                            "id": 108,
                             "name": "6.000000  11.000000"
                         },
                         "Sprite": {
@@ -6583,12 +6702,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1062,
+                            "id": 109,
                             "name": "5.000000  11.000000"
                         },
                         "Sprite": {
@@ -6643,12 +6763,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1063,
+                            "id": 110,
                             "name": "4.000000  11.000000"
                         },
                         "Sprite": {
@@ -6703,12 +6824,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1064,
+                            "id": 111,
                             "name": "3.000000  11.000000"
                         },
                         "Sprite": {
@@ -6763,12 +6885,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1065,
+                            "id": 112,
                             "name": "2.000000  13.000000"
                         },
                         "Sprite": {
@@ -6823,12 +6946,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1066,
+                            "id": 113,
                             "name": "2.000000  12.000000"
                         },
                         "Sprite": {
@@ -6883,12 +7007,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1067,
+                            "id": 114,
                             "name": "2.000000  14.000000"
                         },
                         "Sprite": {
@@ -6943,12 +7068,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1068,
+                            "id": 115,
                             "name": "3.000000  14.000000"
                         },
                         "Sprite": {
@@ -7003,12 +7129,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1069,
+                            "id": 116,
                             "name": "4.000000  14.000000"
                         },
                         "Sprite": {
@@ -7063,12 +7190,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1070,
+                            "id": 117,
                             "name": "5.000000  14.000000"
                         },
                         "Sprite": {
@@ -7123,12 +7251,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1071,
+                            "id": 118,
                             "name": "6.000000  14.000000"
                         },
                         "Sprite": {
@@ -7183,12 +7312,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1072,
+                            "id": 119,
                             "name": "7.000000  14.000000"
                         },
                         "Sprite": {
@@ -7243,12 +7373,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1073,
+                            "id": 120,
                             "name": "8.000000  14.000000"
                         },
                         "Sprite": {
@@ -7303,12 +7434,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1074,
+                            "id": 121,
                             "name": "7.000000  13.000000"
                         },
                         "Sprite": {
@@ -7363,12 +7495,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1075,
+                            "id": 122,
                             "name": "6.000000  13.000000"
                         },
                         "Sprite": {
@@ -7423,12 +7556,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1076,
+                            "id": 123,
                             "name": "5.000000  13.000000"
                         },
                         "Sprite": {
@@ -7483,12 +7617,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1077,
+                            "id": 124,
                             "name": "4.000000  13.000000"
                         },
                         "Sprite": {
@@ -7543,12 +7678,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1078,
+                            "id": 125,
                             "name": "3.000000  13.000000"
                         },
                         "Sprite": {
@@ -7603,12 +7739,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1079,
+                            "id": 126,
                             "name": "3.000000  12.000000"
                         },
                         "Sprite": {
@@ -7663,12 +7800,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1080,
+                            "id": 127,
                             "name": "4.000000  12.000000"
                         },
                         "Sprite": {
@@ -7723,12 +7861,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1081,
+                            "id": 128,
                             "name": "5.000000  12.000000"
                         },
                         "Sprite": {
@@ -7783,12 +7922,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1082,
+                            "id": 129,
                             "name": "6.000000  12.000000"
                         },
                         "Sprite": {
@@ -7843,12 +7983,13 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 1083,
+                            "id": 130,
                             "name": "7.000000  12.000000"
                         },
                         "Sprite": {
@@ -7903,7 +8044,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 1
@@ -7930,7 +8072,7 @@
                         },
                         "Identification": {
                             "group": "",
-                            "id": 1084,
+                            "id": 131,
                             "name": "house"
                         },
                         "Script": {
@@ -7985,12 +8127,13 @@
                                 0.699999988079071,
                                 0.699999988079071
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Identification": {
                             "group": "",
-                            "id": 1085,
+                            "id": 132,
                             "name": "sign"
                         },
                         "Sprite": {
@@ -8042,19 +8185,20 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 2,
+                            "currentFrame": 3,
                             "frameOffset": 0,
                             "frameRate": 4,
                             "numFrames": 7
                         },
                         "Identification": {
                             "group": "",
-                            "id": 1086,
+                            "id": 133,
                             "name": "chestCoin"
                         },
                         "Script": {
@@ -8069,7 +8213,7 @@
                             ],
                             "height": 16.0,
                             "object": {
-                                "coordX": 2,
+                                "coordX": 3,
                                 "coordY": 0,
                                 "height": 1.0,
                                 "width": 0.125,
@@ -8080,19 +8224,19 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.25,
-                                    0.0
-                                ],
-                                [
                                     0.375,
                                     0.0
                                 ],
                                 [
-                                    0.375,
+                                    0.5,
+                                    0.0
+                                ],
+                                [
+                                    0.5,
                                     1.0
                                 ],
                                 [
-                                    0.25,
+                                    0.375,
                                     1.0
                                 ]
                             ],
@@ -8109,7 +8253,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 2
@@ -8121,9 +8266,9 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 0,
+                            "currentFrame": 4,
                             "frameOffset": 4,
-                            "frameRate": 7,
+                            "frameRate": 14,
                             "numFrames": 7
                         },
                         "BoxCollider": {
@@ -8137,7 +8282,7 @@
                         },
                         "Identification": {
                             "group": "character",
-                            "id": 1087,
+                            "id": 134,
                             "name": "Chammy"
                         },
                         "Physics": {
@@ -8159,9 +8304,9 @@
                             ],
                             "position": [
                                 0.0,
-                                100.0
+                                0.0
                             ],
-                            "restitution": 0.20000000298023224,
+                            "restitution": 0.0,
                             "restitutionThreshold": 1.0,
                             "scale": [
                                 1.0,
@@ -8170,7 +8315,7 @@
                             "type": 2
                         },
                         "Script": {
-                            "scriptPath": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/scripts/Chammy.lua"
+                            "scriptPath": "/home/archy/Documents/Programs/blazr/ChammysAdventure/scripts/Chammy.lua"
                         },
                         "Sprite": {
                             "color": [
@@ -8181,7 +8326,7 @@
                             ],
                             "height": 32.0,
                             "object": {
-                                "coordX": 0,
+                                "coordX": 4,
                                 "coordY": 4,
                                 "height": 0.1666666716337204,
                                 "width": 0.1428571492433548,
@@ -8192,19 +8337,19 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.0,
+                                    0.5714285969734192,
                                     0.6666666865348816
                                 ],
                                 [
-                                    0.1428571492433548,
+                                    0.7142857313156128,
                                     0.6666666865348816
                                 ],
                                 [
-                                    0.1428571492433548,
+                                    0.7142857313156128,
                                     0.8333333730697632
                                 ],
                                 [
-                                    0.0,
+                                    0.5714285969734192,
                                     0.8333333730697632
                                 ]
                             ],
@@ -8214,14 +8359,15 @@
                         "Transform": {
                             "position": [
                                 0.0,
-                                100.0
+                                0.0
                             ],
                             "rotation": 0.0,
                             "scale": [
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": true
                     }
                 ],
                 "zIndex": 5
@@ -8242,7 +8388,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1088,
+                            "id": 135,
                             "name": "Collider: 0.000000  3.000000"
                         },
                         "Physics": {
@@ -8326,7 +8472,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8340,7 +8487,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1089,
+                            "id": 136,
                             "name": "Collider: 1.000000  3.000000"
                         },
                         "Physics": {
@@ -8424,7 +8571,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8438,7 +8586,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1090,
+                            "id": 137,
                             "name": "Collider: 2.000000  3.000000"
                         },
                         "Physics": {
@@ -8522,7 +8670,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8536,7 +8685,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1091,
+                            "id": 138,
                             "name": "Collider: 3.000000  3.000000"
                         },
                         "Physics": {
@@ -8620,7 +8769,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8634,7 +8784,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1092,
+                            "id": 139,
                             "name": "Collider: 4.000000  3.000000"
                         },
                         "Physics": {
@@ -8718,7 +8868,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8732,7 +8883,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1093,
+                            "id": 140,
                             "name": "Collider: 5.000000  3.000000"
                         },
                         "Physics": {
@@ -8816,7 +8967,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8830,7 +8982,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1094,
+                            "id": 141,
                             "name": "Collider: 5.000000  2.000000"
                         },
                         "Physics": {
@@ -8914,7 +9066,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -8928,7 +9081,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1095,
+                            "id": 142,
                             "name": "Collider: 6.000000  2.000000"
                         },
                         "Physics": {
@@ -9012,7 +9165,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9026,7 +9180,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1096,
+                            "id": 143,
                             "name": "Collider: 7.000000  2.000000"
                         },
                         "Physics": {
@@ -9110,7 +9264,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9124,7 +9279,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1097,
+                            "id": 144,
                             "name": "Collider: 8.000000  2.000000"
                         },
                         "Physics": {
@@ -9208,7 +9363,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9222,7 +9378,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1098,
+                            "id": 145,
                             "name": "Collider: 9.000000  2.000000"
                         },
                         "Physics": {
@@ -9306,7 +9462,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9320,7 +9477,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1099,
+                            "id": 146,
                             "name": "Collider: 10.000000  2.000000"
                         },
                         "Physics": {
@@ -9404,7 +9561,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9418,7 +9576,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1100,
+                            "id": 147,
                             "name": "Collider: 11.000000  2.000000"
                         },
                         "Physics": {
@@ -9502,7 +9660,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9516,7 +9675,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1101,
+                            "id": 148,
                             "name": "Collider: 13.000000  4.000000"
                         },
                         "Physics": {
@@ -9600,7 +9759,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9614,7 +9774,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1102,
+                            "id": 149,
                             "name": "Collider: 16.000000  5.000000"
                         },
                         "Physics": {
@@ -9698,7 +9858,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9712,7 +9873,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1103,
+                            "id": 150,
                             "name": "Collider: 19.000000  7.000000"
                         },
                         "Physics": {
@@ -9796,7 +9957,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9810,7 +9972,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1104,
+                            "id": 151,
                             "name": "Collider: 20.000000  7.000000"
                         },
                         "Physics": {
@@ -9894,7 +10056,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -9908,7 +10071,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1105,
+                            "id": 152,
                             "name": "Collider: 21.000000  7.000000"
                         },
                         "Physics": {
@@ -9992,7 +10155,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10006,7 +10170,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1106,
+                            "id": 153,
                             "name": "Collider: 21.000000  8.000000"
                         },
                         "Physics": {
@@ -10090,7 +10254,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10104,7 +10269,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1107,
+                            "id": 154,
                             "name": "Collider: 22.000000  8.000000"
                         },
                         "Physics": {
@@ -10188,7 +10353,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10202,7 +10368,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1108,
+                            "id": 155,
                             "name": "Collider: 23.000000  8.000000"
                         },
                         "Physics": {
@@ -10286,7 +10452,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10300,7 +10467,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1109,
+                            "id": 156,
                             "name": "Collider: 24.000000  8.000000"
                         },
                         "Physics": {
@@ -10384,7 +10551,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10398,7 +10566,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1110,
+                            "id": 157,
                             "name": "Collider: 25.000000  8.000000"
                         },
                         "Physics": {
@@ -10482,7 +10650,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10496,7 +10665,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1111,
+                            "id": 158,
                             "name": "Collider: 26.000000  8.000000"
                         },
                         "Physics": {
@@ -10580,7 +10749,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10594,7 +10764,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1112,
+                            "id": 159,
                             "name": "Collider: 27.000000  8.000000"
                         },
                         "Physics": {
@@ -10678,7 +10848,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10692,7 +10863,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1113,
+                            "id": 160,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {
@@ -10776,7 +10947,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10790,7 +10962,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1114,
+                            "id": 161,
                             "name": "Collider: 2.000000  14.000000"
                         },
                         "Physics": {
@@ -10874,7 +11046,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10888,7 +11061,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1115,
+                            "id": 162,
                             "name": "Collider: 3.000000  14.000000"
                         },
                         "Physics": {
@@ -10972,7 +11145,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -10986,7 +11160,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1116,
+                            "id": 163,
                             "name": "Collider: 4.000000  14.000000"
                         },
                         "Physics": {
@@ -11070,7 +11244,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11084,7 +11259,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1117,
+                            "id": 164,
                             "name": "Collider: 5.000000  14.000000"
                         },
                         "Physics": {
@@ -11168,7 +11343,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11182,7 +11358,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1118,
+                            "id": 165,
                             "name": "Collider: 6.000000  14.000000"
                         },
                         "Physics": {
@@ -11266,7 +11442,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11280,7 +11457,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1119,
+                            "id": 166,
                             "name": "Collider: 7.000000  14.000000"
                         },
                         "Physics": {
@@ -11364,7 +11541,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11378,7 +11556,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1120,
+                            "id": 167,
                             "name": "Collider: 8.000000  14.000000"
                         },
                         "Physics": {
@@ -11462,7 +11640,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11476,7 +11655,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1121,
+                            "id": 168,
                             "name": "Collider: 8.000000  13.000000"
                         },
                         "Physics": {
@@ -11560,7 +11739,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11574,7 +11754,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1122,
+                            "id": 169,
                             "name": "Collider: 8.000000  12.000000"
                         },
                         "Physics": {
@@ -11658,7 +11838,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11672,7 +11853,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1123,
+                            "id": 170,
                             "name": "Collider: 8.000000  11.000000"
                         },
                         "Physics": {
@@ -11756,7 +11937,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11770,7 +11952,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1124,
+                            "id": 171,
                             "name": "Collider: 7.000000  11.000000"
                         },
                         "Physics": {
@@ -11854,7 +12036,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11868,7 +12051,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1125,
+                            "id": 172,
                             "name": "Collider: 6.000000  11.000000"
                         },
                         "Physics": {
@@ -11952,7 +12135,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -11966,7 +12150,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1126,
+                            "id": 173,
                             "name": "Collider: 5.000000  11.000000"
                         },
                         "Physics": {
@@ -12050,7 +12234,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12064,7 +12249,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1127,
+                            "id": 174,
                             "name": "Collider: 4.000000  11.000000"
                         },
                         "Physics": {
@@ -12148,7 +12333,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12162,7 +12348,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1128,
+                            "id": 175,
                             "name": "Collider: 3.000000  11.000000"
                         },
                         "Physics": {
@@ -12246,7 +12432,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12260,7 +12447,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1129,
+                            "id": 176,
                             "name": "Collider: 2.000000  11.000000"
                         },
                         "Physics": {
@@ -12344,7 +12531,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12358,7 +12546,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1130,
+                            "id": 177,
                             "name": "Collider: 2.000000  12.000000"
                         },
                         "Physics": {
@@ -12442,7 +12630,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12456,7 +12645,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1131,
+                            "id": 178,
                             "name": "Collider: 2.000000  13.000000"
                         },
                         "Physics": {
@@ -12540,7 +12729,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12554,7 +12744,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1132,
+                            "id": 179,
                             "name": "Collider: 11.000000  12.000000"
                         },
                         "Physics": {
@@ -12638,7 +12828,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12652,7 +12843,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1133,
+                            "id": 180,
                             "name": "Collider: 12.000000  12.000000"
                         },
                         "Physics": {
@@ -12736,7 +12927,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12750,7 +12942,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1134,
+                            "id": 181,
                             "name": "Collider: 13.000000  12.000000"
                         },
                         "Physics": {
@@ -12834,7 +13026,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12848,7 +13041,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1135,
+                            "id": 182,
                             "name": "Collider: 14.000000  12.000000"
                         },
                         "Physics": {
@@ -12932,7 +13125,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -12946,7 +13140,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1136,
+                            "id": 183,
                             "name": "Collider: 15.000000  12.000000"
                         },
                         "Physics": {
@@ -13030,7 +13224,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13044,7 +13239,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1137,
+                            "id": 184,
                             "name": "Collider: 16.000000  12.000000"
                         },
                         "Physics": {
@@ -13128,7 +13323,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13142,7 +13338,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1138,
+                            "id": 185,
                             "name": "Collider: 19.000000  11.000000"
                         },
                         "Physics": {
@@ -13226,7 +13422,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13240,7 +13437,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1139,
+                            "id": 186,
                             "name": "Collider: 19.000000  6.000000"
                         },
                         "Physics": {
@@ -13324,7 +13521,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13338,7 +13536,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1140,
+                            "id": 187,
                             "name": "Collider: 19.000000  5.000000"
                         },
                         "Physics": {
@@ -13422,7 +13620,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13436,7 +13635,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1141,
+                            "id": 188,
                             "name": "Collider: 19.000000  4.000000"
                         },
                         "Physics": {
@@ -13520,7 +13719,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13534,7 +13734,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1142,
+                            "id": 189,
                             "name": "Collider: 20.000000  4.000000"
                         },
                         "Physics": {
@@ -13618,7 +13818,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13632,7 +13833,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1143,
+                            "id": 190,
                             "name": "Collider: 21.000000  4.000000"
                         },
                         "Physics": {
@@ -13716,7 +13917,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13730,7 +13932,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1144,
+                            "id": 191,
                             "name": "Collider: 22.000000  4.000000"
                         },
                         "Physics": {
@@ -13814,7 +14016,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13828,7 +14031,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1145,
+                            "id": 192,
                             "name": "Collider: 23.000000  4.000000"
                         },
                         "Physics": {
@@ -13912,7 +14115,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -13926,7 +14130,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1146,
+                            "id": 193,
                             "name": "Collider: 24.000000  4.000000"
                         },
                         "Physics": {
@@ -14010,7 +14214,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14024,7 +14229,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1147,
+                            "id": 194,
                             "name": "Collider: 25.000000  4.000000"
                         },
                         "Physics": {
@@ -14108,7 +14313,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14122,7 +14328,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1148,
+                            "id": 195,
                             "name": "Collider: 28.000000  7.000000"
                         },
                         "Physics": {
@@ -14206,7 +14412,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14220,7 +14427,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1149,
+                            "id": 196,
                             "name": "Collider: 28.000000  6.000000"
                         },
                         "Physics": {
@@ -14304,7 +14511,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14318,7 +14526,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1150,
+                            "id": 197,
                             "name": "Collider: 28.000000  5.000000"
                         },
                         "Physics": {
@@ -14402,7 +14610,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14416,7 +14625,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1151,
+                            "id": 198,
                             "name": "Collider: 28.000000  4.000000"
                         },
                         "Physics": {
@@ -14500,7 +14709,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14514,7 +14724,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1152,
+                            "id": 199,
                             "name": "Collider: 27.000000  4.000000"
                         },
                         "Physics": {
@@ -14598,7 +14808,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14612,7 +14823,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1153,
+                            "id": 200,
                             "name": "Collider: 26.000000  4.000000"
                         },
                         "Physics": {
@@ -14696,7 +14907,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14710,7 +14922,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1154,
+                            "id": 201,
                             "name": "Collider: 11.000000  1.000000"
                         },
                         "Physics": {
@@ -14794,7 +15006,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14808,7 +15021,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1155,
+                            "id": 202,
                             "name": "Collider: 11.000000  0.000000"
                         },
                         "Physics": {
@@ -14892,7 +15105,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -14906,7 +15120,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1156,
+                            "id": 203,
                             "name": "Collider: 10.000000  0.000000"
                         },
                         "Physics": {
@@ -14990,7 +15204,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15004,7 +15219,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1157,
+                            "id": 204,
                             "name": "Collider: 9.000000  0.000000"
                         },
                         "Physics": {
@@ -15088,7 +15303,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15102,7 +15318,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1158,
+                            "id": 205,
                             "name": "Collider: 8.000000  0.000000"
                         },
                         "Physics": {
@@ -15186,7 +15402,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15200,7 +15417,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1159,
+                            "id": 206,
                             "name": "Collider: 7.000000  0.000000"
                         },
                         "Physics": {
@@ -15284,7 +15501,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15298,7 +15516,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1160,
+                            "id": 207,
                             "name": "Collider: 6.000000  0.000000"
                         },
                         "Physics": {
@@ -15382,7 +15600,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15396,7 +15615,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1161,
+                            "id": 208,
                             "name": "Collider: 5.000000  0.000000"
                         },
                         "Physics": {
@@ -15480,7 +15699,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15494,7 +15714,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1162,
+                            "id": 209,
                             "name": "Collider: 4.000000  0.000000"
                         },
                         "Physics": {
@@ -15578,7 +15798,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15592,7 +15813,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1163,
+                            "id": 210,
                             "name": "Collider: 3.000000  0.000000"
                         },
                         "Physics": {
@@ -15676,7 +15897,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15690,7 +15912,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1164,
+                            "id": 211,
                             "name": "Collider: 2.000000  0.000000"
                         },
                         "Physics": {
@@ -15774,7 +15996,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15788,7 +16011,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1165,
+                            "id": 212,
                             "name": "Collider: 1.000000  0.000000"
                         },
                         "Physics": {
@@ -15872,7 +16095,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15886,7 +16110,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1166,
+                            "id": 213,
                             "name": "Collider: 0.000000  0.000000"
                         },
                         "Physics": {
@@ -15970,7 +16194,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -15984,7 +16209,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1167,
+                            "id": 214,
                             "name": "Collider: 0.000000  1.000000"
                         },
                         "Physics": {
@@ -16068,7 +16293,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -16082,7 +16308,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1168,
+                            "id": 215,
                             "name": "Collider: 0.000000  2.000000"
                         },
                         "Physics": {
@@ -16166,7 +16392,8 @@
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -16180,7 +16407,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1169,
+                            "id": 216,
                             "name": "Collider: 0.000000  2.000000"
                         },
                         "Physics": {
@@ -16256,15 +16483,16 @@
                         },
                         "Transform": {
                             "position": [
-                                -7.75,
-                                -7.25
+                                0.0,
+                                32.0
                             ],
                             "rotation": 0.0,
                             "scale": [
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     },
                     {
                         "BoxCollider": {
@@ -16278,7 +16506,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1170,
+                            "id": 217,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {
@@ -16354,15 +16582,16 @@
                         },
                         "Transform": {
                             "position": [
-                                -7.75,
-                                -7.25
+                                448.0,
+                                127.99998474121094
                             ],
                             "rotation": 0.0,
                             "scale": [
                                 1.0,
                                 1.0
                             ]
-                        }
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 10

@@ -39,7 +39,7 @@ class Scene {
 	void BLZR_API onEvent(Event &e);
 
 	void Serialize(json &j) const;
-	void Deserialize(const json &j);
+	void Deserialize(const json &j, Ref<sol::state> luaState);
 
 	void AddLayer(const std::string &layerName, int zIndex);
 	void RemoveLayer(const std::string &layerName);

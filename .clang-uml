@@ -1,0 +1,126 @@
+compilation_database_dir: Blazr/
+output_directory: diagrams
+diagrams:
+  Core:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Core/*.h
+    using_namespace: Blazr::Core
+    include:
+      namespaces:
+        - Blazr
+
+  Log:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Log/*.h
+    using_namespace: Blazr::Log
+    include:
+      namespaces:
+        - Blazr
+
+  Renderer:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Renderer/*.h
+    using_namespace: Blazr::Renderer
+    include:
+      namespaces:
+        - Blazr
+
+  Ecs:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Ecs/*.h
+    using_namespace: Blazr::Ecs
+    include:
+      namespaces:
+        - Blazr
+  Events:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Events/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Fonts:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Fonts/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Layers:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Layers/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Physics:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Physics/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Platform:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Platform/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Project:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Project/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Resources:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Resources/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Scene:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Scene/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Scripting:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Scripting/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Systems:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Systems/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr
+  Utitlities:
+    type: class
+    glob:
+      - Blazr/src/Blazr/Utilities/*.h
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr

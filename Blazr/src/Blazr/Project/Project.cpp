@@ -15,10 +15,11 @@ Ref<Project> Project::New(const std::filesystem::path &path,
 	return s_ActiveProject;
 }
 
-Ref<Project> Project::Load(const std::filesystem::path &path) {
+Ref<Project> Project::Load(const std::filesystem::path &path,
+						   Ref<sol::state> luaState) {
 	Ref<Project> project;
 
-	if ((project = ProjectSerializer::Deserialize(path))) {
+	if ((project = ProjectSerializer::Deserialize(path, luaState))) {
 		project->m_ProjectDirectory = path.parent_path();
 		s_ActiveProject = project;
 		return s_ActiveProject;

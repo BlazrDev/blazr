@@ -41,7 +41,8 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 	bodyDef.gravityScale = m_Attributes.gravityScale;
 	bodyDef.fixedRotation = m_Attributes.isFixedRotation;
 
-	m_RigidBody = Blazr::CreateSharedBody(m_World->CreateBody(&bodyDef));
+	m_RigidBody =
+		Blazr::CreateSharedBody(m_World->CreateBody(&bodyDef), m_World);
 
 	if (!m_RigidBody) {
 		BLZR_CORE_ERROR("PhysicsComponent::init: Failed to create rigid body");
@@ -322,7 +323,9 @@ void Blazr::PhysicsComponent::to_json(nlohmann::json &j,
 
 void Blazr::PhysicsComponent::from_json(const nlohmann::json &j,
 										PhysicsComponent &component) {
-	auto &attributes = component.m_Attributes;
+	auto &attributes = component.GetAttributes();
+	auto body = component.GetRigidBody();
+	body->SetType(b2BodyType(j.at("type").get<int>()));
 
 	attributes.type = static_cast<RigidBodyType>(j.at("type").get<int>());
 	attributes.density = j.at("density").get<float>();
@@ -349,4 +352,15 @@ void Blazr::PhysicsComponent::from_json(const nlohmann::json &j,
 	attributes.filterCategory = j.at("filterCategory").get<uint16_t>();
 	attributes.filterMask = j.at("filterMask").get<uint16_t>();
 	attributes.filterGroup = j.at("filterGroup").get<int16_t>();
+
+	body->SetGravityScale(attributes.gravityScale);
+	body->SetFixedRotation(attributes.isFixedRotation);
+	for (b2Fixture *fixture = body->GetFixtureList(); fixture != nullptr;
+		 fixture = fixture->GetNext()) {
+		fixture->SetDensity(attributes.density);
+		fixture->SetRestitution(attributes.restitution);
+		fixture->SetFriction(attributes.friction);
+		fixture->SetSensor(attributes.isSensor);
+	};
+	component.init(1280, 720);
 }

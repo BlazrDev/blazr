@@ -52,7 +52,7 @@ local function update()
 
 
     if InputSystem.key_pressed(KEY_SPACE) then
-        physicsComponent:linear_impulse(vec2(0, 80))
+        physicsComponent:linear_impulse(vec2(0, 60))
     end
 
     if InputSystem.key_pressed(KEY_R) then

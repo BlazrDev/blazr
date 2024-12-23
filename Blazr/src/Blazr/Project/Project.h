@@ -43,7 +43,8 @@ class Project {
 
 	static BLZR_API Ref<Project> New(const std::filesystem::path &path,
 									 const std::string &name = "Untitled");
-	static BLZR_API Ref<Project> Load(const std::filesystem::path &path);
+	static BLZR_API Ref<Project> Load(const std::filesystem::path &path,
+									  Ref<sol::state> luaState);
 	static BLZR_API bool SaveActive(const std::filesystem::path &path =
 										s_ActiveProject->GetProjectDirectory());
 

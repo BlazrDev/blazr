@@ -87,10 +87,6 @@ void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 	std::for_each(
 		layer->entities.begin(), layer->entities.end(),
 		[&](Ref<Entity> entity) {
-			// if (entity->HasComponent<TileComponent>()) {
-			//  return;
-			// }
-
 			nlohmann::json entityJson;
 			if (entity->HasComponent<AnimationComponent>()) {
 				AnimationComponent::to_json(
@@ -130,11 +126,16 @@ void Layer::to_json(nlohmann::json &j, const Ref<Layer> layer) {
 				TileComponent::to_json(entityJson["Tile"],
 									   entity->GetComponent<TileComponent>());
 			}
+
+			// Serialize hasFollowCamera
+			entityJson["hasFollowCamera"] = entity->GetFollowCamera();
+
 			j["Entities"].push_back(entityJson);
 		});
 }
 
-void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
+void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer,
+					  Ref<sol::state> luaState) {
 	layer->entities.clear();
 	if (j.contains("zIndex")) {
 		layer->zIndex = j.at("zIndex");
@@ -184,6 +185,8 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				ScriptComponent script;
 				ScriptComponent::from_json(entityJson.at("Script"), script);
 				entity->AddComponent<ScriptComponent>(script);
+				auto &id = entity->GetComponent<Identification>();
+				script.LoadScript(*luaState, entity, id.name);
 			}
 			if (entityJson.contains("Physics")) {
 
@@ -200,6 +203,11 @@ void Layer::from_json(const nlohmann::json &j, Ref<Layer> layer) {
 				TileComponent tile;
 				TileComponent::from_json(entityJson.at("Tile"), tile);
 				entity->AddComponent<TileComponent>(tile);
+			}
+
+			// Deserialize hasFollowCamera
+			if (entityJson.contains("hasFollowCamera")) {
+				entity->SetFollowCamera(entityJson.at("hasFollowCamera"));
 			}
 
 			layer->entities.push_back(entity);

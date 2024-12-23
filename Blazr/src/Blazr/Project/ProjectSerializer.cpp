@@ -64,7 +64,8 @@ bool ProjectSerializer::Serialize(const Ref<Project> &project,
 }
 
 Ref<Project>
-ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
+ProjectSerializer::Deserialize(const std::filesystem::path &filepath,
+							   Ref<sol::state> luaState) {
 	if (!std::filesystem::exists(filepath)) {
 		BLZR_CORE_ERROR("File does not exist: {}", filepath.string());
 		return nullptr;
@@ -121,7 +122,7 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 				 std::filesystem::recursive_directory_iterator(scenesPath)) {
 				if (entry.is_regular_file() &&
 					entry.path().extension() == ".blzrscn") {
-					auto scene = DeserializeScene(entry.path());
+					auto scene = DeserializeScene(entry.path(), luaState);
 					if (scene) {
 						project->AddScene(scene->GetName(), scene);
 						BLZR_CORE_ERROR("Deserialized {0}", scene->GetName());
@@ -177,7 +178,8 @@ bool ProjectSerializer::SerializeScene(const Ref<Scene> &scene,
 }
 
 Ref<Scene>
-ProjectSerializer::DeserializeScene(const std::filesystem::path &filepath) {
+ProjectSerializer::DeserializeScene(const std::filesystem::path &filepath,
+									Ref<sol::state> luaState) {
 	std::ifstream ifs(filepath);
 	if (!ifs) {
 		BLZR_CORE_ERROR("Failed to open scene file for deserialization: {}",
@@ -199,7 +201,7 @@ ProjectSerializer::DeserializeScene(const std::filesystem::path &filepath) {
 		scene = CreateRef<Scene>();
 	}
 
-	scene->Deserialize(j);
+	scene->Deserialize(j, luaState);
 	return scene;
 }
 

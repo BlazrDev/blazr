@@ -322,13 +322,11 @@ void Editor::RenderImGui() {
 				if (!openPath.empty()) {
 					Registry::Reset();
 					Initialize();
-					Ref<Project> loadedProject = Project::Load(openPath);
+					Ref<Project> loadedProject =
+						Project::Load(openPath, m_LuaState);
 					if (loadedProject) {
 						Project::SetActive(loadedProject);
 						m_ActiveScene = loadedProject->GetScene(
-							loadedProject->GetConfig().StartSceneName);
-						BLZR_CORE_ERROR(
-							"START SCENE: {0}",
 							loadedProject->GetConfig().StartSceneName);
 					} else {
 						BLZR_CORE_ERROR("Failed to load project from: {}",
@@ -507,6 +505,10 @@ void Editor::RenderImGui() {
 						}
 
 						fs::copy("assets", outputDir + "/" + "assets",
+								 fs::copy_options::recursive |
+									 fs::copy_options::overwrite_existing);
+
+						fs::copy("lib", outputDir,
 								 fs::copy_options::recursive |
 									 fs::copy_options::overwrite_existing);
 
@@ -1461,7 +1463,8 @@ void Editor::RenderImGui() {
 								filename, targetPath, "Imported Sound Effect",
 								0);
 						case 4:
-							success = assetManager->LoadScene(targetPath);
+							success =
+								assetManager->LoadScene(targetPath, m_LuaState);
 							break;
 						default:
 							BLZR_CORE_WARN("Asset type not supported for "
@@ -2139,6 +2142,11 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 									PhysicsComponent &physics) {
 
 	auto body = physics.GetRigidBody();
+	if (!body || !body->GetWorld()) {
+		BLZR_CORE_ERROR(
+			"Invalid body or world while rendering physics component.");
+		return;
+	}
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Separator();
 	ImGui::Text("Physics");
@@ -2160,7 +2168,12 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			if (ImGui::Selectable(types[i], isSelected)) {
 				selectedTypeIndex = i;
 				physics.GetAttributes().type = static_cast<RigidBodyType>(i);
-				body->SetType(b2BodyType(i));
+				if (CameraController::paused) {
+					body->SetType(b2BodyType(i));
+				} else {
+					BLZR_CORE_WARN(
+						"Cannot change body type while simulation is running.");
+				}
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -2232,8 +2245,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	body->SetFixedRotation(physics.GetAttributes().isFixedRotation);
 
 	cursorPos.y += 35;
-	if (CameraController::paused) {
-
+	if (CameraController::paused && body) {
 		for (b2Fixture *fixture = body->GetFixtureList(); fixture != nullptr;
 			 fixture = fixture->GetNext()) {
 			fixture->SetDensity(physics.GetAttributes().density);
@@ -2241,6 +2253,8 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			fixture->SetFriction(physics.GetAttributes().friction);
 			fixture->SetSensor(physics.GetAttributes().isSensor);
 		}
+	} else {
+		BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
 	}
 
 	if ((posX != physicsPosX || posY != physicsPosY || scaleX != newScaleX ||

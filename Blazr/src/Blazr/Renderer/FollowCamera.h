@@ -22,5 +22,9 @@ class FollowCamera {
 	void SetTarget(Ref<Entity> target) { m_Target = target; }
 
 	void Update();
+
+	static void to_json(nlohmann::json &j, const FollowCamera &followCamera);
+	static void from_json(const nlohmann::json &j, FollowCamera &followCamera,
+						  Camera2D &camera);
 };
 } // namespace Blazr

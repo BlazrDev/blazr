@@ -56,7 +56,8 @@ class AssetManager {
 							 const std::string &effectDescription, int channel);
 	Ref<Blazr::Effect> BLZR_API GetEffect(const std::string &name);
 
-	bool BLZR_API LoadScene(const std::string &scenePath);
+	bool BLZR_API LoadScene(const std::string &scenePath,
+							Ref<sol::state> luaState);
 
 	BLZR_API std::map<std::string, Ref<Blazr::Music>> &getAllMusic();
 	BLZR_API std::map<std::string, Ref<Blazr::Effect>> &getAllEffects();

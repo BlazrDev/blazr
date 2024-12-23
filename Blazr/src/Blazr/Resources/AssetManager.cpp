@@ -218,8 +218,10 @@ void Blazr::AssetManager::CreateLuaAssetManager(sol::state &lua,
 		});
 }
 
-bool Blazr::AssetManager::LoadScene(const std::string &scenePath) {
-	if (Ref<Scene> scene = ProjectSerializer::DeserializeScene(scenePath)) {
+bool Blazr::AssetManager::LoadScene(const std::string &scenePath,
+									Ref<sol::state> luaState) {
+	if (Ref<Scene> scene =
+			ProjectSerializer::DeserializeScene(scenePath, luaState)) {
 		Project::GetActive()->AddScene(scene->GetName(), scene);
 		return true;
 	}
