@@ -1,0 +1,24 @@
+{
+    "AssetManager": {
+        "Effects": {},
+        "Music": {},
+        "Shaders": {},
+        "Textures": {
+            "collider": {
+                "path": "assets/collider.png",
+                "pixelArt": true
+            },
+            "default": {
+                "path": "assets/white_texture.png",
+                "pixelArt": true
+            }
+        }
+    },
+    "Config": {
+        "AssetDirectory": "",
+        "ScriptPath": "",
+        "StartScene": "Untitled 1",
+        "name": "game"
+    },
+    "ProjectDirectory": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/Game"
+}

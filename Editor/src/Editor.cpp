@@ -65,8 +65,8 @@ static float spriteHeight = 0.0f;
 static float newSpriteWidth = 0.0f;
 static float newSpriteHeight = 0.0f;
 static float layer = 0.0f;
-static float sheetX = 0.0f;
-static float sheetY = 0.0f;
+static int startX = 0.0f;
+static int startY = 0.0f;
 
 // BoxCollider
 static int widthBoxCollider = 16, heightBoxCollider = 16;
@@ -736,8 +736,11 @@ void Editor::RenderImGui() {
 
 								renderTransformComponent(cursorPos, transform);
 
-								if (!clickedStop) {
-									transform.position = {newPosX, newPosY};
+								if (!clickedStop &&
+									m_Registry->GetRegistry()
+										.all_of<PhysicsComponent>(entity)) {
+									transform.position = {physicsPosX,
+														  physicsPosY};
 								}
 							}
 							if (m_Registry->GetRegistry()
@@ -776,10 +779,24 @@ void Editor::RenderImGui() {
 								if (!clickedStop) {
 									BLZR_CORE_ERROR("{0} {1}", newPosX,
 													newPosY);
-									physics.GetAttributes().position = {
-										newPosX, newPosY};
+									// physics.GetAttributes().position = {
+									// 	newPosX, newPosY};
+									//
+									// physics.init(1280, 720);
+									const auto scaleHalfHeight =
+										1224 * PIXELS_TO_METERS / 2;
+									const auto scaleHalfWidth =
+										648 * PIXELS_TO_METERS / 2;
 
-									physics.init(1280, 720);
+									auto bx = (posX * PIXELS_TO_METERS) -
+											  scaleHalfHeight;
+									auto by = (posY * PIXELS_TO_METERS) -
+
+											  scaleHalfWidth;
+
+									physics.GetRigidBody()->SetTransform(
+										b2Vec2{bx, by}, 0.f);
+
 									clickedStop = true;
 								}
 							}
@@ -1620,8 +1637,6 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 		transform.position.y = 0;
 	}
 
-	posX = transform.position.x;
-	posY = transform.position.y;
 	ImGui::PopItemWidth();
 	cursorPos.y += 25;
 
@@ -1652,8 +1667,6 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	if (transform.scale.y > 10.f) {
 		transform.scale.y = 10.f;
 	}
-	scaleY = transform.scale.y;
-	scaleX = transform.scale.x;
 
 	ImGui::PopItemWidth();
 	cursorPos.y += 30;
@@ -1668,13 +1681,17 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	cursorPos.x -= 15;
 	cursorPos.y += 35;
 
-	if ((posX != newPosX || posY != newPosY || scaleY != newScaleY ||
-		 scaleX != newScaleX) &&
+	if ((posX != transform.position.x || posY != transform.position.y ||
+		 scaleY != transform.scale.x || scaleX != transform.scale.y) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
-		newPosX = posX;
-		newPosY = posY;
-		newScaleX = scaleX;
-		newScaleY = scaleY;
+		posX = transform.position.x;
+		posY = transform.position.y;
+		scaleY = transform.scale.y;
+		scaleX = transform.scale.x;
+		// newPosX = posX;
+		// newPosY = posY;
+		// newScaleX = scaleX;
+		// newScaleY = scaleY;
 	}
 }
 
@@ -1809,14 +1826,37 @@ void Editor::renderSpriteComponent(ImVec2 &cursorPos, SpriteComponent &sprite,
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputFloat("##spriteHeight", &sprite.height, 0.1f, 1.0f, "%.1f");
 
-	if ((sprite.width != spriteWidth || sprite.height != spriteHeight) &&
+	cursorPos.x -= 64;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("CoordX");
+	cursorPos.x += 65;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputInt("##coordX", &sprite.startX);
+	cursorPos.x -= 65;
+	cursorPos.y += 28;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text("CoordY");
+	cursorPos.x += 65;
+	cursorPos.y -= 3;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	ImGui::InputInt("##coordY", &sprite.startY);
+
+	if ((sprite.width != spriteWidth || sprite.height != spriteHeight ||
+		 sprite.startX != startX || sprite.startY != startY) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
 		auto texture =
 			AssetManager::GetInstance()->GetTexture(sprite.texturePath);
 		spriteWidth = sprite.width;
 		spriteHeight = sprite.height;
+		startX = sprite.startX;
+		startY = sprite.startY;
 		sprite.generateObject(texture->GetWidth(), texture->GetHeight());
 	}
+
 	// layer
 	cursorPos.x -= 65;
 	cursorPos.y += 28;
@@ -2041,7 +2081,6 @@ void Editor::renderAnimationComponent(ImVec2 &cursorPos,
 	ImGui::Text("bVertical");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 10);
 	ImGui::Checkbox("##bVertical", &animation.bVertical);
-
 	cursorPos.y += 100;
 }
 void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
@@ -2055,35 +2094,45 @@ void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
 	ImGui::Text("Width");
 	// ImGui::SameLine();
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
-	ImGui::InputInt("##widthBoxCollider", &widthBoxCollider);
+	ImGui::InputInt("##widthBoxCollider", &boxCollider.width);
 	ImGui::Text("Height");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
-	ImGui::InputInt("##heightBoxCollider", &heightBoxCollider);
+	ImGui::InputInt("##heightBoxCollider", &boxCollider.height);
 
-	if (widthBoxCollider < 16) {
-		widthBoxCollider = 16;
+	if (boxCollider.width < 16) {
+		boxCollider.width = 16;
 	}
-	if (heightBoxCollider < 16) {
-		heightBoxCollider = 16;
+	if (boxCollider.height < 16) {
+		boxCollider.height = 16;
 	}
 
-	boxCollider.width = widthBoxCollider;
-	boxCollider.height = heightBoxCollider;
+	// boxCollider.width = widthBoxCollider;
+	// boxCollider.height = heightBoxCollider;
 
 	ImGui::Text("OffsetX");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
-	ImGui::InputFloat("##offsetX", &offsetX, 0.1f, 1.0f, "%.1f");
+	ImGui::InputFloat("##offsetX", &boxCollider.offset.x, 0.1f, 1.0f, "%.1f");
 	ImGui::Text("OffsetY");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 165);
-	ImGui::InputFloat("##offsetY", &offsetY, 0.1f, 1.0f, "%.1f");
+	ImGui::InputFloat("##offsetY", &boxCollider.offset.y, 0.1f, 1.0f, "%.1f");
 
-	boxCollider.offset = {offsetX, offsetY};
+	// boxCollider.offset = {offsetX, offsetY};
 
 	ImGui::Text("isColliding");
 	ImGui::SameLine(ImGui::GetContentRegionAvail().x - 10);
-	ImGui::Checkbox("##bVertical", &boxCollider.colliding);
+	ImGui::Checkbox("##colliding", &boxCollider.colliding);
 
 	cursorPos.y += 120;
+
+	if ((widthBoxCollider != boxCollider.width ||
+		 heightBoxCollider != boxCollider.height ||
+		 offsetX != boxCollider.offset.x || offsetY != boxCollider.offset.y) &&
+		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
+		widthBoxCollider = boxCollider.width;
+		heightBoxCollider = boxCollider.height;
+		offsetX = boxCollider.offset.x;
+		offsetY = boxCollider.offset.y;
+	}
 }
 
 void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
@@ -2200,7 +2249,7 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		 offsetY != newOffsetY) &&
 		glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ENTER) == GLFW_PRESS) {
 
-		physics.GetAttributes().position = {newPosX, newPosY};
+		physics.GetAttributes().position = {posX, posY};
 		// physics.GetRigidBody()->SetTransform(
 		// 	b2Vec2{static_cast<float>(posX), static_cast<float>(posY)}, 0);
 		physics.GetAttributes().scale = {scaleX, scaleY};
@@ -2209,6 +2258,9 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		if (CameraController::paused) {
 			physics.init(1280, 720);
 		}
+
+		physicsPosX = posX;
+		physicsPosY = posY;
 
 		newScaleX = scaleX;
 		newScaleY = scaleY;

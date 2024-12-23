@@ -2,6 +2,7 @@
 #include "Blazr/Resources/AssetManager.h"
 #include "Blazr/Scene/TilemapScene.h"
 #include "ProjectSerializer.h"
+#include <filesystem>
 #include <fstream>
 
 namespace Blazr {
@@ -117,7 +118,7 @@ ProjectSerializer::Deserialize(const std::filesystem::path &filepath) {
 		if (std::filesystem::exists(scenesPath) &&
 			std::filesystem::is_directory(scenesPath)) {
 			for (const auto &entry :
-				 std::filesystem::directory_iterator(scenesPath)) {
+				 std::filesystem::recursive_directory_iterator(scenesPath)) {
 				if (entry.is_regular_file() &&
 					entry.path().extension() == ".blzrscn") {
 					auto scene = DeserializeScene(entry.path());

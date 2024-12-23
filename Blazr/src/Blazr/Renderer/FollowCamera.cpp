@@ -24,11 +24,11 @@ void FollowCamera::Update() {
 	newCamPosition.y =
 		(transform.position.y - cameraHeight / (2 * cameraScale)) * cameraScale;
 
-	// newCamPosition.x = std::clamp(newCamPosition.x, 0.f,
-	// 							  cameraWidth - cameraWidth / cameraScale);
-	//
-	// newCamPosition.y = std::clamp(newCamPosition.y, 0.f,
-	// 							  cameraHeight - cameraHeight / cameraScale);
+	newCamPosition.x = std::clamp(newCamPosition.x, 0.f, cameraWidth);
+	// cameraWidth - cameraWidth / cameraScale);
+
+	newCamPosition.y = std::clamp(newCamPosition.y, 0.f, cameraHeight);
+	// cameraHeight - cameraHeight / cameraScale);
 
 	// newCamPosition.x = transform.position.x - cameraWidth / 2;
 	// newCamPosition.y = transform.position.y - cameraHeight / 2;

@@ -1,0 +1,28 @@
+{
+    "AssetManager": {
+        "Effects": {},
+        "Music": {},
+        "Shaders": {},
+        "Textures": {
+            "Tiles.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/Tiles.png",
+                "pixelArt": true
+            },
+            "collider": {
+                "path": "assets/collider.png",
+                "pixelArt": true
+            },
+            "default": {
+                "path": "assets/white_texture.png",
+                "pixelArt": true
+            }
+        }
+    },
+    "Config": {
+        "AssetDirectory": "",
+        "ScriptPath": "",
+        "StartScene": "Untitled 1",
+        "name": "ChammysAdventure"
+    },
+    "ProjectDirectory": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure"
+}
