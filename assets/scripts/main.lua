@@ -7,6 +7,7 @@ if run_script("assets/tiled_maps/testmap.lua") then
 	print("Testmap script has been executed")
 	print("Testmap script has been executed")
 end
+print("Vrh maina")
 Masha = {
 	tag = "Masha",
 	group = "Character2",
@@ -88,7 +89,7 @@ Assets = {
 		{ name = "metak", path = "assets/sounds/METAK.mp3", desc = "Metak background music" },
 	},
 	sound_effects = {
-		{ name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg", channel = 1 },
+		{ name = "boing", path = "assets/sounds/boing.wav", desc = "boingggggggggg" },
 	},
 	textures = {
 		{ name = "masha", path = "assets/masha.png", pixelArt = false },
@@ -101,7 +102,9 @@ Assets = {
 
 local tileset = CreateMap()
 LoadAssets(Assets)
-SoundPlayer.play_music("masa", 1, 0)
+print("DEBILU")
+-- SoundPlayer.play_music("masa", 1, 0)
+SoundPlayer.play_effect("boing", 1)
 -- LoadMap(tileset, scene)
 -- local transform = playerEntity:add_component(TransformComponent(100, 100, 5, 5, 0))
 -- local sprite = playerEntity:add_component(SpriteComponent(32.0, 32.0, "player", 0, 0, 0))

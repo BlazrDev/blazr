@@ -106,8 +106,7 @@ std::map<std::string, Ref<Blazr::Music>> &Blazr::AssetManager::getAllMusic() {
 
 bool Blazr::AssetManager::LoadEffect(const std::string &name,
 									 const std::string &effectPath,
-									 const std::string &effectDescription,
-									 int channel) {
+									 const std::string &effectDescription) {
 	if (m_mapEffect.find(name) != m_mapEffect.end()) {
 		BLZR_CORE_ERROR("Effect file already loaded: {0}", name);
 		return false;
@@ -135,8 +134,8 @@ bool Blazr::AssetManager::LoadEffect(const std::string &name,
 	Uint32 numSamples = length / bytesPerSample;
 	double duration = static_cast<double>(numSamples) / frequency;
 	auto effect = std::make_shared<Effect>(
-		SoundProperties{name, effectDescription, effectPath, duration}, m_chunk,
-		channel);
+		SoundProperties{name, effectDescription, effectPath, duration},
+		m_chunk);
 	effect->SetPath(effectPath);
 
 	m_mapEffect.emplace(name, std::move(effect));
@@ -202,8 +201,8 @@ void Blazr::AssetManager::CreateLuaAssetManager(sol::state &lua,
 		},
 		"load_effect",
 		[&](const std::string &name, const std::string &path,
-			const std::string &desc, const int channel) {
-			return asset_manager->LoadEffect(name, path, desc, channel);
+			const std::string &desc) {
+			return asset_manager->LoadEffect(name, path, desc);
 		},
 		"load_shader",
 		[&](const std::string &name, const std::string &vertexPath,
@@ -314,7 +313,7 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 			std::string description =
 				effectJson.at("description").get<std::string>();
 			int channel = effectJson.at("channel").get<int>();
-			assetManager->LoadEffect(name, path, description, channel);
+			assetManager->LoadEffect(name, path, description);
 		}
 	}
 }

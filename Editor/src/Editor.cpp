@@ -1459,9 +1459,9 @@ void Editor::RenderImGui() {
 								filename, targetPath, "Imported Music");
 							break;
 						case 3: // SOUNDFX
+							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
-								filename, targetPath, "Imported Sound Effect",
-								0);
+								filename, targetPath, "Imported Sound Effect");
 						case 4:
 							success =
 								assetManager->LoadScene(targetPath, m_LuaState);

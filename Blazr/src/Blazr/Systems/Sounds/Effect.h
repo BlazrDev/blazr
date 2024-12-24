@@ -10,9 +10,10 @@ class Effect {
 	Mix_Chunk *sample;
 	int channel;
 	std::string m_Path;
+	static int s_channel;
 
   public:
-	Effect(const SoundProperties &params, Mix_Chunk *s, int channel);
+	Effect(const SoundProperties &params, Mix_Chunk *s);
 	~Effect() = default;
 	int BLZR_API getChannel() const;
 	SoundProperties GetProperties() const { return m_Params; }
