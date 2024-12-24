@@ -53,7 +53,7 @@ class AssetManager {
 
 	bool BLZR_API LoadEffect(const std::string &name,
 							 const std::string &effectPath,
-							 const std::string &effectDescription, int channel);
+							 const std::string &effectDescription);
 	Ref<Blazr::Effect> BLZR_API GetEffect(const std::string &name);
 
 	bool BLZR_API LoadScene(const std::string &scenePath,

@@ -67,6 +67,7 @@ end
 
 function LoadAssets(def)
 	assert(def, "Def does not exist!")
+	print("alo ba")
 
 	if def.music then
 		for k, v in pairs(def.music) do
@@ -79,7 +80,7 @@ function LoadAssets(def)
 	end
 	if def.sound_effects then
 		for k, v in pairs(def.sound_effects) do
-			if not AssetManager.load_effect(v.name, v.path, v.desc, v.channel) then
+			if not AssetManager.load_effect(v.name, v.path, v.desc) then
 				print("Failed to load sound effect " .. v.name)
 			else
 				print("Sound effect loaded " .. v.name)
