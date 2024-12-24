@@ -1285,11 +1285,14 @@ void Editor::RenderImGui() {
 						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
 											  &pair.second->volume, 0, 100,
 											  "%d")) {
-							if (pair.first == soundPlayer->GetCurrentPlaying()
-												  ->GetProperties()
-												  .name) {
-								soundPlayer->MusicVolume(pair.first,
-														 pair.second->volume);
+							if (soundPlayer->GetCurrentPlaying()) {
+								if (pair.first ==
+									soundPlayer->GetCurrentPlaying()
+										->GetProperties()
+										.name) {
+									soundPlayer->MusicVolume(
+										pair.first, pair.second->volume);
+								}
 							}
 							// soundPlayer->MusicVolume(soundPlayer->musicVolume);
 						}
@@ -1455,6 +1458,7 @@ void Editor::RenderImGui() {
 								assetManager->LoadTexture(filename, targetPath);
 							break;
 						case 2: // MUSIC
+							BLZR_CORE_ERROR("{0}, {1}", filename, targetPath);
 							success = assetManager->LoadMusic(
 								filename, targetPath, "Imported Music");
 							break;
@@ -1462,6 +1466,7 @@ void Editor::RenderImGui() {
 							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
 								filename, targetPath, "Imported Sound Effect");
+							break;
 						case 4:
 							success =
 								assetManager->LoadScene(targetPath, m_LuaState);
