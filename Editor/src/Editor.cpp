@@ -508,9 +508,9 @@ void Editor::RenderImGui() {
 								 fs::copy_options::recursive |
 									 fs::copy_options::overwrite_existing);
 
-						fs::copy("lib", outputDir,
-								 fs::copy_options::recursive |
-									 fs::copy_options::overwrite_existing);
+						// fs::copy("lib", outputDir,
+						// 		 fs::copy_options::recursive |
+						// 			 fs::copy_options::overwrite_existing);
 
 						fs::copy("shaders", outputDir + "/" + "shaders",
 								 fs::copy_options::recursive |

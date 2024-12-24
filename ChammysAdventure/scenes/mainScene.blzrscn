@@ -7,7 +7,7 @@
                 0.0
             ],
             "rotation": 0.0,
-            "scale": 1.75,
+            "scale": 1.25,
             "width": 1280.0
         },
         "camera_position": [
@@ -25,7 +25,7 @@
         ],
         "rotation": true,
         "width": 1280,
-        "zoom": 1.75
+        "zoom": 1.25
     },
     "FollowCamera": {
         "Position": [
@@ -8191,7 +8191,7 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 3,
+                            "currentFrame": 4,
                             "frameOffset": 0,
                             "frameRate": 4,
                             "numFrames": 7
@@ -8213,7 +8213,7 @@
                             ],
                             "height": 16.0,
                             "object": {
-                                "coordX": 3,
+                                "coordX": 4,
                                 "coordY": 0,
                                 "height": 1.0,
                                 "width": 0.125,
@@ -8266,7 +8266,7 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 4,
+                            "currentFrame": 2,
                             "frameOffset": 4,
                             "frameRate": 14,
                             "numFrames": 7
@@ -8326,7 +8326,7 @@
                             ],
                             "height": 32.0,
                             "object": {
-                                "coordX": 4,
+                                "coordX": 2,
                                 "coordY": 4,
                                 "height": 0.1666666716337204,
                                 "width": 0.1428571492433548,
@@ -8337,19 +8337,19 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.5714285969734192,
-                                    0.6666666865348816
-                                ],
-                                [
                                     0.7142857313156128,
                                     0.6666666865348816
                                 ],
                                 [
-                                    0.7142857313156128,
+                                    0.8571429252624512,
+                                    0.6666666865348816
+                                ],
+                                [
+                                    0.8571429252624512,
                                     0.8333333730697632
                                 ],
                                 [
-                                    0.5714285969734192,
+                                    0.7142857313156128,
                                     0.8333333730697632
                                 ]
                             ],
@@ -8359,7 +8359,7 @@
                         "Transform": {
                             "position": [
                                 0.0,
-                                0.0
+                                4.016815185546875
                             ],
                             "rotation": 0.0,
                             "scale": [

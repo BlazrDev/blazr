@@ -147,6 +147,7 @@ void Application::Initialize() {
 			"Failed to add the animation system to the registry context!");
 		return;
 	}
+	glfwSwapInterval(1);
 }
 
 Application *CreateApplication() { return nullptr; }
