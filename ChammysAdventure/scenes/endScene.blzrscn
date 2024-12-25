@@ -3,16 +3,16 @@
         "camera": {
             "height": 720.0,
             "position": [
-                -135.0,
-                -22.5
+                0.0,
+                0.0
             ],
             "rotation": 0.0,
-            "scale": 0.75,
+            "scale": 2.25,
             "width": 1280.0
         },
         "camera_position": [
-            -135.0,
-            -22.5,
+            -195.0,
+            -150.0,
             0.0
         ],
         "camera_rotation": 0.0,
@@ -20,19 +20,23 @@
         "camera_translation_speed": 0.25,
         "height": 720,
         "mouse_position": [
-            56.0,
-            0.0
+            227.0,
+            2.0
         ],
         "rotation": true,
         "width": 1280,
-        "zoom": 0.75
+        "zoom": 2.25
     },
     "FollowCamera": {
         "Position": [
             0.0,
             0.0
         ],
-        "Target": null
+        "Target": {
+            "group": "",
+            "id": 1172,
+            "name": "endBackground"
+        }
     },
     "Layers": [
         {
@@ -43,6 +47,9 @@
                             "group": "",
                             "id": 1172,
                             "name": "endBackground"
+                        },
+                        "Script": {
+                            "scriptPath": "/home/srkless/ETF/sandbox.lua"
                         },
                         "Sprite": {
                             "color": [
@@ -90,11 +97,11 @@
                             ],
                             "rotation": 0.0,
                             "scale": [
-                                1.0,
-                                1.0
+                                0.44999998807907104,
+                                0.44999998807907104
                             ]
                         },
-                        "hasFollowCamera": false
+                        "hasFollowCamera": true
                     }
                 ],
                 "zIndex": 0

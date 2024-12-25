@@ -26,15 +26,15 @@ bool Blazr::BoxColliderSystem::isColliding(Entity &entity1, Entity &entity2) {
 
 	// Calculate the edges of collider1
 	float left1 = transform1.position.x + collider1.offset.x;
-	float right1 = left1 + collider1.width;
+	float right1 = left1 + collider1.width * transform1.scale.x;
 	float top1 = transform1.position.y + collider1.offset.y;
-	float bottom1 = top1 + collider1.height;
+	float bottom1 = top1 + collider1.height * transform1.scale.y;
 
 	// Calculate the edges of collider2
 	float left2 = transform2.position.x + collider2.offset.x;
-	float right2 = left2 + collider2.width;
+	float right2 = left2 + collider2.width * transform2.scale.x;
 	float top2 = transform2.position.y + collider2.offset.y;
-	float bottom2 = top2 + collider2.height;
+	float bottom2 = top2 + collider2.height * transform2.scale.y;
 
 	// Check for overlap between the two colliders
 	bool isColliding = (left1 < right2 && right1 > left2 && top1 < bottom2 &&

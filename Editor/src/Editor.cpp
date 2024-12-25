@@ -256,7 +256,6 @@ void Editor::Run() {
 
 			glfwMakeContextCurrent(backupContext);
 		}
-		// glfwSwapBuffers(m_Window->GetWindow());
 	}
 
 	glfwSwapBuffers(m_Window->GetWindow());

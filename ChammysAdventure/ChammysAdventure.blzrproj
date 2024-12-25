@@ -12,8 +12,19 @@
                     "name": "coin_flip.wav"
                 }
             },
-            "zemlja.wav": {
+            "sword.wav": {
                 "channel": 2,
+                "description": "Imported Sound Effect",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/sword.wav",
+                "properties": {
+                    "description": "Imported Sound Effect",
+                    "duration": 0.84,
+                    "filename": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/sword.wav",
+                    "name": "sword.wav"
+                }
+            },
+            "zemlja.wav": {
+                "channel": 3,
                 "description": "Imported Sound Effect",
                 "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/zemlja.wav",
                 "properties": {
