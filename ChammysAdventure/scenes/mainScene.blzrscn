@@ -7,7 +7,7 @@
                 0.0
             ],
             "rotation": 0.0,
-            "scale": 1.75,
+            "scale": 2.0,
             "width": 1280.0
         },
         "camera_position": [
@@ -20,12 +20,12 @@
         "camera_translation_speed": 0.25,
         "height": 720,
         "mouse_position": [
-            0.0,
-            0.0
+            234.0,
+            210.0
         ],
         "rotation": true,
         "width": 1280,
-        "zoom": 1.75
+        "zoom": 2.0
     },
     "FollowCamera": {
         "Position": [
@@ -34,7 +34,7 @@
         ],
         "Target": {
             "group": "character",
-            "id": 134,
+            "id": 1087,
             "name": "Chammy"
         }
     },
@@ -45,7 +45,7 @@
                     {
                         "Identification": {
                             "group": "",
-                            "id": 0,
+                            "id": 953,
                             "name": "background"
                         },
                         "Sprite": {
@@ -119,7 +119,7 @@
                         },
                         "Identification": {
                             "group": "chest",
-                            "id": 1,
+                            "id": 954,
                             "name": "chest"
                         },
                         "Script": {
@@ -180,7 +180,7 @@
                     {
                         "Identification": {
                             "group": "",
-                            "id": 2,
+                            "id": 955,
                             "name": "tree"
                         },
                         "Sprite": {
@@ -238,7 +238,7 @@
                     {
                         "Identification": {
                             "group": "",
-                            "id": 3,
+                            "id": 956,
                             "name": "bush"
                         },
                         "Sprite": {
@@ -303,7 +303,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 4,
+                            "id": 957,
                             "name": "0.000000  2.000000"
                         },
                         "Sprite": {
@@ -364,7 +364,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 5,
+                            "id": 958,
                             "name": "0.000000  1.000000"
                         },
                         "Sprite": {
@@ -425,7 +425,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 6,
+                            "id": 959,
                             "name": "0.000000  0.000000"
                         },
                         "Sprite": {
@@ -486,7 +486,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 7,
+                            "id": 960,
                             "name": "1.000000  0.000000"
                         },
                         "Sprite": {
@@ -547,7 +547,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 8,
+                            "id": 961,
                             "name": "2.000000  0.000000"
                         },
                         "Sprite": {
@@ -608,7 +608,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 9,
+                            "id": 962,
                             "name": "3.000000  0.000000"
                         },
                         "Sprite": {
@@ -669,7 +669,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 10,
+                            "id": 963,
                             "name": "4.000000  0.000000"
                         },
                         "Sprite": {
@@ -730,7 +730,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 11,
+                            "id": 964,
                             "name": "5.000000  0.000000"
                         },
                         "Sprite": {
@@ -791,7 +791,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 12,
+                            "id": 965,
                             "name": "6.000000  0.000000"
                         },
                         "Sprite": {
@@ -852,7 +852,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 13,
+                            "id": 966,
                             "name": "7.000000  0.000000"
                         },
                         "Sprite": {
@@ -913,7 +913,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 14,
+                            "id": 967,
                             "name": "8.000000  0.000000"
                         },
                         "Sprite": {
@@ -974,7 +974,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 15,
+                            "id": 968,
                             "name": "9.000000  0.000000"
                         },
                         "Sprite": {
@@ -1035,7 +1035,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 16,
+                            "id": 969,
                             "name": "10.000000  0.000000"
                         },
                         "Sprite": {
@@ -1096,7 +1096,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 17,
+                            "id": 970,
                             "name": "0.000000  3.000000"
                         },
                         "Sprite": {
@@ -1157,7 +1157,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 18,
+                            "id": 971,
                             "name": "1.000000  3.000000"
                         },
                         "Sprite": {
@@ -1218,7 +1218,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 19,
+                            "id": 972,
                             "name": "2.000000  3.000000"
                         },
                         "Sprite": {
@@ -1279,7 +1279,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 20,
+                            "id": 973,
                             "name": "3.000000  3.000000"
                         },
                         "Sprite": {
@@ -1340,7 +1340,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 21,
+                            "id": 974,
                             "name": "4.000000  3.000000"
                         },
                         "Sprite": {
@@ -1401,7 +1401,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 22,
+                            "id": 975,
                             "name": "5.000000  3.000000"
                         },
                         "Sprite": {
@@ -1462,7 +1462,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 23,
+                            "id": 976,
                             "name": "6.000000  2.000000"
                         },
                         "Sprite": {
@@ -1523,7 +1523,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 24,
+                            "id": 977,
                             "name": "7.000000  2.000000"
                         },
                         "Sprite": {
@@ -1584,7 +1584,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 25,
+                            "id": 978,
                             "name": "8.000000  2.000000"
                         },
                         "Sprite": {
@@ -1645,7 +1645,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 26,
+                            "id": 979,
                             "name": "9.000000  2.000000"
                         },
                         "Sprite": {
@@ -1706,7 +1706,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 27,
+                            "id": 980,
                             "name": "10.000000  2.000000"
                         },
                         "Sprite": {
@@ -1767,7 +1767,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 28,
+                            "id": 981,
                             "name": "11.000000  2.000000"
                         },
                         "Sprite": {
@@ -1828,7 +1828,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 29,
+                            "id": 982,
                             "name": "11.000000  1.000000"
                         },
                         "Sprite": {
@@ -1889,7 +1889,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 30,
+                            "id": 983,
                             "name": "5.000000  2.000000"
                         },
                         "Sprite": {
@@ -1950,7 +1950,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 31,
+                            "id": 984,
                             "name": "4.000000  2.000000"
                         },
                         "Sprite": {
@@ -2011,7 +2011,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 32,
+                            "id": 985,
                             "name": "3.000000  2.000000"
                         },
                         "Sprite": {
@@ -2072,7 +2072,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 33,
+                            "id": 986,
                             "name": "2.000000  2.000000"
                         },
                         "Sprite": {
@@ -2133,7 +2133,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 34,
+                            "id": 987,
                             "name": "1.000000  2.000000"
                         },
                         "Sprite": {
@@ -2194,7 +2194,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 35,
+                            "id": 988,
                             "name": "1.000000  1.000000"
                         },
                         "Sprite": {
@@ -2255,7 +2255,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 36,
+                            "id": 989,
                             "name": "2.000000  1.000000"
                         },
                         "Sprite": {
@@ -2316,7 +2316,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 37,
+                            "id": 990,
                             "name": "3.000000  1.000000"
                         },
                         "Sprite": {
@@ -2377,7 +2377,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 38,
+                            "id": 991,
                             "name": "4.000000  1.000000"
                         },
                         "Sprite": {
@@ -2438,7 +2438,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 39,
+                            "id": 992,
                             "name": "5.000000  1.000000"
                         },
                         "Sprite": {
@@ -2499,7 +2499,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 40,
+                            "id": 993,
                             "name": "6.000000  1.000000"
                         },
                         "Sprite": {
@@ -2560,7 +2560,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 41,
+                            "id": 994,
                             "name": "7.000000  1.000000"
                         },
                         "Sprite": {
@@ -2621,7 +2621,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 42,
+                            "id": 995,
                             "name": "8.000000  1.000000"
                         },
                         "Sprite": {
@@ -2682,7 +2682,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 43,
+                            "id": 996,
                             "name": "9.000000  1.000000"
                         },
                         "Sprite": {
@@ -2743,7 +2743,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 44,
+                            "id": 997,
                             "name": "10.000000  1.000000"
                         },
                         "Sprite": {
@@ -2804,7 +2804,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 45,
+                            "id": 998,
                             "name": "11.000000  0.000000"
                         },
                         "Sprite": {
@@ -2865,7 +2865,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 46,
+                            "id": 999,
                             "name": "13.000000  4.000000"
                         },
                         "Sprite": {
@@ -2926,7 +2926,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 47,
+                            "id": 1000,
                             "name": "16.000000  5.000000"
                         },
                         "Sprite": {
@@ -2987,7 +2987,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 48,
+                            "id": 1001,
                             "name": "19.000000  7.000000"
                         },
                         "Sprite": {
@@ -3048,7 +3048,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 49,
+                            "id": 1002,
                             "name": "19.000000  6.000000"
                         },
                         "Sprite": {
@@ -3109,7 +3109,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 50,
+                            "id": 1003,
                             "name": "19.000000  5.000000"
                         },
                         "Sprite": {
@@ -3170,7 +3170,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 51,
+                            "id": 1004,
                             "name": "19.000000  4.000000"
                         },
                         "Sprite": {
@@ -3231,7 +3231,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 52,
+                            "id": 1005,
                             "name": "20.000000  4.000000"
                         },
                         "Sprite": {
@@ -3292,7 +3292,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 53,
+                            "id": 1006,
                             "name": "21.000000  4.000000"
                         },
                         "Sprite": {
@@ -3353,7 +3353,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 54,
+                            "id": 1007,
                             "name": "22.000000  4.000000"
                         },
                         "Sprite": {
@@ -3414,7 +3414,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 55,
+                            "id": 1008,
                             "name": "23.000000  4.000000"
                         },
                         "Sprite": {
@@ -3475,7 +3475,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 56,
+                            "id": 1009,
                             "name": "24.000000  4.000000"
                         },
                         "Sprite": {
@@ -3536,7 +3536,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 57,
+                            "id": 1010,
                             "name": "25.000000  4.000000"
                         },
                         "Sprite": {
@@ -3597,7 +3597,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 58,
+                            "id": 1011,
                             "name": "26.000000  4.000000"
                         },
                         "Sprite": {
@@ -3658,7 +3658,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 59,
+                            "id": 1012,
                             "name": "27.000000  4.000000"
                         },
                         "Sprite": {
@@ -3719,7 +3719,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 60,
+                            "id": 1013,
                             "name": "20.000000  7.000000"
                         },
                         "Sprite": {
@@ -3780,7 +3780,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 61,
+                            "id": 1014,
                             "name": "21.000000  8.000000"
                         },
                         "Sprite": {
@@ -3841,7 +3841,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 62,
+                            "id": 1015,
                             "name": "22.000000  8.000000"
                         },
                         "Sprite": {
@@ -3902,7 +3902,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 63,
+                            "id": 1016,
                             "name": "23.000000  8.000000"
                         },
                         "Sprite": {
@@ -3963,7 +3963,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 64,
+                            "id": 1017,
                             "name": "24.000000  8.000000"
                         },
                         "Sprite": {
@@ -4024,7 +4024,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 65,
+                            "id": 1018,
                             "name": "25.000000  8.000000"
                         },
                         "Sprite": {
@@ -4085,7 +4085,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 66,
+                            "id": 1019,
                             "name": "26.000000  8.000000"
                         },
                         "Sprite": {
@@ -4146,7 +4146,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 67,
+                            "id": 1020,
                             "name": "27.000000  8.000000"
                         },
                         "Sprite": {
@@ -4207,7 +4207,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 68,
+                            "id": 1021,
                             "name": "28.000000  8.000000"
                         },
                         "Sprite": {
@@ -4268,7 +4268,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 69,
+                            "id": 1022,
                             "name": "28.000000  4.000000"
                         },
                         "Sprite": {
@@ -4329,7 +4329,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 70,
+                            "id": 1023,
                             "name": "28.000000  7.000000"
                         },
                         "Sprite": {
@@ -4390,7 +4390,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 71,
+                            "id": 1024,
                             "name": "28.000000  6.000000"
                         },
                         "Sprite": {
@@ -4451,7 +4451,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 72,
+                            "id": 1025,
                             "name": "28.000000  5.000000"
                         },
                         "Sprite": {
@@ -4512,7 +4512,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 73,
+                            "id": 1026,
                             "name": "21.000000  7.000000"
                         },
                         "Sprite": {
@@ -4573,7 +4573,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 74,
+                            "id": 1027,
                             "name": "20.000000  6.000000"
                         },
                         "Sprite": {
@@ -4634,7 +4634,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 75,
+                            "id": 1028,
                             "name": "20.000000  5.000000"
                         },
                         "Sprite": {
@@ -4695,7 +4695,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 76,
+                            "id": 1029,
                             "name": "21.000000  5.000000"
                         },
                         "Sprite": {
@@ -4756,7 +4756,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 77,
+                            "id": 1030,
                             "name": "21.000000  6.000000"
                         },
                         "Sprite": {
@@ -4817,7 +4817,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 78,
+                            "id": 1031,
                             "name": "22.000000  6.000000"
                         },
                         "Sprite": {
@@ -4878,7 +4878,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 79,
+                            "id": 1032,
                             "name": "22.000000  7.000000"
                         },
                         "Sprite": {
@@ -4939,7 +4939,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 80,
+                            "id": 1033,
                             "name": "23.000000  7.000000"
                         },
                         "Sprite": {
@@ -5000,7 +5000,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 81,
+                            "id": 1034,
                             "name": "24.000000  7.000000"
                         },
                         "Sprite": {
@@ -5061,7 +5061,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 82,
+                            "id": 1035,
                             "name": "25.000000  7.000000"
                         },
                         "Sprite": {
@@ -5122,7 +5122,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 83,
+                            "id": 1036,
                             "name": "26.000000  7.000000"
                         },
                         "Sprite": {
@@ -5183,7 +5183,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 84,
+                            "id": 1037,
                             "name": "27.000000  7.000000"
                         },
                         "Sprite": {
@@ -5244,7 +5244,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 85,
+                            "id": 1038,
                             "name": "23.000000  6.000000"
                         },
                         "Sprite": {
@@ -5305,7 +5305,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 86,
+                            "id": 1039,
                             "name": "24.000000  6.000000"
                         },
                         "Sprite": {
@@ -5366,7 +5366,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 87,
+                            "id": 1040,
                             "name": "24.000000  5.000000"
                         },
                         "Sprite": {
@@ -5427,7 +5427,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 88,
+                            "id": 1041,
                             "name": "25.000000  5.000000"
                         },
                         "Sprite": {
@@ -5488,7 +5488,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 89,
+                            "id": 1042,
                             "name": "26.000000  5.000000"
                         },
                         "Sprite": {
@@ -5549,7 +5549,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 90,
+                            "id": 1043,
                             "name": "27.000000  5.000000"
                         },
                         "Sprite": {
@@ -5610,7 +5610,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 91,
+                            "id": 1044,
                             "name": "27.000000  6.000000"
                         },
                         "Sprite": {
@@ -5671,7 +5671,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 92,
+                            "id": 1045,
                             "name": "26.000000  6.000000"
                         },
                         "Sprite": {
@@ -5732,7 +5732,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 93,
+                            "id": 1046,
                             "name": "25.000000  6.000000"
                         },
                         "Sprite": {
@@ -5793,7 +5793,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 94,
+                            "id": 1047,
                             "name": "23.000000  5.000000"
                         },
                         "Sprite": {
@@ -5854,7 +5854,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 95,
+                            "id": 1048,
                             "name": "22.000000  5.000000"
                         },
                         "Sprite": {
@@ -5915,7 +5915,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 96,
+                            "id": 1049,
                             "name": "19.000000  11.000000"
                         },
                         "Sprite": {
@@ -5976,7 +5976,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 97,
+                            "id": 1050,
                             "name": "16.000000  12.000000"
                         },
                         "Sprite": {
@@ -6037,7 +6037,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 98,
+                            "id": 1051,
                             "name": "15.000000  12.000000"
                         },
                         "Sprite": {
@@ -6098,7 +6098,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 99,
+                            "id": 1052,
                             "name": "14.000000  12.000000"
                         },
                         "Sprite": {
@@ -6159,7 +6159,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 100,
+                            "id": 1053,
                             "name": "13.000000  12.000000"
                         },
                         "Sprite": {
@@ -6220,7 +6220,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 101,
+                            "id": 1054,
                             "name": "12.000000  12.000000"
                         },
                         "Sprite": {
@@ -6281,7 +6281,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 102,
+                            "id": 1055,
                             "name": "11.000000  12.000000"
                         },
                         "Sprite": {
@@ -6342,7 +6342,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 103,
+                            "id": 1056,
                             "name": "8.000000  13.000000"
                         },
                         "Sprite": {
@@ -6403,7 +6403,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 104,
+                            "id": 1057,
                             "name": "8.000000  12.000000"
                         },
                         "Sprite": {
@@ -6464,7 +6464,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 105,
+                            "id": 1058,
                             "name": "8.000000  11.000000"
                         },
                         "Sprite": {
@@ -6525,7 +6525,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 106,
+                            "id": 1059,
                             "name": "2.000000  11.000000"
                         },
                         "Sprite": {
@@ -6586,7 +6586,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 107,
+                            "id": 1060,
                             "name": "7.000000  11.000000"
                         },
                         "Sprite": {
@@ -6647,7 +6647,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 108,
+                            "id": 1061,
                             "name": "6.000000  11.000000"
                         },
                         "Sprite": {
@@ -6708,7 +6708,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 109,
+                            "id": 1062,
                             "name": "5.000000  11.000000"
                         },
                         "Sprite": {
@@ -6769,7 +6769,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 110,
+                            "id": 1063,
                             "name": "4.000000  11.000000"
                         },
                         "Sprite": {
@@ -6830,7 +6830,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 111,
+                            "id": 1064,
                             "name": "3.000000  11.000000"
                         },
                         "Sprite": {
@@ -6891,7 +6891,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 112,
+                            "id": 1065,
                             "name": "2.000000  13.000000"
                         },
                         "Sprite": {
@@ -6952,7 +6952,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 113,
+                            "id": 1066,
                             "name": "2.000000  12.000000"
                         },
                         "Sprite": {
@@ -7013,7 +7013,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 114,
+                            "id": 1067,
                             "name": "2.000000  14.000000"
                         },
                         "Sprite": {
@@ -7074,7 +7074,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 115,
+                            "id": 1068,
                             "name": "3.000000  14.000000"
                         },
                         "Sprite": {
@@ -7135,7 +7135,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 116,
+                            "id": 1069,
                             "name": "4.000000  14.000000"
                         },
                         "Sprite": {
@@ -7196,7 +7196,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 117,
+                            "id": 1070,
                             "name": "5.000000  14.000000"
                         },
                         "Sprite": {
@@ -7257,7 +7257,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 118,
+                            "id": 1071,
                             "name": "6.000000  14.000000"
                         },
                         "Sprite": {
@@ -7318,7 +7318,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 119,
+                            "id": 1072,
                             "name": "7.000000  14.000000"
                         },
                         "Sprite": {
@@ -7379,7 +7379,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 120,
+                            "id": 1073,
                             "name": "8.000000  14.000000"
                         },
                         "Sprite": {
@@ -7440,7 +7440,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 121,
+                            "id": 1074,
                             "name": "7.000000  13.000000"
                         },
                         "Sprite": {
@@ -7501,7 +7501,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 122,
+                            "id": 1075,
                             "name": "6.000000  13.000000"
                         },
                         "Sprite": {
@@ -7562,7 +7562,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 123,
+                            "id": 1076,
                             "name": "5.000000  13.000000"
                         },
                         "Sprite": {
@@ -7623,7 +7623,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 124,
+                            "id": 1077,
                             "name": "4.000000  13.000000"
                         },
                         "Sprite": {
@@ -7684,7 +7684,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 125,
+                            "id": 1078,
                             "name": "3.000000  13.000000"
                         },
                         "Sprite": {
@@ -7745,7 +7745,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 126,
+                            "id": 1079,
                             "name": "3.000000  12.000000"
                         },
                         "Sprite": {
@@ -7806,7 +7806,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 127,
+                            "id": 1080,
                             "name": "4.000000  12.000000"
                         },
                         "Sprite": {
@@ -7867,7 +7867,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 128,
+                            "id": 1081,
                             "name": "5.000000  12.000000"
                         },
                         "Sprite": {
@@ -7928,7 +7928,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 129,
+                            "id": 1082,
                             "name": "6.000000  12.000000"
                         },
                         "Sprite": {
@@ -7989,7 +7989,7 @@
                     {
                         "Identification": {
                             "group": "tilemap",
-                            "id": 130,
+                            "id": 1083,
                             "name": "7.000000  12.000000"
                         },
                         "Sprite": {
@@ -8062,7 +8062,7 @@
                 "Entities": [
                     {
                         "BoxCollider": {
-                            "colliding": false,
+                            "colliding": true,
                             "height": 74,
                             "offset": [
                                 0.0,
@@ -8072,7 +8072,7 @@
                         },
                         "Identification": {
                             "group": "",
-                            "id": 131,
+                            "id": 1084,
                             "name": "house"
                         },
                         "Script": {
@@ -8133,7 +8133,7 @@
                     {
                         "Identification": {
                             "group": "",
-                            "id": 132,
+                            "id": 1085,
                             "name": "sign"
                         },
                         "Sprite": {
@@ -8191,14 +8191,14 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 3,
+                            "currentFrame": 5,
                             "frameOffset": 0,
                             "frameRate": 4,
                             "numFrames": 7
                         },
                         "Identification": {
                             "group": "",
-                            "id": 133,
+                            "id": 1086,
                             "name": "chestCoin"
                         },
                         "Script": {
@@ -8213,7 +8213,7 @@
                             ],
                             "height": 16.0,
                             "object": {
-                                "coordX": 3,
+                                "coordX": 5,
                                 "coordY": 0,
                                 "height": 1.0,
                                 "width": 0.125,
@@ -8224,19 +8224,19 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.375,
+                                    0.625,
                                     0.0
                                 ],
                                 [
-                                    0.5,
+                                    0.75,
                                     0.0
                                 ],
                                 [
-                                    0.5,
+                                    0.75,
                                     1.0
                                 ],
                                 [
-                                    0.375,
+                                    0.625,
                                     1.0
                                 ]
                             ],
@@ -8245,7 +8245,7 @@
                         },
                         "Transform": {
                             "position": [
-                                1280.0,
+                                2000.0,
                                 167.0
                             ],
                             "rotation": 0.0,
@@ -8266,8 +8266,8 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 4,
-                            "frameOffset": 4,
+                            "currentFrame": 6,
+                            "frameOffset": 5,
                             "frameRate": 14,
                             "numFrames": 7
                         },
@@ -8275,14 +8275,14 @@
                             "colliding": true,
                             "height": 16,
                             "offset": [
-                                2.0,
+                                0.0,
                                 9.0
                             ],
                             "width": 29
                         },
                         "Identification": {
                             "group": "character",
-                            "id": 134,
+                            "id": 1087,
                             "name": "Chammy"
                         },
                         "Physics": {
@@ -8315,7 +8315,7 @@
                             "type": 2
                         },
                         "Script": {
-                            "scriptPath": "/home/archy/Documents/Programs/blazr/ChammysAdventure/scripts/Chammy.lua"
+                            "scriptPath": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/scripts/Chammy.lua"
                         },
                         "Sprite": {
                             "color": [
@@ -8326,8 +8326,8 @@
                             ],
                             "height": 32.0,
                             "object": {
-                                "coordX": 4,
-                                "coordY": 4,
+                                "coordX": 6,
+                                "coordY": 5,
                                 "height": 0.1666666716337204,
                                 "width": 0.1428571492433548,
                                 "x": -0.1428571492433548,
@@ -8337,20 +8337,20 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.5714285969734192,
-                                    0.6666666865348816
-                                ],
-                                [
-                                    0.7142857313156128,
-                                    0.6666666865348816
-                                ],
-                                [
-                                    0.7142857313156128,
+                                    0.8571429252624512,
                                     0.8333333730697632
                                 ],
                                 [
-                                    0.5714285969734192,
+                                    1.0,
                                     0.8333333730697632
+                                ],
+                                [
+                                    1.0,
+                                    1.0
+                                ],
+                                [
+                                    0.8571429252624512,
+                                    1.0
                                 ]
                             ],
                             "texturePath": "chammyAnim.png",
@@ -8368,6 +8368,76 @@
                             ]
                         },
                         "hasFollowCamera": true
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 612,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 400
+                        },
+                        "Identification": {
+                            "group": "enemy",
+                            "id": 1088,
+                            "name": "masha"
+                        },
+                        "Script": {
+                            "scriptPath": "/home/srkless/ETF/blankScript.lua"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 612.0,
+                            "object": {
+                                "coordX": -1,
+                                "coordY": -1,
+                                "height": 0.9918962717056274,
+                                "width": 1.0,
+                                "x": -1.0,
+                                "y": -0.9918962717056274
+                            },
+                            "startX": -1,
+                            "startY": -1,
+                            "textureCoordinates": [
+                                [
+                                    -1.0,
+                                    -0.9918962717056274
+                                ],
+                                [
+                                    0.0,
+                                    -0.9918962717056274
+                                ],
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    -1.0,
+                                    0.0
+                                ]
+                            ],
+                            "texturePath": "masha.png",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                105.0,
+                                237.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                0.05000000074505806,
+                                0.05000000074505806
+                            ]
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 5
@@ -8388,7 +8458,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 135,
+                            "id": 1089,
                             "name": "Collider: 0.000000  3.000000"
                         },
                         "Physics": {
@@ -8487,7 +8557,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 136,
+                            "id": 1090,
                             "name": "Collider: 1.000000  3.000000"
                         },
                         "Physics": {
@@ -8586,7 +8656,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 137,
+                            "id": 1091,
                             "name": "Collider: 2.000000  3.000000"
                         },
                         "Physics": {
@@ -8685,7 +8755,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 138,
+                            "id": 1092,
                             "name": "Collider: 3.000000  3.000000"
                         },
                         "Physics": {
@@ -8784,7 +8854,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 139,
+                            "id": 1093,
                             "name": "Collider: 4.000000  3.000000"
                         },
                         "Physics": {
@@ -8883,7 +8953,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 140,
+                            "id": 1094,
                             "name": "Collider: 5.000000  3.000000"
                         },
                         "Physics": {
@@ -8982,7 +9052,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 141,
+                            "id": 1095,
                             "name": "Collider: 5.000000  2.000000"
                         },
                         "Physics": {
@@ -9081,7 +9151,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 142,
+                            "id": 1096,
                             "name": "Collider: 6.000000  2.000000"
                         },
                         "Physics": {
@@ -9180,7 +9250,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 143,
+                            "id": 1097,
                             "name": "Collider: 7.000000  2.000000"
                         },
                         "Physics": {
@@ -9279,7 +9349,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 144,
+                            "id": 1098,
                             "name": "Collider: 8.000000  2.000000"
                         },
                         "Physics": {
@@ -9378,7 +9448,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 145,
+                            "id": 1099,
                             "name": "Collider: 9.000000  2.000000"
                         },
                         "Physics": {
@@ -9477,7 +9547,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 146,
+                            "id": 1100,
                             "name": "Collider: 10.000000  2.000000"
                         },
                         "Physics": {
@@ -9576,7 +9646,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 147,
+                            "id": 1101,
                             "name": "Collider: 11.000000  2.000000"
                         },
                         "Physics": {
@@ -9675,7 +9745,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 148,
+                            "id": 1102,
                             "name": "Collider: 13.000000  4.000000"
                         },
                         "Physics": {
@@ -9774,7 +9844,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 149,
+                            "id": 1103,
                             "name": "Collider: 16.000000  5.000000"
                         },
                         "Physics": {
@@ -9873,7 +9943,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 150,
+                            "id": 1104,
                             "name": "Collider: 19.000000  7.000000"
                         },
                         "Physics": {
@@ -9972,7 +10042,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 151,
+                            "id": 1105,
                             "name": "Collider: 20.000000  7.000000"
                         },
                         "Physics": {
@@ -10071,7 +10141,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 152,
+                            "id": 1106,
                             "name": "Collider: 21.000000  7.000000"
                         },
                         "Physics": {
@@ -10170,7 +10240,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 153,
+                            "id": 1107,
                             "name": "Collider: 21.000000  8.000000"
                         },
                         "Physics": {
@@ -10269,7 +10339,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 154,
+                            "id": 1108,
                             "name": "Collider: 22.000000  8.000000"
                         },
                         "Physics": {
@@ -10368,7 +10438,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 155,
+                            "id": 1109,
                             "name": "Collider: 23.000000  8.000000"
                         },
                         "Physics": {
@@ -10467,7 +10537,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 156,
+                            "id": 1110,
                             "name": "Collider: 24.000000  8.000000"
                         },
                         "Physics": {
@@ -10566,7 +10636,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 157,
+                            "id": 1111,
                             "name": "Collider: 25.000000  8.000000"
                         },
                         "Physics": {
@@ -10665,7 +10735,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 158,
+                            "id": 1112,
                             "name": "Collider: 26.000000  8.000000"
                         },
                         "Physics": {
@@ -10764,7 +10834,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 159,
+                            "id": 1113,
                             "name": "Collider: 27.000000  8.000000"
                         },
                         "Physics": {
@@ -10863,7 +10933,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 160,
+                            "id": 1114,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {
@@ -10962,7 +11032,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 161,
+                            "id": 1115,
                             "name": "Collider: 2.000000  14.000000"
                         },
                         "Physics": {
@@ -11061,7 +11131,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 162,
+                            "id": 1116,
                             "name": "Collider: 3.000000  14.000000"
                         },
                         "Physics": {
@@ -11160,7 +11230,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 163,
+                            "id": 1117,
                             "name": "Collider: 4.000000  14.000000"
                         },
                         "Physics": {
@@ -11259,7 +11329,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 164,
+                            "id": 1118,
                             "name": "Collider: 5.000000  14.000000"
                         },
                         "Physics": {
@@ -11358,7 +11428,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 165,
+                            "id": 1119,
                             "name": "Collider: 6.000000  14.000000"
                         },
                         "Physics": {
@@ -11457,7 +11527,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 166,
+                            "id": 1120,
                             "name": "Collider: 7.000000  14.000000"
                         },
                         "Physics": {
@@ -11556,7 +11626,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 167,
+                            "id": 1121,
                             "name": "Collider: 8.000000  14.000000"
                         },
                         "Physics": {
@@ -11655,7 +11725,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 168,
+                            "id": 1122,
                             "name": "Collider: 8.000000  13.000000"
                         },
                         "Physics": {
@@ -11754,7 +11824,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 169,
+                            "id": 1123,
                             "name": "Collider: 8.000000  12.000000"
                         },
                         "Physics": {
@@ -11853,7 +11923,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 170,
+                            "id": 1124,
                             "name": "Collider: 8.000000  11.000000"
                         },
                         "Physics": {
@@ -11952,7 +12022,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 171,
+                            "id": 1125,
                             "name": "Collider: 7.000000  11.000000"
                         },
                         "Physics": {
@@ -12051,7 +12121,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 172,
+                            "id": 1126,
                             "name": "Collider: 6.000000  11.000000"
                         },
                         "Physics": {
@@ -12150,7 +12220,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 173,
+                            "id": 1127,
                             "name": "Collider: 5.000000  11.000000"
                         },
                         "Physics": {
@@ -12249,7 +12319,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 174,
+                            "id": 1128,
                             "name": "Collider: 4.000000  11.000000"
                         },
                         "Physics": {
@@ -12348,7 +12418,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 175,
+                            "id": 1129,
                             "name": "Collider: 3.000000  11.000000"
                         },
                         "Physics": {
@@ -12447,7 +12517,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 176,
+                            "id": 1130,
                             "name": "Collider: 2.000000  11.000000"
                         },
                         "Physics": {
@@ -12546,7 +12616,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 177,
+                            "id": 1131,
                             "name": "Collider: 2.000000  12.000000"
                         },
                         "Physics": {
@@ -12645,7 +12715,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 178,
+                            "id": 1132,
                             "name": "Collider: 2.000000  13.000000"
                         },
                         "Physics": {
@@ -12744,7 +12814,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 179,
+                            "id": 1133,
                             "name": "Collider: 11.000000  12.000000"
                         },
                         "Physics": {
@@ -12843,7 +12913,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 180,
+                            "id": 1134,
                             "name": "Collider: 12.000000  12.000000"
                         },
                         "Physics": {
@@ -12942,7 +13012,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 181,
+                            "id": 1135,
                             "name": "Collider: 13.000000  12.000000"
                         },
                         "Physics": {
@@ -13041,7 +13111,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 182,
+                            "id": 1136,
                             "name": "Collider: 14.000000  12.000000"
                         },
                         "Physics": {
@@ -13140,7 +13210,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 183,
+                            "id": 1137,
                             "name": "Collider: 15.000000  12.000000"
                         },
                         "Physics": {
@@ -13239,7 +13309,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 184,
+                            "id": 1138,
                             "name": "Collider: 16.000000  12.000000"
                         },
                         "Physics": {
@@ -13338,7 +13408,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 185,
+                            "id": 1139,
                             "name": "Collider: 19.000000  11.000000"
                         },
                         "Physics": {
@@ -13437,7 +13507,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 186,
+                            "id": 1140,
                             "name": "Collider: 19.000000  6.000000"
                         },
                         "Physics": {
@@ -13536,7 +13606,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 187,
+                            "id": 1141,
                             "name": "Collider: 19.000000  5.000000"
                         },
                         "Physics": {
@@ -13635,7 +13705,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 188,
+                            "id": 1142,
                             "name": "Collider: 19.000000  4.000000"
                         },
                         "Physics": {
@@ -13734,7 +13804,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 189,
+                            "id": 1143,
                             "name": "Collider: 20.000000  4.000000"
                         },
                         "Physics": {
@@ -13833,7 +13903,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 190,
+                            "id": 1144,
                             "name": "Collider: 21.000000  4.000000"
                         },
                         "Physics": {
@@ -13932,7 +14002,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 191,
+                            "id": 1145,
                             "name": "Collider: 22.000000  4.000000"
                         },
                         "Physics": {
@@ -14031,7 +14101,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 192,
+                            "id": 1146,
                             "name": "Collider: 23.000000  4.000000"
                         },
                         "Physics": {
@@ -14130,7 +14200,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 193,
+                            "id": 1147,
                             "name": "Collider: 24.000000  4.000000"
                         },
                         "Physics": {
@@ -14229,7 +14299,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 194,
+                            "id": 1148,
                             "name": "Collider: 25.000000  4.000000"
                         },
                         "Physics": {
@@ -14328,7 +14398,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 195,
+                            "id": 1149,
                             "name": "Collider: 28.000000  7.000000"
                         },
                         "Physics": {
@@ -14427,7 +14497,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 196,
+                            "id": 1150,
                             "name": "Collider: 28.000000  6.000000"
                         },
                         "Physics": {
@@ -14526,7 +14596,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 197,
+                            "id": 1151,
                             "name": "Collider: 28.000000  5.000000"
                         },
                         "Physics": {
@@ -14625,7 +14695,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 198,
+                            "id": 1152,
                             "name": "Collider: 28.000000  4.000000"
                         },
                         "Physics": {
@@ -14724,7 +14794,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 199,
+                            "id": 1153,
                             "name": "Collider: 27.000000  4.000000"
                         },
                         "Physics": {
@@ -14823,7 +14893,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 200,
+                            "id": 1154,
                             "name": "Collider: 26.000000  4.000000"
                         },
                         "Physics": {
@@ -14922,7 +14992,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 201,
+                            "id": 1155,
                             "name": "Collider: 11.000000  1.000000"
                         },
                         "Physics": {
@@ -15021,7 +15091,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 202,
+                            "id": 1156,
                             "name": "Collider: 11.000000  0.000000"
                         },
                         "Physics": {
@@ -15120,7 +15190,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 203,
+                            "id": 1157,
                             "name": "Collider: 10.000000  0.000000"
                         },
                         "Physics": {
@@ -15219,7 +15289,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 204,
+                            "id": 1158,
                             "name": "Collider: 9.000000  0.000000"
                         },
                         "Physics": {
@@ -15318,7 +15388,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 205,
+                            "id": 1159,
                             "name": "Collider: 8.000000  0.000000"
                         },
                         "Physics": {
@@ -15417,7 +15487,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 206,
+                            "id": 1160,
                             "name": "Collider: 7.000000  0.000000"
                         },
                         "Physics": {
@@ -15516,7 +15586,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 207,
+                            "id": 1161,
                             "name": "Collider: 6.000000  0.000000"
                         },
                         "Physics": {
@@ -15615,7 +15685,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 208,
+                            "id": 1162,
                             "name": "Collider: 5.000000  0.000000"
                         },
                         "Physics": {
@@ -15714,7 +15784,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 209,
+                            "id": 1163,
                             "name": "Collider: 4.000000  0.000000"
                         },
                         "Physics": {
@@ -15813,7 +15883,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 210,
+                            "id": 1164,
                             "name": "Collider: 3.000000  0.000000"
                         },
                         "Physics": {
@@ -15912,7 +15982,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 211,
+                            "id": 1165,
                             "name": "Collider: 2.000000  0.000000"
                         },
                         "Physics": {
@@ -16011,7 +16081,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 212,
+                            "id": 1166,
                             "name": "Collider: 1.000000  0.000000"
                         },
                         "Physics": {
@@ -16110,7 +16180,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 213,
+                            "id": 1167,
                             "name": "Collider: 0.000000  0.000000"
                         },
                         "Physics": {
@@ -16209,7 +16279,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 214,
+                            "id": 1168,
                             "name": "Collider: 0.000000  1.000000"
                         },
                         "Physics": {
@@ -16308,7 +16378,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 215,
+                            "id": 1169,
                             "name": "Collider: 0.000000  2.000000"
                         },
                         "Physics": {
@@ -16407,7 +16477,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 216,
+                            "id": 1170,
                             "name": "Collider: 0.000000  2.000000"
                         },
                         "Physics": {
@@ -16506,7 +16576,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 217,
+                            "id": 1171,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {

@@ -1285,11 +1285,14 @@ void Editor::RenderImGui() {
 						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
 											  &pair.second->volume, 0, 100,
 											  "%d")) {
-							if (pair.first == soundPlayer->GetCurrentPlaying()
-												  ->GetProperties()
-												  .name) {
-								soundPlayer->MusicVolume(pair.first,
-														 pair.second->volume);
+							if (soundPlayer->GetCurrentPlaying()) {
+								if (pair.first ==
+									soundPlayer->GetCurrentPlaying()
+										->GetProperties()
+										.name) {
+									soundPlayer->MusicVolume(
+										pair.first, pair.second->volume);
+								}
 							}
 							// soundPlayer->MusicVolume(soundPlayer->musicVolume);
 						}
@@ -1455,13 +1458,15 @@ void Editor::RenderImGui() {
 								assetManager->LoadTexture(filename, targetPath);
 							break;
 						case 2: // MUSIC
+							BLZR_CORE_ERROR("{0}, {1}", filename, targetPath);
 							success = assetManager->LoadMusic(
 								filename, targetPath, "Imported Music");
 							break;
 						case 3: // SOUNDFX
+							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
-								filename, targetPath, "Imported Sound Effect",
-								0);
+								filename, targetPath, "Imported Sound Effect");
+							break;
 						case 4:
 							success =
 								assetManager->LoadScene(targetPath, m_LuaState);
@@ -1653,8 +1658,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("X");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleX", &transform.scale.x, 0.2f, 1.f, "%.1f");
-	if (transform.scale.x < 0.1f) {
-		transform.scale.x = 0.1f;
+	if (transform.scale.x < 0.01f) {
+		transform.scale.x = 0.01f;
 	}
 	if (transform.scale.x > 10.f) {
 		transform.scale.x = 10.f;
@@ -1664,8 +1669,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("Y");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleY", &transform.scale.y, 0.2f, 1.f, "%.1f");
-	if (transform.scale.y < 0.1f) {
-		transform.scale.y = 0.1f;
+	if (transform.scale.y < 0.01f) {
+		transform.scale.y = 0.01f;
 	}
 	if (transform.scale.y > 10.f) {
 		transform.scale.y = 10.f;
@@ -2253,9 +2258,10 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			fixture->SetFriction(physics.GetAttributes().friction);
 			fixture->SetSensor(physics.GetAttributes().isSensor);
 		}
-	} else {
-		BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
 	}
+	// } else {
+	// 	BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
+	// }
 
 	if ((posX != physicsPosX || posY != physicsPosY || scaleX != newScaleX ||
 		 scaleY != newScaleY || widthBoxCollider != newWidthBoxCollider ||

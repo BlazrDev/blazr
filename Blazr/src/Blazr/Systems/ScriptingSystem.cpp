@@ -8,6 +8,7 @@
 #include "Blazr/Ecs/Components/SpriteComponent.h"
 #include "Blazr/Ecs/Components/TileComponent.h"
 #include "Blazr/Ecs/Components/TransformComponent.h"
+#include "Blazr/Renderer/CameraController.h"
 #include "Blazr/Systems/BoxColliderSystem.h"
 
 #include "Blazr/Ecs/Registry.h"
@@ -18,8 +19,8 @@
 #include "ScriptingSystem.h"
 
 #include "../Resources/AssetManager.h"
-#include "Blazr/Utilities/Timer.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Utilities/Timer.h"
 #include "Sounds/SoundPlayer.h"
 namespace Blazr {
 ScriptingSystem::ScriptingSystem(Registry &registry) : m_Registry(registry) {}
@@ -62,25 +63,28 @@ bool ScriptingSystem::LoadMainScript(sol::state &lua) {
 }
 
 void ScriptingSystem::Update() {
-	auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
-	for (const auto &entity : view) {
-		Entity ent{m_Registry, entity};
+	if (!CameraController::paused) {
+		auto view = m_Registry.GetRegistry().view<Blazr::ScriptComponent>();
 
-		auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+		for (const auto &entity : view) {
+			Entity ent{m_Registry, entity};
 
-		if (script.update.valid()) {
-			try {
-				script.update(ent);
-			} catch (const sol::error &err) {
-				BLZR_CORE_ERROR(
-					"Error running Update script for entity '{}': {}",
-					ent.GetName(), err.what());
+			auto &script = ent.GetComponent<Blazr::ScriptComponent>();
+
+			if (script.update.valid()) {
+				try {
+					script.update(ent);
+				} catch (const sol::error &err) {
+					BLZR_CORE_ERROR(
+						"Error running Update script for entity '{}': {}",
+						ent.GetName(), err.what());
+				}
+			} else {
+				BLZR_CORE_WARN(
+					"Entity '{}' has no valid update function in its script.",
+					ent.GetName());
 			}
-		} else {
-			BLZR_CORE_WARN(
-				"Entity '{}' has no valid update function in its script.",
-				ent.GetName());
 		}
 	}
 }

@@ -42,11 +42,7 @@ void Application::Run() {
 			m_Window->setWidth(width);
 			m_Window->setHeight(height);
 
-			glfwPollEvents();
-
 			m_ActiveScene->Render();
-
-			glfwSwapBuffers(m_Window->GetWindow());
 
 		} else {
 			BLZR_CORE_WARN("Active scene is null");
@@ -130,7 +126,8 @@ void Application::Initialize() {
 	// bind editor
 	m_LuaState->new_usertype<Application>(
 		"EditorInterface", "SetActiveScene", &Application::SetActiveScene,
-		"GetActiveScene", &Application::GetActiveScene);
+		"GetActiveScene", &Application::GetActiveScene, "SetSceneByName",
+		&Application::SetSceneByName);
 
 	// Bind the editor instance to Lua under the global 'editor'
 	(*m_LuaState)["editor"] = this;
@@ -147,8 +144,18 @@ void Application::Initialize() {
 			"Failed to add the animation system to the registry context!");
 		return;
 	}
+	glfwSwapInterval(1);
 }
 
+void Application::SetSceneByName(const std::string &sceneName) {
+	auto project = Project::GetActive();
+	auto scene = project->GetScene(sceneName);
+	if (scene) {
+		SetActiveScene(scene);
+	} else {
+		BLZR_CORE_ERROR("Failed to set scene by name: {0}", sceneName);
+	}
+}
 Application *CreateApplication() { return nullptr; }
 
 void Application::SetActiveScene(Ref<Scene> scene) { m_ActiveScene = scene; }

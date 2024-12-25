@@ -6,7 +6,7 @@
 class FrameBuffer {
   public:
 	BLZR_API FrameBuffer(int width, int height);
-	BLZR_API  ~FrameBuffer();
+	BLZR_API ~FrameBuffer();
 
 	void BLZR_API Bind() const;
 	void BLZR_API Unbind() const;
@@ -18,10 +18,10 @@ class FrameBuffer {
 
 	int BLZR_API GetWidth() const { return m_Width; }
 	int BLZR_API GetHeight() const { return m_Height; }
+	void BLZR_API Cleanup();
 
   private:
 	void Initialize();
-	void Cleanup();
 
 	GLuint m_FrameBufferID = 0;
 	GLuint m_TextureID = 0;

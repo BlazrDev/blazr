@@ -1,11 +1,61 @@
 {
     "AssetManager": {
-        "Effects": {},
-        "Music": {},
+        "Effects": {
+            "coin_flip.wav": {
+                "channel": 1,
+                "description": "Imported Sound Effect",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/coin_flip.wav",
+                "properties": {
+                    "description": "Imported Sound Effect",
+                    "duration": 0.5917460317460318,
+                    "filename": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/coin_flip.wav",
+                    "name": "coin_flip.wav"
+                }
+            },
+            "zemlja.wav": {
+                "channel": 2,
+                "description": "Imported Sound Effect",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/zemlja.wav",
+                "properties": {
+                    "description": "Imported Sound Effect",
+                    "duration": 0.5119954648526077,
+                    "filename": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/soundfx/zemlja.wav",
+                    "name": "zemlja.wav"
+                }
+            }
+        },
+        "Music": {
+            "Grasslands Theme.mp3": {
+                "description": "Imported Music",
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/music/Grasslands Theme.mp3",
+                "properties": {
+                    "description": "Imported Music",
+                    "duration": 39.41877551020408,
+                    "filename": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/music/Grasslands Theme.mp3",
+                    "name": "Grasslands Theme.mp3"
+                }
+            }
+        },
         "Shaders": {},
         "Textures": {
+            "ChestAnim.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/ChestAnim.png",
+                "pixelArt": true
+            },
+            "CoinAnim.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/CoinAnim.png",
+                "pixelArt": true
+            },
             "Tiles.png": {
                 "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/Tiles.png",
+                "pixelArt": true
+            },
+            "backgrounds.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/backgrounds.png",
+                "pixelArt": true
+            },
+            "chammyAnim.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/chammyAnim.png",
                 "pixelArt": true
             },
             "collider": {
@@ -15,13 +65,21 @@
             "default": {
                 "path": "assets/white_texture.png",
                 "pixelArt": true
+            },
+            "masha.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/masha.png",
+                "pixelArt": true
+            },
+            "props.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure/assets/textures/props.png",
+                "pixelArt": true
             }
         }
     },
     "Config": {
         "AssetDirectory": "",
         "ScriptPath": "",
-        "StartScene": "Untitled 1",
+        "StartScene": "mainScene",
         "name": "ChammysAdventure"
     },
     "ProjectDirectory": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammysAdventure"
