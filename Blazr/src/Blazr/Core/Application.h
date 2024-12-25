@@ -31,6 +31,7 @@ class BLZR_API Application {
 	void onEvent(Event &e);
 	void SetActiveScene(Ref<Scene> scene);
 	Ref<Scene> GetActiveScene();
+	void SetSceneByName(const std::string &sceneName);
 
   private:
 	bool m_Running = true;

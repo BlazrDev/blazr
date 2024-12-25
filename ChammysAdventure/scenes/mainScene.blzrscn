@@ -4,14 +4,14 @@
             "height": 720.0,
             "position": [
                 0.0,
-                720.0
+                0.0
             ],
             "rotation": 0.0,
-            "scale": 5.0,
+            "scale": 4.0,
             "width": 1280.0
         },
         "camera_position": [
-            75.0,
+            7.5,
             -37.5,
             0.0
         ],
@@ -20,16 +20,12 @@
         "camera_translation_speed": 0.25,
         "height": 720,
         "mouse_position": [
-            121.0,
+            46.0,
             0.0
         ],
         "rotation": true,
         "width": 1280,
-<<<<<<< HEAD
         "zoom": 1.25
-=======
-        "zoom": 5.0
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
     },
     "FollowCamera": {
         "Position": [
@@ -8066,13 +8062,13 @@
                 "Entities": [
                     {
                         "BoxCollider": {
-                            "colliding": false,
+                            "colliding": true,
                             "height": 74,
                             "offset": [
                                 0.0,
                                 0.0
                             ],
-                            "width": 110
+                            "width": 80
                         },
                         "Identification": {
                             "group": "",
@@ -8195,11 +8191,7 @@
                     {
                         "Animation": {
                             "bVertical": false,
-<<<<<<< HEAD
-                            "currentFrame": 4,
-=======
                             "currentFrame": 2,
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
                             "frameOffset": 0,
                             "frameRate": 4,
                             "numFrames": 7
@@ -8221,11 +8213,7 @@
                             ],
                             "height": 16.0,
                             "object": {
-<<<<<<< HEAD
-                                "coordX": 4,
-=======
                                 "coordX": 2,
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
                                 "coordY": 0,
                                 "height": 1.0,
                                 "width": 0.125,
@@ -8278,11 +8266,7 @@
                     {
                         "Animation": {
                             "bVertical": false,
-<<<<<<< HEAD
                             "currentFrame": 2,
-=======
-                            "currentFrame": 5,
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
                             "frameOffset": 4,
                             "frameRate": 14,
                             "numFrames": 7
@@ -8291,7 +8275,7 @@
                             "colliding": true,
                             "height": 16,
                             "offset": [
-                                2.0,
+                                0.0,
                                 9.0
                             ],
                             "width": 29
@@ -8315,12 +8299,12 @@
                             "isFixedRotation": true,
                             "isSensor": false,
                             "offset": [
-                                2.0,
+                                0.0,
                                 9.0
                             ],
                             "position": [
-                                0.0,
-                                0.0
+                                48.0,
+                                55.0
                             ],
                             "restitution": 0.0,
                             "restitutionThreshold": 1.0,
@@ -8342,11 +8326,7 @@
                             ],
                             "height": 32.0,
                             "object": {
-<<<<<<< HEAD
-                                "coordX": 2,
-=======
                                 "coordX": 5,
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
                                 "coordY": 4,
                                 "height": 0.1666666716337204,
                                 "width": 0.1428571492433548,
@@ -8357,19 +8337,19 @@
                             "startY": -1,
                             "textureCoordinates": [
                                 [
-                                    0.7142857313156128,
+                                    0.4285714626312256,
                                     0.6666666865348816
                                 ],
                                 [
-                                    0.8571429252624512,
+                                    0.5714285969734192,
                                     0.6666666865348816
                                 ],
                                 [
-                                    0.8571429252624512,
+                                    0.5714285969734192,
                                     0.8333333730697632
                                 ],
                                 [
-                                    0.7142857313156128,
+                                    0.4285714626312256,
                                     0.8333333730697632
                                 ]
                             ],
@@ -8378,13 +8358,8 @@
                         },
                         "Transform": {
                             "position": [
-<<<<<<< HEAD
-                                0.0,
-                                4.016815185546875
-=======
                                 106.35699462890625,
-                                231.24166870117188
->>>>>>> 2464b30189bc86ba3b545ba2364f518a08c9a591
+                                48.0,
                             ],
                             "rotation": 0.0,
                             "scale": [
@@ -8393,6 +8368,76 @@
                             ]
                         },
                         "hasFollowCamera": true
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": true,
+                            "height": 612,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 400
+                        },
+                        "Identification": {
+                            "group": "enemy",
+                            "id": 1088,
+                            "name": "masha"
+                        },
+                        "Script": {
+                            "scriptPath": "/home/srkless/ETF/blankScript.lua"
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 612.0,
+                            "object": {
+                                "coordX": -1,
+                                "coordY": -1,
+                                "height": 0.9918962717056274,
+                                "width": 1.0,
+                                "x": -1.0,
+                                "y": -0.9918962717056274
+                            },
+                            "startX": -1,
+                            "startY": -1,
+                            "textureCoordinates": [
+                                [
+                                    -1.0,
+                                    -0.9918962717056274
+                                ],
+                                [
+                                    0.0,
+                                    -0.9918962717056274
+                                ],
+                                [
+                                    0.0,
+                                    0.0
+                                ],
+                                [
+                                    -1.0,
+                                    0.0
+                                ]
+                            ],
+                            "texturePath": "masha.png",
+                            "width": 472.0
+                        },
+                        "Transform": {
+                            "position": [
+                                105.0,
+                                237.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                0.05000000074505806,
+                                0.05000000074505806
+                            ]
+                        },
+                        "hasFollowCamera": false
                     }
                 ],
                 "zIndex": 5
@@ -8413,7 +8458,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1088,
+                            "id": 1089,
                             "name": "Collider: 0.000000  3.000000"
                         },
                         "Physics": {
@@ -8512,7 +8557,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1089,
+                            "id": 1090,
                             "name": "Collider: 1.000000  3.000000"
                         },
                         "Physics": {
@@ -8611,7 +8656,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1090,
+                            "id": 1091,
                             "name": "Collider: 2.000000  3.000000"
                         },
                         "Physics": {
@@ -8710,7 +8755,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1091,
+                            "id": 1092,
                             "name": "Collider: 3.000000  3.000000"
                         },
                         "Physics": {
@@ -8809,7 +8854,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1092,
+                            "id": 1093,
                             "name": "Collider: 4.000000  3.000000"
                         },
                         "Physics": {
@@ -8908,7 +8953,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1093,
+                            "id": 1094,
                             "name": "Collider: 5.000000  3.000000"
                         },
                         "Physics": {
@@ -9007,7 +9052,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1094,
+                            "id": 1095,
                             "name": "Collider: 5.000000  2.000000"
                         },
                         "Physics": {
@@ -9106,7 +9151,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1095,
+                            "id": 1096,
                             "name": "Collider: 6.000000  2.000000"
                         },
                         "Physics": {
@@ -9205,7 +9250,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1096,
+                            "id": 1097,
                             "name": "Collider: 7.000000  2.000000"
                         },
                         "Physics": {
@@ -9304,7 +9349,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1097,
+                            "id": 1098,
                             "name": "Collider: 8.000000  2.000000"
                         },
                         "Physics": {
@@ -9403,7 +9448,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1098,
+                            "id": 1099,
                             "name": "Collider: 9.000000  2.000000"
                         },
                         "Physics": {
@@ -9502,7 +9547,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1099,
+                            "id": 1100,
                             "name": "Collider: 10.000000  2.000000"
                         },
                         "Physics": {
@@ -9601,7 +9646,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1100,
+                            "id": 1101,
                             "name": "Collider: 11.000000  2.000000"
                         },
                         "Physics": {
@@ -9700,7 +9745,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1101,
+                            "id": 1102,
                             "name": "Collider: 13.000000  4.000000"
                         },
                         "Physics": {
@@ -9799,7 +9844,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1102,
+                            "id": 1103,
                             "name": "Collider: 16.000000  5.000000"
                         },
                         "Physics": {
@@ -9898,7 +9943,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1103,
+                            "id": 1104,
                             "name": "Collider: 19.000000  7.000000"
                         },
                         "Physics": {
@@ -9997,7 +10042,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1104,
+                            "id": 1105,
                             "name": "Collider: 20.000000  7.000000"
                         },
                         "Physics": {
@@ -10096,7 +10141,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1105,
+                            "id": 1106,
                             "name": "Collider: 21.000000  7.000000"
                         },
                         "Physics": {
@@ -10195,7 +10240,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1106,
+                            "id": 1107,
                             "name": "Collider: 21.000000  8.000000"
                         },
                         "Physics": {
@@ -10294,7 +10339,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1107,
+                            "id": 1108,
                             "name": "Collider: 22.000000  8.000000"
                         },
                         "Physics": {
@@ -10393,7 +10438,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1108,
+                            "id": 1109,
                             "name": "Collider: 23.000000  8.000000"
                         },
                         "Physics": {
@@ -10492,7 +10537,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1109,
+                            "id": 1110,
                             "name": "Collider: 24.000000  8.000000"
                         },
                         "Physics": {
@@ -10591,7 +10636,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1110,
+                            "id": 1111,
                             "name": "Collider: 25.000000  8.000000"
                         },
                         "Physics": {
@@ -10690,7 +10735,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1111,
+                            "id": 1112,
                             "name": "Collider: 26.000000  8.000000"
                         },
                         "Physics": {
@@ -10789,7 +10834,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1112,
+                            "id": 1113,
                             "name": "Collider: 27.000000  8.000000"
                         },
                         "Physics": {
@@ -10888,7 +10933,7 @@
                         },
                         "Identification": {
                             "group": "grass",
-                            "id": 1113,
+                            "id": 1114,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {
@@ -10987,7 +11032,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1114,
+                            "id": 1115,
                             "name": "Collider: 2.000000  14.000000"
                         },
                         "Physics": {
@@ -11086,7 +11131,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1115,
+                            "id": 1116,
                             "name": "Collider: 3.000000  14.000000"
                         },
                         "Physics": {
@@ -11185,7 +11230,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1116,
+                            "id": 1117,
                             "name": "Collider: 4.000000  14.000000"
                         },
                         "Physics": {
@@ -11284,7 +11329,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1117,
+                            "id": 1118,
                             "name": "Collider: 5.000000  14.000000"
                         },
                         "Physics": {
@@ -11383,7 +11428,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1118,
+                            "id": 1119,
                             "name": "Collider: 6.000000  14.000000"
                         },
                         "Physics": {
@@ -11482,7 +11527,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1119,
+                            "id": 1120,
                             "name": "Collider: 7.000000  14.000000"
                         },
                         "Physics": {
@@ -11581,7 +11626,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1120,
+                            "id": 1121,
                             "name": "Collider: 8.000000  14.000000"
                         },
                         "Physics": {
@@ -11680,7 +11725,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1121,
+                            "id": 1122,
                             "name": "Collider: 8.000000  13.000000"
                         },
                         "Physics": {
@@ -11779,7 +11824,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1122,
+                            "id": 1123,
                             "name": "Collider: 8.000000  12.000000"
                         },
                         "Physics": {
@@ -11878,7 +11923,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1123,
+                            "id": 1124,
                             "name": "Collider: 8.000000  11.000000"
                         },
                         "Physics": {
@@ -11977,7 +12022,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1124,
+                            "id": 1125,
                             "name": "Collider: 7.000000  11.000000"
                         },
                         "Physics": {
@@ -12076,7 +12121,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1125,
+                            "id": 1126,
                             "name": "Collider: 6.000000  11.000000"
                         },
                         "Physics": {
@@ -12175,7 +12220,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1126,
+                            "id": 1127,
                             "name": "Collider: 5.000000  11.000000"
                         },
                         "Physics": {
@@ -12274,7 +12319,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1127,
+                            "id": 1128,
                             "name": "Collider: 4.000000  11.000000"
                         },
                         "Physics": {
@@ -12373,7 +12418,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1128,
+                            "id": 1129,
                             "name": "Collider: 3.000000  11.000000"
                         },
                         "Physics": {
@@ -12472,7 +12517,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1129,
+                            "id": 1130,
                             "name": "Collider: 2.000000  11.000000"
                         },
                         "Physics": {
@@ -12571,7 +12616,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1130,
+                            "id": 1131,
                             "name": "Collider: 2.000000  12.000000"
                         },
                         "Physics": {
@@ -12670,7 +12715,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1131,
+                            "id": 1132,
                             "name": "Collider: 2.000000  13.000000"
                         },
                         "Physics": {
@@ -12769,7 +12814,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1132,
+                            "id": 1133,
                             "name": "Collider: 11.000000  12.000000"
                         },
                         "Physics": {
@@ -12868,7 +12913,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1133,
+                            "id": 1134,
                             "name": "Collider: 12.000000  12.000000"
                         },
                         "Physics": {
@@ -12967,7 +13012,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1134,
+                            "id": 1135,
                             "name": "Collider: 13.000000  12.000000"
                         },
                         "Physics": {
@@ -13066,7 +13111,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1135,
+                            "id": 1136,
                             "name": "Collider: 14.000000  12.000000"
                         },
                         "Physics": {
@@ -13165,7 +13210,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1136,
+                            "id": 1137,
                             "name": "Collider: 15.000000  12.000000"
                         },
                         "Physics": {
@@ -13264,7 +13309,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1137,
+                            "id": 1138,
                             "name": "Collider: 16.000000  12.000000"
                         },
                         "Physics": {
@@ -13363,7 +13408,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1138,
+                            "id": 1139,
                             "name": "Collider: 19.000000  11.000000"
                         },
                         "Physics": {
@@ -13462,7 +13507,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1139,
+                            "id": 1140,
                             "name": "Collider: 19.000000  6.000000"
                         },
                         "Physics": {
@@ -13561,7 +13606,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1140,
+                            "id": 1141,
                             "name": "Collider: 19.000000  5.000000"
                         },
                         "Physics": {
@@ -13660,7 +13705,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1141,
+                            "id": 1142,
                             "name": "Collider: 19.000000  4.000000"
                         },
                         "Physics": {
@@ -13759,7 +13804,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1142,
+                            "id": 1143,
                             "name": "Collider: 20.000000  4.000000"
                         },
                         "Physics": {
@@ -13858,7 +13903,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1143,
+                            "id": 1144,
                             "name": "Collider: 21.000000  4.000000"
                         },
                         "Physics": {
@@ -13957,7 +14002,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1144,
+                            "id": 1145,
                             "name": "Collider: 22.000000  4.000000"
                         },
                         "Physics": {
@@ -14056,7 +14101,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1145,
+                            "id": 1146,
                             "name": "Collider: 23.000000  4.000000"
                         },
                         "Physics": {
@@ -14155,7 +14200,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1146,
+                            "id": 1147,
                             "name": "Collider: 24.000000  4.000000"
                         },
                         "Physics": {
@@ -14254,7 +14299,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1147,
+                            "id": 1148,
                             "name": "Collider: 25.000000  4.000000"
                         },
                         "Physics": {
@@ -14353,7 +14398,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1148,
+                            "id": 1149,
                             "name": "Collider: 28.000000  7.000000"
                         },
                         "Physics": {
@@ -14452,7 +14497,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1149,
+                            "id": 1150,
                             "name": "Collider: 28.000000  6.000000"
                         },
                         "Physics": {
@@ -14551,7 +14596,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1150,
+                            "id": 1151,
                             "name": "Collider: 28.000000  5.000000"
                         },
                         "Physics": {
@@ -14650,7 +14695,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1151,
+                            "id": 1152,
                             "name": "Collider: 28.000000  4.000000"
                         },
                         "Physics": {
@@ -14749,7 +14794,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1152,
+                            "id": 1153,
                             "name": "Collider: 27.000000  4.000000"
                         },
                         "Physics": {
@@ -14848,7 +14893,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1153,
+                            "id": 1154,
                             "name": "Collider: 26.000000  4.000000"
                         },
                         "Physics": {
@@ -14947,7 +14992,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1154,
+                            "id": 1155,
                             "name": "Collider: 11.000000  1.000000"
                         },
                         "Physics": {
@@ -15046,7 +15091,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1155,
+                            "id": 1156,
                             "name": "Collider: 11.000000  0.000000"
                         },
                         "Physics": {
@@ -15145,7 +15190,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1156,
+                            "id": 1157,
                             "name": "Collider: 10.000000  0.000000"
                         },
                         "Physics": {
@@ -15244,7 +15289,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1157,
+                            "id": 1158,
                             "name": "Collider: 9.000000  0.000000"
                         },
                         "Physics": {
@@ -15343,7 +15388,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1158,
+                            "id": 1159,
                             "name": "Collider: 8.000000  0.000000"
                         },
                         "Physics": {
@@ -15442,7 +15487,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1159,
+                            "id": 1160,
                             "name": "Collider: 7.000000  0.000000"
                         },
                         "Physics": {
@@ -15541,7 +15586,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1160,
+                            "id": 1161,
                             "name": "Collider: 6.000000  0.000000"
                         },
                         "Physics": {
@@ -15640,7 +15685,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1161,
+                            "id": 1162,
                             "name": "Collider: 5.000000  0.000000"
                         },
                         "Physics": {
@@ -15739,7 +15784,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1162,
+                            "id": 1163,
                             "name": "Collider: 4.000000  0.000000"
                         },
                         "Physics": {
@@ -15838,7 +15883,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1163,
+                            "id": 1164,
                             "name": "Collider: 3.000000  0.000000"
                         },
                         "Physics": {
@@ -15937,7 +15982,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1164,
+                            "id": 1165,
                             "name": "Collider: 2.000000  0.000000"
                         },
                         "Physics": {
@@ -16036,7 +16081,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1165,
+                            "id": 1166,
                             "name": "Collider: 1.000000  0.000000"
                         },
                         "Physics": {
@@ -16135,7 +16180,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1166,
+                            "id": 1167,
                             "name": "Collider: 0.000000  0.000000"
                         },
                         "Physics": {
@@ -16234,7 +16279,7 @@
                         },
                         "Identification": {
                             "group": "dirt",
-                            "id": 1167,
+                            "id": 1168,
                             "name": "Collider: 0.000000  1.000000"
                         },
                         "Physics": {
@@ -16312,105 +16357,6 @@
                             "position": [
                                 0.0,
                                 16.0
-                            ],
-                            "rotation": 0.0,
-                            "scale": [
-                                1.0,
-                                1.0
-                            ]
-                        },
-                        "hasFollowCamera": false
-                    },
-                    {
-                        "BoxCollider": {
-                            "colliding": false,
-                            "height": 16,
-                            "offset": [
-                                0.0,
-                                0.0
-                            ],
-                            "width": 16
-                        },
-                        "Identification": {
-                            "group": "dirt",
-                            "id": 1168,
-                            "name": "Collider: 0.000000  2.000000"
-                        },
-                        "Physics": {
-                            "boxSize": [
-                                16.0,
-                                16.0
-                            ],
-                            "density": 1.0,
-                            "filterCategory": 0,
-                            "filterGroup": 0,
-                            "filterMask": 0,
-                            "friction": 50.0,
-                            "gravityScale": 1.0,
-                            "isFixedRotation": true,
-                            "isSensor": false,
-                            "offset": [
-                                0.0,
-                                0.0
-                            ],
-                            "position": [
-                                0.0,
-                                32.0
-                            ],
-                            "restitution": 0.20000000298023224,
-                            "restitutionThreshold": 1.0,
-                            "scale": [
-                                1.0,
-                                1.0
-                            ],
-                            "type": 0
-                        },
-                        "Sprite": {
-                            "color": [
-                                1.0,
-                                1.0,
-                                1.0,
-                                1.0
-                            ],
-                            "height": 16.0,
-                            "object": {
-                                "coordX": 0,
-                                "coordY": -1,
-                                "height": 1.0,
-                                "width": 1.0,
-                                "x": 0.0,
-                                "y": -1.0
-                            },
-                            "startX": 0,
-                            "startY": -1,
-                            "textureCoordinates": [
-                                [
-                                    0.0,
-                                    -1.0
-                                ],
-                                [
-                                    1.0,
-                                    -1.0
-                                ],
-                                [
-                                    1.0,
-                                    0.0
-                                ],
-                                [
-                                    0.0,
-                                    0.0
-                                ]
-                            ],
-                            "texturePath": "collider",
-                            "width": 16.0
-                        },
-                        "Tile": {
-                            "name": "collider"
-                        },
-                        "Transform": {
-                            "position": [
-                                0.0,
-                                32.0
                             ],
                             "rotation": 0.0,
                             "scale": [
@@ -16530,8 +16476,107 @@
                             "width": 16
                         },
                         "Identification": {
-                            "group": "grass",
+                            "group": "dirt",
                             "id": 1170,
+                            "name": "Collider: 0.000000  2.000000"
+                        },
+                        "Physics": {
+                            "boxSize": [
+                                16.0,
+                                16.0
+                            ],
+                            "density": 1.0,
+                            "filterCategory": 0,
+                            "filterGroup": 0,
+                            "filterMask": 0,
+                            "friction": 50.0,
+                            "gravityScale": 1.0,
+                            "isFixedRotation": true,
+                            "isSensor": false,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "position": [
+                                0.0,
+                                32.0
+                            ],
+                            "restitution": 0.20000000298023224,
+                            "restitutionThreshold": 1.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ],
+                            "type": 0
+                        },
+                        "Sprite": {
+                            "color": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "height": 16.0,
+                            "object": {
+                                "coordX": 0,
+                                "coordY": -1,
+                                "height": 1.0,
+                                "width": 1.0,
+                                "x": 0.0,
+                                "y": -1.0
+                            },
+                            "startX": 0,
+                            "startY": -1,
+                            "textureCoordinates": [
+                                [
+                                    0.0,
+                                    -1.0
+                                ],
+                                [
+                                    1.0,
+                                    -1.0
+                                ],
+                                [
+                                    1.0,
+                                    0.0
+                                ],
+                                [
+                                    0.0,
+                                    0.0
+                                ]
+                            ],
+                            "texturePath": "collider",
+                            "width": 16.0
+                        },
+                        "Tile": {
+                            "name": "collider"
+                        },
+                        "Transform": {
+                            "position": [
+                                0.0,
+                                32.0
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                                1.0,
+                                1.0
+                            ]
+                        },
+                        "hasFollowCamera": false
+                    },
+                    {
+                        "BoxCollider": {
+                            "colliding": false,
+                            "height": 16,
+                            "offset": [
+                                0.0,
+                                0.0
+                            ],
+                            "width": 16
+                        },
+                        "Identification": {
+                            "group": "grass",
+                            "id": 1171,
                             "name": "Collider: 28.000000  8.000000"
                         },
                         "Physics": {

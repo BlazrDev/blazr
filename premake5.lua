@@ -24,6 +24,9 @@ IncludeDir["GLEW"] = {
     linux = "Blazr/vendor/glew/linux/include",
     windows = "Blazr/vendor/glew/windows/include",
 }
+IncludeDir["fmt"] = {
+    windows = "Blazr/vendor/spdlog/include",
+}
 IncludeDir["Lua"] = {
     linux = "Blazr/vendor/lua/linux/include",
     windows = "Blazr/vendor/lua/windows/include",
@@ -123,6 +126,10 @@ cppdialect("C++20")
 staticruntime("On")
 systemversion("latest")
 
+includedirs({
+    "%{IncludeDir.ImGuiBackends[windows]}",
+})
+
 links({
     "OpenGL32",
     "GLFW",
@@ -180,14 +187,17 @@ postbuildcommands({
 filter("configurations:Debug")
 defines("BLZR_DEBUG")
 symbols("On")
+buildoptions { "/MDd" }
 
 filter("configurations:Release")
 defines("BLZR_RELEASE")
 optimize("On")
+buildoptions { "/MD" }
 
 filter("configurations:Dist")
 defines("BLZR_DIST")
 optimize("On")
+buildoptions { "/MD" }
 
 project("Sandbox")
 location("Sandbox")
@@ -434,18 +444,21 @@ filter("configurations:Debug")
 runtime("Debug")
 defines("BLZR_DEBUG")
 symbols("On")
+buildoptions { "/MDd" }
 
 -- Release Configuration
 filter("configurations:Release")
 runtime("Release")
 defines("BLZR_RELEASE")
 optimize("On")
+buildoptions { "/MD" }
 
 -- Distribution Configuration
 filter("configurations:Dist")
 runtime("Release")
 defines("BLZR_DIST")
 optimize("On")
+buildoptions { "/MD" }
 
 -- Linux-specific configuration
 filter("system:linux")

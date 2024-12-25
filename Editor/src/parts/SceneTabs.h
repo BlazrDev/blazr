@@ -14,18 +14,22 @@ void RenderSceneTabs(Editor &editor) {
 			ImGui::EndTabBar();
 			return;
 		}
+
+        if(CameraController::paused) {
 		for (const auto &[name, scene] : Project::GetActive()->GetScenes()) {
 			if (ImGui::BeginTabItem(name.c_str())) {
 				editor.SetActiveScene(scene);
 				ImGui::EndTabItem();
 			}
 		}
+        }
 		ImGui::EndTabBar();
 	}
 }
 
 void RenderSceneToTexture(Ref<Scene> activeScene) {
 	activeScene->m_GameFrameBuffer->Bind();
+	// activeScene->m_GameFrameBuffer->Cleanup();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (activeScene != nullptr) {
@@ -44,6 +48,7 @@ void RenderSceneToTexture(Ref<Scene> activeScene) {
 
 void RenderActiveScene(Ref<Scene> activeScene, ImGuiWindowFlags flags) {
 	if (activeScene) {
+
 		ImGui::BeginChild("GameViewChild", ImVec2(0, 0), true, flags);
 
 		CameraController::gameViewWindow = ImGui::IsWindowHovered();

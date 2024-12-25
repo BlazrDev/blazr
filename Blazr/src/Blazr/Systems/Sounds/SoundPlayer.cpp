@@ -1,5 +1,6 @@
 #include "blzrpch.h"
 #include "Blazr/Core/Log.h"
+#include "Blazr/Renderer/CameraController.h"
 #include "Blazr/Resources/AssetManager.h"
 #include "Music.h"
 #include "SDL_mixer.h"
@@ -62,6 +63,7 @@ void Blazr::SoundPlayer::PlayMusic(const std::string &name, int loop) {
 		return;
 	}
 	Mix_VolumeMusic(music->volume);
+
 	if (Mix_PlayMusic(music->getSample(), loop) == -1) {
 		std::string error(Mix_GetError());
 		BLZR_CORE_ERROR("Failed to play music: {0}", error);

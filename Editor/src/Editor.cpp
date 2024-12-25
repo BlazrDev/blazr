@@ -256,7 +256,6 @@ void Editor::Run() {
 
 			glfwMakeContextCurrent(backupContext);
 		}
-		// glfwSwapBuffers(m_Window->GetWindow());
 	}
 
 	glfwSwapBuffers(m_Window->GetWindow());
@@ -624,31 +623,35 @@ void Editor::RenderImGui() {
 	auto tilemapScene = std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
 
 	if (!tilemapScene) {
-
+		if (m_ActiveScene != nullptr) {
+			
+		
 		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
-			for (Ref<Entity> ent : layer->entities) {
-				if (!ent->HasComponent<TileComponent>()) {
-					std::string gameObjectName =
-						ent->GetComponent<Identification>().name;
+				for (Ref<Entity> ent : layer->entities) {
+					if (!ent->HasComponent<TileComponent>()) {
+						std::string gameObjectName =
+							ent->GetComponent<Identification>().name;
 
-					if (ImGui::Selectable(gameObjectName.c_str())) {
-						selectedGameObject = gameObjectName;
-						showGameObjectDetails = true;
-					}
-					if (ImGui::BeginPopupContextItem(gameObjectName.c_str())) {
-						if (!ent->GetFollowCamera()) {
-							if (ImGui::MenuItem("Add Follower Camera")) {
-								m_ActiveScene->SetFollowCamera(ent);
-								ent->SetFollowCamera(true);
+						if (ImGui::Selectable(gameObjectName.c_str())) {
+							selectedGameObject = gameObjectName;
+							showGameObjectDetails = true;
+						}
+						if (ImGui::BeginPopupContextItem(
+								gameObjectName.c_str())) {
+							if (!ent->GetFollowCamera()) {
+								if (ImGui::MenuItem("Add Follower Camera")) {
+									m_ActiveScene->SetFollowCamera(ent);
+									ent->SetFollowCamera(true);
+								}
+								ImGui::EndPopup();
+							} else if (ent->GetFollowCamera()) {
+								if (ImGui::MenuItem("Remove Follower Camera")) {
+									// Logika za dodavanje follower kamere
+									m_ActiveScene->SetFollowCamera(nullptr);
+									ent->SetFollowCamera(false);
+								}
+								ImGui::EndPopup();
 							}
-							ImGui::EndPopup();
-						} else if (ent->GetFollowCamera()) {
-							if (ImGui::MenuItem("Remove Follower Camera")) {
-								// Logika za dodavanje follower kamere
-								m_ActiveScene->SetFollowCamera(nullptr);
-								ent->SetFollowCamera(false);
-							}
-							ImGui::EndPopup();
 						}
 					}
 				}
@@ -1285,11 +1288,14 @@ void Editor::RenderImGui() {
 						if (ImGui::VSliderInt(label.c_str(), ImVec2(68, 160),
 											  &pair.second->volume, 0, 100,
 											  "%d")) {
-							if (pair.first == soundPlayer->GetCurrentPlaying()
-												  ->GetProperties()
-												  .name) {
-								soundPlayer->MusicVolume(pair.first,
-														 pair.second->volume);
+							if (soundPlayer->GetCurrentPlaying()) {
+								if (pair.first ==
+									soundPlayer->GetCurrentPlaying()
+										->GetProperties()
+										.name) {
+									soundPlayer->MusicVolume(
+										pair.first, pair.second->volume);
+								}
 							}
 							// soundPlayer->MusicVolume(soundPlayer->musicVolume);
 						}
@@ -1455,6 +1461,7 @@ void Editor::RenderImGui() {
 								assetManager->LoadTexture(filename, targetPath);
 							break;
 						case 2: // MUSIC
+							BLZR_CORE_ERROR("{0}, {1}", filename, targetPath);
 							success = assetManager->LoadMusic(
 								filename, targetPath, "Imported Music");
 							break;
@@ -1462,6 +1469,7 @@ void Editor::RenderImGui() {
 							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
 								filename, targetPath, "Imported Sound Effect");
+							break;
 						case 4:
 							success =
 								assetManager->LoadScene(targetPath, m_LuaState);
@@ -1653,8 +1661,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("X");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleX", &transform.scale.x, 0.2f, 1.f, "%.1f");
-	if (transform.scale.x < 0.1f) {
-		transform.scale.x = 0.1f;
+	if (transform.scale.x < 0.01f) {
+		transform.scale.x = 0.01f;
 	}
 	if (transform.scale.x > 10.f) {
 		transform.scale.x = 10.f;
@@ -1664,8 +1672,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("Y");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleY", &transform.scale.y, 0.2f, 1.f, "%.1f");
-	if (transform.scale.y < 0.1f) {
-		transform.scale.y = 0.1f;
+	if (transform.scale.y < 0.01f) {
+		transform.scale.y = 0.01f;
 	}
 	if (transform.scale.y > 10.f) {
 		transform.scale.y = 10.f;
@@ -2253,9 +2261,10 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			fixture->SetFriction(physics.GetAttributes().friction);
 			fixture->SetSensor(physics.GetAttributes().isSensor);
 		}
-	} else {
-		BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
 	}
+	// } else {
+	// 	BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
+	// }
 
 	if ((posX != physicsPosX || posY != physicsPosY || scaleX != newScaleX ||
 		 scaleY != newScaleY || widthBoxCollider != newWidthBoxCollider ||

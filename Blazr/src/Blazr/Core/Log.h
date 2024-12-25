@@ -6,7 +6,7 @@
 #include "spdlog/spdlog.h"
 
 namespace Blazr {
-class BLZR_API Log {
+class BLZR_API Log { // BLZR_API applies to the entire class.
   public:
 	static void init();
 
@@ -25,11 +25,11 @@ class BLZR_API Log {
 	static std::string format_arguments(const std::string &fmt,
 										sol::variadic_args args);
 	static void log_trace(const std::string &fmt, sol::variadic_args args);
-
 	static void log_info(const std::string &fmt, sol::variadic_args args);
 	static void log_warn(const std::string &fmt, sol::variadic_args args);
 	static void log_error(const std::string &fmt, sol::variadic_args args);
 	static void log_critical(const std::string &fmt, sol::variadic_args args);
+
 	static std::shared_ptr<spdlog::logger> s_CoreLogger;
 	static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	static std::shared_ptr<ImGuiLogSink> imGuiSink;
