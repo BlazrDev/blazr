@@ -1300,7 +1300,7 @@ void Editor::RenderImGui() {
 	ImGui::Begin("BOX", nullptr,
 				 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 					 ImGuiWindowFlags_NoTitleBar);
-	const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX", "SCENES"};
+	const char *items[] = {"TEXTURES", "FONTS", "MUSIC", "SOUNDFX"};
 	static int current_item = 0;
 
 	if (ImGui::BeginTabBar("Tabs")) {

@@ -61,17 +61,6 @@ void RenderSceneControls(bool &showCodeEditor, std::string &luaScriptContent,
 		Editor::clickedStop = false;
 		Mix_PauseMusic();
 	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Code")) {
-		showCodeEditor = !showCodeEditor;
-
-		if (showCodeEditor) {
-			luaScriptContent = "Lua code\n";
-			strncpy(luaScriptBuffer, luaScriptContent.c_str(),
-					sizeof(luaScriptBuffer));
-		}
-	}
 }
 
 } // namespace Blazr

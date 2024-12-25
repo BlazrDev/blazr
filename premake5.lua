@@ -191,12 +191,12 @@ symbols("On")
 filter("configurations:Release")
 defines("BLZR_RELEASE")
 optimize("On")
-buildoptions { "/MD" }
+buildoptions({ "/MD" })
 
 filter("configurations:Dist")
 defines("BLZR_DIST")
 optimize("On")
-buildoptions { "/MD" }
+buildoptions({ "/MD" })
 
 project("Sandbox")
 location("Sandbox")
@@ -213,7 +213,7 @@ language("C++")
 targetdir("bin/" .. outputdir .. "/%{prj.name}")
 objdir("obj/" .. outputdir .. "/%{prj.name}")
 
-linkoptions { "-Wl,-rpath,$$ORIGIN" }
+linkoptions({ "-Wl,-rpath,$$ORIGIN" })
 
 files({
     "%{prj.name}/src/**.h",
@@ -333,7 +333,7 @@ includedirs({
 })
 
 filter("system:linux")
-    buildoptions({ "-fPIC" })
+buildoptions({ "-fPIC" })
 
 filter("system:windows")
 defines({ "IMGUI_IMPL_OPENGL_LOADER_GLEW" })
@@ -396,7 +396,7 @@ links({
     "Blazr",
     "box2d",
     "SDL2",
-    "SDL2_mixer"
+    "SDL2_mixer",
 })
 
 -- Windows-specific configuration
@@ -449,14 +449,14 @@ filter("configurations:Release")
 runtime("Release")
 defines("BLZR_RELEASE")
 optimize("On")
-buildoptions { "/MD" }
+buildoptions({ "/MD" })
 
 -- Distribution Configuration
 filter("configurations:Dist")
 runtime("Release")
 defines("BLZR_DIST")
 optimize("On")
-buildoptions { "/MD" }
+buildoptions({ "/MD" })
 
 -- Linux-specific configuration
 filter("system:linux")
