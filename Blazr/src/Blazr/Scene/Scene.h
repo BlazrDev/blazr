@@ -54,6 +54,8 @@ class Scene {
 
 	static void BindScene(sol::state &lua);
 
+	Scene GetSceneByName(const std::string &sceneName);
+
 	void SetName(const std::string &name) { m_Name = name; }
 	std::string GetName() const { return m_Name; }
 	Ref<FrameBuffer> m_GameFrameBuffer;

@@ -26,6 +26,7 @@ void RenderSceneTabs(Editor &editor) {
 
 void RenderSceneToTexture(Ref<Scene> activeScene) {
 	activeScene->m_GameFrameBuffer->Bind();
+	// activeScene->m_GameFrameBuffer->Cleanup();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (activeScene != nullptr) {

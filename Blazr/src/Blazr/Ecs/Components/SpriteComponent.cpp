@@ -31,8 +31,9 @@ void Blazr::SpriteComponent::CreateLuaSpriteComponentBind(sol::state &lua,
 									   .texturePath = texturePath};
 			}),
 		"texture_path", &SpriteComponent::texturePath, "width",
-		&SpriteComponent::width, "height", &SpriteComponent::height, "start_x",
-		&SpriteComponent::startX, "start_y", &SpriteComponent::startY,
+		&SpriteComponent::width, "color", &SpriteComponent::color, "height",
+		&SpriteComponent::height, "start_x", &SpriteComponent::startX,
+		"start_y", &SpriteComponent::startY,
 		// "layer", &SpriteComponent::layer
 		"generate_object", [&](SpriteComponent &sprite) {
 			auto &assetManager = AssetManager::GetInstance();

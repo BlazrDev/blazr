@@ -1658,8 +1658,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("X");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleX", &transform.scale.x, 0.2f, 1.f, "%.1f");
-	if (transform.scale.x < 0.1f) {
-		transform.scale.x = 0.1f;
+	if (transform.scale.x < 0.01f) {
+		transform.scale.x = 0.01f;
 	}
 	if (transform.scale.x > 10.f) {
 		transform.scale.x = 10.f;
@@ -1669,8 +1669,8 @@ void Editor::renderTransformComponent(ImVec2 &cursorPos,
 	ImGui::Text("Y");
 	ImGui::SameLine();
 	ImGui::InputFloat("##ScaleY", &transform.scale.y, 0.2f, 1.f, "%.1f");
-	if (transform.scale.y < 0.1f) {
-		transform.scale.y = 0.1f;
+	if (transform.scale.y < 0.01f) {
+		transform.scale.y = 0.01f;
 	}
 	if (transform.scale.y > 10.f) {
 		transform.scale.y = 10.f;
@@ -2258,9 +2258,10 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			fixture->SetFriction(physics.GetAttributes().friction);
 			fixture->SetSensor(physics.GetAttributes().isSensor);
 		}
-	} else {
-		BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
 	}
+	// } else {
+	// 	BLZR_CORE_WARN("Cannot update fixtures while simulation is running.");
+	// }
 
 	if ((posX != physicsPosX || posY != physicsPosY || scaleX != newScaleX ||
 		 scaleY != newScaleY || widthBoxCollider != newWidthBoxCollider ||
