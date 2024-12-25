@@ -624,31 +624,35 @@ void Editor::RenderImGui() {
 	auto tilemapScene = std::dynamic_pointer_cast<TilemapScene>(m_ActiveScene);
 
 	if (!tilemapScene) {
-
+		if (m_ActiveScene != nullptr) {
+			
+		
 		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
-			for (Ref<Entity> ent : layer->entities) {
-				if (!ent->HasComponent<TileComponent>()) {
-					std::string gameObjectName =
-						ent->GetComponent<Identification>().name;
+				for (Ref<Entity> ent : layer->entities) {
+					if (!ent->HasComponent<TileComponent>()) {
+						std::string gameObjectName =
+							ent->GetComponent<Identification>().name;
 
-					if (ImGui::Selectable(gameObjectName.c_str())) {
-						selectedGameObject = gameObjectName;
-						showGameObjectDetails = true;
-					}
-					if (ImGui::BeginPopupContextItem(gameObjectName.c_str())) {
-						if (!ent->GetFollowCamera()) {
-							if (ImGui::MenuItem("Add Follower Camera")) {
-								m_ActiveScene->SetFollowCamera(ent);
-								ent->SetFollowCamera(true);
+						if (ImGui::Selectable(gameObjectName.c_str())) {
+							selectedGameObject = gameObjectName;
+							showGameObjectDetails = true;
+						}
+						if (ImGui::BeginPopupContextItem(
+								gameObjectName.c_str())) {
+							if (!ent->GetFollowCamera()) {
+								if (ImGui::MenuItem("Add Follower Camera")) {
+									m_ActiveScene->SetFollowCamera(ent);
+									ent->SetFollowCamera(true);
+								}
+								ImGui::EndPopup();
+							} else if (ent->GetFollowCamera()) {
+								if (ImGui::MenuItem("Remove Follower Camera")) {
+									// Logika za dodavanje follower kamere
+									m_ActiveScene->SetFollowCamera(nullptr);
+									ent->SetFollowCamera(false);
+								}
+								ImGui::EndPopup();
 							}
-							ImGui::EndPopup();
-						} else if (ent->GetFollowCamera()) {
-							if (ImGui::MenuItem("Remove Follower Camera")) {
-								// Logika za dodavanje follower kamere
-								m_ActiveScene->SetFollowCamera(nullptr);
-								ent->SetFollowCamera(false);
-							}
-							ImGui::EndPopup();
 						}
 					}
 				}

@@ -36,7 +36,7 @@ class SoundPlayer {
 	void PlayMusic(const std::string &name, int loop);
 	void PlayMusicFadeIn(const std::string &name, int loop, int fadeInEffect);
 	void BLZR_API MusicVolume(std::string name, const int volume);
-	int GetCurrentMusicVolume();
+	int BLZR_API GetCurrentMusicVolume();
 	void MuteMusic();
 	void ToggleMusicMute();
 	void ToggleMusic(const std::string &name);
@@ -48,7 +48,7 @@ class SoundPlayer {
 	void ToggleMuteAllEffects();
 	int GetEffectVolume(int channel);
 	bool isChannelPlaying(int channel);
-	Ref<Music> GetCurrentPlaying();
+	Ref<Music> BLZR_API GetCurrentPlaying();
 
 	void effectTest(int channel, int value);
 };
