@@ -9,13 +9,16 @@ class ScriptingSystem {
 	bool m_bMainLoaded;
 
   public:
-	ScriptingSystem(Registry &registry);
+	BLZR_API ScriptingSystem(Registry &registry);
 	~ScriptingSystem() = default;
 
-	bool LoadMainScript(sol::state &lua);
+	bool BLZR_API LoadMainScript(sol::state &lua);
+	void InitializeEntityScripts(sol::state &lua);
 	void Update();
 	void Render();
 
 	static void RegisterLuaBindings(sol::state &lua, Registry &registry);
+
+	static void RegisterLuaFunctions(sol::state &lua);
 };
 } // namespace Blazr

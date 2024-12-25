@@ -1,0 +1,44 @@
+{
+    "AssetManager": {
+        "Effects": {},
+        "Music": {},
+        "Shaders": {},
+        "Textures": {
+            "ChestAnim.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame/assets/textures/ChestAnim.png",
+                "pixelArt": true
+            },
+            "Tiles.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame/assets/textures/Tiles.png",
+                "pixelArt": true
+            },
+            "backgrounds.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame/assets/textures/backgrounds.png",
+                "pixelArt": true
+            },
+            "chammyAnim.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame/assets/textures/chammyAnim.png",
+                "pixelArt": true
+            },
+            "collider": {
+                "path": "assets/collider.png",
+                "pixelArt": true
+            },
+            "default": {
+                "path": "assets/white_texture.png",
+                "pixelArt": true
+            },
+            "props.png": {
+                "path": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame/assets/textures/props.png",
+                "pixelArt": true
+            }
+        }
+    },
+    "Config": {
+        "AssetDirectory": "",
+        "ScriptPath": "",
+        "StartScene": "Untitled 1",
+        "name": "ChammyGame"
+    },
+    "ProjectDirectory": "/home/srkless/ETF/Projektovanje Softvera/Project/blazr/ChammyGame"
+}

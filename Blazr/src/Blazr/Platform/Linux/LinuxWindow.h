@@ -15,15 +15,18 @@ class BLZR_API LinuxWindow : public Window {
 	void onUpdate() override;
 	unsigned int getWidth() const override;
 	unsigned int getHeight() const override;
+	void setHeight(int height) override;
+	void setWidth(int width) override;
+
 	void setEventCallback(const EventCallbackFn &callback) override;
 	void setVSync(bool enabled) override;
 	bool isVSync() const override;
+	GLFWwindow *GetWindow() const override;
+	// Ref<Camera2D>& GetCamera() override;
 
   private:
 	virtual void init(const WindowProperties &properties);
 	virtual void shutdown();
-
-  private:
 	GLFWwindow *m_Window;
 	Scope<RenderContext> m_RenderContext;
 	unsigned int VAO, VBO, EBO;
@@ -31,10 +34,10 @@ class BLZR_API LinuxWindow : public Window {
 	std::shared_ptr<Shader> m_Shader;
 
 	struct WindowData {
+		Camera2D m_camera{1280, 720};
 		std::string title;
 		unsigned int width, height;
 		bool vsync;
-		// RendererAPI *m_Renderer;
 		std::unique_ptr<Blazr::Registry> m_Registry =
 			std::make_unique<Blazr::Registry>();
 
@@ -92,5 +95,8 @@ class BLZR_API LinuxWindow : public Window {
 	};
 
 	WindowData m_Data;
+
+  public:
+	WindowData &GetWindowData() { return m_Data; }
 };
 } // namespace Blazr

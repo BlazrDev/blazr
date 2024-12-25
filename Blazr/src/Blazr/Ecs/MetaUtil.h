@@ -1,5 +1,6 @@
 #pragma once
 #include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Entity.h"
 #include "entt.hpp"
 #include "sol.hpp"
 #include <utility>
@@ -16,7 +17,9 @@ inline auto InvokeMeta(entt::meta_type meta, entt::id_type id, Args &&...args) {
 	}
 
 	if (auto function = meta.func(id); function) {
-		return function.invoke(std::forward<Args>(args)...);
+		auto result = function.invoke({}, std::forward<Args>(args)...);
+
+		return result;
 	}
 
 	return entt::meta_any{};

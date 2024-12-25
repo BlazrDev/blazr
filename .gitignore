@@ -25,6 +25,8 @@
 # Clang tooling
 \.clangd
 
+StartProject/
+
 # Others
 *.pdb
 *.idb
@@ -34,4 +36,3 @@
 *.cache
 *.ilk
 *.lastbuildstate
-

@@ -19,15 +19,9 @@ void Blazr::TransformComponent::CreateLuaTransformComponentBind(
 										  .scale = glm::vec2{scale_x, scale_y},
 										  .rotation = rotation};
 			}),
-		"position",
-		[](TransformComponent &transform) {
-			return std::make_tuple(transform.position.x, transform.position.y);
-		},
-		"scale",
-		[](TransformComponent &transform) {
-			return std::make_tuple(transform.scale.x, transform.scale.y);
-		},
-		"rotation", &TransformComponent::rotation, "set_position",
+		"position", &TransformComponent::position, "scale",
+		&TransformComponent::scale, "rotation", &TransformComponent::rotation,
+		"set_position",
 		[](TransformComponent &transform, float x, float y) {
 			transform.position = glm::vec2(x, y);
 		},
@@ -37,4 +31,23 @@ void Blazr::TransformComponent::CreateLuaTransformComponentBind(
 		}
 
 	);
+}
+void Blazr::TransformComponent::to_json(nlohmann::json &j,
+										const TransformComponent &transform) {
+
+	j = nlohmann::json{
+		{"position", {transform.position.x, transform.position.y}},
+		{"scale", {transform.scale.x, transform.scale.y}},
+		{"rotation", transform.rotation}};
+}
+
+void Blazr::TransformComponent::from_json(const nlohmann::json &j,
+										  TransformComponent &transform) {
+	auto pos = j.at("position").get<std::vector<float>>();
+	transform.position = {pos[0], pos[1]};
+
+	auto scale = j.at("scale").get<std::vector<float>>();
+	transform.scale = {scale[0], scale[1]};
+
+	transform.rotation = j.at("rotation").get<float>();
 }

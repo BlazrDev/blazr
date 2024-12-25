@@ -1,0 +1,11 @@
+compilation_database_dir: .
+output_directory: diagrams
+diagrams:
+  myproject_class:
+    type: class
+    glob:
+      - src/*.cc
+    using_namespace: Blazr
+    include:
+      namespaces:
+        - Blazr

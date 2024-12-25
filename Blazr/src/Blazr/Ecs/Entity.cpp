@@ -1,20 +1,27 @@
 #include "blzrpch.h"
+#include "Blazr/Core/Log.h"
+#include "Blazr/Ecs/Registry.h"
 #include "Components/Identification.h"
 #include "Entity.h"
 #include "MetaUtil.h"
 #include "sol.hpp"
-#include "Blazr/Core/Log.h"
+#include <string>
+
+int Blazr::Entity::ID = 0;
 
 Blazr::Entity::Entity(Registry &registry)
-	: Blazr::Entity(registry, "GameObject", "") {}
+	: Blazr::Entity(registry, "GameObject " + std::to_string(++ID), "") {}
 
 Blazr::Entity::Entity(Registry &registry, const std::string &name,
 					  const std::string &group)
-	: m_Registry(registry), m_Name(name), m_Group(group) {
-	//AddComponent<Identification>(
-	//	Identification{.name = name,
-	//				   .group = group,
-	//				   .id = static_cast<int32_t>(m_EntityHandler)});
+	: m_Registry(registry), m_Name(name), m_Group(group),
+	  m_EntityHandler{registry.CreateEntity()} {
+	AddComponent<Identification>(
+		Identification{.name = name,
+					   .group = group,
+					   .id = static_cast<int32_t>(m_EntityHandler)});
+
+	// BLZR_CORE_INFO("Entity created with name: {0}, group: {1}", name, group);
 }
 Blazr::Entity::Entity(Registry &registry, const entt::entity &entity)
 	: m_Registry(registry), m_EntityHandler(entity), m_Name(""), m_Group("") {
@@ -31,11 +38,16 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 	lua.new_usertype<Entity>(
 		"Entity", sol::call_constructor,
 		sol::factories([&](const std::string &name, const std::string &group) {
-			return Entity(registry, name, group);
+			return CreateRef<Entity>(registry, name, group);
 		}),
+		"name", &Entity::GetName, "group", &Entity::GetGroup, "id",
+		[](Entity &entity) {
+			return static_cast<int32_t>(entity.GetEntityHandler());
+		},
+		"destroy", &Entity::destroy, "set_name", &Entity::SetName,
 		"add_component",
-		[&](Entity &entity, const sol::table &comp,
-			sol::this_state s) -> sol::object {
+		[](Entity &entity, const sol::table &comp,
+		   sol::this_state s) -> sol::object {
 			if (!comp.valid()) {
 				return sol::lua_nil_t();
 			}
@@ -45,12 +57,32 @@ void Blazr::Entity::CreateLuaEntityBind(sol::state_view &lua,
 
 			return component ? component.cast<sol::reference>()
 							 : sol::lua_nil_t{};
+		},
+		"has_component",
+		[](Entity &entity, const sol::table &comp) {
+			const auto component =
+				InvokeMeta(GetIdType(comp), "has_component"_hs, entity);
+
+			return component ? component.cast<bool>() : false;
+		},
+		"get_component",
+		[](Entity &entity, const sol::table &comp, sol::this_state s) {
+			const auto component =
+				InvokeMeta(GetIdType(comp), "get_component"_hs, entity, s);
+
+			return component ? component.cast<sol::reference>()
+							 : sol::lua_nil_t{};
+		},
+
+		"remove_component",
+		[](Entity &entity, const sol::table &comp) {
+			const auto component =
+				InvokeMeta(GetIdType(comp), "remove_component"_hs, entity);
+
+			return component ? component.cast<sol::reference>()
+							 : sol::lua_nil_t{};
 		});
+
+	// lua.new_usertype<Ref<Entity>>(
+	// 	"EntityRef", "get", [](Ref<Entity> &ref) -> Entity & { return *ref; });
 }
-template <typename TComponent> static void RegisterMetaComponent() {
-	using namespace entt::literals;
-	entt::meta<TComponent>()
-		.type(entt::type_hash<TComponent>::value())
-		.template func<&Blazr::Entity::add_component<TComponent>>(
-			"add_component"_hs);
-};

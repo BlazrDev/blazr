@@ -2,17 +2,19 @@
 #include "Blazr/Core/Log.h"
 #include "Texture2D.h"
 #include "stb_image.h"
+#include <filesystem>
 #include <iostream>
 
 namespace Blazr {
-Texture2D::Texture2D(const std::string &filepath)
+Texture2D::Texture2D(const std::string &filepath, bool tileset)
 	: m_FilePath(filepath), m_LocalBuffer(nullptr), m_Width(0), m_Height(0),
-	  m_BPP(0) {
+	  m_BPP(0), m_Tileset(tileset) {
 	stbi_set_flip_vertically_on_load(1);
 	m_LocalBuffer = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 0);
 
 	if (!m_LocalBuffer) {
 		BLZR_CORE_WARN("Failed to load texture: {0}", filepath);
+		BLZR_CORE_WARN("{0}", stbi_failure_reason());
 		return;
 	}
 
@@ -34,7 +36,7 @@ Texture2D::Texture2D(const std::string &filepath)
 	glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -49,6 +51,23 @@ Texture2D::Texture2D(const std::string &filepath)
 	}
 }
 
+Texture2D::Texture2D(int width, int height, const unsigned char *data)
+	: m_Width(width), m_Height(height), m_LocalBuffer(nullptr) {
+	glGenTextures(1, &m_RendererID);
+	glBindTexture(GL_TEXTURE_2D, m_RendererID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	auto rgbaData = ConvertToRGBA(data, width, height);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA,
+				 GL_UNSIGNED_BYTE, rgbaData.data());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 Texture2D::~Texture2D() { glDeleteTextures(1, &m_RendererID); }
 
 void Texture2D::Bind(uint32_t slot) const {
@@ -61,6 +80,27 @@ void Texture2D::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
 GLuint Texture2D::GetRendererID() const { return m_RendererID; }
 
 Ref<Texture2D> Texture2D::Create(const std::string &path) {
+	BLZR_CORE_ERROR("PATH: {0}", path);
+	std::cout << "Current Directory: " << std::filesystem::current_path()
+			  << std::endl;
 	return CreateRef<Texture2D>(path);
 }
+Ref<Texture2D> Texture2D::Create(int width, int height,
+								 const unsigned char *data) {
+	return CreateRef<Texture2D>(width, height, data);
+}
+
+std::vector<unsigned char> Texture2D::ConvertToRGBA(const unsigned char *data,
+													int width, int height) {
+	std::vector<unsigned char> rgbaData(width * height * 4);
+	for (int i = 0; i < width * height; ++i) {
+		rgbaData[i * 4 + 0] = data[i];
+		rgbaData[i * 4 + 1] = data[i];
+		rgbaData[i * 4 + 2] = data[i];
+		rgbaData[i * 4 + 3] = 255;
+	}
+	return rgbaData;
+}
+bool Texture2D::isTileset() const { return m_Tileset; }
+
 } // namespace Blazr
