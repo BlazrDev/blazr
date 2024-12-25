@@ -281,6 +281,9 @@ IF EXIST ..\bin\Dist-windows-x86_64\Blazr\Blazr.dll\ (xcopy /Q /E /Y /I ..\bin\D
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

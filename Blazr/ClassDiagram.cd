@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Blazr::PhysicsComponent">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEgIAAAABCAQAAAAECAgAABAAAAMABAABAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\PhysicsComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Entity">
+    <Position X="8.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAEQAIhAIkABAABUIgADMCSAAEACAAQAAgBAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Registry">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAQAAAIABAIQAhAAAAAABFAAAQAAACAAAABAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Registry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Application" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAABAABAAQQAABBRAAAAAAAACAEAAAAAAAACAAII=</HashCode>
+      <FileName>src\Blazr\Core\Application.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::ImGuiLogSink" Collapsed="true">
+    <Position X="11" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAABAAAAAAAAAAAAAAAAAAAAAAAIAIAAgAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Core\ImGuiLogSink.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Log" Collapsed="true">
+    <Position X="9.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAABEAAAAQAAAAAACAACAAAgIBIAIAAAAQAAk=</HashCode>
+      <FileName>src\Blazr\Core\Log.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::EventDispatcher" Collapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Events\Event.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Layer" Collapsed="true">
+    <Position X="11.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAQwAAAABAAAAAAEEAQAEAJAAIAAAAAA=</HashCode>
+      <FileName>src\Blazr\Layers\Layer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::LayerManager" Collapsed="true">
+    <Position X="9.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAgAAAABAAAACAAAAAAgAoBgAQAAAAAA=</HashCode>
+      <FileName>src\Blazr\Layers\LayerManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Project" Collapsed="true">
+    <Position X="12.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAkAAkACAIEAABAAQgQAAUAAAACAiIAIAEAAA=</HashCode>
+      <FileName>src\Blazr\Project\Project.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::ProjectSerializer" Collapsed="true">
+    <Position X="12.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAAACBAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>src\Blazr\Project\ProjectSerializer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Effect" Collapsed="true">
+    <Position X="21.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAACAAAAAgEIAAAAIAAAAAAAAACYAAAAAAAAAAIAAA=</HashCode>
+      <FileName>src\Blazr\Systems\Sounds\Effect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::EffectPlayer" Collapsed="true">
+    <Position X="23" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAABABABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\Sounds\EffectPlayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Music" Collapsed="true">
+    <Position X="23" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAEAAAAEAAAAAIAAAAAAAAACYAAAAAAIAAAKAAA=</HashCode>
+      <FileName>src\Blazr\Systems\Sounds\Music.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::SoundPlayer" Collapsed="true">
+    <Position X="24.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAAAQAAEgAAAAUEIAASCEABABECBECIACACAAAAAE=</HashCode>
+      <FileName>src\Blazr\Systems\Sounds\SoundPlayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::AnimationSystem" Collapsed="true">
+    <Position X="26" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\AnimationSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::BoxColliderSystem" Collapsed="true">
+    <Position X="25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAgAAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\BoxColliderSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::InputSystem" Collapsed="true">
+    <Position X="2.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEACAAIAAAAEAQAAAAgAAABADAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\InputSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::PhysicsSystem" Collapsed="true">
+    <Position X="23.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAABAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\PhysicsSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::ScriptingSystem" Collapsed="true">
+    <Position X="25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQACAAAAAgAAAAAABAAAAkAAAIAAAAAABAAAAAAAEA=</HashCode>
+      <FileName>src\Blazr\Systems\ScriptingSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::BufferLayout">
+    <Position X="40.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgACAAAAAAAAgAAAAQAQAAABAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>src\Blazr\Renderer\Buffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::VertexBuffer">
+    <Position X="40.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAiAABAAAAAAAAAAACAAAAAACAAEAIAAAEAAAAEAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Buffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::IndexBuffer">
+    <Position X="33.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAiAAAAAAAAAAAAAAAEAABAAAAAEAAAAAEAAQAAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Buffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Camera2D">
+    <Position X="35.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACYACCBACQBAAAAAABABABUAiiAIAAAAkEAAAI=</HashCode>
+      <FileName>src\Blazr\Renderer\Camera2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::CameraController">
+    <Position X="37" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAgAAAAADAIQBwEAoIAAEABAAAACAEAABAAEAIQI=</HashCode>
+      <FileName>src\Blazr\Renderer\CameraController.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::FollowCamera">
+    <Position X="33.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAACABAIQAAAAAIAAAAACAAQAAAACAAAAAAAI=</HashCode>
+      <FileName>src\Blazr\Renderer\FollowCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::RenderCommand">
+    <Position X="38.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAEAEACAABAAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\RenderCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::RenderContext">
+    <Position X="30" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAEAIAAACAAAAIAA=</HashCode>
+      <FileName>src\Blazr\Renderer\RenderContext.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Renderer2D">
+    <Position X="28.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgAAAAAAAAAAAAAAAAQAAAAAEAAAABAACAApIAIA=</HashCode>
+      <FileName>src\Blazr\Renderer\Renderer2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Shader">
+    <Position X="30" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAAgAAAAAAAAAgAAAAyIAAAAgAAEAABAAhCBAQAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::ShaderLoader">
+    <Position X="35.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAEAAAAAAAAAAAAAAAABAAAAAAAEAQAAAAAAgAAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\ShaderLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Texture2D">
+    <Position X="38.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACiAgAAgAAAAABAAABgQBAYAACgECAABAEAEAAACA=</HashCode>
+      <FileName>src\Blazr\Renderer\Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::UniformBuffer">
+    <Position X="40.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAEAAAAAAAAAACAAAAAAgAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\UniformBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::VertexArray">
+    <Position X="28.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAQAAAAQAABABAAAAAAAAIAAEAAACAEAEACEAA=</HashCode>
+      <FileName>src\Blazr\Renderer\VertexArray.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::AssetManager" Collapsed="true">
+    <Position X="6.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIECAISgAABBAQAkAAQCAAABBBACAIQCABAAAAAAgA=</HashCode>
+      <FileName>src\Blazr\Resources\AssetManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blazr::Timer" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAgEAADBAAACAAAAAQsAAAIAAAIAAIAAgQEgEAEA=</HashCode>
+      <FileName>src\Blazr\Utilities\Timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Canvas">
+    <Position X="33.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAABQAAAAZAAABEAAQAAAAAAAAAEEAEAAY=</HashCode>
+      <FileName>src\Blazr\Renderer\Canvas.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FrameBuffer">
+    <Position X="31.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAAAAAAAAQARAAAwABBAAAAAAACAAAAUAEEAAAI=</HashCode>
+      <FileName>src\Blazr\Renderer\FrameBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Blazr::AnimationComponent">
+    <Position X="14.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAABABQAAAAIAAAAACAIIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\AnimationComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::BoxColliderComponent">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAEBAAQAQAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\BoxColliderComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::Identification">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAABAAQAAAAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\Identification.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::PhysicsAttributes">
+    <Position X="16.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAgAAAgAEAIAACAQEBAQAQAAAAAAEEAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\PhysicsComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::ScriptComponent">
+    <Position X="18.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAQAAAAACAAAAAAAAAAAAAAABAAUAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\ScriptComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::Object">
+    <Position X="10" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAQAAAAAAAAABAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\SpriteComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::TileComponent">
+    <Position X="18.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAQAAAAAAAAABAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\TileComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::TransformComponent">
+    <Position X="18.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAQAAAGAIAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Ecs\Components\TransformComponent.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::WindowProperties">
+    <Position X="30" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAABAAAAEAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Core\Window.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::BodyDestroyer">
+    <Position X="10" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Physics\Box2DWrapper.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::ProjectConfig" Collapsed="true">
+    <Position X="12.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAEAIAEAAAAAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Project\Project.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::Button" Collapsed="true">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAACIAAAAA=</HashCode>
+      <FileName>src\Blazr\Systems\InputSystem.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::QuadVertex">
+    <Position X="37" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAggAIAAAAAAAAAAAAAAAAAgAAIAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Renderer2D.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::Renderer2DData">
+    <Position X="31.75" Y="2.75" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="Blazr::Renderer2DData::CameraData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>src\Blazr\Renderer\Renderer2D.cpp</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gABEAMAAAAACAgAAAAEAEAEAAAAAAAAAIAAAARQAAAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Renderer2D.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::BufferElement">
+    <Position X="28.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAEAAAAAgIAAAAAAAAQAAAAAAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>src\Blazr\Renderer\Buffer.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Blazr::GLMBindings">
+    <Position X="37" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>src\Blazr\Scripting\GlmLuaBindings.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
