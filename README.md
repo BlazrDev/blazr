@@ -1,4 +1,5 @@
-![blazr-logo-white](https://github.com/user-attachments/assets/9beb1472-3474-4613-98dc-a2b4166ad130)
+<img src="https://github.com/user-attachments/assets/9beb1472-3474-4613-98dc-a2b4166ad130" alt="blazr-logo-white" width="200">
+
 # Blazr
 
 
