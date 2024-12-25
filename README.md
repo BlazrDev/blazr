@@ -1,4 +1,6 @@
-![image](https://github.com/user-attachments/assets/fe7dc643-a45f-48cc-a418-c0f1be0522be)# blazr
+![blazr-logo-white](https://github.com/user-attachments/assets/9beb1472-3474-4613-98dc-a2b4166ad130)
+# Blazr
+
 
 ## NOTE: Blazr is still early in developement and it can not yet be considered a game engine. Most things are not yet implemented and we are working on them.
 
