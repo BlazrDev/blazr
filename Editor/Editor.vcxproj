@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;UNICODE;_UNICODE;BLZR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;..\Blazr\vendor\sdl\windows\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\linux\include;..\Blazr\vendor\lua\linux\include;..\Blazr\vendor\sdl\linux\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -91,7 +91,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;lua53.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;..\Blazr\vendor\sdl\windows;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bin\Debug-linux-x86_64\Blazr;..\Blazr\vendor\glew\linux\lib;..\Blazr\vendor\lua\linux;..\Blazr\vendor\sdl\linux;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,14 +99,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;UNICODE;_UNICODE;BLZR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;..\Blazr\vendor\sdl\windows\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\linux\include;..\Blazr\vendor\lua\linux\include;..\Blazr\vendor\sdl\linux\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;lua53.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;..\Blazr\vendor\sdl\windows;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bin\Debug-linux-x86_64\Blazr;..\Blazr\vendor\glew\linux\lib;..\Blazr\vendor\lua\linux;..\Blazr\vendor\sdl\linux;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -123,14 +123,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>BLZR_PLATFORM_WINDOWS;UNICODE;_UNICODE;BLZR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\windows\include;..\Blazr\vendor\lua\windows\include;..\Blazr\vendor\sdl\windows\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Blazr\vendor\spdlog\include;..\Blazr\src;..\ImGui\src;..\ImGui\src\backends;..\Blazr\vendor\GLFW\include;..\Blazr\vendor\glm;..\Blazr\vendor\entt;..\Blazr\vendor\sol2;..\Blazr\vendor\json;..\Blazr\vendor\glew\linux\include;..\Blazr\vendor\lua\linux\include;..\Blazr\vendor\sdl\linux\include;..\Blazr\vendor\box2d\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -139,7 +139,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;lua53.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\bin\Debug-windows-x86_64\Blazr;..\Blazr\vendor\glew\windows\lib\Release\x64;..\Blazr\vendor\lua\windows;..\Blazr\vendor\sdl\windows;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\bin\Debug-linux-x86_64\Blazr;..\Blazr\vendor\glew\linux\lib;..\Blazr\vendor\lua\linux;..\Blazr\vendor\sdl\linux;..\Blazr\vendor\box2d\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -187,7 +187,6 @@ postbuildcommands({
 filter("configurations:Debug")
 defines("BLZR_DEBUG")
 symbols("On")
-buildoptions { "/MDd" }
 
 filter("configurations:Release")
 defines("BLZR_RELEASE")
@@ -444,7 +443,6 @@ filter("configurations:Debug")
 runtime("Debug")
 defines("BLZR_DEBUG")
 symbols("On")
-buildoptions { "/MDd" }
 
 -- Release Configuration
 filter("configurations:Release")

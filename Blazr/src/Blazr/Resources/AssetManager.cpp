@@ -21,7 +21,6 @@ bool Blazr::AssetManager::LoadTexture(const std::string &name,
 		return false;
 	}
 
-	// Overwrite or insert the texture in the map
 	m_mapTextures[name] = std::move(texture);
 	return true;
 }
@@ -280,11 +279,15 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 	assetManager->m_mapMusic.clear();
 	assetManager->m_mapEffect.clear();
 
+	std::string projectDir = Project::GetProjectDirectory().string();
+
 	if (j.contains("Shaders")) {
 		for (const auto &[name, shaderJson] : j.at("Shaders").items()) {
 			std::string vertexPath =
+				projectDir + "/" +
 				shaderJson.at("vertexPath").get<std::string>();
 			std::string fragmentPath =
+				projectDir + "/" +
 				shaderJson.at("fragmentPath").get<std::string>();
 			assetManager->LoadShader(name, vertexPath, fragmentPath);
 		}
@@ -292,7 +295,8 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 
 	if (j.contains("Textures")) {
 		for (const auto &[name, textureJson] : j.at("Textures").items()) {
-			std::string path = textureJson.at("path").get<std::string>();
+			std::string path =
+				projectDir + "/" + textureJson.at("path").get<std::string>();
 			bool pixelArt = textureJson.at("pixelArt").get<bool>();
 			assetManager->LoadTexture(name, path, pixelArt);
 		}
@@ -300,7 +304,8 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 
 	if (j.contains("Music")) {
 		for (const auto &[name, musicJson] : j.at("Music").items()) {
-			std::string path = musicJson.at("path").get<std::string>();
+			std::string path =
+				projectDir + "/" + musicJson.at("path").get<std::string>();
 			std::string description =
 				musicJson.at("description").get<std::string>();
 			assetManager->LoadMusic(name, path, description);
@@ -309,7 +314,8 @@ void Blazr::AssetManager::from_json(const nlohmann::json &j,
 
 	if (j.contains("Effects")) {
 		for (const auto &[name, effectJson] : j.at("Effects").items()) {
-			std::string path = effectJson.at("path").get<std::string>();
+			std::string path =
+				projectDir + "/" + effectJson.at("path").get<std::string>();
 			std::string description =
 				effectJson.at("description").get<std::string>();
 			int channel = effectJson.at("channel").get<int>();

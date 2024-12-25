@@ -298,20 +298,48 @@ void Editor::RenderImGui() {
 				if (!savePath.empty()) {
 					Registry::Reset();
 					Initialize();
+
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
 					newScene->SetName("Untitled 1");
 					newProject->AddScene("Untitled 1", newScene);
 					newProject->GetConfig().StartSceneName = "Untitled 1";
 					m_ActiveScene = newScene;
-					// assetManager->Reset();
 
-					newProject->SetProjectDirectory(
-						std::filesystem::path(savePath).parent_path());
+					std::filesystem::path projectDir =
+						std::filesystem::path(savePath).parent_path();
+					newProject->SetProjectDirectory(projectDir);
 					newProject->GetConfig().name =
 						std::filesystem::path(savePath).stem().string();
 
 					ProjectSerializer::Serialize(newProject, savePath);
+
+					std::filesystem::path assetsSrcDir = "assets";
+					std::filesystem::path shadersSrcDir = "shaders";
+
+					if (std::filesystem::exists(assetsSrcDir)) {
+						std::filesystem::path assetsTargetDir =
+							projectDir / "assets";
+						std::filesystem::copy(
+							assetsSrcDir, assetsTargetDir,
+							std::filesystem::copy_options::recursive);
+					} else {
+						BLZR_CORE_WARN(
+							"Assets folder not found in source directory: {}",
+							assetsSrcDir.string());
+					}
+
+					if (std::filesystem::exists(shadersSrcDir)) {
+						std::filesystem::path shadersTargetDir =
+							projectDir / "shaders";
+						std::filesystem::copy(
+							shadersSrcDir, shadersTargetDir,
+							std::filesystem::copy_options::recursive);
+					} else {
+						BLZR_CORE_WARN(
+							"Shaders folder not found in source directory: {}",
+							shadersSrcDir.string());
+					}
 				}
 			}
 
@@ -319,11 +347,25 @@ void Editor::RenderImGui() {
 				std::string openPath = Blazr::FileDialog::OpenFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!openPath.empty()) {
-					Registry::Reset();
-					Initialize();
+					// Load the project and get its stored directory
 					Ref<Project> loadedProject =
 						Project::Load(openPath, m_LuaState);
 					if (loadedProject) {
+						std::string projectDirFromFile =
+							loadedProject->GetProjectDirectory();
+
+						// Extract the directory from the open path
+						std::string openDir =
+							fs::path(openPath).parent_path().string();
+
+						if (projectDirFromFile != openDir) {
+							BLZR_CORE_WARN(
+								"Project directory mismatch! Updating project "
+								"directory from: {} to: {}",
+								projectDirFromFile, openDir);
+							loadedProject->SetProjectDirectory(openDir);
+						}
+
 						Project::SetActive(loadedProject);
 						m_ActiveScene = loadedProject->GetScene(
 							loadedProject->GetConfig().StartSceneName);
@@ -338,12 +380,10 @@ void Editor::RenderImGui() {
 				std::string filepath = Blazr::FileDialog::OpenFile(
 					"Image Files\0*.png;*.jpg;*.jpeg\0\0");
 				if (!filepath.empty()) {
-					// Get the project directory and determine the assets folder
 					std::string projectDir =
 						Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
-					// Determine the subfolder based on the asset type
 					std::string subfolder = "/textures";
 
 					std::string targetDir = assetsDir + subfolder;
@@ -355,7 +395,10 @@ void Editor::RenderImGui() {
 					std::string filename =
 						fs::path(filepath).filename().string();
 
-					std::string targetPath = targetDir + "/" + filename;
+					std::string relativePath =
+						"assets" + subfolder + "/" + filename;
+
+					std::string targetPath = projectDir + "/" + relativePath;
 
 					try {
 						fs::copy(filepath, targetPath,
@@ -363,7 +406,7 @@ void Editor::RenderImGui() {
 
 						auto &assetManager = Blazr::AssetManager::GetInstance();
 						bool success = assetManager->LoadTexture(
-							filename, targetPath, true, true);
+							filename, relativePath, true, true);
 						if (success) {
 							ImGui::Text("Imported and Loaded Asset: %s",
 										filename.c_str());
@@ -624,9 +667,8 @@ void Editor::RenderImGui() {
 
 	if (!tilemapScene) {
 		if (m_ActiveScene != nullptr) {
-			
-		
-		for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
+
+			for (Ref<Layer> layer : m_ActiveScene->GetAllLayers()) {
 				for (Ref<Entity> ent : layer->entities) {
 					if (!ent->HasComponent<TileComponent>()) {
 						std::string gameObjectName =
@@ -1409,12 +1451,11 @@ void Editor::RenderImGui() {
 				std::string filepath =
 					Blazr::FileDialog::OpenFile(filters[current_item]);
 				if (!filepath.empty()) {
-					// Get the project directory and determine the assets folder
+
 					std::string projectDir =
 						Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
-					// Determine the subfolder based on the asset type
 					std::string subfolder;
 					switch (current_item) {
 					case 0:
@@ -1446,7 +1487,10 @@ void Editor::RenderImGui() {
 					std::string filename =
 						fs::path(filepath).filename().string();
 
-					std::string targetPath = targetDir + "/" + filename;
+					std::string relativePath =
+						"assets" + subfolder + "/" + filename;
+
+					std::string targetPath = projectDir + "/" + relativePath;
 
 					try {
 						fs::copy(filepath, targetPath,
@@ -1457,22 +1501,23 @@ void Editor::RenderImGui() {
 
 						switch (current_item) {
 						case 0: // TEXTURES
-							success =
-								assetManager->LoadTexture(filename, targetPath);
+							success = assetManager->LoadTexture(filename,
+																relativePath);
 							break;
 						case 2: // MUSIC
-							BLZR_CORE_ERROR("{0}, {1}", filename, targetPath);
+							BLZR_CORE_ERROR("{0}, {1}", filename, relativePath);
 							success = assetManager->LoadMusic(
-								filename, targetPath, "Imported Music");
+								filename, relativePath, "Imported Music");
 							break;
 						case 3: // SOUNDFX
 							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
-								filename, targetPath, "Imported Sound Effect");
+								filename, relativePath,
+								"Imported Sound Effect");
 							break;
-						case 4:
-							success =
-								assetManager->LoadScene(targetPath, m_LuaState);
+						case 4: // SCENES
+							success = assetManager->LoadScene(relativePath,
+															  m_LuaState);
 							break;
 						default:
 							BLZR_CORE_WARN("Asset type not supported for "
