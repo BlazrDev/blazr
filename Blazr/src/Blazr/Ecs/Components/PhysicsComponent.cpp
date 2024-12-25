@@ -7,6 +7,7 @@
 #include "box2d/b2_circle_shape.h"
 #include "box2d/box2d.h"
 #include "sol.hpp"
+#include <memory>
 
 Blazr::PhysicsComponent::PhysicsComponent(std::shared_ptr<b2World> world,
 										  const PhysicsAttributes &atributes)
@@ -22,11 +23,6 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 		return;
 	}
 
-	if (m_RigidBody != nullptr) {
-		m_RigidBody.reset();
-		m_RigidBody = nullptr;
-	}
-
 	b2BodyDef bodyDef{};
 	bodyDef.type = static_cast<b2BodyType>(m_Attributes.type);
 
@@ -40,9 +36,12 @@ void Blazr::PhysicsComponent::init(int windowWidth, int windowHeight) {
 
 	bodyDef.gravityScale = m_Attributes.gravityScale;
 	bodyDef.fixedRotation = m_Attributes.isFixedRotation;
+	if (m_RigidBody) {
+		m_World->DestroyBody(m_RigidBody);
+		m_RigidBody = nullptr; // Oslobodi pokazivač
+	}
 
-	m_RigidBody =
-		Blazr::CreateSharedBody(m_World->CreateBody(&bodyDef), m_World);
+	m_RigidBody = m_World->CreateBody(&bodyDef);
 
 	if (!m_RigidBody) {
 		BLZR_CORE_ERROR("PhysicsComponent::init: Failed to create rigid body");

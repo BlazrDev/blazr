@@ -91,7 +91,9 @@ static bool showSpriteComponent = false;
 static bool showPhysicsComponent = false;
 static bool showColorTab = false;
 static bool showSceneChooseDialog = false;
+static bool showEntitySceneDialog = false;
 static int selectedTilemapLayer = -1;
+static Ref<Entity> selectedEntity = nullptr;
 
 // managers
 
@@ -298,48 +300,20 @@ void Editor::RenderImGui() {
 				if (!savePath.empty()) {
 					Registry::Reset();
 					Initialize();
-
 					Ref<Project> newProject = Project::New("UntitledProject");
 					Ref<Scene> newScene = CreateRef<Scene>();
 					newScene->SetName("Untitled 1");
 					newProject->AddScene("Untitled 1", newScene);
 					newProject->GetConfig().StartSceneName = "Untitled 1";
 					m_ActiveScene = newScene;
+					// assetManager->Reset();
 
-					std::filesystem::path projectDir =
-						std::filesystem::path(savePath).parent_path();
-					newProject->SetProjectDirectory(projectDir);
+					newProject->SetProjectDirectory(
+						std::filesystem::path(savePath).parent_path());
 					newProject->GetConfig().name =
 						std::filesystem::path(savePath).stem().string();
 
 					ProjectSerializer::Serialize(newProject, savePath);
-
-					std::filesystem::path assetsSrcDir = "assets";
-					std::filesystem::path shadersSrcDir = "shaders";
-
-					if (std::filesystem::exists(assetsSrcDir)) {
-						std::filesystem::path assetsTargetDir =
-							projectDir / "assets";
-						std::filesystem::copy(
-							assetsSrcDir, assetsTargetDir,
-							std::filesystem::copy_options::recursive);
-					} else {
-						BLZR_CORE_WARN(
-							"Assets folder not found in source directory: {}",
-							assetsSrcDir.string());
-					}
-
-					if (std::filesystem::exists(shadersSrcDir)) {
-						std::filesystem::path shadersTargetDir =
-							projectDir / "shaders";
-						std::filesystem::copy(
-							shadersSrcDir, shadersTargetDir,
-							std::filesystem::copy_options::recursive);
-					} else {
-						BLZR_CORE_WARN(
-							"Shaders folder not found in source directory: {}",
-							shadersSrcDir.string());
-					}
 				}
 			}
 
@@ -347,25 +321,11 @@ void Editor::RenderImGui() {
 				std::string openPath = Blazr::FileDialog::OpenFile(
 					"Blazr Project (*.blzr)\0*.blzr\0");
 				if (!openPath.empty()) {
-					// Load the project and get its stored directory
+					Registry::Reset();
+					Initialize();
 					Ref<Project> loadedProject =
 						Project::Load(openPath, m_LuaState);
 					if (loadedProject) {
-						std::string projectDirFromFile =
-							loadedProject->GetProjectDirectory();
-
-						// Extract the directory from the open path
-						std::string openDir =
-							fs::path(openPath).parent_path().string();
-
-						if (projectDirFromFile != openDir) {
-							BLZR_CORE_WARN(
-								"Project directory mismatch! Updating project "
-								"directory from: {} to: {}",
-								projectDirFromFile, openDir);
-							loadedProject->SetProjectDirectory(openDir);
-						}
-
 						Project::SetActive(loadedProject);
 						m_ActiveScene = loadedProject->GetScene(
 							loadedProject->GetConfig().StartSceneName);
@@ -380,10 +340,12 @@ void Editor::RenderImGui() {
 				std::string filepath = Blazr::FileDialog::OpenFile(
 					"Image Files\0*.png;*.jpg;*.jpeg\0\0");
 				if (!filepath.empty()) {
+					// Get the project directory and determine the assets folder
 					std::string projectDir =
 						Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
+					// Determine the subfolder based on the asset type
 					std::string subfolder = "/textures";
 
 					std::string targetDir = assetsDir + subfolder;
@@ -395,10 +357,7 @@ void Editor::RenderImGui() {
 					std::string filename =
 						fs::path(filepath).filename().string();
 
-					std::string relativePath =
-						"assets" + subfolder + "/" + filename;
-
-					std::string targetPath = projectDir + "/" + relativePath;
+					std::string targetPath = targetDir + "/" + filename;
 
 					try {
 						fs::copy(filepath, targetPath,
@@ -406,7 +365,7 @@ void Editor::RenderImGui() {
 
 						auto &assetManager = Blazr::AssetManager::GetInstance();
 						bool success = assetManager->LoadTexture(
-							filename, relativePath, true, true);
+							filename, targetPath, true, true);
 						if (success) {
 							ImGui::Text("Imported and Loaded Asset: %s",
 										filename.c_str());
@@ -550,9 +509,9 @@ void Editor::RenderImGui() {
 								 fs::copy_options::recursive |
 									 fs::copy_options::overwrite_existing);
 
-						// fs::copy("lib", outputDir,
-						// 		 fs::copy_options::recursive |
-						// 			 fs::copy_options::overwrite_existing);
+						fs::copy("lib", outputDir,
+								 fs::copy_options::recursive |
+									 fs::copy_options::overwrite_existing);
 
 						fs::copy("shaders", outputDir + "/" + "shaders",
 								 fs::copy_options::recursive |
@@ -642,6 +601,42 @@ void Editor::RenderImGui() {
 		ImGui::End();
 	}
 
+	if (showEntitySceneDialog) {
+		ImVec2 windowSize(300, 300);
+		ImVec2 windowPos(100, 100);
+		ImGui::SetNextWindowSize(windowSize);
+		ImGui::SetNextWindowPos(windowPos);
+		if (ImGui::Begin("Choose Scene Dialog", nullptr,
+						 ImGuiWindowFlags_NoCollapse)) {
+			auto scenes = Project::GetActive()->GetScenes();
+			if (ImGui::BeginCombo("Select item", selectedScene.c_str())) {
+				for (const auto &scene : scenes) {
+					const bool isSelected = (selectedScene == scene.first);
+
+					if (ImGui::Selectable(scene.first.c_str(), isSelected)) {
+						selectedScene = scene.first;
+						showEntitySceneDialog = false;
+					}
+
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			for (auto pair : scenes) {
+				if (pair.first == selectedScene) {
+					pair.second->GetLayerByName("Default")->AddEntity(
+						CreateRef<Entity>(*m_Registry,
+										  selectedEntity->GetEntityHandler()));
+					selectedScene = "";
+				}
+			}
+		}
+		ImGui::End();
+	}
+
 	// }----------------------------------------------------------1. box -
 	// Scene---------------------------------
 
@@ -680,6 +675,11 @@ void Editor::RenderImGui() {
 						}
 						if (ImGui::BeginPopupContextItem(
 								gameObjectName.c_str())) {
+							if (ImGui::MenuItem("Add Entity to scene")) {
+								showEntitySceneDialog = true;
+								selectedEntity = ent;
+							}
+
 							if (!ent->GetFollowCamera()) {
 								if (ImGui::MenuItem("Add Follower Camera")) {
 									m_ActiveScene->SetFollowCamera(ent);
@@ -783,12 +783,12 @@ void Editor::RenderImGui() {
 
 								renderTransformComponent(cursorPos, transform);
 
-								if (!clickedStop &&
-									m_Registry->GetRegistry()
-										.all_of<PhysicsComponent>(entity)) {
-									transform.position = {physicsPosX,
-														  physicsPosY};
-								}
+								// if (!clickedStop &&
+								// 	m_Registry->GetRegistry()
+								// 		.all_of<PhysicsComponent>(entity)) {
+								// 	transform.position = {physicsPosX,
+								// 						  physicsPosY};
+								// }
 							}
 							if (m_Registry->GetRegistry()
 									.all_of<SpriteComponent>(entity) &&
@@ -821,31 +821,32 @@ void Editor::RenderImGui() {
 								auto &physics =
 									m_Registry->GetRegistry()
 										.get<PhysicsComponent>(entity);
-								renderPhysicsComponent(cursorPos, physics);
+								renderPhysicsComponent(cursorPos, physics,
+													   entity);
 
-								if (!clickedStop) {
-									BLZR_CORE_ERROR("{0} {1}", newPosX,
-													newPosY);
-									// physics.GetAttributes().position = {
-									// 	newPosX, newPosY};
-									//
-									// physics.init(1280, 720);
-									const auto scaleHalfHeight =
-										1224 * PIXELS_TO_METERS / 2;
-									const auto scaleHalfWidth =
-										648 * PIXELS_TO_METERS / 2;
-
-									auto bx = (posX * PIXELS_TO_METERS) -
-											  scaleHalfHeight;
-									auto by = (posY * PIXELS_TO_METERS) -
-
-											  scaleHalfWidth;
-
-									physics.GetRigidBody()->SetTransform(
-										b2Vec2{bx, by}, 0.f);
-
-									clickedStop = true;
-								}
+								// 	// 	newPosX, newPosY};
+								// 	//
+								// 	// physics.init(1280, 720);
+								// 	const auto scaleHalfHeight =
+								// 		1224 * PIXELS_TO_METERS / 2;
+								// 	const auto scaleHalfWidth =
+								// 		648 * PIXELS_TO_METERS / 2;
+								//                         if (!clickedStop) {
+								//                             //
+								//                             physics.GetAttributes().position
+								//                             = {
+								//
+								// 	auto bx = (posX * PIXELS_TO_METERS) -
+								// 			  scaleHalfHeight;
+								// 	auto by = (posY * PIXELS_TO_METERS) -
+								//
+								// 			  scaleHalfWidth;
+								//
+								// 	physics.GetRigidBody()->SetTransform(
+								// 		b2Vec2{bx, by}, 0.f);
+								//
+								// 	clickedStop = true;
+								// }
 							}
 
 							if (m_Registry->GetRegistry()
@@ -1153,8 +1154,8 @@ void Editor::RenderImGui() {
 						// Prikazivanje PhysicsComponent samo jednom
 						if (!physicsComponentRendered) {
 							renderPhysicsComponent(
-								tilemapCursorPos,
-								physics); // Render prvi PhysicsComponent
+								tilemapCursorPos, physics,
+								entity); // Render prvi PhysicsComponent
 							renderIdentificationComponent(
 								tilemapCursorPos, identification, sprite.layer);
 							physicsComponentRendered = true;
@@ -1217,33 +1218,6 @@ void Editor::RenderImGui() {
 													.isFixedRotation =
 														physics.GetAttributes()
 															.isFixedRotation}));
-
-									// Ako je entitet već ažuriran
-									// oldPhysics.SetAttributes(PhysicsAttributes{
-									// 	.type =
-									// physics.GetAttributes().type,
-									// 	.density =
-									// 		physics.GetAttributes().density,
-									// 	.friction =
-									// 		physics.GetAttributes().friction,
-									// 	.restitution =
-									// 		physics.GetAttributes().restitution,
-									// 	.gravityScale =
-									// physics.GetAttributes()
-									// 						.gravityScale,
-									// 	.position =
-									// 		oldPhysics.GetAttributes().position,
-									// 	.scale =
-									// 		oldPhysics.GetAttributes().scale,
-									// 	.boxSize =
-									// 		oldPhysics.GetAttributes().boxSize,
-									// 	.offset =
-									// 		oldPhysics.GetAttributes().offset,
-									// 	.isSensor =
-									// 		physics.GetAttributes().isSensor,
-									// 	.isFixedRotation =
-									// 		physics.GetAttributes()
-									// 			.isFixedRotation});
 								}
 							}
 						}
@@ -1439,9 +1413,6 @@ void Editor::RenderImGui() {
 			case 3: // SOUNDFX
 				ImGui::Text("Sound");
 				break;
-			case 4: // SCENES
-				ImGui::Text("Scene");
-				break;
 			default:
 				ImGui::Text("Select an asset type to view its content.");
 				break;
@@ -1451,11 +1422,12 @@ void Editor::RenderImGui() {
 				std::string filepath =
 					Blazr::FileDialog::OpenFile(filters[current_item]);
 				if (!filepath.empty()) {
-
+					// Get the project directory and determine the assets folder
 					std::string projectDir =
 						Project::GetProjectDirectory().string();
 					std::string assetsDir = projectDir + "/assets";
 
+					// Determine the subfolder based on the asset type
 					std::string subfolder;
 					switch (current_item) {
 					case 0:
@@ -1487,10 +1459,7 @@ void Editor::RenderImGui() {
 					std::string filename =
 						fs::path(filepath).filename().string();
 
-					std::string relativePath =
-						"assets" + subfolder + "/" + filename;
-
-					std::string targetPath = projectDir + "/" + relativePath;
+					std::string targetPath = targetDir + "/" + filename;
 
 					try {
 						fs::copy(filepath, targetPath,
@@ -1501,23 +1470,22 @@ void Editor::RenderImGui() {
 
 						switch (current_item) {
 						case 0: // TEXTURES
-							success = assetManager->LoadTexture(filename,
-																relativePath);
+							success =
+								assetManager->LoadTexture(filename, targetPath);
 							break;
 						case 2: // MUSIC
-							BLZR_CORE_ERROR("{0}, {1}", filename, relativePath);
+							BLZR_CORE_ERROR("{0}, {1}", filename, targetPath);
 							success = assetManager->LoadMusic(
-								filename, relativePath, "Imported Music");
+								filename, targetPath, "Imported Music");
 							break;
 						case 3: // SOUNDFX
 							BLZR_CORE_ERROR("SOUND EFFECT");
 							success = assetManager->LoadEffect(
-								filename, relativePath,
-								"Imported Sound Effect");
+								filename, targetPath, "Imported Sound Effect");
 							break;
-						case 4: // SCENES
-							success = assetManager->LoadScene(relativePath,
-															  m_LuaState);
+						case 4:
+							success =
+								assetManager->LoadScene(targetPath, m_LuaState);
 							break;
 						default:
 							BLZR_CORE_WARN("Asset type not supported for "
@@ -2192,9 +2160,16 @@ void Editor::renderBoxColliderComponent(ImVec2 &cursorPos,
 }
 
 void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
-									PhysicsComponent &physics) {
+									PhysicsComponent &physics,
+									const entt::entity &entity) {
 
 	auto body = physics.GetRigidBody();
+	auto &physicsWorld = m_Registry->GetContext<std::shared_ptr<b2World>>();
+
+	if (!physicsWorld) {
+		return;
+	}
+
 	if (!body || !body->GetWorld()) {
 		BLZR_CORE_ERROR(
 			"Invalid body or world while rendering physics component.");
@@ -2211,7 +2186,8 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 	cursorPos.x += 90;
 	ImGui::SetCursorPos(cursorPos);
 	const char *types[] = {"Static", "Kinematic", "Dynamic"};
-	static int selectedTypeIndex = body->GetType();
+	static int selectedTypeIndex =
+		static_cast<int>(physics.GetAttributes().type);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	if (ImGui::BeginCombo("##TypesDropdown", selectedTypeIndex == -1
 												 ? "Choose a type"
@@ -2221,12 +2197,6 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 			if (ImGui::Selectable(types[i], isSelected)) {
 				selectedTypeIndex = i;
 				physics.GetAttributes().type = static_cast<RigidBodyType>(i);
-				if (CameraController::paused) {
-					body->SetType(b2BodyType(i));
-				} else {
-					BLZR_CORE_WARN(
-						"Cannot change body type while simulation is running.");
-				}
 			}
 			if (isSelected) {
 				ImGui::SetItemDefaultFocus();
@@ -2326,7 +2296,6 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		if (CameraController::paused) {
 			physics.init(1280, 720);
 		}
-
 		physicsPosX = posX;
 		physicsPosY = posY;
 
@@ -2336,6 +2305,23 @@ void Editor::renderPhysicsComponent(ImVec2 &cursorPos,
 		newHeightBoxCollider = heightBoxCollider;
 		newOffsetX = offsetX;
 		newOffsetY = offsetY;
+		// m_Registry->GetRegistry().replace<PhysicsComponent>(
+		// 	entity,
+		// 	PhysicsComponent(
+		// 		physicsWorld,
+		// 		PhysicsAttributes{
+		// 			.type = physics.GetAttributes().type,
+		// 			.density = physics.GetAttributes().density,
+		// 			.friction = physics.GetAttributes().friction,
+		// 			.restitution = physics.GetAttributes().restitution,
+		// 			.gravityScale = physics.GetAttributes().gravityScale,
+		// 			.position = {physicsPosX, physicsPosY},
+		// 			.scale = {newScaleX, newScaleY},
+		// 			.boxSize = {newWidthBoxCollider, newHeightBoxCollider},
+		// 			.offset = {newOffsetX, newOffsetY},
+		// 			.isSensor = physics.GetAttributes().isSensor,
+		// 			.isFixedRotation =
+		// 				physics.GetAttributes().isFixedRotation}));
 	}
 }
 void Editor::renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tilemap) {

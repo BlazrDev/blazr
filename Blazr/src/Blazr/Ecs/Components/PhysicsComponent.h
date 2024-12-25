@@ -29,7 +29,7 @@ struct PhysicsAttributes {
 class PhysicsComponent {
   private:
 	std::shared_ptr<b2World> m_World;
-	std::shared_ptr<b2Body> m_RigidBody;
+	b2Body *m_RigidBody;
 	PhysicsAttributes m_Attributes;
 
   public:
@@ -39,7 +39,7 @@ class PhysicsComponent {
 	~PhysicsComponent() = default;
 
 	void BLZR_API init(int windowWidth, int windowHeight);
-	b2Body *GetRigidBody() const { return m_RigidBody.get(); }
+	b2Body *GetRigidBody() const { return m_RigidBody; }
 
 	PhysicsAttributes &GetAttributes() { return m_Attributes; }
 

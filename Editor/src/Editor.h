@@ -2,6 +2,7 @@
 #include "blzrpch.h"
 #include "Blazr.h"
 #include "Blazr/Ecs/Components/AnimationComponent.h"
+#include "Blazr/Ecs/Components/BoxColliderComponent.h"
 #include "Blazr/Ecs/Components/Identification.h"
 #include "Blazr/Ecs/Components/ScriptComponent.h"
 #include "Blazr/Renderer/FrameBuffer.h"
@@ -36,7 +37,8 @@ class Editor : public Application {
 
 	void renderScriptComponent(ImVec2 &cursorPos, ScriptComponent &script,
 							   const entt::entity &entity);
-	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics);
+	void renderPhysicsComponent(ImVec2 &cursorPos, PhysicsComponent &physics,
+								const entt::entity &entity);
 	void renderBoxColliderComponent(ImVec2 &cursorPos,
 									BoxColliderComponent &boxCollider);
 	void renderTileMapSettings(ImVec2 &cursorPos, TilemapScene &tileMap);

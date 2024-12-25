@@ -25,7 +25,7 @@
         ],
         "rotation": true,
         "width": 1280,
-        "zoom": 1.25
+        "zoom": 4.0
     },
     "FollowCamera": {
         "Position": [
@@ -8266,7 +8266,7 @@
                     {
                         "Animation": {
                             "bVertical": false,
-                            "currentFrame": 2,
+                            "currentFrame": 3,
                             "frameOffset": 4,
                             "frameRate": 14,
                             "numFrames": 7
@@ -8326,7 +8326,7 @@
                             ],
                             "height": 32.0,
                             "object": {
-                                "coordX": 5,
+                                "coordX": 3,
                                 "coordY": 4,
                                 "height": 0.1666666716337204,
                                 "width": 0.1428571492433548,
@@ -8358,8 +8358,8 @@
                         },
                         "Transform": {
                             "position": [
-                                106.35699462890625,
                                 48.0,
+                                55.34796142578125
                             ],
                             "rotation": 0.0,
                             "scale": [
