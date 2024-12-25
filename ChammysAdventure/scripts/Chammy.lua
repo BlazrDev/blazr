@@ -41,15 +41,13 @@ local function animHitRight()
         local mashaSprite = masha:get_component(SpriteComponent)
         if BoxColliderSystem.is_colliding(masha, Chammy) then
             if heart == 0 then
-                mashaTransform:set_position(2000,237)
-            else 
-                mashaSprite.color = vec4(255,0,0,0.5)
+                mashaTransform:set_position(2000, 237)
+            else
+                mashaSprite.color = vec4(255, 0, 0, 0.5)
                 heart = heart - 1
             end
         end
-
     end
-
 end
 local function animHitLeft()
     local animationComponent = Chammy:get_component(AnimationComponent)
@@ -64,37 +62,33 @@ local function animHitLeft()
         hit = true
         if BoxColliderSystem.is_colliding(masha, Chammy) then
             if heart == 0 then
-                mashaTransform:set_position(2000,237)
-            else 
-                mashaSprite.color = vec4(255,0,0,0.5)
+                mashaTransform:set_position(2000, 237)
+            else
+                mashaSprite.color = vec4(255, 0, 0, 0.5)
                 heart = heart - 1
             end
         end
-
     end
 end
 
 local function returnCollider()
     if hit == true then
         local boxCollider = Chammy:get_component(BoxColliderComponent)
-        
+
         if right == true then
-            
             boxCollider.offset = vec2(boxCollider.offset.x - 5, boxCollider.offset.y)
         else
             boxCollider.offset = vec2(boxCollider.offset.x + 5, boxCollider.offset.y)
         end
         local mashaSprite = masha:get_component(SpriteComponent)
-        mashaSprite.color = vec4(1,1,1,1)
+        mashaSprite.color = vec4(1, 1, 1, 1)
         hit = false
     end
 end
 
-
 local function playFootStep()
     SoundPlayer.play_effect("zemlja.wav", 0)
 end
-
 
 local function printVel()
     local physicsComponent = Chammy:get_component(PhysicsComponent)
@@ -129,7 +123,7 @@ local function update()
         end
     end
     if InputSystem.key_repeating(KEY_SPACE) then
-            SoundPlayer.play_effect("sword.wav", 0)
+        SoundPlayer.play_effect("sword.wav", 0)
 
         local mashaCollider = masha:get_component(BoxColliderComponent)
         local mashaTransform = masha:get_component(TransformComponent)
@@ -146,7 +140,7 @@ local function update()
     if InputSystem.key_pressed(KEY_W) then
         if jumps < 2 then
             physicsComponent:linear_impulse(vec2(0, 60))
-           jumps = jumps + 1
+            jumps = jumps + 1
         end
     end
 
@@ -155,13 +149,12 @@ local function update()
         physicsComponent:set_transform(vec2(0, 100))
         opened = false
         local mashaTransform = masha:get_component(TransformComponent)
-        mashaTransform:set_position(105,237)
+        mashaTransform:set_position(105, 237)
         heart = 2
         jumps = 0
         gameEnd = false
     end
     t:execute_every(100, printVel)
-
 end
 
 local function chestOpenAnim()
@@ -190,7 +183,7 @@ local function chestOpenAnim()
     end
 end
 
-SoundPlayer.play_music("Grasslands Theme.mp3", 1, 0)
+SoundPlayer.play_music("Grasslands Theme.mp3", -1, 1)
 SoundPlayer.set_music_volume("Grasslands Theme.mp3", 20)
 
 local function isEnd()
