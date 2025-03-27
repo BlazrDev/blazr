@@ -3,9 +3,9 @@
 # Blazr
 
 
-## NOTE: Blazr is still early in developement and it can not yet be considered a game engine. Most things are not yet implemented and we are working on them.
+## NOTE: Blazr is still early in developement and thus may contain a lot of bugs and might lack some functionalities. It is capable of creating a simple 2D game. Our goal is to be able to support more features in the future.
 
-Blazr is an open source 2D game engine with the goal of eventually being able to create complex 2D games with complex mechanics and features. In the future, our goal is to expand it to 3D as well.
+Blazr is an open source 2D game engine with the goal of eventually being able to create complex 2D games with complex mechanics and features. In the far future, our goal is to expand it to 3D as well.
 
 ## Building
 ### Windows
